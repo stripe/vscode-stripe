@@ -1,0 +1,70 @@
+{
+  "name": "vscode-stripe",
+  "displayName": "Stripe",
+  "description": "Stripe for Visual Studio Code",
+  "version": "0.0.1",
+  "publisher": "stripe",
+  "repository": "https://github.com/stripe/vscode-stripe",
+  "engines": {
+    "vscode": "^1.34.0"
+  },
+  "icon": "resources/icon_128.png",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:stripeView",
+    "onCommand:stripe.openListen",
+    "onCommand:stripe.openLog",
+    "onCommand:stripe.openCLI"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "category": "Stripe",
+        "command": "stripe.openListen",
+        "title": "Open listen (webhooks)"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openLogs",
+        "title": "Open logs tails"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openCLI",
+        "title": "Open CLI"
+      }
+    ],
+    "views": {
+      "stripe": [
+        {
+          "id": "stripeView",
+          "name": "Stripe"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "icon": "resources/icon.svg",
+          "id": "stripe",
+          "title": "Stripe"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "tslint -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^10.14.17",
+    "@types/vscode": "^1.34.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.5.1"
+  }
+}
