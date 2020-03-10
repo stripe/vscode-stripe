@@ -1,83 +1,64 @@
-import * as vscode from "vscode";
+import { commands, debug, window, ExtensionContext } from "vscode";
 import { StripeTreeDataProvider } from "./stripeView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
+import {
+  openWebhooksListen,
+  openLogsStreaming,
+  openCLI,
+  openDashboardEvents,
+  openDashboardApikeys,
+  openDashboardWebhooks,
+  openDashboardLogs
+} from "./commands";
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
   // Activity bar view
-  vscode.window.createTreeView("stripeView", {
+  window.createTreeView("stripeView", {
     treeDataProvider: new StripeTreeDataProvider(),
     showCollapseAll: false
   });
 
   // Debug provider
-  vscode.debug.registerDebugConfigurationProvider(
+  debug.registerDebugConfigurationProvider(
     "stripe",
     new StripeDebugProvider().getProvider()
   );
 
   // Commands
+  let subscriptions = context.subscriptions;
+
   context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openCLI", () => {
-      let terminal = vscode.window.createTerminal("Stripe");
-      terminal.sendText("stripe ", false);
-      terminal.show();
-    })
+    commands.registerCommand("stripe.openCLI", openCLI)
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openWebhooksListen", localUrl => {
-      let terminal = vscode.window.createTerminal("Stripe");
-
-      let commandArgs = ["stripe listen"];
-
-      if (localUrl) {
-        commandArgs.push(`--forward-to=${localUrl}`);
-      }
-
-      let command = commandArgs.join(" ");
-      terminal.sendText(command);
-      terminal.show();
-    })
+  subscriptions.push(
+    commands.registerCommand("stripe.openWebhooksListen", openWebhooksListen)
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openLogsStreaming", () => {
-      let terminal = vscode.window.createTerminal("Stripe");
-      terminal.sendText("stripe logs tail");
-      terminal.show();
-    })
+  subscriptions.push(
+    commands.registerCommand("stripe.openLogsStreaming", openLogsStreaming)
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openDashboardApikeys", () => {
-      vscode.env.openExternal(
-        vscode.Uri.parse("https://dashboard.stripe.com/test/apikeys")
-      );
-    })
+  subscriptions.push(
+    commands.registerCommand(
+      "stripe.openDashboardApikeys",
+      openDashboardApikeys
+    )
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openDashboardEvents", () => {
-      vscode.env.openExternal(
-        vscode.Uri.parse("https://dashboard.stripe.com/test/events")
-      );
-    })
+  subscriptions.push(
+    commands.registerCommand("stripe.openDashboardEvents", openDashboardEvents)
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openDashboardLogs", () => {
-      vscode.env.openExternal(
-        vscode.Uri.parse("https://dashboard.stripe.com/test/logs")
-      );
-    })
+  subscriptions.push(
+    commands.registerCommand("stripe.openDashboardLogs", openDashboardLogs)
   );
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openDashboardWebhooks", () => {
-      vscode.env.openExternal(
-        vscode.Uri.parse("https://dashboard.stripe.com/test/webhooks")
-      );
-    })
+  subscriptions.push(
+    commands.registerCommand(
+      "stripe.openDashboardWebhooks",
+      openDashboardWebhooks
+    )
   );
 }
 
