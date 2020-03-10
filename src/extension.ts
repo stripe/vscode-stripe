@@ -40,18 +40,18 @@ export function activate(context: ExtensionContext) {
   );
 
   subscriptions.push(
-    commands.registerCommand(
-      "stripe.openDashboardApikeys",
-      openDashboardApikeys
-    )
-  );
-
-  subscriptions.push(
     commands.registerCommand("stripe.openDashboardEvents", openDashboardEvents)
   );
 
   subscriptions.push(
     commands.registerCommand("stripe.openDashboardLogs", openDashboardLogs)
+  );
+
+  subscriptions.push(
+    commands.registerCommand(
+      "stripe.openDashboardApikeys",
+      openDashboardApikeys
+    )
   );
 
   subscriptions.push(
