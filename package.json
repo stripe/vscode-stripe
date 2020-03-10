@@ -14,33 +14,61 @@
   ],
   "activationEvents": [
     "onView:stripeView",
-    "onCommand:stripe.openListen",
-    "onCommand:stripe.openLog",
-    "onCommand:stripe.openCLI"
+    "onCommand:stripe.openCLI",
+    "onCommand:stripe.openWebhooksListen",
+    "onCommand:stripe.openLogsStreaming",
+    "onCommand:stripe.openDashboardApikeys",
+    "onCommand:stripe.openDashboardLogs",
+    "onCommand:stripe.openDashboardEvents",
+    "onCommand:stripe.openDashboardWebhooks"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "category": "Stripe",
-        "command": "stripe.openListen",
-        "title": "Open listen (webhooks)"
+        "command": "stripe.openWebhooksListen",
+        "title": "Open Webhooks listening"
       },
       {
         "category": "Stripe",
-        "command": "stripe.openLogs",
-        "title": "Open logs tails"
+        "command": "stripe.openLogsStreaming",
+        "title": "Open Logs streaming"
       },
       {
         "category": "Stripe",
         "command": "stripe.openCLI",
         "title": "Open CLI"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardApikeys",
+        "title": "Open Dashboard API keys"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardLogs",
+        "title": "Open Dashboard Logs"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardEvents",
+        "title": "Open Dashboard Events"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardWebhooks",
+        "title": "Open Dashboard Webhooks"
       }
     ],
     "views": {
       "stripe": [
         {
           "id": "stripeView",
+          "name": "Dashboard"
+        },
+        {
+          "id": "stripeView2",
           "name": "Stripe"
         }
       ]
