@@ -1,12 +1,21 @@
 import * as vscode from "vscode";
 import { StripeTreeDataProvider } from "./stripeView";
+import { StripeDebugProvider } from "./stripeDebugProvider";
 
 export function activate(context: vscode.ExtensionContext) {
+  // Activity bar view
   vscode.window.createTreeView("stripeView", {
     treeDataProvider: new StripeTreeDataProvider(),
     showCollapseAll: false
   });
 
+  // Debug provider
+  vscode.debug.registerDebugConfigurationProvider(
+    "stripe",
+    new StripeDebugProvider().getProvider()
+  );
+
+  // Commands
   context.subscriptions.push(
     vscode.commands.registerCommand("stripe.openCLI", () => {
       let terminal = vscode.window.createTerminal("Stripe");
@@ -16,9 +25,17 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("stripe.openWebhooksListen", () => {
+    vscode.commands.registerCommand("stripe.openWebhooksListen", localUrl => {
       let terminal = vscode.window.createTerminal("Stripe");
-      terminal.sendText("stripe listen");
+
+      let commandArgs = ["stripe listen"];
+
+      if (localUrl) {
+        commandArgs.push(`--forward-to=${localUrl}`);
+      }
+
+      let command = commandArgs.join(" ");
+      terminal.sendText(command);
       terminal.show();
     })
   );

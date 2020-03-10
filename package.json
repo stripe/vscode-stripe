@@ -13,6 +13,8 @@
     "Other"
   ],
   "activationEvents": [
+    "onDebugInitialConfigurations",
+    "onDebug",
     "onView:stripeView",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
@@ -73,6 +75,40 @@
         }
       ]
     },
+    "debuggers": [
+      {
+        "type": "stripe",
+        "label": "Stripe",
+        "configurationSnippets": [
+          {
+            "label": "Stripe: Listen",
+            "description": "Debug stripe webhooks",
+            "body": {
+              "type": "stripe",
+              "request": "launch",
+              "localUrl": "http://localhost:3000/stripe-events",
+              "command": "listen"
+            }
+          }
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "properties": {
+              "localUrl": {
+                "type": "string",
+                "description": "Url for local http server",
+                "default": "http://localhost:3000/stripe-events"
+              },
+              "command": {
+                "type": "string",
+                "description": "Command to execute",
+                "default": "listen"
+              }
+            }
+          }
+        }
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
