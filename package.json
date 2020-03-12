@@ -13,16 +13,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onDebugInitialConfigurations",
-    "onDebug",
-    "onView:stripeView",
-    "onCommand:stripe.openCLI",
-    "onCommand:stripe.openWebhooksListen",
-    "onCommand:stripe.openLogsStreaming",
-    "onCommand:stripe.openDashboardApikeys",
-    "onCommand:stripe.openDashboardLogs",
-    "onCommand:stripe.openDashboardEvents",
-    "onCommand:stripe.openDashboardWebhooks"
+    "*"
+  ],
+  "extensionDependencies": [
+    "vscode.git"
   ],
   "main": "./out/extension.js",
   "contributes": {

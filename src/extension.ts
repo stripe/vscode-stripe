@@ -1,6 +1,7 @@
-import { commands, debug, window, ExtensionContext } from "vscode";
+import { commands, debug, window, workspace, ExtensionContext } from "vscode";
 import { StripeTreeDataProvider } from "./stripeView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
+import { lookForHardCodedAPIKeys } from "./stripeAPIKeyLinter";
 import {
   openWebhooksListen,
   openLogsStreaming,
@@ -60,6 +61,10 @@ export function activate(context: ExtensionContext) {
       openDashboardWebhooks
     )
   );
+
+  workspace.onDidSaveTextDocument(() => {
+    lookForHardCodedAPIKeys();
+  });
 }
 
 export function deactivate() {}
