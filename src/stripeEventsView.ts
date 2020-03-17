@@ -52,40 +52,20 @@ export class StripeEventsDataProvider implements TreeDataProvider<TreeItem> {
     return [];
   }
 
-  private addAccountItems(accountItem: StripeTreeItem) {
-    accountItem.addChild(
-      new StripeTreeItem("API Keys", "openDashboardApikeys")
-    );
-    accountItem.addChild(new StripeTreeItem("Events", "openDashboardEvents"));
-
-    let logItem = new StripeTreeItem("Logs", "openDashboardLogs");
-    let logStreamItem = new StripeTreeItem(
-      "Connect to log stream...",
-      "openLogsStreaming"
-    );
-
-    logItem.addChild(logStreamItem);
-
-    accountItem.addChild(logItem);
-    accountItem.addChild(
-      new StripeTreeItem("Webhooks", "openDashboardWebhooks")
-    );
-  }
-
   private async buildTree(): Promise<StripeTreeItem[]> {
-    let eventsItem = new StripeTreeItem(
-      "Recent events",
-      "openDashbordEventDetails"
-    );
+    let eventsItem = new StripeTreeItem("Recent events");
     eventsItem.expand();
 
     let events = await this.stripeClient.getEvents();
-    console.log("events", events);
 
     if (events.data) {
       events.data.forEach((event: any) => {
         let title = event.type;
-        let eventItem = new StripeTreeItem(title);
+        let eventItem = new StripeTreeItem(title, "openDashboardEventDetails");
+        eventItem.metadata = {
+          type: event.type,
+          id: event.id
+        };
         eventsItem.addChild(eventItem);
       });
     }
