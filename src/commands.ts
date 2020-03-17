@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { StripeEventsDataProvider } from "./stripeEventsView";
 
 export function openWebhooksListen(localUrl: string) {
   let terminal = vscode.window.createTerminal("Stripe");
@@ -47,8 +48,14 @@ export function openDashboardWebhooks() {
     vscode.Uri.parse("https://dashboard.stripe.com/test/webhooks")
   );
 }
+
 export function openDashboardEventDetails(data: any) {
   let id = data.id;
   let url = `https://dashboard.stripe.com/test/events/${id}`;
   vscode.env.openExternal(vscode.Uri.parse(url));
+}
+export function refreshEventsList(
+  stripeEventsViewProvider: StripeEventsDataProvider
+) {
+  stripeEventsViewProvider.refresh();
 }

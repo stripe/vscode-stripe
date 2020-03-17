@@ -8,7 +8,7 @@
   "engines": {
     "vscode": "^1.34.0"
   },
-  "icon": "resources/icon_128.png",
+  "icon": "resources/icons/icon_128.png",
   "categories": [
     "Other"
   ],
@@ -66,6 +66,15 @@
         "category": "Stripe",
         "command": "stripe.openDashboardEventDetails",
         "title": "Open Dashboard Event Details"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.refreshEventsList",
+        "title": "Refresh events lists",
+        "icon": {
+          "dark": "resources/icons/dark/refresh.svg",
+          "light": "resources/icons/light/refresh.svg"
+        }
       }
     ],
     "views": {
@@ -77,6 +86,15 @@
         {
           "id": "stripeEventsView",
           "name": "Events"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "stripe.refreshEventsList",
+          "when": "view == stripeEventsView",
+          "group": "navigation"
         }
       ]
     },
@@ -117,7 +135,7 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "icon": "resources/icon.svg",
+          "icon": "resources/icons/icon.svg",
           "id": "stripe",
           "title": "Stripe"
         }

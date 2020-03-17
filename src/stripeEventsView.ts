@@ -14,19 +14,24 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
     let eventsItem = new StripeTreeItem("Recent events");
     eventsItem.expand();
 
-    let events = await this.stripeClient.getEvents();
+    try {
+      let events = await this.stripeClient.getEvents();
 
-    if (events.data) {
-      events.data.forEach((event: any) => {
-        let title = event.type;
-        let eventItem = new StripeTreeItem(title, "openDashboardEventDetails");
-        eventItem.metadata = {
-          type: event.type,
-          id: event.id
-        };
-        eventsItem.addChild(eventItem);
-      });
-    }
+      if (events.data) {
+        events.data.forEach((event: any) => {
+          let title = event.type;
+          let eventItem = new StripeTreeItem(
+            title,
+            "openDashboardEventDetails"
+          );
+          eventItem.metadata = {
+            type: event.type,
+            id: event.id
+          };
+          eventsItem.addChild(eventItem);
+        });
+      }
+    } catch (e) {}
 
     return [eventsItem];
   }

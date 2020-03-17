@@ -10,18 +10,20 @@ import {
   openDashboardApikeys,
   openDashboardWebhooks,
   openDashboardLogs,
-  openDashboardEventDetails
+  openDashboardEventDetails,
+  refreshEventsList
 } from "./commands";
 
-export function activate(context: ExtensionContext) {
+export function activate(this: any, context: ExtensionContext) {
   // Activity bar view
   window.createTreeView("stripeView", {
     treeDataProvider: new StripeViewDataProvider(),
     showCollapseAll: false
   });
 
+  let stripeEventsViewProvider = new StripeEventsDataProvider();
   window.createTreeView("stripeEventsView", {
-    treeDataProvider: new StripeEventsDataProvider(),
+    treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true
   });
 
@@ -33,6 +35,10 @@ export function activate(context: ExtensionContext) {
 
   // Commands
   let subscriptions = context.subscriptions;
+  let boundRefreshEventsList = refreshEventsList.bind(
+    this,
+    stripeEventsViewProvider
+  );
 
   context.subscriptions.push(
     commands.registerCommand("stripe.openCLI", openCLI)
@@ -73,6 +79,10 @@ export function activate(context: ExtensionContext) {
       "stripe.openDashboardWebhooks",
       openDashboardWebhooks
     )
+  );
+
+  subscriptions.push(
+    commands.registerCommand("stripe.refreshEventsList", boundRefreshEventsList)
   );
 }
 
