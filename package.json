@@ -72,6 +72,11 @@
         "category": "Stripe",
         "command": "stripe.openDashboardWebhooks",
         "title": "Open Dashboard Webhooks"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardEventDetails",
+        "title": "Open Dashboard Event Details"
       }
     ],
     "views": {
@@ -81,8 +86,8 @@
           "name": "Dashboard"
         },
         {
-          "id": "stripeView2",
-          "name": "Stripe"
+          "id": "stripeEventsView",
+          "name": "Events"
         }
       ]
     },
@@ -141,5 +146,8 @@
     "@types/vscode": "^1.34.0",
     "tslint": "^5.16.0",
     "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "execa": "^4.0.0"
   }
 }
