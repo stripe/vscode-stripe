@@ -1,45 +1,9 @@
-import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
 import { StripeTreeItem } from "./StripeTreeItem";
+import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
 
-export class StripeTreeDataProvider implements TreeDataProvider<TreeItem> {
-  private treeItems: TreeItem[] | null = null;
-  private _onDidChangeTreeData: EventEmitter<TreeItem | null> = new EventEmitter<TreeItem | null>();
-  readonly onDidChangeTreeData: Event<TreeItem | null> = this
-    ._onDidChangeTreeData.event;
-
-  constructor() {}
-
-  public refresh() {
-    this.treeItems = null;
-    this._onDidChangeTreeData.fire();
-  }
-
-  getTreeItem(element: TreeItem): TreeItem {
-    return element;
-  }
-
-  getParent(element: TreeItem): TreeItem | null {
-    if (element instanceof StripeTreeItem && element.parent) {
-      return element.parent;
-    }
-    return null;
-  }
-
-  async getChildren(element?: TreeItem): Promise<TreeItem[]> {
-    if (!this.treeItems) {
-      this.treeItems = await this.buildTree();
-    }
-
-    if (element instanceof StripeTreeItem) {
-      return element.children;
-    }
-
-    if (!element) {
-      if (this.treeItems) {
-        return this.treeItems;
-      }
-    }
-    return [];
+export class StripeViewDataProvider extends StripeTreeViewDataProvider {
+  constructor() {
+    super();
   }
 
   private addAccountItems(accountItem: StripeTreeItem) {
@@ -62,7 +26,7 @@ export class StripeTreeDataProvider implements TreeDataProvider<TreeItem> {
     );
   }
 
-  private async buildTree(): Promise<StripeTreeItem[]> {
+  async buildTree(): Promise<StripeTreeItem[]> {
     let mainItem = new StripeTreeItem("Stripe");
     mainItem.expand();
 

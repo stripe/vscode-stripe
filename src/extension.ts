@@ -1,5 +1,5 @@
 import { commands, debug, window, ExtensionContext } from "vscode";
-import { StripeTreeDataProvider } from "./stripeView";
+import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import {
@@ -16,7 +16,7 @@ import {
 export function activate(context: ExtensionContext) {
   // Activity bar view
   window.createTreeView("stripeView", {
-    treeDataProvider: new StripeTreeDataProvider(),
+    treeDataProvider: new StripeViewDataProvider(),
     showCollapseAll: false
   });
 
