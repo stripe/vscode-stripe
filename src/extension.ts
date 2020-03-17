@@ -1,5 +1,6 @@
 import { commands, debug, window, ExtensionContext } from "vscode";
 import { StripeTreeDataProvider } from "./stripeView";
+import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import {
   openWebhooksListen,
@@ -16,6 +17,11 @@ export function activate(context: ExtensionContext) {
   window.createTreeView("stripeView", {
     treeDataProvider: new StripeTreeDataProvider(),
     showCollapseAll: false
+  });
+
+  window.createTreeView("stripeEventsView", {
+    treeDataProvider: new StripeEventsDataProvider(),
+    showCollapseAll: true
   });
 
   // Debug provider

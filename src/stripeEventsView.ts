@@ -1,13 +1,23 @@
-import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
+import {
+  Event,
+  EventEmitter,
+  TreeDataProvider,
+  TreeItem,
+  TreeItemCollapsibleState
+} from "vscode";
 import { StripeTreeItem } from "./StripeTreeItem";
+import { StripeClient } from "./stripeClient";
 
-export class StripeTreeDataProvider implements TreeDataProvider<TreeItem> {
+export class StripeEventsDataProvider implements TreeDataProvider<TreeItem> {
   private treeItems: TreeItem[] | null = null;
+  private stripeClient: StripeClient;
   private _onDidChangeTreeData: EventEmitter<TreeItem | null> = new EventEmitter<TreeItem | null>();
   readonly onDidChangeTreeData: Event<TreeItem | null> = this
     ._onDidChangeTreeData.event;
 
-  constructor() {}
+  constructor() {
+    this.stripeClient = new StripeClient();
+  }
 
   public refresh() {
     this.treeItems = null;
@@ -63,19 +73,23 @@ export class StripeTreeDataProvider implements TreeDataProvider<TreeItem> {
   }
 
   private async buildTree(): Promise<StripeTreeItem[]> {
-    let mainItem = new StripeTreeItem("Stripe");
-    mainItem.expand();
+    let eventsItem = new StripeTreeItem(
+      "Recent events",
+      "openDashbordEventDetails"
+    );
+    eventsItem.expand();
 
-    this.addAccountItems(mainItem);
+    let events = await this.stripeClient.getEvents();
+    console.log("events", events);
 
-    // ["Demo 1: Pascha", "Demo 2: KAVHOLM"].forEach((account, index) => {
-    //   let accountItem = new StripeTreeItem(account);
-    //   if (index == 0) {
-    //     accountItem.expand();
-    //   }
+    if (events.data) {
+      events.data.forEach((event: any) => {
+        let title = event.type;
+        let eventItem = new StripeTreeItem(title);
+        eventsItem.addChild(eventItem);
+      });
+    }
 
-    //   mainItem.addChild(accountItem);
-    // });
-    return [mainItem];
+    return [eventsItem];
   }
 }

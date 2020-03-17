@@ -70,8 +70,8 @@
           "name": "Dashboard"
         },
         {
-          "id": "stripeView2",
-          "name": "Stripe"
+          "id": "stripeEventsView",
+          "name": "Events"
         }
       ]
     },
