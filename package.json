@@ -61,6 +61,11 @@
         "category": "Stripe",
         "command": "stripe.openDashboardWebhooks",
         "title": "Open Dashboard Webhooks"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDashboardEventDetails",
+        "title": "Open Dashboard Event Details"
       }
     ],
     "views": {

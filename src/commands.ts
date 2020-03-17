@@ -41,8 +41,14 @@ export function openDashboardLogs() {
     vscode.Uri.parse("https://dashboard.stripe.com/test/logs")
   );
 }
+
 export function openDashboardWebhooks() {
   vscode.env.openExternal(
     vscode.Uri.parse("https://dashboard.stripe.com/test/webhooks")
   );
+}
+export function openDashboardEventDetails(data: any) {
+  let id = data.id;
+  let url = `https://dashboard.stripe.com/test/events/${id}`;
+  vscode.env.openExternal(vscode.Uri.parse(url));
 }

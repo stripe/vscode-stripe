@@ -9,7 +9,8 @@ import {
   openDashboardEvents,
   openDashboardApikeys,
   openDashboardWebhooks,
-  openDashboardLogs
+  openDashboardLogs,
+  openDashboardEventDetails
 } from "./commands";
 
 export function activate(context: ExtensionContext) {
@@ -51,6 +52,13 @@ export function activate(context: ExtensionContext) {
 
   subscriptions.push(
     commands.registerCommand("stripe.openDashboardLogs", openDashboardLogs)
+  );
+
+  subscriptions.push(
+    commands.registerCommand(
+      "stripe.openDashboardEventDetails",
+      openDashboardEventDetails
+    )
   );
 
   subscriptions.push(
