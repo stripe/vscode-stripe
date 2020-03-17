@@ -2,16 +2,23 @@ import { TreeItem, TreeItemCollapsibleState } from "vscode";
 export class StripeTreeItem extends TreeItem {
   parent: StripeTreeItem | undefined;
   children: StripeTreeItem[] = [];
-  metadata: object | undefined;
+  private _metadata: object | undefined;
+  private commandString: string | undefined;
 
   constructor(label: string, commandString?: string) {
     super(label, TreeItemCollapsibleState.None);
     this.contextValue = "stripe";
-    if (commandString) {
+    this.commandString = commandString;
+    this.metadata = {};
+  }
+
+  set metadata(data: any) {
+    this._metadata = data;
+    if (this.commandString) {
       this.command = {
-        title: `stripe.${commandString}`,
-        command: `stripe.${commandString}`,
-        arguments: [this.metadata]
+        title: `stripe.${this.commandString}`,
+        command: `stripe.${this.commandString}`,
+        arguments: [this._metadata]
       };
     }
   }
