@@ -1,4 +1,12 @@
-import { window, languages, Diagnostic, DiagnosticSeverity, Range, extensions, DiagnosticCollection } from "vscode";
+import {
+    window,
+    extensions,
+    languages,
+    Range,
+    Diagnostic,
+    DiagnosticSeverity,
+    DiagnosticCollection
+} from "vscode";
 
 interface Resource {
     uri: {
@@ -83,9 +91,10 @@ export const lookForHardCodedAPIKeys = (): void => {
     const lines = text.split("\n");
 
     // get each line's possible API key warnings
-    const lineDiagnostics: Diagnostic[][] = lines.map((line, index) => prepareLineDiagnostics(line, index));
-    // flatten nested diagnostics
-    const fileDiagnostics: Diagnostic[] = lineDiagnostics.reduce((acc, next) => acc.concat([...next]), []);
+    // then flatten nested diagnostics into a flat array
+    const fileDiagnostics: Diagnostic[] = lines
+                                            .map(prepareLineDiagnostics)
+                                            .reduce((acc, next) => acc.concat([...next]), []);
 
     // tell VS Code to show warnings and errors in syntax
     diagnosticCollection.set(document.uri, fileDiagnostics);
