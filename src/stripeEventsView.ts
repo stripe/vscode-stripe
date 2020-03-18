@@ -1,13 +1,14 @@
 import { StripeTreeItem } from "./StripeTreeItem";
-import { StripeClient } from "./stripeClient";
+
 import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
+import { StripeClient } from "./stripeClient";
 
 export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
   stripeClient: StripeClient;
 
-  constructor() {
+  constructor(stripeClient: StripeClient) {
     super();
-    this.stripeClient = new StripeClient();
+    this.stripeClient = stripeClient;
   }
 
   async buildTree(): Promise<StripeTreeItem[]> {

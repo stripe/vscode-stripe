@@ -155,6 +155,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "execa": "^4.0.0"
+    "execa": "^4.0.0",
+    "which": "^2.0.2"
   }
 }

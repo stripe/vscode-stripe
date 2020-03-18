@@ -1,7 +1,8 @@
-import { commands, debug, window, ExtensionContext } from "vscode";
+import { commands, debug, window, ExtensionContext, env, Uri } from "vscode";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
+import { StripeClient } from "./stripeClient";
 import {
   openWebhooksListen,
   openLogsStreaming,
@@ -14,14 +15,29 @@ import {
   refreshEventsList
 } from "./commands";
 
-export function activate(this: any, context: ExtensionContext) {
+export async function activate(this: any, context: ExtensionContext) {
+  let stripeClient = new StripeClient();
+
+  if (!stripeClient.isInstalled) {
+    let actionText = "Read instructions on how to install Stripe CLI";
+    let returnValue = await window.showErrorMessage(
+      `Stripe requires the Stripe CLI to be installed on your machine`,
+      {},
+      ...[actionText]
+    );
+
+    if (returnValue === actionText) {
+      env.openExternal(Uri.parse(`https://stripe.com/docs/stripe-cli`));
+    }
+  }
+
   // Activity bar view
   window.createTreeView("stripeView", {
     treeDataProvider: new StripeViewDataProvider(),
     showCollapseAll: false
   });
 
-  let stripeEventsViewProvider = new StripeEventsDataProvider();
+  let stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
   window.createTreeView("stripeEventsView", {
     treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true
