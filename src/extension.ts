@@ -1,7 +1,16 @@
-import { commands, debug, window, ExtensionContext, env, Uri } from "vscode";
+import {
+  commands,
+  debug,
+  window,
+  ExtensionContext,
+  env,
+  Uri,
+  workspace
+} from "vscode";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
+import { lookForHardCodedAPIKeys } from "./stripeAPIKeyLinter";
 import { StripeClient } from "./stripeClient";
 import {
   openWebhooksListen,
@@ -100,6 +109,10 @@ export async function activate(this: any, context: ExtensionContext) {
   subscriptions.push(
     commands.registerCommand("stripe.refreshEventsList", boundRefreshEventsList)
   );
+
+  workspace.onDidSaveTextDocument(() => {
+    lookForHardCodedAPIKeys();
+  });
 }
 
 export function deactivate() {}

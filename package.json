@@ -22,7 +22,18 @@
     "onCommand:stripe.openDashboardApikeys",
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
-    "onCommand:stripe.openDashboardWebhooks"
+    "onCommand:stripe.openDashboardWebhooks",
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:csharp",
+    "onLanguage:go",
+    "onLanguage:python",
+    "onLanguage:ruby",
+    "onLanguage:java",
+    "onLanguage:php"
+  ],
+  "extensionDependencies": [
+    "vscode.git"
   ],
   "main": "./out/extension.js",
   "contributes": {
