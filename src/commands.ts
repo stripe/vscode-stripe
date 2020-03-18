@@ -21,6 +21,12 @@ export function openLogsStreaming() {
   terminal.show();
 }
 
+export function startLogin() {
+  let terminal = vscode.window.createTerminal("Stripe");
+  terminal.sendText("stripe login");
+  terminal.show();
+}
+
 export function openCLI() {
   let terminal = vscode.window.createTerminal("Stripe");
   terminal.sendText("stripe ", false);

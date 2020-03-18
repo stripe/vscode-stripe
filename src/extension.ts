@@ -21,7 +21,8 @@ import {
   openDashboardWebhooks,
   openDashboardLogs,
   openDashboardEventDetails,
-  refreshEventsList
+  refreshEventsList,
+  startLogin
 } from "./commands";
 
 export async function activate(this: any, context: ExtensionContext) {
@@ -67,6 +68,10 @@ export async function activate(this: any, context: ExtensionContext) {
 
   context.subscriptions.push(
     commands.registerCommand("stripe.openCLI", openCLI)
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand("stripe.login", startLogin)
   );
 
   subscriptions.push(

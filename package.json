@@ -55,6 +55,11 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.login",
+        "title": "Login"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.openDashboardApikeys",
         "title": "Open Dashboard API keys"
       },
