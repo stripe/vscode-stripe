@@ -41,52 +41,52 @@
       {
         "category": "Stripe",
         "command": "stripe.openWebhooksListen",
-        "title": "Open Webhooks listening"
+        "title": "Start Webhooks events listening with CLI"
       },
       {
         "category": "Stripe",
         "command": "stripe.openLogsStreaming",
-        "title": "Open Logs streaming"
+        "title": "Start API logs streaming with CLI"
       },
       {
         "category": "Stripe",
         "command": "stripe.openCLI",
-        "title": "Open CLI"
+        "title": "Start CLI"
       },
       {
         "category": "Stripe",
         "command": "stripe.login",
-        "title": "Login"
+        "title": "Login with CLI"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardApikeys",
-        "title": "Open Dashboard API keys"
+        "title": "Open Dashboard to manage API Keys"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardLogs",
-        "title": "Open Dashboard Logs"
+        "title": "Open Dashboard to see recent logs"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardEvents",
-        "title": "Open Dashboard Events"
+        "title": "Open Dashboard to see recent Events"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardWebhooks",
-        "title": "Open Dashboard Webhooks"
+        "title": "Open Dashboard to manage Webhooks"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardEventDetails",
-        "title": "Open Dashboard Event Details"
+        "title": "Open Dashboard with a specific event"
       },
       {
         "category": "Stripe",
         "command": "stripe.refreshEventsList",
-        "title": "Refresh events lists",
+        "title": "Refresh events list",
         "icon": {
           "dark": "resources/icons/dark/refresh.svg",
           "light": "resources/icons/light/refresh.svg"

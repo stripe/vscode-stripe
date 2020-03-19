@@ -22,14 +22,14 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     });
     accountItem.addChild(eventsItem);
 
-    let logItem = new StripeTreeItem("Logs", "openDashboardLogs");
+    let logItem = new StripeTreeItem("API logs", "openDashboardLogs");
     logItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
 
     let logStreamItem = new StripeTreeItem(
-      "Connect to log stream...",
+      "Start API logs streaming...",
       "openLogsStreaming"
     );
 
