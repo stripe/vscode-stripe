@@ -12,6 +12,7 @@ import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import { lookForHardCodedAPIKeys } from "./stripeAPIKeyLinter";
 import { StripeClient } from "./stripeClient";
+import { Resource } from "./resources";
 import {
   openWebhooksListen,
   openLogsStreaming,
@@ -40,6 +41,8 @@ export async function activate(this: any, context: ExtensionContext) {
       env.openExternal(Uri.parse(`https://stripe.com/docs/stripe-cli`));
     }
   }
+
+  Resource.initialize(context);
 
   // Activity bar view
   window.createTreeView("stripeView", {

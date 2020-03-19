@@ -1,4 +1,5 @@
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
+
 export class StripeTreeItem extends TreeItem {
   parent: StripeTreeItem | undefined;
   children: StripeTreeItem[] = [];
@@ -28,6 +29,11 @@ export class StripeTreeItem extends TreeItem {
   expand() {
     this.collapsibleState = TreeItemCollapsibleState.Expanded;
   }
+
+  setIcon(icons: { light: string; dark: string }) {
+    this.iconPath = icons;
+  }
+
   addChild(item: StripeTreeItem) {
     this.children.push(item);
     if (this.children.length) {

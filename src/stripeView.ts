@@ -1,5 +1,6 @@
 import { StripeTreeItem } from "./StripeTreeItem";
 import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
+import { Resource } from "./resources";
 
 export class StripeViewDataProvider extends StripeTreeViewDataProvider {
   constructor() {
@@ -7,12 +8,26 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
   }
 
   private addAccountItems(accountItem: StripeTreeItem) {
-    accountItem.addChild(
-      new StripeTreeItem("API Keys", "openDashboardApikeys")
-    );
-    accountItem.addChild(new StripeTreeItem("Events", "openDashboardEvents"));
+    let apiKeysItem = new StripeTreeItem("API Keys", "openDashboardApikeys");
+    apiKeysItem.setIcon({
+      dark: Resource.icons.dark.linkExternal,
+      light: Resource.icons.light.linkExternal
+    });
+    accountItem.addChild(apiKeysItem);
+
+    let eventsItem = new StripeTreeItem("Events", "openDashboardEvents");
+    eventsItem.setIcon({
+      dark: Resource.icons.dark.linkExternal,
+      light: Resource.icons.light.linkExternal
+    });
+    accountItem.addChild(eventsItem);
 
     let logItem = new StripeTreeItem("Logs", "openDashboardLogs");
+    logItem.setIcon({
+      dark: Resource.icons.dark.linkExternal,
+      light: Resource.icons.light.linkExternal
+    });
+
     let logStreamItem = new StripeTreeItem(
       "Connect to log stream...",
       "openLogsStreaming"
@@ -21,9 +36,12 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     logItem.addChild(logStreamItem);
 
     accountItem.addChild(logItem);
-    accountItem.addChild(
-      new StripeTreeItem("Webhooks", "openDashboardWebhooks")
-    );
+
+    let webhooksItem = new StripeTreeItem("Webhooks", "openDashboardWebhooks");
+    webhooksItem.setIcon({
+      dark: Resource.icons.dark.linkExternal,
+      light: Resource.icons.light.linkExternal
+    });
   }
 
   async buildTree(): Promise<StripeTreeItem[]> {
