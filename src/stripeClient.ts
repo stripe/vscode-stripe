@@ -49,7 +49,6 @@ export class StripeClient {
   async isAuthenticated(): Promise<Boolean> {
     try {
       const { stdout } = await execa("stripe", ["config", "--list"]);
-      console.log("isAuthenticated", stdout != "");
       return stdout != "";
     } catch (err) {
       return false;
