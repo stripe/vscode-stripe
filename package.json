@@ -8,7 +8,7 @@
   "engines": {
     "vscode": "^1.34.0"
   },
-  "icon": "resources/icons/icon_128.png",
+  "icon": "resources/logo_128.png",
   "categories": [
     "Other"
   ],
@@ -151,7 +151,7 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "icon": "resources/icons/icon.svg",
+          "icon": "resources/icons/icon_activitybar.svg",
           "id": "stripe",
           "title": "Stripe"
         }
