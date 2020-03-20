@@ -8,21 +8,30 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
   }
 
   private addAccountItems(accountItem: StripeTreeItem) {
-    let apiKeysItem = new StripeTreeItem("API Keys", "openDashboardApikeys");
+    let apiKeysItem = new StripeTreeItem(
+      "Open API keys dashboard",
+      "openDashboardApikeys"
+    );
     apiKeysItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
     accountItem.addChild(apiKeysItem);
 
-    let eventsItem = new StripeTreeItem("Events", "openDashboardEvents");
+    let eventsItem = new StripeTreeItem(
+      "Open Events dashboard",
+      "openDashboardEvents"
+    );
     eventsItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
     accountItem.addChild(eventsItem);
 
-    let logItem = new StripeTreeItem("API logs", "openDashboardLogs");
+    let logItem = new StripeTreeItem(
+      "Open API logs dashboard",
+      "openDashboardLogs"
+    );
     logItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
@@ -32,12 +41,19 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
       "Start API logs streaming...",
       "openLogsStreaming"
     );
+    logStreamItem.setIcon({
+      dark: Resource.icons.dark.terminal,
+      light: Resource.icons.light.terminal
+    });
 
     logItem.addChild(logStreamItem);
 
     accountItem.addChild(logItem);
 
-    let webhooksItem = new StripeTreeItem("Webhooks", "openDashboardWebhooks");
+    let webhooksItem = new StripeTreeItem(
+      "Open Webhooks dashboard",
+      "openDashboardWebhooks"
+    );
     webhooksItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
@@ -50,14 +66,6 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
 
     this.addAccountItems(mainItem);
 
-    // ["Demo 1: Pascha", "Demo 2: KAVHOLM"].forEach((account, index) => {
-    //   let accountItem = new StripeTreeItem(account);
-    //   if (index == 0) {
-    //     accountItem.expand();
-    //   }
-
-    //   mainItem.addChild(accountItem);
-    // });
     return [mainItem];
   }
 }
