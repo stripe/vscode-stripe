@@ -10,7 +10,8 @@
   },
   "icon": "resources/icon_128.png",
   "categories": [
-    "Other"
+    "Other",
+    "Snippets"
   ],
   "activationEvents": [
     "onDebugInitialConfigurations",
@@ -133,7 +134,13 @@
           "title": "Stripe"
         }
       ]
-    }
+    },
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./snippets/javascript.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
