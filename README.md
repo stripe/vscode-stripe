@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo_128.png?raw=true" alt="logo" width="100">
+    <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo_128.png?raw=true" alt="logo" width="150">
   <br>
   Stripe for Visual Studio Code
   <br>
@@ -22,13 +22,12 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 
 ## Features
 
-- Browser preview inside VS Code (Powered by [Chrome Headless](https://developers.google.com/web/updates/2017/04/headless-chrome)).
-- Ability to have multiple previews open at the same time.
-- Debuggable. Launch urls and attach [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) to the browser view instance, and debug within VS Code.
-- Attach Chrome DevTools via `chrome://inspect`
-- Option to set the default startUrl via `browser-preview.startUrl`
-- Option to set the path to the chrome executable via `browser-preview.chromeExecutable`
-- Option to set the type of rendering via `browser-preview.format` with the support for `jpeg` (default one) and `png` formats
+- Easy access to key sections of the Stripe developer dashboard
+- Ability to see and access recent events from Stripe
+- Realtime API logs inside the integrated terminal
+- Launch and forward webhooks traffic to your local machine via commands and debug configurations.
+- Linting of Stripe API keys to make sure you don't expose them by mistake.
+- Code snippets for most common API objects for the top languages supported by Stripe.
 
 ### Stripe API key linting
 
@@ -54,10 +53,6 @@ You can enable in-editor debugging of Browser Preview by installing [Debugger fo
   ]
 }
 ```
-
-### Watch It
-
-[Watch an animated gif](docs/DEBUGGING.md) showing how to open the preview and debug a browser app.
 
 ## Developing this extension
 
