@@ -9,11 +9,17 @@ export class Resource {
       light: {
         linkExternal: context.asAbsolutePath(
           path.join("resources", "icons", "light", "link-external.svg")
+        ),
+        terminal: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "terminal.svg")
         )
       },
       dark: {
         linkExternal: context.asAbsolutePath(
           path.join("resources", "icons", "dark", "link-external.svg")
+        ),
+        terminal: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "terminal.svg")
         )
       }
     };
