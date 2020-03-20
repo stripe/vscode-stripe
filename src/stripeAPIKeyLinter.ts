@@ -21,8 +21,8 @@ const gitAPI = isUsingGitExtension ? gitExtensionExports.getAPI(1) : null;
 
 const ignoredFileList = [".env"];
 const stripeKeysRegex = new RegExp("(sk_test|sk_live|pk_test|pk_live)_[a-zA-Z0-9]{10,64}", "g");
-const diagnosticMessageNoGit = "It's recommended that you don't hardcode Stripe API Keys. See https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
-const diagnosticMessageGit = "This hardcoded Stripe API Key is in a file that is not ignored by git. For better key security, consider using a gitignored .env file, or see https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
+const diagnosticMessageNoGit = "This Stripe API Key is hardcoded. For better security, consider using a .env file.  See https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
+const diagnosticMessageGit = "This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
 
 let diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCollection("StripeHardCodedAPIKeys");
 
