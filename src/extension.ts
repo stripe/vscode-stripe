@@ -32,7 +32,7 @@ export async function activate(this: any, context: ExtensionContext) {
   if (!stripeClient.isInstalled) {
     let actionText = "Read instructions on how to install Stripe CLI";
     let returnValue = await window.showErrorMessage(
-      `Stripe requires the Stripe CLI to be installed on your machine`,
+      `Welcome! Stripe requires the Stripe CLI to be installed on your machine`,
       {},
       ...[actionText]
     );
