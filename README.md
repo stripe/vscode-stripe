@@ -9,8 +9,6 @@
 
 <h4 align="center">Bringing you Stripe inside your editor.</h4>
 
-![CI](https://github.com/stripe/vscode-stripe/workflows/build/badge.svg)
-
 Marketing pitch goes here, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non commodo dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut eleifend, leo at aliquet molestie, libero dolor efficitur sem, sit amet finibus lacus nisl et est.
 
 ## Getting started
