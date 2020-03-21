@@ -31,24 +31,54 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 
 ### Stripe API key linting
 
-### Webhooks debugging
+### Forward webhooks traffic with debugging
 
-You can enable in-editor debugging of Browser Preview by installing [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome), and configure VS Code's debugger to either attach or launch to the browser previews by using the following configuration:
+You can forward webhooks traffic to your local machine by either running the command `Stripe: "Start Webhooks events listening with CLI` or by creating a debug configuration that allows you to launch webhooks forwarding when starting debugging or pressing `F5`.
+
+The Stripe debug configuration can be combined with other configurations, so you with one click/press can launch both Stripe and your local API instance.
 
 ```json
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "configurations": [
     {
-      "type": "browser-preview",
-      "request": "attach",
-      "name": "Browser Preview: Attach"
+      "name": "Stripe: Webhooks Forward",
+      "type": "stripe",
+      "request": "launch",
+      "command": "listen",
+      "localUrl": "http://localhost:3000/stripe-events"
+    }
+  ]
+}
+```
+
+For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic.
+
+You can also combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Stripe: Webhooks Forward",
+      "type": "stripe",
+      "request": "launch",
+      "command": "listen",
+      "localUrl": "http://localhost:3000/stripe-events"
     },
     {
-      "type": "browser-preview",
+      "type": "node",
       "request": "launch",
-      "name": "Browser Preview: Launch",
-      "url": "http://localhost:3000"
+      "name": "Node: Launch Program",
+      "program": "${workspaceFolder}/examples/standalone.js",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch: Stripe + API",
+      "configurations": ["Node: Launch Program", "Stripe: Webhooks Forward"]
     }
   ]
 }
@@ -59,3 +89,7 @@ You can enable in-editor debugging of Browser Preview by installing [Debugger fo
 1. Checkout this repo
 1. Run `npm install` in terminal to install dependencies
 1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: - Start a task `npm: watch` to compile the code - Run the extension in a new VS Code window
+
+```
+
+```
