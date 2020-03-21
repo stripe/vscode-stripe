@@ -11,7 +11,7 @@
 
 ![CI](https://github.com/stripe/vscode-stripe/workflows/build/badge.svg)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non commodo dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut eleifend, leo at aliquet molestie, libero dolor efficitur sem, sit amet finibus lacus nisl et est.
+Marketing pitch goes here, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non commodo dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut eleifend, leo at aliquet molestie, libero dolor efficitur sem, sit amet finibus lacus nisl et est.
 
 ## Getting started
 
@@ -30,6 +30,10 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 - Code snippets for most common API objects for the top languages supported by Stripe.
 
 ### Stripe API key linting
+
+The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. Test keys will be treated as warnings, and live keys will be marked as problems, blocking your build/debugging.
+
+ANIMATED GIF HERE
 
 ### Forward webhooks traffic with debugging
 
