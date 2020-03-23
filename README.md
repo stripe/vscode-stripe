@@ -25,7 +25,7 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 - Realtime API logs inside the integrated terminal
 - Launch and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
-- Code snippets for most common API objects for the top languages supported by Stripe.
+- ~~Code snippets for most common API objects for the top languages supported by Stripe.~~
 
 ### Stripe API key linting
 
