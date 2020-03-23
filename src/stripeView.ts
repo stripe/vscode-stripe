@@ -9,7 +9,7 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
 
   private addAccountItems(accountItem: StripeTreeItem) {
     let apiKeysItem = new StripeTreeItem(
-      "Open API keys dashboard",
+      "Open API keys",
       "openDashboardApikeys"
     );
     apiKeysItem.setIcon({
@@ -18,27 +18,21 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     });
     accountItem.addChild(apiKeysItem);
 
-    let eventsItem = new StripeTreeItem(
-      "Open Events dashboard",
-      "openDashboardEvents"
-    );
+    let eventsItem = new StripeTreeItem("Open Events", "openDashboardEvents");
     eventsItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
     accountItem.addChild(eventsItem);
 
-    let logItem = new StripeTreeItem(
-      "Open API logs dashboard",
-      "openDashboardLogs"
-    );
+    let logItem = new StripeTreeItem("Open API logs", "openDashboardLogs");
     logItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
 
     let logStreamItem = new StripeTreeItem(
-      "Start API logs streaming...",
+      "Start API logs streaming",
       "openLogsStreaming"
     );
     logStreamItem.setIcon({
@@ -51,13 +45,27 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     accountItem.addChild(logItem);
 
     let webhooksItem = new StripeTreeItem(
-      "Open Webhooks dashboard",
+      "Open Webhooks",
       "openDashboardWebhooks"
     );
+
+    let webhooksListenItem = new StripeTreeItem(
+      "Start Webhooks listening",
+      "openWebhooksListen"
+    );
+    webhooksListenItem.setIcon({
+      dark: Resource.icons.dark.terminal,
+      light: Resource.icons.light.terminal
+    });
+
+    webhooksItem.addChild(webhooksListenItem);
+
     webhooksItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal
     });
+
+    accountItem.addChild(webhooksItem);
   }
 
   async buildTree(): Promise<StripeTreeItem[]> {
