@@ -11,6 +11,8 @@
 
 Marketing pitch goes here, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non commodo dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut eleifend, leo at aliquet molestie, libero dolor efficitur sem, sit amet finibus lacus nisl et est.
 
+![Stripe](resources/stripe.png)
+
 ## Getting started
 
 1. Grab extension from [marketplace](https://marketplace.visualstudio.com/items?itemName=stripe.vscode-stripe)
@@ -25,13 +27,13 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 - Realtime API logs inside the integrated terminal
 - Launch and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
-- Code snippets for most common API objects for the top languages supported by Stripe.
+- ~~Code snippets for most common API objects for the top languages supported by Stripe.~~
 
 ### Stripe API key linting
 
-The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. Test keys will be treated as warnings, and live keys will be marked as problems, blocking your build/debugging.
+The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. 
 
-ANIMATED GIF HERE
+Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems, blocking your build/debugging.
 
 ### Forward webhooks traffic with debugging
 
