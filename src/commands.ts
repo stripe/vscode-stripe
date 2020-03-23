@@ -6,7 +6,7 @@ export function openWebhooksListen(localUrl: string) {
 
   let commandArgs = ["stripe listen"];
 
-  if (localUrl) {
+  if (localUrl && typeof localUrl == "string") {
     commandArgs.push(`--forward-to=${localUrl}`);
   }
 
