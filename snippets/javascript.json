@@ -3,13 +3,13 @@
         "prefix": ["StripeInvoicesCreate"],
         "body": [
             "const invoiceItem = await stripe.invoiceItems.create({",
-            "   customer: 'cus_4fdAW5ftNQow1a',",
+            "   customer: '{{PAYMENT_METHOD_ID}}',",
             "   amount: 2500,",
             "   currency: 'usd',",
             "   description: 'One-time setup fee',",
             "});",
             "const invoice = await stripe.invoices.create({",
-            "   customer: 'cus_4fdAW5ftNQow1a',",
+            "   customer: '{{PAYMENT_METHOD_ID}}',",
             "   auto_advance: true, // auto-finalize this draft after ~1 hour",
             "});"
         ],
@@ -20,10 +20,10 @@
         "body": [
             "// This creates a new Customer and attaches the PaymentMethod in one API call.",
             "const customer = await stripe.customers.create({",
-            "   payment_method: 'pm_1FU2bgBF6ERF9jhEQvwnA7sX',",
+            "   payment_method: '{{PAYMENT_METHOD_ID}}',",
             "   email: 'jenny.rosen@example.com',",
             "   invoice_settings: {",
-            "      default_payment_method: 'pm_1FU2bgBF6ERF9jhEQvwnA7sX',",
+            "      default_payment_method: '{{PAYMENT_METHOD_ID}}',",
             "   },",
             "});"
         ],
