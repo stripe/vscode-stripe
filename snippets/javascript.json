@@ -1,6 +1,6 @@
 {
     "Create Invoice": {
-        "prefix": ["stripe.invoice"],
+        "prefix": ["StripeInvoicesCreate"],
         "body": [
             "const invoiceItem = await stripe.invoiceItems.create({",
             "   customer: 'cus_4fdAW5ftNQow1a',",
@@ -16,7 +16,7 @@
         "description": "Create an Invoice"
     },
     "Create Customer": {
-        "prefix": ["stripe.customers.create"],
+        "prefix": ["StripeCustomersCreate"],
         "body": [
             "// This creates a new Customer and attaches the PaymentMethod in one API call.",
             "const customer = await stripe.customers.create({",
@@ -30,7 +30,7 @@
         "description": "Create a Customer"
     },
     "Connect Direct Charge": {
-        "prefix": ["stripe.paymentIntents.create"],
+        "prefix": ["StripePaymentIntentsCreateDirectCharge"],
         "body": [
             "stripe.paymentIntents.create({",
             "   payment_method_types: ['card'],",
@@ -45,7 +45,7 @@
         "description": "Create a Direct Charge"
     },
     "Connect Direct Charge with fee": {
-        "prefix": ["stripe.paymentIntents.create"],
+        "prefix": ["StripePaymentIntentsCreateDirectChargeWithFee"],
         "body": [
             "stripe.paymentIntents.create({",
             "   payment_method_types: ['card'],",
@@ -62,7 +62,7 @@
         "description": "Create a Direct Charge with a fee"
     },
     "Create Connect Payout": {
-        "prefix": ["stripe.payouts.create"],
+        "prefix": ["StripePayoutsCreate"],
         "body": [
             "stripe.payouts.create({",
             "   amount: 1000,",
@@ -76,7 +76,7 @@
         "description": "Create a Connect Payout"
     },
     "Create Payment Intent": {
-        "prefix": ["stripe.paymentIntent.create"],
+        "prefix": ["stripePaymentIntentsCreate"],
         "body": [
             "const paymentIntent = await stripe.paymentIntents.create({",
             "   amount: 1099,",
@@ -88,7 +88,7 @@
         "description": "Create a Payment Intent"
     },
     "Create Refund": {
-        "prefix": ["stripe.refunds.create"],
+        "prefix": ["StripeRefundsCreate"],
         "body": [
             "stripe.refunds.create({",
             "   charge: '{CHARGE_ID}',",
@@ -100,7 +100,7 @@
         "description": "Create Refund"
     },
     "Elements: Create Payment Method (card)": {
-        "prefix": ["stripe.paymentMethod.create"],
+        "prefix": ["StripeElementsPaymentMethodCreate"],
         "body": [
             "stripe.createPaymentMethod({",
             "   type: 'card',",
@@ -116,7 +116,7 @@
         "description": "Create a Payment Method with a card"
     },
     "Elements: Create Token for Card Element": {
-        "prefix": ["stripe.createToken"],
+        "prefix": ["StripeElementsCreateToken"],
         "body": [
             "stripe.createToken(cardElement).then(function(result) {",
             "   // Handle result.error or result.token",
@@ -125,7 +125,7 @@
         "description": "Create a Token for Card Element"
     },
     "Create Checkout Session and Redirect": {
-        "prefix": "stripe.checkout.sessions.create",
+        "prefix": ["StripeCheckoutSessionsCreate"],
         "body": [
             "const session = await stripe.checkout.sessions.create({",
             "    payment_method_types: ['card'],",
