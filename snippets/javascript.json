@@ -1,156 +1,175 @@
 {
-    "Create Invoice": {
-        "prefix": ["StripeInvoicesCreate"],
-        "body": [
-            "const invoiceItem = await stripe.invoiceItems.create({",
-            "   customer: '{{PAYMENT_METHOD_ID}}',",
-            "   amount: 2500,",
-            "   currency: 'usd',",
-            "   description: 'One-time setup fee',",
-            "});",
-            "const invoice = await stripe.invoices.create({",
-            "   customer: '{{PAYMENT_METHOD_ID}}',",
-            "   auto_advance: true, // auto-finalize this draft after ~1 hour",
-            "});"
-        ],
-        "description": "Create an Invoice"
-    },
-    "Create Customer": {
-        "prefix": ["StripeCustomersCreate"],
-        "body": [
-            "// This creates a new Customer and attaches the PaymentMethod in one API call.",
-            "const customer = await stripe.customers.create({",
-            "   payment_method: '{{PAYMENT_METHOD_ID}}',",
-            "   email: 'jenny.rosen@example.com',",
-            "   invoice_settings: {",
-            "      default_payment_method: '{{PAYMENT_METHOD_ID}}',",
-            "   },",
-            "});"
-        ],
-        "description": "Create a Customer"
-    },
-    "Connect Direct Charge": {
-        "prefix": ["StripePaymentIntentsCreateDirectCharge"],
-        "body": [
-            "stripe.paymentIntents.create({",
-            "   payment_method_types: ['card'],",
-            "   amount: 1000,",
-            "   currency: 'usd',",
-            "}, {",
-            "   stripeAccount: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
-            "}).then(function(paymentIntent) {",
-            "   // asynchronously called",
-            "});"
-        ],
-        "description": "Create a Direct Charge"
-    },
-    "Connect Direct Charge with fee": {
-        "prefix": ["StripePaymentIntentsCreateDirectChargeWithFee"],
-        "body": [
-            "stripe.paymentIntents.create({",
-            "   payment_method_types: ['card'],",
-            "   amount: 1000,",
-            "   currency: 'usd',",
-            "   application_fee_amount: 123,",
-            "   transfer_data: {",
-            "       destination: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
-            "   },",
-            "}).then(function(paymentIntent) {",
-            "   // asynchronously called",
-            "});"
-        ],
-        "description": "Create a Direct Charge with a fee"
-    },
-    "Create Connect Payout": {
-        "prefix": ["StripePayoutsCreate"],
-        "body": [
-            "stripe.payouts.create({",
-            "   amount: 1000,",
-            "   currency: 'usd',",
-            "}, {",
-            "   stripe_account: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
-            "}).then(function(payout) {",
-            "   // asynchronously called",
-            "});"
-        ],
-        "description": "Create a Connect Payout"
-    },
-    "Create Payment Intent": {
-        "prefix": ["stripePaymentIntentsCreate"],
-        "body": [
-            "const paymentIntent = await stripe.paymentIntents.create({",
-            "   amount: 1099,",
-            "   currency: 'usd',",
-            "   // Verify your integration in this guide by including this parameter",
-            "   metadata: {integration_check: 'accept_a_payment'},",
-            "});"
-        ],
-        "description": "Create a Payment Intent"
-    },
-    "Create Refund": {
-        "prefix": ["StripeRefundsCreate"],
-        "body": [
-            "stripe.refunds.create({",
-            "   charge: '{CHARGE_ID}',",
-            "   reverse_transfer: true,",
-            "}).then(function(refund) {",
-            "   // asynchronously called",
-            "});"
-        ],
-        "description": "Create Refund"
-    },
-    "Elements: Create Payment Method (card)": {
-        "prefix": ["StripeElementsPaymentMethodCreate"],
-        "body": [
-            "stripe.createPaymentMethod({",
-            "   type: 'card',",
-            "   card: cardElement,",
-            "   billing_details: {",
-            "       name: 'Jenny Rosen',",
-            "   },",
-            "})",
-            ".then(function(result) {",
-            "   // Handle result.error or result.paymentMethod",
-            "});"
-        ],
-        "description": "Create a Payment Method with a card"
-    },
-    "Elements: Create Token for Card Element": {
-        "prefix": ["StripeElementsCreateToken"],
-        "body": [
-            "stripe.createToken(cardElement).then(function(result) {",
-            "   // Handle result.error or result.token",
-            "});"
-        ],
-        "description": "Create a Token for Card Element"
-    },
-    "Create Checkout Session and Redirect": {
-        "prefix": ["StripeCheckoutSessionsCreate"],
-        "body": [
-            "const session = await stripe.checkout.sessions.create({",
-            "    payment_method_types: ['card'],",
-            "    line_items: [{",
-            "      name: 'T-shirt',",
-            "      description: 'Comfortable cotton t-shirt',",
-            "      images: ['https://example.com/t-shirt.png'],",
-            "      amount: 500,",
-            "      currency: 'usd',",
-            "      quantity: 1,",
-            "    }],",
-            "    success_url: 'https://example.com/success?session_id={CHECKOUT_SESSION_ID}',",
-            "    cancel_url: 'https://example.com/cancel',",
-            "  });",
-            "stripe.redirectToCheckout({",
-            "    // Make the id field from the Checkout Session creation API response",
-            "    // available to this file, so you can provide it as parameter here",
-            "    // instead of the {{CHECKOUT_SESSION_ID}} placeholder.",
-            "    sessionId: '{{CHECKOUT_SESSION_ID}}'",
-            "  }).then(function (result) {",
-            "    // If `redirectToCheckout` fails due to a browser or network",
-            "    // error, display the localized error message to your customer",
-            "    // using `result.error.message`.",
-            "  });"
-        ],
-        "description": "Create a new Checkout Session and Redirect to Stripe Checkout"
-    }
+  "Create Invoice": {
+    "prefix": ["StripeInvoicesCreate"],
+    "body": [
+      "const invoiceItem = await stripe.invoiceItems.create({",
+      "   customer: '{{PAYMENT_METHOD_ID}}',",
+      "   amount: 2500,",
+      "   currency: 'usd',",
+      "   description: 'One-time setup fee',",
+      "});",
+      "const invoice = await stripe.invoices.create({",
+      "   customer: '{{PAYMENT_METHOD_ID}}',",
+      "   auto_advance: true, // auto-finalize this draft after ~1 hour",
+      "});"
+    ],
+    "description": "Create an Invoice"
+  },
+  "Create Customer": {
+    "prefix": ["StripeCustomersCreate"],
+    "body": [
+      "// This creates a new Customer and attaches the PaymentMethod in one API call.",
+      "const customer = await stripe.customers.create({",
+      "   payment_method: '{{PAYMENT_METHOD_ID}}',",
+      "   email: 'jenny.rosen@example.com',",
+      "   invoice_settings: {",
+      "      default_payment_method: '{{PAYMENT_METHOD_ID}}',",
+      "   },",
+      "});"
+    ],
+    "description": "Create a Customer"
+  },
+  "Connect Direct Charge": {
+    "prefix": ["StripePaymentIntentsCreateDirectCharge"],
+    "body": [
+      "stripe.paymentIntents.create({",
+      "   payment_method_types: ['card'],",
+      "   amount: 1000,",
+      "   currency: 'usd',",
+      "}, {",
+      "   stripeAccount: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
+      "}).then(function(paymentIntent) {",
+      "   // asynchronously called",
+      "});"
+    ],
+    "description": "Create a Direct Charge"
+  },
+  "Connect Direct Charge with fee": {
+    "prefix": ["StripePaymentIntentsCreateDirectChargeWithFee"],
+    "body": [
+      "stripe.paymentIntents.create({",
+      "   payment_method_types: ['card'],",
+      "   amount: 1000,",
+      "   currency: 'usd',",
+      "   application_fee_amount: 123,",
+      "   transfer_data: {",
+      "       destination: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
+      "   },",
+      "}).then(function(paymentIntent) {",
+      "   // asynchronously called",
+      "});"
+    ],
+    "description": "Create a Direct Charge with a fee"
+  },
+  "Create Connect Payout": {
+    "prefix": ["StripePayoutsCreate"],
+    "body": [
+      "stripe.payouts.create({",
+      "   amount: 1000,",
+      "   currency: 'usd',",
+      "}, {",
+      "   stripe_account: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',",
+      "}).then(function(payout) {",
+      "   // asynchronously called",
+      "});"
+    ],
+    "description": "Create a Connect Payout"
+  },
+  "Create Payment Intent": {
+    "prefix": ["stripePaymentIntentsCreate"],
+    "body": [
+      "const paymentIntent = await stripe.paymentIntents.create({",
+      "   amount: 1099,",
+      "   currency: 'usd',",
+      "   // Verify your integration in this guide by including this parameter",
+      "   metadata: {integration_check: 'accept_a_payment'},",
+      "});"
+    ],
+    "description": "Create a Payment Intent"
+  },
+  "Create Refund": {
+    "prefix": ["StripeRefundsCreate"],
+    "body": [
+      "stripe.refunds.create({",
+      "   charge: '{CHARGE_ID}',",
+      "   reverse_transfer: true,",
+      "}).then(function(refund) {",
+      "   // asynchronously called",
+      "});"
+    ],
+    "description": "Create Refund"
+  },
+  "Elements: Create Payment Method (card)": {
+    "prefix": ["StripeElementsPaymentMethodCreate"],
+    "body": [
+      "stripe.createPaymentMethod({",
+      "   type: 'card',",
+      "   card: cardElement,",
+      "   billing_details: {",
+      "       name: 'Jenny Rosen',",
+      "   },",
+      "})",
+      ".then(function(result) {",
+      "   // Handle result.error or result.paymentMethod",
+      "});"
+    ],
+    "description": "Create a Payment Method with a card"
+  },
+  "Elements: Create Token for Card Element": {
+    "prefix": ["StripeElementsCreateToken"],
+    "body": [
+      "stripe.createToken(cardElement).then(function(result) {",
+      "   // Handle result.error or result.token",
+      "});"
+    ],
+    "description": "Create a Token for Card Element"
+  },
+  "Create Checkout Session and Redirect": {
+    "prefix": ["StripeCheckoutSessionsCreate"],
+    "body": [
+      "const session = await stripe.checkout.sessions.create({",
+      "    payment_method_types: ['card'],",
+      "    line_items: [{",
+      "      name: 'T-shirt',",
+      "      description: 'Comfortable cotton t-shirt',",
+      "      images: ['https://example.com/t-shirt.png'],",
+      "      amount: 500,",
+      "      currency: 'usd',",
+      "      quantity: 1,",
+      "    }],",
+      "    success_url: 'https://example.com/success?session_id={CHECKOUT_SESSION_ID}',",
+      "    cancel_url: 'https://example.com/cancel',",
+      "  });",
+      "stripe.redirectToCheckout({",
+      "    // Make the id field from the Checkout Session creation API response",
+      "    // available to this file, so you can provide it as parameter here",
+      "    // instead of the {{CHECKOUT_SESSION_ID}} placeholder.",
+      "    sessionId: '{{CHECKOUT_SESSION_ID}}'",
+      "  }).then(function (result) {",
+      "    // If `redirectToCheckout` fails due to a browser or network",
+      "    // error, display the localized error message to your customer",
+      "    // using `result.error.message`.",
+      "  });"
+    ],
+    "description": "Create a new Checkout Session and Redirect to Stripe Checkout"
+  },
+  "Create Connect OAuth Authorize request": {
+    "prefix": ["StripeConnectOAuthAuthorize"],
+    "body": [
+      "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=<clientID>&scope=read_write&redirect_uri=https://example.com"
+    ],
+    "description": "Create a OAuth Authorize request for Stripe Connect"
+  },
+  "Create Connect OAuth Token request": {
+    "prefix": ["StripeConnectOAuthToken"],
+    "body": [
+      "const response = await stripe.oauth.token({",
+      "    grant_type: 'authorization_code',",
+      "    code: '<oauth authorize code>',",
+      "});",
+      "",
+      "var connectedAccountId = response.stripe_user_id;"
+    ],
+    "description": "Exchange a oAuth Authorize code to Stripe User ID"
+  }
 }
