@@ -33,7 +33,7 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 
 The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. 
 
-Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems, blocking your build/debugging.
+Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems
 
 ### Forward webhooks traffic with debugging
 
