@@ -9,7 +9,10 @@
 
 <h4 align="center">Bringing you Stripe inside your editor.</h4>
 
-Marketing pitch goes here, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non commodo dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut eleifend, leo at aliquet molestie, libero dolor efficitur sem, sit amet finibus lacus nisl et est.
+Stripe for VS Code is a new extension for Visual Studio Code that enables developers to have an easier integration experience with Stripe by having easy access to Stripe specific information such as Code snippets, API requests logs and logs directly from their editor.
+
+Stripe for VS Code works by extending VS Code with a new “Stripe” panel in the activity bar, provides code snippets for top languages, debug configurations and extends the command palette with Stripe specific commands to make workflows easier.
+
 
 ![Stripe](resources/stripe.png)
 
