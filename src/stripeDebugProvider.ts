@@ -20,10 +20,10 @@ export class StripeDebugProvider {
         return Promise.resolve([
           {
             type: "stripe",
-            name: "Stripe: Listen",
+            name: "Stripe: Webhooks Forward",
             request: "launch",
             command: "listen",
-            localPort: 3000
+            localUrl: "http://localhost:3000/stripe-events"
           }
         ]);
       },

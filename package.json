@@ -121,8 +121,8 @@
         "label": "Stripe",
         "configurationSnippets": [
           {
-            "label": "Stripe: Listen",
-            "description": "Debug stripe webhooks",
+            "label": "Stripe: Webhooks Forward",
+            "description": "Forward Stripe webhooks events",
             "body": {
               "type": "stripe",
               "request": "launch",
