@@ -143,6 +143,11 @@
                 "type": "string",
                 "description": "Command to execute",
                 "default": "listen"
+              },
+              "events": {
+                "type": "array",
+                "description": "String array of events to listen for",
+                "default": []
               }
             }
           }

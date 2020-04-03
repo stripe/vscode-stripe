@@ -41,7 +41,8 @@ export class StripeDebugProvider {
           ) {
             vscode.commands.executeCommand(
               `stripe.openWebhooksListen`,
-              config.localUrl
+              config.localUrl,
+              config.events
             );
           }
         } else {

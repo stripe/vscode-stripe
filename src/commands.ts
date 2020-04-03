@@ -1,13 +1,17 @@
 import * as vscode from "vscode";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 
-export function openWebhooksListen(localUrl: string) {
+export function openWebhooksListen(localUrl: string, events?: Array<string>) {
   let terminal = vscode.window.createTerminal("Stripe");
 
   let commandArgs = ["stripe listen"];
 
   if (localUrl && typeof localUrl == "string") {
     commandArgs.push(`--forward-to=${localUrl}`);
+  }
+
+  if (events && events.length > 0) {
+    commandArgs.push(`--events=${events.join(",")}`);
   }
 
   let command = commandArgs.join(" ");
