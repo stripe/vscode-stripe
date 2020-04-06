@@ -62,7 +62,7 @@ For the `stripe` debug configuration you can also specify `localUrl` which is th
 
 You can also combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
 
-```json
+```
 {
   "version": "0.2.0",
   "configurations": [
@@ -71,7 +71,8 @@ You can also combine the `stripe` debug configuration with `compounds` configura
       "type": "stripe",
       "request": "launch",
       "command": "listen",
-      "localUrl": "http://localhost:3000/stripe-events"
+      "localUrl": "http://localhost:3000/stripe-events",
+      "events": ["payment_intent.succeeded", "sfsd.sdf"] // Optional array if only specifc events are wanted
     },
     {
       "type": "node",
