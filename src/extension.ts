@@ -5,7 +5,7 @@ import {
   ExtensionContext,
   env,
   Uri,
-  workspace
+  workspace,
 } from "vscode";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
@@ -13,6 +13,7 @@ import { StripeDebugProvider } from "./stripeDebugProvider";
 import { lookForHardCodedAPIKeys } from "./stripeAPIKeyLinter";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
+import { SurveyPrompt } from "./survey";
 import {
   openWebhooksListen,
   openLogsStreaming,
@@ -23,7 +24,7 @@ import {
   openDashboardLogs,
   openDashboardEventDetails,
   refreshEventsList,
-  startLogin
+  startLogin,
 } from "./commands";
 
 export async function activate(this: any, context: ExtensionContext) {
@@ -42,18 +43,21 @@ export async function activate(this: any, context: ExtensionContext) {
     }
   }
 
+  // CSAT survey prompt
+  new SurveyPrompt(context).activate();
+
   Resource.initialize(context);
 
   // Activity bar view
   window.createTreeView("stripeView", {
     treeDataProvider: new StripeViewDataProvider(),
-    showCollapseAll: false
+    showCollapseAll: false,
   });
 
   let stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
   window.createTreeView("stripeEventsView", {
     treeDataProvider: stripeEventsViewProvider,
-    showCollapseAll: true
+    showCollapseAll: true,
   });
 
   // Debug provider
