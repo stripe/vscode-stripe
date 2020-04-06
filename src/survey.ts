@@ -10,6 +10,10 @@ enum storageKeys {
   lastSurveyDate = "stripeLastSurveyDate",
 }
 
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 export class SurveyPrompt {
   storage: Memento;
 
@@ -31,6 +35,7 @@ export class SurveyPrompt {
       return false;
     }
 
+    // Only sample people took the survey more than 12 weeks ago
     const lastSurveyDateEpoch = this.storage.get(
       storageKeys.lastSurveyDate
     ) as number;
@@ -42,6 +47,12 @@ export class SurveyPrompt {
       if (currentDate.diff(lastSurveyDate, "weeks") < 12) {
         return false;
       }
+    }
+
+    // Only sample 20% of people to avoid spam
+    const randomSample: number = getRandomInt(100);
+    if (randomSample >= 20) {
+      return false;
     }
 
     return true;
