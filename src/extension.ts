@@ -10,7 +10,7 @@ import {
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
-import { lookForHardCodedAPIKeys } from "./stripeAPIKeyLinter";
+import { StripeAPIKeyLinter } from "./stripeAPIKeyLinter";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./survey";
@@ -65,6 +65,10 @@ export async function activate(this: any, context: ExtensionContext) {
     "stripe",
     new StripeDebugProvider().getProvider()
   );
+
+  // API Key Linter
+  let apiKeyLinter = new StripeAPIKeyLinter();
+  apiKeyLinter.activate();
 
   // Commands
   let subscriptions = context.subscriptions;
@@ -121,10 +125,6 @@ export async function activate(this: any, context: ExtensionContext) {
   subscriptions.push(
     commands.registerCommand("stripe.refreshEventsList", boundRefreshEventsList)
   );
-
-  workspace.onDidSaveTextDocument(() => {
-    lookForHardCodedAPIKeys();
-  });
 }
 
 export function deactivate() {}
