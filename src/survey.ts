@@ -27,7 +27,7 @@ export class SurveyPrompt {
       return;
     }
 
-    setTimeout(this.showSurvey, 60 * 1000 * 2); // Wait 2 minutes to show survey to avoid showing upon initial activation.
+    setTimeout(this.showSurvey, 60 * 1000 * 5); // Wait 5 minutes to show survey to avoid showing upon initial activation.
   }
 
   public shouldShowBanner(): boolean {
