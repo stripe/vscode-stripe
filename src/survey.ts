@@ -3,7 +3,6 @@ import * as vscode from "vscode";
 import { ExtensionContext, window, env, Memento, Uri } from "vscode";
 import moment from "moment";
 import osName = require("os-name");
-import readPkgUp = require("read-pkg-up");
 
 enum storageKeys {
   doNotShowAgain = "stripeDoNotShowAgain",
@@ -81,11 +80,8 @@ export class SurveyPrompt {
   }
 
   private async launchSurvey() {
-    const packageMetadata = await readPkgUp();
-
-    let extensionVersion = packageMetadata
-      ? packageMetadata.packageJson.version
-      : "<none>";
+    let extension = vscode.extensions.getExtension("stripe.vscode-stripe");
+    let extensionVersion = extension ? extension.packageJSON.version : "<none>";
 
     const query = querystring.stringify({
       platform: encodeURIComponent(osName()),
