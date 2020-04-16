@@ -7,28 +7,32 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     super();
   }
 
-  private addAccountItems(accountItem: StripeTreeItem) {
+  private getAccountItems() {
+    let items = [];
+
     let apiKeysItem = new StripeTreeItem(
       "Open API keys",
       "openDashboardApikeys"
     );
     apiKeysItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
-      light: Resource.icons.light.linkExternal
+      light: Resource.icons.light.linkExternal,
     });
-    accountItem.addChild(apiKeysItem);
+
+    items.push(apiKeysItem);
 
     let eventsItem = new StripeTreeItem("Open Events", "openDashboardEvents");
     eventsItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
-      light: Resource.icons.light.linkExternal
+      light: Resource.icons.light.linkExternal,
     });
-    accountItem.addChild(eventsItem);
+
+    items.push(eventsItem);
 
     let logItem = new StripeTreeItem("Open API logs", "openDashboardLogs");
     logItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
-      light: Resource.icons.light.linkExternal
+      light: Resource.icons.light.linkExternal,
     });
 
     let logStreamItem = new StripeTreeItem(
@@ -37,12 +41,12 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     );
     logStreamItem.setIcon({
       dark: Resource.icons.dark.terminal,
-      light: Resource.icons.light.terminal
+      light: Resource.icons.light.terminal,
     });
 
     logItem.addChild(logStreamItem);
 
-    accountItem.addChild(logItem);
+    items.push(logItem);
 
     let webhooksItem = new StripeTreeItem(
       "Open Webhooks",
@@ -55,25 +59,22 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     );
     webhooksListenItem.setIcon({
       dark: Resource.icons.dark.terminal,
-      light: Resource.icons.light.terminal
+      light: Resource.icons.light.terminal,
     });
 
     webhooksItem.addChild(webhooksListenItem);
 
     webhooksItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
-      light: Resource.icons.light.linkExternal
+      light: Resource.icons.light.linkExternal,
     });
 
-    accountItem.addChild(webhooksItem);
+    items.push(webhooksItem);
+
+    return items;
   }
 
   async buildTree(): Promise<StripeTreeItem[]> {
-    let mainItem = new StripeTreeItem("Stripe");
-    mainItem.expand();
-
-    this.addAccountItems(mainItem);
-
-    return [mainItem];
+    return this.getAccountItems();
   }
 }
