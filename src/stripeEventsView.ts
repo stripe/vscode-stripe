@@ -37,7 +37,7 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
 
     let triggerEventItem = new StripeTreeItem(
       "Trigger new event",
-      "triggerEvent"
+      "openTriggerEvent"
     );
     triggerEventItem.setIcon({
       dark: Resource.icons.dark.add,

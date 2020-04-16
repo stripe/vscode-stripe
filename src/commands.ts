@@ -74,7 +74,7 @@ export function refreshEventsList(
 
 export async function triggerEvent() {
   let eventName = await vscode.window.showInputBox({
-    prompt: "Enter Stripe event name to trigger",
+    prompt: "Enter event name to trigger",
     placeHolder: "payment_intent.created",
   });
 

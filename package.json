@@ -35,7 +35,10 @@
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
     "onCommand:stripe.openDashboardWebhooks",
-    "onCommand:stripe.triggerEvent",
+    "onCommand:stripe.openTriggerEvent",
+    "onCommand:stripe.openReportIssue",
+    "onCommand:stripe.openDocs",
+    "onCommand:stripe.openTwitter",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
@@ -109,6 +112,21 @@
         "category": "Stripe",
         "command": "stripe.openTriggerEvent",
         "title": "Trigger a new event"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openReportIssue",
+        "title": "Report issue"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDocs",
+        "title": "Open extension documentation"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openDocs",
+        "title": "Tweet us your feedback"
       }
     ],
     "views": {
@@ -133,6 +151,12 @@
           "command": "stripe.refreshEventsList",
           "when": "view == stripeEventsView",
           "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "stripe.openDashboardEventDetails",
+          "when": "false"
         }
       ]
     },
