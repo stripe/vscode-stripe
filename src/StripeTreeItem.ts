@@ -19,7 +19,7 @@ export class StripeTreeItem extends TreeItem {
       this.command = {
         title: `stripe.${this.commandString}`,
         command: `stripe.${this.commandString}`,
-        arguments: [this._metadata]
+        arguments: [this._metadata],
       };
     }
   }

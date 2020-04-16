@@ -6,7 +6,7 @@ import { StripeDebugProvider } from "./stripeDebugProvider";
 import { StripeLinter } from "./stripeLinter";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
-import { SurveyPrompt } from "./survey";
+import { SurveyPrompt } from "./surveyPrompt";
 import {
   openWebhooksListen,
   openLogsStreaming,

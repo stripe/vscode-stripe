@@ -1,6 +1,6 @@
-import { StripeTreeItem } from "./StripeTreeItem";
+import { StripeTreeItem } from "./stripeTreeItem";
 
-import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
+import { StripeTreeViewDataProvider } from "./stripeTreeViewDataProvider";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 

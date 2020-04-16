@@ -1,5 +1,5 @@
-import { StripeTreeItem } from "./StripeTreeItem";
-import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
+import { StripeTreeItem } from "./stripeTreeItem";
+import { StripeTreeViewDataProvider } from "./stripeTreeViewDataProvider";
 import { Resource } from "./resources";
 
 export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {

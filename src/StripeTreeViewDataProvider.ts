@@ -1,5 +1,5 @@
 import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
-import { StripeTreeItem } from "./StripeTreeItem";
+import { StripeTreeItem } from "./stripeTreeItem";
 
 export class StripeTreeViewDataProvider implements TreeDataProvider<TreeItem> {
   private treeItems: TreeItem[] | null = null;
