@@ -16,6 +16,9 @@
     "Other",
     "Snippets"
   ],
+  "extensionKind": [
+    "ui"
+  ],
   "activationEvents": [
     "onDebugInitialConfigurations",
     "onDebug",
