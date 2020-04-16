@@ -24,15 +24,15 @@ export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
     });
     items.push(reportItem);
 
-    let twitterItem = new StripeTreeItem(
-      "Tweet us your feedback",
-      "openTwitter"
+    let feedbackItem = new StripeTreeItem(
+      "Rate and provide feedback",
+      "openSurvey"
     );
-    twitterItem.setIcon({
-      dark: Resource.icons.dark.twitter,
-      light: Resource.icons.light.twitter,
+    feedbackItem.setIcon({
+      dark: Resource.icons.dark.feedback,
+      light: Resource.icons.light.feedback,
     });
-    items.push(twitterItem);
+    items.push(feedbackItem);
 
     return items;
   }

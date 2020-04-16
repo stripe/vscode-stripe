@@ -19,8 +19,8 @@ export class Resource {
         report: context.asAbsolutePath(
           path.join("resources", "icons", "light", "report.svg")
         ),
-        twitter: context.asAbsolutePath(
-          path.join("resources", "icons", "light", "twitter.svg")
+        feedback: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "feedback.svg")
         ),
         book: context.asAbsolutePath(
           path.join("resources", "icons", "light", "book.svg")
@@ -39,8 +39,8 @@ export class Resource {
         report: context.asAbsolutePath(
           path.join("resources", "icons", "dark", "report.svg")
         ),
-        twitter: context.asAbsolutePath(
-          path.join("resources", "icons", "dark", "twitter.svg")
+        feedback: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "feedback.svg")
         ),
         book: context.asAbsolutePath(
           path.join("resources", "icons", "dark", "book.svg")

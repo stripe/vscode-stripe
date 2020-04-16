@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
+import * as querystring from "querystring";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { getExtensionInfo } from "./utils";
+import osName = require("os-name");
 
 export function openWebhooksListen(localUrl: string, events?: Array<string>) {
   let terminal = vscode.window.createTerminal("Stripe");
@@ -99,8 +101,16 @@ export function openDocs() {
   );
 }
 
-export function openTwitter() {
-  vscode.env.openExternal(
-    vscode.Uri.parse("https://twitter.com/intent/tweet?screen_name=stripe")
-  );
+export function openSurvey() {
+  let extensionInfo = getExtensionInfo();
+
+  const query = querystring.stringify({
+    platform: encodeURIComponent(osName()),
+    vscodeVersion: encodeURIComponent(vscode.version),
+    extensionVersion: encodeURIComponent(extensionInfo.version),
+    machineId: encodeURIComponent(vscode.env.machineId),
+  });
+
+  const url = `https://forms.gle/eP2mtQ8Jmra4pZBP7?${query}`;
+  vscode.env.openExternal(vscode.Uri.parse(url));
 }

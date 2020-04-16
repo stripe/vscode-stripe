@@ -19,7 +19,7 @@ import {
   refreshEventsList,
   startLogin,
   triggerEvent,
-  openTwitter,
+  openSurvey,
   openReportIssue,
   openDocs,
 } from "./commands";
@@ -41,7 +41,7 @@ export async function activate(this: any, context: ExtensionContext) {
   }
 
   // CSAT survey prompt
-  new SurveyPrompt(context).activate();
+  let survetPrompt = new SurveyPrompt(context).activate();
 
   Resource.initialize(context);
 
@@ -132,9 +132,7 @@ export async function activate(this: any, context: ExtensionContext) {
     commands.registerCommand("stripe.openTriggerEvent", triggerEvent)
   );
 
-  subscriptions.push(
-    commands.registerCommand("stripe.openTwitter", openTwitter)
-  );
+  subscriptions.push(commands.registerCommand("stripe.openSurvey", openSurvey));
 
   subscriptions.push(
     commands.registerCommand("stripe.openReportIssue", openReportIssue)

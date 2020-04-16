@@ -1,9 +1,5 @@
-import * as querystring from "querystring";
 import * as vscode from "vscode";
-import { ExtensionContext, window, env, Memento, Uri } from "vscode";
 import moment from "moment";
-import osName = require("os-name");
-import { getExtensionInfo } from "./utils";
 
 enum storageKeys {
   doNotShowAgain = "stripeDoNotShowAgain",
@@ -15,9 +11,9 @@ function getRandomInt(max: number) {
 }
 
 export class SurveyPrompt {
-  storage: Memento;
+  storage: vscode.Memento;
 
-  constructor(context: ExtensionContext) {
+  constructor(context: vscode.ExtensionContext) {
     this.storage = context.globalState;
   }
 
@@ -61,7 +57,7 @@ export class SurveyPrompt {
   public async showSurvey() {
     const prompts = ["Take survey", "Maybe later", "Don't Show Again"];
 
-    const selection = await window.showInformationMessage(
+    const selection = await vscode.window.showInformationMessage(
       "Got 2 minutes to tell us how the Stripe extension is working for you?",
       ...prompts
     );
@@ -71,25 +67,12 @@ export class SurveyPrompt {
     }
 
     if (selection === "Take survey") {
-      this.launchSurvey();
+      vscode.commands.executeCommand("stripe.openSurvey");
       let currentEpoch = moment().valueOf();
       this.storage.update(storageKeys.lastSurveyDate, currentEpoch);
       this.storage.update(storageKeys.doNotShowAgain, false);
     } else if (selection === "Don't Show Again") {
       this.storage.update(storageKeys.doNotShowAgain, true);
     }
-  }
-
-  private async launchSurvey() {
-    let extensionInfo = getExtensionInfo();
-
-    const query = querystring.stringify({
-      platform: encodeURIComponent(osName()),
-      vscodeVersion: encodeURIComponent(vscode.version),
-      extensionVersion: encodeURIComponent(extensionInfo.version),
-      machineId: encodeURIComponent(env.machineId),
-    });
-    const url = `https://forms.gle/eP2mtQ8Jmra4pZBP7?${query}`;
-    env.openExternal(Uri.parse(url));
   }
 }

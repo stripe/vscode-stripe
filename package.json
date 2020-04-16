@@ -41,7 +41,7 @@
     "onCommand:stripe.openTriggerEvent",
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
-    "onCommand:stripe.openTwitter",
+    "onCommand:stripe.openSurvey",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
