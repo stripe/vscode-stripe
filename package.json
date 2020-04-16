@@ -5,6 +5,9 @@
   "version": "0.1.1",
   "publisher": "stripe",
   "repository": "https://github.com/stripe/vscode-stripe",
+  "bugs": {
+    "url": "https://github.com/stripe/vscode-stripe/issues"
+  },
   "engines": {
     "vscode": "^1.34.0"
   },
