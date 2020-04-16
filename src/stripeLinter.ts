@@ -98,7 +98,7 @@ const shouldSearchFile = (currentFilename: string): boolean => {
 // the function will draw squiggly lines with hover tooltips for each hardcoded key in the currently open file
 // these warnings / errors also show up in the "Problems" tab in the VS Code integrated Terminal panel.
 
-export class StripeAPIKeyLinter {
+export class StripeLinter {
   constructor() {}
 
   activate() {

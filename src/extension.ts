@@ -3,7 +3,7 @@ import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
-import { StripeAPIKeyLinter } from "./stripeAPIKeyLinter";
+import { StripeLinter } from "./stripeLinter";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./survey";
@@ -68,9 +68,9 @@ export async function activate(this: any, context: ExtensionContext) {
     new StripeDebugProvider().getProvider()
   );
 
-  // API Key Linter
-  let apiKeyLinter = new StripeAPIKeyLinter();
-  apiKeyLinter.activate();
+  // Stripe Linter
+  let stripeLinter = new StripeLinter();
+  stripeLinter.activate();
 
   // Commands
   let subscriptions = context.subscriptions;
