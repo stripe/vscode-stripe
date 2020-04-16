@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { StripeEventsDataProvider } from "./stripeEventsView";
+import { getExtensionInfo } from "./utils";
 
 export function openWebhooksListen(localUrl: string, events?: Array<string>) {
   let terminal = vscode.window.createTerminal("Stripe");
@@ -64,8 +65,22 @@ export function openDashboardEventDetails(data: any) {
   let url = `https://dashboard.stripe.com/test/events/${id}`;
   vscode.env.openExternal(vscode.Uri.parse(url));
 }
+
 export function refreshEventsList(
   stripeEventsViewProvider: StripeEventsDataProvider
 ) {
   stripeEventsViewProvider.refresh();
+}
+
+export async function triggerEvent() {
+  let eventName = await vscode.window.showInputBox({
+    prompt: "Enter Stripe event name to trigger",
+    placeHolder: "payment_intent.created",
+  });
+
+  if (eventName) {
+    let terminal = vscode.window.createTerminal("Stripe");
+    terminal.sendText(`stripe trigger ${eventName}`);
+    terminal.show();
+  }
 }

@@ -125,6 +125,10 @@ export async function activate(this: any, context: ExtensionContext) {
   subscriptions.push(
     commands.registerCommand("stripe.refreshEventsList", boundRefreshEventsList)
   );
+
+  subscriptions.push(
+    commands.registerCommand("stripe.openTriggerEvent", triggerEvent)
+  );
 }
 
 export function deactivate() {}

@@ -24,6 +24,7 @@
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
     "onCommand:stripe.openDashboardWebhooks",
+    "onCommand:stripe.triggerEvent",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
@@ -92,6 +93,11 @@
           "dark": "resources/icons/dark/refresh.svg",
           "light": "resources/icons/light/refresh.svg"
         }
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openTriggerEvent",
+        "title": "Trigger a new event"
       }
     ],
     "views": {

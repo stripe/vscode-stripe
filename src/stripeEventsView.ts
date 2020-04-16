@@ -2,6 +2,7 @@ import { StripeTreeItem } from "./StripeTreeItem";
 
 import { StripeTreeViewDataProvider } from "./StripeTreeViewDataProvider";
 import { StripeClient } from "./stripeClient";
+import { Resource } from "./resources";
 
 export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
   stripeClient: StripeClient;
@@ -27,13 +28,25 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
           );
           eventItem.metadata = {
             type: event.type,
-            id: event.id
+            id: event.id,
           };
           eventsItem.addChild(eventItem);
         });
       }
     } catch (e) {}
 
-    return [eventsItem];
+    let triggerEventItem = new StripeTreeItem(
+      "Trigger new event",
+      "triggerEvent"
+    );
+    triggerEventItem.setIcon({
+      dark: Resource.icons.dark.add,
+      light: Resource.icons.light.add,
+    });
+
+    var items = [triggerEventItem];
+    items.push(eventsItem);
+
+    return items;
   }
 }
