@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { ExtensionContext, window, env, Memento, Uri } from "vscode";
 import moment from "moment";
 import osName = require("os-name");
+import { getExtensionInfo } from "./utils";
 
 enum storageKeys {
   doNotShowAgain = "stripeDoNotShowAgain",
@@ -80,13 +81,12 @@ export class SurveyPrompt {
   }
 
   private async launchSurvey() {
-    let extension = vscode.extensions.getExtension("stripe.vscode-stripe");
-    let extensionVersion = extension ? extension.packageJSON.version : "<none>";
+    let extensionInfo = getExtensionInfo();
 
     const query = querystring.stringify({
       platform: encodeURIComponent(osName()),
       vscodeVersion: encodeURIComponent(vscode.version),
-      extensionVersion: encodeURIComponent(extensionVersion),
+      extensionVersion: encodeURIComponent(extensionInfo.version),
       machineId: encodeURIComponent(env.machineId),
     });
     const url = `https://forms.gle/eP2mtQ8Jmra4pZBP7?${query}`;

@@ -109,6 +109,10 @@
         {
           "id": "stripeEventsView",
           "name": "Events"
+        },
+        {
+          "id": "stripeHelpView",
+          "name": "Help and feedback"
         }
       ]
     },

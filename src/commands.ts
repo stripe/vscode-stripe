@@ -84,3 +84,23 @@ export async function triggerEvent() {
     terminal.show();
   }
 }
+
+export function openReportIssue() {
+  let { name, publisher } = getExtensionInfo();
+
+  vscode.commands.executeCommand("vscode.openIssueReporter", {
+    extensionId: `${publisher}.${name}`,
+  });
+}
+
+export function openDocs() {
+  vscode.env.openExternal(
+    vscode.Uri.parse("https://stripe.com/docs/development")
+  );
+}
+
+export function openTwitter() {
+  vscode.env.openExternal(
+    vscode.Uri.parse("https://twitter.com/intent/tweet?screen_name=stripe")
+  );
+}

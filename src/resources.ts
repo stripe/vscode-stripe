@@ -16,6 +16,15 @@ export class Resource {
         add: context.asAbsolutePath(
           path.join("resources", "icons", "light", "add.svg")
         ),
+        report: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "report.svg")
+        ),
+        twitter: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "twitter.svg")
+        ),
+        book: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "book.svg")
+        ),
       },
       dark: {
         linkExternal: context.asAbsolutePath(
@@ -26,6 +35,15 @@ export class Resource {
         ),
         add: context.asAbsolutePath(
           path.join("resources", "icons", "dark", "add.svg")
+        ),
+        report: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "report.svg")
+        ),
+        twitter: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "twitter.svg")
+        ),
+        book: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "book.svg")
         ),
       },
     };

@@ -1,14 +1,7 @@
-import {
-  commands,
-  debug,
-  window,
-  ExtensionContext,
-  env,
-  Uri,
-  workspace,
-} from "vscode";
+import { commands, debug, window, ExtensionContext, env, Uri } from "vscode";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
+import { StripeHelpViewDataProvider } from "./stripeHelpView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import { StripeAPIKeyLinter } from "./stripeAPIKeyLinter";
 import { StripeClient } from "./stripeClient";
@@ -25,6 +18,10 @@ import {
   openDashboardEventDetails,
   refreshEventsList,
   startLogin,
+  triggerEvent,
+  openTwitter,
+  openReportIssue,
+  openDocs,
 } from "./commands";
 
 export async function activate(this: any, context: ExtensionContext) {
@@ -51,6 +48,11 @@ export async function activate(this: any, context: ExtensionContext) {
   // Activity bar view
   window.createTreeView("stripeView", {
     treeDataProvider: new StripeViewDataProvider(),
+    showCollapseAll: false,
+  });
+
+  window.createTreeView("stripeHelpView", {
+    treeDataProvider: new StripeHelpViewDataProvider(),
     showCollapseAll: false,
   });
 
@@ -129,6 +131,16 @@ export async function activate(this: any, context: ExtensionContext) {
   subscriptions.push(
     commands.registerCommand("stripe.openTriggerEvent", triggerEvent)
   );
+
+  subscriptions.push(
+    commands.registerCommand("stripe.openTwitter", openTwitter)
+  );
+
+  subscriptions.push(
+    commands.registerCommand("stripe.openReportIssue", openReportIssue)
+  );
+
+  subscriptions.push(commands.registerCommand("stripe.openDocs", openDocs));
 }
 
 export function deactivate() {}
