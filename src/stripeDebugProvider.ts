@@ -19,12 +19,12 @@ export class StripeDebugProvider {
       ): vscode.ProviderResult<vscode.DebugConfiguration[]> {
         return Promise.resolve([
           {
-            type: "stripe",
             name: "Stripe: Webhooks Forward",
+            type: "stripe",
             request: "launch",
             command: "listen",
-            localUrl: "http://localhost:3000/stripe-events"
-          }
+            localUrl: "http://localhost:3000/stripe-events",
+          },
         ]);
       },
       resolveDebugConfiguration(
@@ -51,7 +51,7 @@ export class StripeDebugProvider {
           );
         }
         return;
-      }
+      },
     };
   }
 }

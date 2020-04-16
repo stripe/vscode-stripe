@@ -169,10 +169,11 @@
             "label": "Stripe: Webhooks Forward",
             "description": "Forward Stripe webhooks events",
             "body": {
+              "name": "Stripe: Webhooks Forward",
               "type": "stripe",
               "request": "launch",
-              "localUrl": "http://localhost:3000/stripe-events",
-              "command": "listen"
+              "command": "listen",
+              "localUrl": "http://localhost:3000/stripe-events"
             }
           }
         ],
