@@ -21,7 +21,7 @@ Stripe for VS Code works by extending VS Code with a new “Stripe” panel in t
 3. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix )
 2. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
 
-Make sure you have the [Stripe CLI]() installed on your computer.
+Make sure you have the [Stripe CLI](https://github.com/stripe/vscode-stripe/tree/master) installed on your computer.
 
 ## Features
 
@@ -74,7 +74,7 @@ You can combine the `stripe` debug configuration with `compounds` configurations
       "request": "launch",
       "command": "listen",
       "localUrl": "http://localhost:3000/stripe-events",
-      "events": ["payment_intent.succeeded", "sfsd.sdf"] // Optional array if only specifc events are wanted
+      "events": ["payment_intent.succeeded", "payment_intent.canceled"] // Optional array if only specific events are wanted
     },
     {
       "type": "node",
@@ -97,7 +97,9 @@ You can combine the `stripe` debug configuration with `compounds` configurations
 
 1. Checkout this repo
 1. Run `npm install` in terminal to install dependencies
-1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: - Start a task `npm: watch` to compile the code - Run the extension in a new VS Code window
+1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: 
+  - Start a task `npm: watch` to compile the code 
+  - Run the extension in a new VS Code window
 
 ## License
 
