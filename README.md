@@ -98,6 +98,9 @@ You can also combine the `stripe` debug configuration with `compounds` configura
 1. Run `npm install` in terminal to install dependencies
 1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: - Start a task `npm: watch` to compile the code - Run the extension in a new VS Code window
 
-```
+## License
 
-```
+See [LICENSE.md](LICENSE.md)
+
+## Code of Conduct
+This project has adopted the Stripe Code of Conduct. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
