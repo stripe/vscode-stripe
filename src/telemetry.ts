@@ -47,11 +47,11 @@ export class Telemetry {
     this.ip = await publicIp.v4();
 
     // User custom dimensions to store user metadata
-    this.client.set("cd[1]", vscode.env.sessionId);
-    this.client.set("cd[2]", vscode.env.language);
-    this.client.set("cd[3]", vscode.version);
-    this.client.set("cd[4]", osName());
-    this.client.set("cd[5]", extensionInfo.version);
+    this.client.set("cd1", vscode.env.sessionId);
+    this.client.set("cd2", vscode.env.language);
+    this.client.set("cd3", vscode.version);
+    this.client.set("cd4", osName());
+    this.client.set("cd5", extensionInfo.version);
 
     // Set userID
     this.client.set("uid", this.userId);
