@@ -1,19 +1,21 @@
 "use strict";
 const execa = require("execa");
+
 var which = require("which");
-import { window, commands } from "vscode";
+import { window, commands, env, Uri } from "vscode";
 
 export class StripeClient {
   isInstalled: boolean;
 
   constructor() {
     this.isInstalled = false;
-
-    this.detectInstalled();
   }
 
   private async execute(command: string) {
+    this.detectInstalled();
+
     if (!this.isInstalled) {
+      this.promptInstall();
       return;
     }
 
@@ -34,10 +36,23 @@ export class StripeClient {
     }
   }
 
-  private async promptLogin() {
-    let actionText = "Run `stripe login`";
+  private async promptInstall() {
+    let actionText = "Read instructions on how to install Stripe CLI";
     let returnValue = await window.showErrorMessage(
-      `You aren't authenticated in the Stripe CLI. Please login first`,
+      `Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine`,
+      {},
+      ...[actionText]
+    );
+
+    if (returnValue === actionText) {
+      env.openExternal(Uri.parse(`https://stripe.com/docs/stripe-cli`));
+    }
+  }
+
+  private async promptLogin() {
+    let actionText = "Run `stripe login` in the terminal to login";
+    let returnValue = await window.showErrorMessage(
+      `You need to login with the Stripe CLI before you can continue`,
       {},
       ...[actionText]
     );

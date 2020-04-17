@@ -1,4 +1,4 @@
-import { commands, debug, window, ExtensionContext, env, Uri } from "vscode";
+import { commands, debug, window, ExtensionContext } from "vscode";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
@@ -25,20 +25,8 @@ import {
 } from "./commands";
 
 export async function activate(this: any, context: ExtensionContext) {
+  // Stripe CLi client
   let stripeClient = new StripeClient();
-
-  if (!stripeClient.isInstalled) {
-    let actionText = "Read instructions on how to install Stripe CLI";
-    let returnValue = await window.showErrorMessage(
-      `Welcome! Stripe requires the Stripe CLI to be installed on your machine`,
-      {},
-      ...[actionText]
-    );
-
-    if (returnValue === actionText) {
-      env.openExternal(Uri.parse(`https://stripe.com/docs/stripe-cli`));
-    }
-  }
 
   // CSAT survey prompt
   let survetPrompt = new SurveyPrompt(context).activate();
