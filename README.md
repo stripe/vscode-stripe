@@ -36,7 +36,7 @@ Make sure you have the [Stripe CLI](https://github.com/stripe/vscode-stripe/tree
 
 The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. 
 
-Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems
+Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems.
 
 ### Forward webhooks traffic with debugging
 
@@ -59,7 +59,7 @@ The Stripe debug configuration can be combined with other configurations, so you
 }
 ```
 
-For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specifify `events` which is an optional array that allows you to filter which events you want to have forwarded.
+For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
 #### Compound configurations
 You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
