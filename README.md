@@ -1,3 +1,5 @@
+**NOTICE: This project is PRE-RELEASE and has not been released to the public. Please provide your feedback by sending an email to auchenberg@stripe.com or open issues here on GitHub. Don't talk about this project in public. Yet.**
+
 <h1 align="center">
   <br>
     <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo_128.png?raw=true" alt="logo" width="150">
