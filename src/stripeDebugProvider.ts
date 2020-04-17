@@ -42,7 +42,7 @@ export class StripeDebugProvider {
             config.command &&
             config.command === "listen"
           ) {
-            telemetry.sendEvent("openDebug");
+            telemetry.sendEvent("debug.launch");
 
             vscode.commands.executeCommand(
               `stripe.openWebhooksListen`,
