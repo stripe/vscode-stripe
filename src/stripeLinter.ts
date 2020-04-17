@@ -9,6 +9,10 @@ import {
   workspace,
 } from "vscode";
 
+import { Telemetry } from "./telemetry";
+
+const telemetry = Telemetry.getInstance();
+
 interface Resource {
   uri: {
     path: string;
@@ -68,6 +72,8 @@ const prepareLineDiagnostics = (line: string, index: number): Diagnostic[] => {
     );
     // create new diagnostic and add to the list of total diagnostics for this line of code
     const diagnostic = new Diagnostic(range, message, severity);
+
+    telemetry.sendEvent("diagnostics.show", severity);
     diagnostics.push(diagnostic);
   }
 

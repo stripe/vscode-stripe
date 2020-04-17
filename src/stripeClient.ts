@@ -1,8 +1,10 @@
 "use strict";
 const execa = require("execa");
-
 var which = require("which");
 import { window, commands, env, Uri } from "vscode";
+import { Telemetry } from "./telemetry";
+
+const telemetry = Telemetry.getInstance();
 
 export class StripeClient {
   isInstalled: boolean;
@@ -66,6 +68,7 @@ export class StripeClient {
       const { stdout } = await execa("stripe", ["config", "--list"]);
       return stdout != "";
     } catch (err) {
+      telemetry.sendEvent("cli.notAuthenticated");
       return false;
     }
   }
@@ -76,6 +79,7 @@ export class StripeClient {
       this.isInstalled = true;
     } catch (err) {
       this.isInstalled = false;
+      telemetry.sendEvent("cli.notInstalled");
     }
   }
 

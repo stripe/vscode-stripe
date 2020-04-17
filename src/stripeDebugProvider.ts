@@ -1,6 +1,9 @@
 import { env } from "vscode";
 import * as path from "path";
 import * as vscode from "vscode";
+import { Telemetry } from "./telemetry";
+
+const telemetry = Telemetry.getInstance();
 
 export class StripeDebugProvider {
   constructor() {
@@ -39,6 +42,8 @@ export class StripeDebugProvider {
             config.command &&
             config.command === "listen"
           ) {
+            telemetry.sendEvent("openDebug");
+
             vscode.commands.executeCommand(
               `stripe.openWebhooksListen`,
               config.localUrl,

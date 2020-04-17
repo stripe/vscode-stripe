@@ -3,8 +3,13 @@ import * as querystring from "querystring";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { getExtensionInfo } from "./utils";
 import osName = require("os-name");
+import { Telemetry } from "./telemetry";
+
+const telemetry = Telemetry.getInstance();
 
 export function openWebhooksListen(localUrl: string, events?: Array<string>) {
+  telemetry.sendEvent("openWebhooksListen");
+
   let terminal = vscode.window.createTerminal("Stripe");
 
   let commandArgs = ["stripe listen"];
@@ -23,46 +28,54 @@ export function openWebhooksListen(localUrl: string, events?: Array<string>) {
 }
 
 export function openLogsStreaming() {
+  telemetry.sendEvent("openLogsStreaming");
   let terminal = vscode.window.createTerminal("Stripe");
   terminal.sendText("stripe logs tail");
   terminal.show();
 }
 
 export function startLogin() {
+  telemetry.sendEvent("login");
   let terminal = vscode.window.createTerminal("Stripe");
   terminal.sendText("stripe login");
   terminal.show();
 }
 
 export function openCLI() {
+  telemetry.sendEvent("openCLI");
   let terminal = vscode.window.createTerminal("Stripe");
   terminal.sendText("stripe ", false);
   terminal.show();
 }
 
 export function openDashboardApikeys() {
+  telemetry.sendEvent("openDashboardApikeys");
   vscode.env.openExternal(
     vscode.Uri.parse("https://dashboard.stripe.com/test/apikeys")
   );
 }
 export function openDashboardEvents() {
+  telemetry.sendEvent("openDashboardEvents");
   vscode.env.openExternal(
     vscode.Uri.parse("https://dashboard.stripe.com/test/events")
   );
 }
 export function openDashboardLogs() {
+  telemetry.sendEvent("openDashboardLogs");
   vscode.env.openExternal(
     vscode.Uri.parse("https://dashboard.stripe.com/test/logs")
   );
 }
 
 export function openDashboardWebhooks() {
+  telemetry.sendEvent("openDashboardWebhooks");
   vscode.env.openExternal(
     vscode.Uri.parse("https://dashboard.stripe.com/test/webhooks")
   );
 }
 
 export function openDashboardEventDetails(data: any) {
+  telemetry.sendEvent("openDashboardEventDetails");
   let id = data.id;
   let url = `https://dashboard.stripe.com/test/events/${id}`;
   vscode.env.openExternal(vscode.Uri.parse(url));
@@ -71,10 +84,12 @@ export function openDashboardEventDetails(data: any) {
 export function refreshEventsList(
   stripeEventsViewProvider: StripeEventsDataProvider
 ) {
+  telemetry.sendEvent("refreshEventsList");
   stripeEventsViewProvider.refresh();
 }
 
-export async function triggerEvent() {
+export async function openTriggerEvent() {
+  telemetry.sendEvent("openTriggerEvent");
   let eventName = await vscode.window.showInputBox({
     prompt: "Enter event name to trigger",
     placeHolder: "payment_intent.created",
@@ -88,6 +103,7 @@ export async function triggerEvent() {
 }
 
 export function openReportIssue() {
+  telemetry.sendEvent("openReportIssue");
   let { name, publisher } = getExtensionInfo();
 
   vscode.commands.executeCommand("vscode.openIssueReporter", {
@@ -96,12 +112,14 @@ export function openReportIssue() {
 }
 
 export function openDocs() {
+  telemetry.sendEvent("openDocs");
   vscode.env.openExternal(
     vscode.Uri.parse("https://stripe.com/docs/development")
   );
 }
 
 export function openSurvey() {
+  telemetry.sendEvent("openSurvey");
   let extensionInfo = getExtensionInfo();
 
   const query = querystring.stringify({

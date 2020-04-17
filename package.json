@@ -234,9 +234,12 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
+    "@types/universal-analytics": "^0.4.4",
     "execa": "^4.0.0",
     "moment": "^2.24.0",
     "os-name": "^3.1.0",
+    "public-ip": "^4.0.1",
+    "universal-analytics": "^0.4.20",
     "which": "^2.0.2"
   }
 }

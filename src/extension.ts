@@ -7,6 +7,8 @@ import { StripeLinter } from "./stripeLinter";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./surveyPrompt";
+import { Telemetry } from "./telemetry";
+
 import {
   openWebhooksListen,
   openLogsStreaming,
@@ -18,7 +20,7 @@ import {
   openDashboardEventDetails,
   refreshEventsList,
   startLogin,
-  triggerEvent,
+  openTriggerEvent,
   openSurvey,
   openReportIssue,
   openDocs,
@@ -28,8 +30,12 @@ export async function activate(this: any, context: ExtensionContext) {
   // Stripe CLi client
   let stripeClient = new StripeClient();
 
+  // Telemetry
+  const telemetry = Telemetry.getInstance();
+  telemetry.sendEvent("activate");
+
   // CSAT survey prompt
-  let survetPrompt = new SurveyPrompt(context).activate();
+  let surveyPrompt = new SurveyPrompt(context).activate();
 
   Resource.initialize(context);
 
@@ -117,7 +123,7 @@ export async function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openTriggerEvent", triggerEvent)
+    commands.registerCommand("stripe.openTriggerEvent", openTriggerEvent)
   );
 
   subscriptions.push(commands.registerCommand("stripe.openSurvey", openSurvey));
