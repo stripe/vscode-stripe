@@ -26,7 +26,7 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 ## Features
 
 - Easy access to key sections of the Stripe developer dashboard
-- Ability to see and access recent events from Stripe
+- See recent events from Stripe and trigger new ones.
 - Realtime API logs inside the integrated terminal
 - Launch and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
