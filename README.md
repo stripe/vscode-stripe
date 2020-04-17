@@ -9,7 +9,7 @@
 
 <h4 align="center">Bringing you Stripe inside your editor.</h4>
 
-Stripe for VS Code is a new extension for Visual Studio Code that enables developers to have an easier integration experience with Stripe by having easy access to Stripe specific information such as Code snippets, API requests logs and events directly from their editor.
+Stripe for VS Code is a new extension for Visual Studio Code that enables developers to have an easier integration experience with Stripe by having easy access to Stripe specific information such as code snippets, API requests logs and events directly from their editor.
 
 Stripe for VS Code works by extending VS Code with a new “Stripe” panel in the activity bar, provides code snippets for top languages, debug configurations and extends the command palette with Stripe specific commands to make workflows easier.
 
@@ -21,7 +21,7 @@ Stripe for VS Code works by extending VS Code with a new “Stripe” panel in t
 3. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix )
 2. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
 
-Make sure you have the [Stripe CLI]() installed on your computer.
+Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installed on your computer.
 
 ## Features
 
@@ -36,7 +36,7 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 
 The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. 
 
-Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems
+Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems.
 
 ### Forward webhooks traffic with debugging
 
@@ -59,9 +59,10 @@ The Stripe debug configuration can be combined with other configurations, so you
 }
 ```
 
-For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic.
+For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
-You can also combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
+#### Compound configurations
+You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
 
 ```
 {
@@ -73,7 +74,7 @@ You can also combine the `stripe` debug configuration with `compounds` configura
       "request": "launch",
       "command": "listen",
       "localUrl": "http://localhost:3000/stripe-events",
-      "events": ["payment_intent.succeeded", "sfsd.sdf"] // Optional array if only specifc events are wanted
+      "events": ["payment_intent.succeeded", "payment_intent.canceled"] // Optional array if only specific events are wanted
     },
     {
       "type": "node",
@@ -96,7 +97,9 @@ You can also combine the `stripe` debug configuration with `compounds` configura
 
 1. Checkout this repo
 1. Run `npm install` in terminal to install dependencies
-1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: - Start a task `npm: watch` to compile the code - Run the extension in a new VS Code window
+1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: 
+    - Start a task `npm: watch` to compile the code 
+    - Run the extension in a new VS Code window
 
 ## License
 
