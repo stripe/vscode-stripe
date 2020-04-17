@@ -26,7 +26,7 @@ Make sure you have the [Stripe CLI]() installed on your computer.
 ## Features
 
 - Easy access to key sections of the Stripe developer dashboard
-- Ability to see and access recent events from Stripe
+- See recent events from Stripe and trigger new ones.
 - Realtime API logs inside the integrated terminal
 - Launch and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
@@ -98,6 +98,9 @@ You can also combine the `stripe` debug configuration with `compounds` configura
 1. Run `npm install` in terminal to install dependencies
 1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: - Start a task `npm: watch` to compile the code - Run the extension in a new VS Code window
 
-```
+## License
 
-```
+See [LICENSE.md](LICENSE.md)
+
+## Code of Conduct
+This project has adopted the Stripe Code of Conduct. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
