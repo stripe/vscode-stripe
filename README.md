@@ -59,9 +59,10 @@ The Stripe debug configuration can be combined with other configurations, so you
 }
 ```
 
-For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic.
+For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specifify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
-You can also combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
+#### Compound configurations
+You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
 
 ```
 {
