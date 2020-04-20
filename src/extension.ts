@@ -1,9 +1,23 @@
-import { commands, debug, window, ExtensionContext } from "vscode";
+
+import {
+  commands,
+  debug,
+  window,
+  ExtensionContext,
+} from "vscode";
+
+import {
+	ServerOptions,
+	TransportKind,
+} from 'vscode-languageclient';
+
+import path from 'path'
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import { StripeLinter } from "./stripeLinter";
+import { StripeLanguageClient } from "./languageServer/client";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./surveyPrompt";
@@ -66,6 +80,24 @@ export async function activate(this: any, context: ExtensionContext) {
   let stripeLinter = new StripeLinter();
   stripeLinter.activate();
 
+  // Language Server for hover matching of Stripe methods
+  let serverModule = context.asAbsolutePath(
+    path.join("out", "languageServer", "stripeLanguageServer.js")
+  );
+  
+  let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
+
+  let serverOptions: ServerOptions = {
+    run: { module: serverModule, transport: TransportKind.ipc },
+    debug: {                    
+      module: serverModule,
+      transport: TransportKind.ipc,
+      options: debugOptions,
+    },
+  };
+
+  StripeLanguageClient.activate(context, serverOptions);
+  
   // Commands
   let subscriptions = context.subscriptions;
   let boundRefreshEventsList = refreshEventsList.bind(

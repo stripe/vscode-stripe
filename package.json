@@ -229,7 +229,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.14.17",
-    "@types/vscode": "^1.34.0",
+    "@types/vscode": "^1.44.0",
     "tslint": "^5.16.0",
     "typescript": "^3.5.1"
   },
@@ -240,6 +240,10 @@
     "os-name": "^3.1.0",
     "public-ip": "^4.0.1",
     "universal-analytics": "^0.4.20",
+    "read-pkg-up": "^7.0.1",
+    "vscode-languageclient": "^6.1.3",
+    "vscode-languageserver-textdocument": "^1.0.1",
+    "vscode-languageserver": "^6.1.1",
     "which": "^2.0.2"
   }
 }
