@@ -61,6 +61,7 @@ function findHoverMatches(params: HoverParams): string[] {
   const hoverPosition = params.position.character;
 
   let hoverMatches: string[] = [];
+  let hasMatch = false;
 
   // run through all possible stripe method calls and try to match at least one on this hovered line of code
   for (let i = 0; i < stripeMethodList.length; i++) {
@@ -76,6 +77,8 @@ function findHoverMatches(params: HoverParams): string[] {
 
     // in almost all cases there'll only be one match, but we might want to stack matches in the future
     while ((match = regexp.exec(line)) !== null) {
+      hasMatch = true;
+
       const [methodMatch, methodPositionStart] = [match[0], match.index];
       const methodPositionEnd = methodPositionStart + methodMatch.length;
 
@@ -89,6 +92,10 @@ function findHoverMatches(params: HoverParams): string[] {
           `See ${methodMatch} in the [Stripe API Reference](https://stripe.com/docs/api${stripeMethod.url})`
         );
       }
+    }
+
+    if (hasMatch) {
+      break;
     }
   }
 
