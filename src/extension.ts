@@ -17,7 +17,7 @@ import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import { StripeLinter } from "./stripeLinter";
-import { StripeLanguageClient } from "./languageServer/client";
+import { StripeLanguageClient } from "./stripeLanguageServer/client";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./surveyPrompt";
@@ -82,7 +82,7 @@ export async function activate(this: any, context: ExtensionContext) {
 
   // Language Server for hover matching of Stripe methods
   let serverModule = context.asAbsolutePath(
-    path.join("out", "languageServer", "stripeLanguageServer.js")
+    path.join("out", "stripeLanguageServer", "server.js")
   );
   
   let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };

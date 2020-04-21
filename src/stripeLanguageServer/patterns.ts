@@ -8,7 +8,6 @@ export interface RegExpMap {
 }
 
 // TODO: future autogen for this is possible with a couple of scripts
-// TODO: nest each language's regex underneath a language key and rename this file
 // eg. regexp.javascript = /balance\.retrieve, regexp.golang = /balance\.Get
 // .NET is unlikely to be supported due to the service pattern, but we can link each service type to the correct API ref top section
 export const stripeMethodList: Pattern[] = [

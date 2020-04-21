@@ -35,9 +35,9 @@ connection.onInitialize((params: InitializeParams) => {
   const result: InitializeResult = {
     capabilities: {
       textDocumentSync: {
-				openClose: true,
-				change: TextDocumentSyncKind.Full
-			},
+        openClose: true,
+        change: TextDocumentSyncKind.Full,
+      },
       hoverProvider: true,
     },
   };
@@ -66,18 +66,19 @@ function findHoverMatches(params: HoverParams): string[] {
   for (let i = 0; i < stripeMethodList.length; i++) {
     let match;
     const stripeMethod = stripeMethodList[i];
-    
-    const language = document.languageId === 'typescript' ? 'javascript' : document.languageId;
+
+    const language =
+      document.languageId === "typescript" ? "javascript" : document.languageId;
 
     const pattern = stripeMethod.regexps[language];
     if (!pattern) return [];
-    const regexp = new RegExp(pattern, 'g');
+    const regexp = new RegExp(pattern, "g");
 
     // in almost all cases there'll only be one match, but we might want to stack matches in the future
     while ((match = regexp.exec(line)) !== null) {
       const [methodMatch, methodPositionStart] = [match[0], match.index];
       const methodPositionEnd = methodPositionStart + methodMatch.length;
-      
+
       // are any stripe method calls on this line being hovered over?
       // check for where the stripe method call is and see if the hover position is within that character range
       if (
