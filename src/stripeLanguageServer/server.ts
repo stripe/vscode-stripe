@@ -91,6 +91,7 @@ function findHoverMatches(params: HoverParams): string[] {
         hoverMatches.push(
           `See ${methodMatch} in the [Stripe API Reference](https://stripe.com/docs/api${stripeMethod.url})`
         );
+        connection.telemetry.logEvent({name: 'ls.apihover', data: methodMatch});
       }
     }
 
