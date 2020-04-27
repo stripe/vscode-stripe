@@ -32,6 +32,7 @@ Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installe
 - Realtime API logs inside the integrated terminal
 - Launch and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
+- Inline links to Stripe API reference when hovering over Stripe library code.
 - JavaScript code snippets for most common Stripe API scenarios
 
 ### Stripe API key linting
