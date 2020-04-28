@@ -132,3 +132,9 @@ export function openSurvey() {
   const url = `https://forms.gle/eP2mtQ8Jmra4pZBP7?${query}`;
   vscode.env.openExternal(vscode.Uri.parse(url));
 }
+
+export function openTelemetryInfo() {
+  vscode.env.openExternal(
+    vscode.Uri.parse("https://code.visualstudio.com/docs/getstarted/telemetry")
+  );
+}

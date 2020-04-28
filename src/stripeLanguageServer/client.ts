@@ -6,6 +6,10 @@ import {
 
 import { workspace, ExtensionContext, languages } from "vscode";
 
+import { Telemetry } from "../telemetry";
+
+const telemetry = Telemetry.getInstance();
+
 export class StripeLanguageClient {
   static activate(context: ExtensionContext, serverOptions: ServerOptions) {
     let clientOptions: LanguageClientOptions = {
@@ -22,6 +26,11 @@ export class StripeLanguageClient {
       serverOptions,
       clientOptions
     );
+
+    client.onTelemetry((data: any) => {
+      const eventData = data.data || null;
+      telemetry.sendEvent(data.name, eventData);
+    });
 
     client.start();
   }

@@ -21,6 +21,7 @@ import { StripeLanguageClient } from "./stripeLanguageServer/client";
 import { StripeClient } from "./stripeClient";
 import { Resource } from "./resources";
 import { SurveyPrompt } from "./surveyPrompt";
+import { TelemetryPrompt } from "./telemetryPrompt";
 import { Telemetry } from "./telemetry";
 
 import {
@@ -36,6 +37,7 @@ import {
   startLogin,
   openTriggerEvent,
   openSurvey,
+  openTelemetryInfo,
   openReportIssue,
   openDocs,
 } from "./commands";
@@ -43,6 +45,9 @@ import {
 export async function activate(this: any, context: ExtensionContext) {
   // Stripe CLi client
   let stripeClient = new StripeClient();
+
+  // disclosure of telemetry prompt
+  let telemetryPrompt = new TelemetryPrompt(context).activate();
 
   // Telemetry
   const telemetry = Telemetry.getInstance();
@@ -159,6 +164,8 @@ export async function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(commands.registerCommand("stripe.openSurvey", openSurvey));
+
+  subscriptions.push(commands.registerCommand("stripe.openTelemetryInfo", openTelemetryInfo));
 
   subscriptions.push(
     commands.registerCommand("stripe.openReportIssue", openReportIssue)
