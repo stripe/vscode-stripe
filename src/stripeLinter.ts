@@ -30,9 +30,9 @@ const stripeKeysRegex = new RegExp(
   "g"
 );
 const diagnosticMessageNoGit =
-  "This Stripe API Key is hardcoded. For better security, consider using a .env file.  See https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
+  "This Stripe API Key is hardcoded. For better security, consider using a .env file.  See https://stripe.com/docs/keys#safe-keys for more advice.";
 const diagnosticMessageGit =
-  "This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#keeping-your-keys-safe for more advice.";
+  "This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#safe-keys for more advice.";
 
 let diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCollection(
   "StripeHardCodedAPIKeys"
