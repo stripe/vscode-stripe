@@ -1,6 +1,7 @@
 "use strict";
 const execa = require("execa");
 var which = require("which");
+import * as vscode from "vscode";
 import { window, commands, env, Uri } from "vscode";
 import { Telemetry } from "./telemetry";
 
@@ -28,9 +29,19 @@ export class StripeClient {
       return;
     }
 
+    let flags: object[] = [];
+    if (!this.isTelemetryEnabled()) {
+      flags.push({
+        STRIPE_CLI_TELEMETRY_OPTOUT: true,
+      });
+    }
+
     try {
       let args: string[] = command.split(" ");
-      const { stdout } = await execa("stripe", args);
+      const { stdout } = await execa("stripe", args, {
+        env: flags,
+      });
+
       let json = JSON.parse(stdout);
       return json;
     } catch (err) {
@@ -71,6 +82,15 @@ export class StripeClient {
       telemetry.sendEvent("cli.notAuthenticated");
       return false;
     }
+  }
+
+  isTelemetryEnabled() {
+    let config = vscode.workspace.getConfiguration("telemetry");
+    if (config) {
+      return config.get<boolean>("enableTelemetry");
+    }
+
+    return false;
   }
 
   detectInstalled() {
