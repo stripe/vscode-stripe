@@ -29,3 +29,25 @@ export function getOSType(): OSType {
     return OSType.unknown;
   }
 }
+
+export async function showQuickPickWithValues(
+  placeholder: string,
+  items: string[]
+) {
+  return new Promise((resolve, reject) => {
+    const input = vscode.window.createQuickPick();
+    input.placeholder = placeholder;
+    input.items = items.map((i) => {
+      return {
+        label: i,
+      };
+    });
+
+    input.onDidAccept(() => {
+      let value = input.selectedItems[0].label;
+      resolve(value);
+    });
+
+    input.show();
+  });
+}

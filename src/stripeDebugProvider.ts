@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { Telemetry } from "./telemetry";
+import { showQuickPickWithValues } from "./utils";
 
 const telemetry = Telemetry.getInstance();
 
@@ -42,7 +43,10 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
         telemetry.sendEvent("debug.launch");
 
         if (!config.localUrl) {
-          let action = await showLocaUrlPrompt();
+          let action = await showQuickPickWithValues(
+            "Do you want to forward traffic to your local server?",
+            ["Yes", "No"]
+          );
           if (action === "Yes") {
             let localUrl = await vscode.window.showInputBox({
               prompt: "Enter local server url",
@@ -71,19 +75,4 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
       request: "",
     };
   }
-}
-
-async function showLocaUrlPrompt() {
-  return new Promise((resolve, reject) => {
-    const input = vscode.window.createQuickPick();
-    input.placeholder = "Do you want to forward traffic to your local server?";
-    input.items = [{ label: "Yes" }, { label: "No" }];
-
-    input.onDidAccept(() => {
-      let value = input.selectedItems[0].label;
-      resolve(value);
-    });
-
-    input.show();
-  });
 }
