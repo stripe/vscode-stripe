@@ -20,8 +20,8 @@ Stripe for VS Code works by extending VS Code with a new “Stripe” panel in t
 ## Getting started
 
 1. Go to [releases](https://github.com/stripe/vscode-stripe/releases) and download the `.VSIX` file from the latest release
-3. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix )
-2. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
+2. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix)
+3. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
 
 Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installed on your computer.
 
@@ -37,7 +37,7 @@ Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installe
 
 ### Stripe API key linting
 
-The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code. 
+The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code.
 
 Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems.
 
@@ -65,6 +65,7 @@ The Stripe debug configuration can be combined with other configurations, so you
 For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
 #### Compound configurations
+
 You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
 
 ```
@@ -100,13 +101,28 @@ You can combine the `stripe` debug configuration with `compounds` configurations
 
 1. Checkout this repo
 1. Run `npm install` in terminal to install dependencies
-1. Run the `Run Extension` target in the Debug View or simply press `F5` This will: 
-    - Start a task `npm: watch` to compile the code 
-    - Run the extension in a new VS Code window
+1. Run the `Run Extension` target in the Debug View or simply press `F5` This will:
+   - Start a task `npm: watch` to compile the code
+   - Run the extension in a new VS Code window
 
 ## License
 
 See [LICENSE.md](LICENSE.md)
 
+## Third-Party Notices
+
+| Name                               | Description                                                         | Version |    Size | License |
+| :--------------------------------- | :------------------------------------------------------------------ | :------ | ------: | :-----: |
+| @types/universal-analytics         | TypeScript definitions for universal-analytics                      | 0.4.4   | unknown |   MIT   |
+| execa                              | Process execution for humans                                        | 4.0.0   |     28k |   MIT   |
+| moment                             | Parse, validate, manipulate, and display dates                      | 2.24.0  |  276.8k |   MIT   |
+| os-name                            | Get the name of the current operating system. Example: macOS Sierra | 3.1.0   |   35.4k |   MIT   |
+| public-ip                          | Get your public IP address - very fast!                             | 4.0.1   |    2.6k |   MIT   |
+| universal-analytics                | A node module for Google's Universal Analytics tracking             | 0.4.20  |  673.9k |   MIT   |
+| vscode-languageclient              | VSCode Language client implementation                               | 6.1.3   |  183.9k |   MIT   |
+| vscode-languageserver              | Language server implementation for node                             | 6.1.1   |   91.5k |   MIT   |
+| vscode-languageserver-textdocument | A simple text document implementation for Node LSP servers          | 1.0.1   |    3.8k |   MIT   |
+
 ## Code of Conduct
+
 This project has adopted the Stripe Code of Conduct. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
