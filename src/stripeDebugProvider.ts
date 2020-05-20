@@ -1,8 +1,5 @@
-import { env } from "vscode";
-import * as path from "path";
 import * as vscode from "vscode";
 import { Telemetry } from "./telemetry";
-import { ImplementationRequest } from "vscode-languageclient";
 
 const telemetry = Telemetry.getInstance();
 

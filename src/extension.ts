@@ -1,17 +1,8 @@
+import { commands, debug, window, ExtensionContext } from "vscode";
 
-import {
-  commands,
-  debug,
-  window,
-  ExtensionContext,
-} from "vscode";
+import { ServerOptions, TransportKind } from "vscode-languageclient";
 
-import {
-	ServerOptions,
-	TransportKind,
-} from 'vscode-languageclient';
-
-import path from 'path'
+import path from "path";
 import { StripeViewDataProvider } from "./stripeView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
@@ -76,10 +67,7 @@ export async function activate(this: any, context: ExtensionContext) {
   });
 
   // Debug provider
-  debug.registerDebugConfigurationProvider(
-    "stripe",
-    new StripeDebugProvider().getProvider()
-  );
+  debug.registerDebugConfigurationProvider("stripe", new StripeDebugProvider());
 
   // Stripe Linter
   let stripeLinter = new StripeLinter();
@@ -89,12 +77,12 @@ export async function activate(this: any, context: ExtensionContext) {
   let serverModule = context.asAbsolutePath(
     path.join("out", "stripeLanguageServer", "server.js")
   );
-  
+
   let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
 
   let serverOptions: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
-    debug: {                    
+    debug: {
       module: serverModule,
       transport: TransportKind.ipc,
       options: debugOptions,
@@ -102,7 +90,7 @@ export async function activate(this: any, context: ExtensionContext) {
   };
 
   StripeLanguageClient.activate(context, serverOptions);
-  
+
   // Commands
   let subscriptions = context.subscriptions;
   let boundRefreshEventsList = refreshEventsList.bind(
@@ -165,7 +153,9 @@ export async function activate(this: any, context: ExtensionContext) {
 
   subscriptions.push(commands.registerCommand("stripe.openSurvey", openSurvey));
 
-  subscriptions.push(commands.registerCommand("stripe.openTelemetryInfo", openTelemetryInfo));
+  subscriptions.push(
+    commands.registerCommand("stripe.openTelemetryInfo", openTelemetryInfo)
+  );
 
   subscriptions.push(
     commands.registerCommand("stripe.openReportIssue", openReportIssue)
