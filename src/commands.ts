@@ -4,13 +4,14 @@ import { StripeEventsDataProvider } from "./stripeEventsView";
 import { getExtensionInfo } from "./utils";
 import osName = require("os-name");
 import { Telemetry } from "./telemetry";
+import { StripeTerminal } from "./stripeTerminal";
 
 const telemetry = Telemetry.getInstance();
 
+const terminal = new StripeTerminal();
+
 export function openWebhooksListen(localUrl: string, events?: Array<string>) {
   telemetry.sendEvent("openWebhooksListen");
-
-  let terminal = vscode.window.createTerminal("Stripe");
 
   let commandArgs = ["stripe listen"];
 
@@ -23,22 +24,18 @@ export function openWebhooksListen(localUrl: string, events?: Array<string>) {
   }
 
   let command = commandArgs.join(" ");
-  terminal.sendText(command);
-  terminal.show();
+
+  terminal.execute(command);
 }
 
 export function openLogsStreaming() {
   telemetry.sendEvent("openLogsStreaming");
-  let terminal = vscode.window.createTerminal("Stripe");
-  terminal.sendText("stripe logs tail");
-  terminal.show();
+  terminal.execute("stripe logs tail");
 }
 
 export function startLogin() {
   telemetry.sendEvent("login");
-  let terminal = vscode.window.createTerminal("Stripe");
-  terminal.sendText("stripe login");
-  terminal.show();
+  terminal.execute("stripe login");
 }
 
 export function openCLI() {
@@ -96,9 +93,7 @@ export async function openTriggerEvent() {
   });
 
   if (eventName) {
-    let terminal = vscode.window.createTerminal("Stripe");
-    terminal.sendText(`stripe trigger ${eventName}`);
-    terminal.show();
+    terminal.execute(`stripe trigger ${eventName}`);
 
     // Trigger events refresh after 5s as we don't have a way to know when it has finished.
     setTimeout(() => {
