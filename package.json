@@ -33,17 +33,20 @@
     "onDebugInitialConfigurations",
     "onDebug",
     "onView:stripeView",
+    "onCommand:stripe.login",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
     "onCommand:stripe.openLogsStreaming",
     "onCommand:stripe.openDashboardApikeys",
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
+    "onCommand:stripe.openDashboardEventDetails",
     "onCommand:stripe.openDashboardWebhooks",
     "onCommand:stripe.openTriggerEvent",
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
     "onCommand:stripe.openSurvey",
+    "onCommand:stripe.refreshEventsList",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
@@ -140,8 +143,8 @@
       },
       {
         "category": "Stripe",
-        "command": "stripe.openDocs",
-        "title": "Tweet us your feedback"
+        "command": "stripe.openSurvey",
+        "title": "Rate and provide feedback"
       }
     ],
     "views": {
