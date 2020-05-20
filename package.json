@@ -151,7 +151,7 @@
       "stripe": [
         {
           "id": "stripeView",
-          "name": "Dashboard"
+          "name": "Dashboard (in test mode)"
         },
         {
           "id": "stripeEventsView",
