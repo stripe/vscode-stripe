@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as querystring from "querystring";
 import { StripeEventsDataProvider } from "./stripeEventsView";
-import { getExtensionInfo } from "./utils";
+import { getExtensionInfo, showQuickPickWithValues } from "./utils";
 import osName = require("os-name");
 import { Telemetry } from "./telemetry";
 import { StripeTerminal } from "./stripeTerminal";
@@ -87,10 +87,52 @@ export function refreshEventsList(
 
 export async function openTriggerEvent() {
   telemetry.sendEvent("openTriggerEvent");
-  let eventName = await vscode.window.showInputBox({
-    prompt: "Enter event name to trigger",
-    placeHolder: "payment_intent.created",
-  });
+
+  let eventName = await showQuickPickWithValues("Enter event name to trigger", [
+    "balance.available",
+    "charge.captured",
+    "charge.dispute.created",
+    "charge.failed",
+    "charge.refunded",
+    "charge.succeeded",
+    "checkout.session.completed",
+    "customer.created",
+    "customer.deleted",
+    "customer.source.created",
+    "customer.source.updated",
+    "customer.subscription.created",
+    "customer.subscription.deleted",
+    "customer.subscription.updated",
+    "customer.updated",
+    "invoice.created",
+    "invoice.finalized",
+    "invoice.payment_failed",
+    "invoice.payment_succeeded",
+    "invoice.updated",
+    "issuing_authorization.request",
+    "issuing_card.created",
+    "issuing_cardholder.created",
+    "payment_intent.amount_capturable_updated",
+    "payment_intent.canceled",
+    "payment_intent.created",
+    "payment_intent.payment_failed",
+    "payment_intent.succeeded",
+    "payment_method.attached",
+    "plan.created",
+    "plan.deleted",
+    "plan.updated",
+    "product.created",
+    "product.deleted",
+    "product.updated",
+    "setup_intent.canceled",
+    "setup_intent.created",
+    "setup_intent.setup_failed",
+    "setup_intent.succeeded",
+    "subscription_schedule.canceled",
+    "subscription_schedule.created",
+    "subscription_schedule.released",
+    "subscription_schedule.updated",
+  ]);
 
   if (eventName) {
     terminal.execute(`stripe trigger ${eventName}`);
