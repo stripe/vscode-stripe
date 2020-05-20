@@ -1,17 +1,21 @@
 "use strict";
 const execa = require("execa");
-var which = require("which");
 import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
 import { window, commands, env, Uri } from "vscode";
 import { Telemetry } from "./telemetry";
+import { OSType, getOSType } from "./utils";
 
 const telemetry = Telemetry.getInstance();
 
 export class StripeClient {
   isInstalled: boolean;
+  cliPath: string;
 
   constructor() {
     this.isInstalled = false;
+    this.cliPath = "";
   }
 
   private async execute(command: string) {
@@ -38,7 +42,7 @@ export class StripeClient {
 
     try {
       let args: string[] = command.split(" ");
-      const { stdout } = await execa("stripe", args, {
+      const { stdout } = await execa(this.cliPath, args, {
         env: flags,
       });
 
@@ -76,7 +80,7 @@ export class StripeClient {
 
   async isAuthenticated(): Promise<Boolean> {
     try {
-      const { stdout } = await execa("stripe", ["config", "--list"]);
+      const { stdout } = await execa(this.cliPath, ["config", "--list"]);
       return stdout != "";
     } catch (err) {
       telemetry.sendEvent("cli.notAuthenticated");
@@ -94,10 +98,31 @@ export class StripeClient {
   }
 
   detectInstalled() {
-    try {
-      var resolvedPath = which.sync("stripe");
+    let osType: OSType = getOSType();
+    let installPaths: string[] = [];
+
+    switch (osType) {
+      case OSType.macOS:
+        // HomeBrew install path on macOS
+        installPaths = ["/usr/local/bin/stripe"];
+        break;
+      case OSType.linux:
+        // apt-get install path on ubuntu + yum install path on centOS
+        installPaths = ["/usr/local/bin/stripe"];
+        break;
+      case OSType.windows:
+        // scoop install path on Windows 10
+        let userProfile = process.env.USERPROFILE || "";
+        installPaths = [path.join(userProfile, "scoop", "shims", "stripe.exe")];
+        break;
+    }
+
+    let validInstallPath = getInstallPath(installPaths);
+
+    if (validInstallPath) {
       this.isInstalled = true;
-    } catch (err) {
+      this.cliPath = validInstallPath;
+    } else {
       this.isInstalled = false;
       telemetry.sendEvent("cli.notInstalled");
     }
@@ -107,4 +132,18 @@ export class StripeClient {
     let events = this.execute("events list");
     return events;
   }
+}
+
+function getInstallPath(paths: string[]): string {
+  for (let i = 0; i < paths.length; i++) {
+    const path = paths[i];
+    try {
+      let isValidPath = fs.statSync(path).isFile();
+      if (isValidPath) {
+        return path;
+      }
+    } catch (err) {}
+  }
+
+  return "";
 }
