@@ -33,7 +33,7 @@
   },
   "Create Payment Intent": {
     "description": "Create a Payment Intent",
-    "prefix": ["stripePaymentIntentsCreate"],
+    "prefix": ["StripePaymentIntentsCreate"],
     "body": [
       "const paymentIntent = await stripe.paymentIntents.create({",
       "   amount: ${1:1099},",
