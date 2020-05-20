@@ -117,6 +117,21 @@ export class StripeClient {
         break;
     }
 
+    // Handle custom CLI path setting
+    let config = vscode.workspace.getConfiguration("stripe");
+    if (config) {
+      let cliInstallPath = config.get<string>("cliInstallPath");
+      if (cliInstallPath) {
+        let validInstallPath = getInstallPath([cliInstallPath]);
+        if (!validInstallPath) {
+          vscode.window.showErrorMessage(
+            `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${cliInstallPath}'`,
+            ...["Ok"]
+          );
+        }
+      }
+    }
+
     let validInstallPath = getInstallPath(installPaths);
 
     if (validInstallPath) {

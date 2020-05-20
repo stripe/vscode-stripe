@@ -58,6 +58,16 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Stripe",
+      "type": "object",
+      "properties": {
+        "stripe.cliInstallPath": {
+          "description": "Install path for the Stripe CLI executable (include the complete filepath to the executable)",
+          "type": "string"
+        }
+      }
+    },
     "commands": [
       {
         "category": "Stripe",
