@@ -99,6 +99,11 @@ export async function openTriggerEvent() {
     let terminal = vscode.window.createTerminal("Stripe");
     terminal.sendText(`stripe trigger ${eventName}`);
     terminal.show();
+
+    // Trigger events refresh after 5s as we don't have a way to know when it has finished.
+    setTimeout(() => {
+      vscode.commands.executeCommand("stripe.refreshEventsList");
+    }, 5000);
   }
 }
 
