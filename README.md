@@ -105,6 +105,10 @@ You can combine the `stripe` debug configuration with `compounds` configurations
    - Start a task `npm: watch` to compile the code
    - Run the extension in a new VS Code window
 
+## Telemetry
+
+The Stripe VS Code Extension collects basic telemetry in order to improve this extension's experience. If you'd like to opt out we respect the [global telemetry setting in VS Code](https://code.visualstudio.com/docs/getstarted/telemetry), so we won't collect any data unless this setting is turned on.
+
 ## License
 
 See [LICENSE.md](LICENSE.md)
