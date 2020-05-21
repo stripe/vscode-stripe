@@ -153,6 +153,10 @@ export function openReportIssue() {
   });
 }
 
+export function openWebhooksDebugConfigure() {
+  vscode.commands.executeCommand("workbench.action.debug.configure");
+}
+
 export function openDocs() {
   telemetry.sendEvent("openDocs");
   vscode.env.openExternal(

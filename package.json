@@ -79,6 +79,11 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.openWebhooksDebugConfigure",
+        "title": "Configure webhooks debugging"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.openLogsStreaming",
         "title": "Start API logs streaming with CLI"
       },

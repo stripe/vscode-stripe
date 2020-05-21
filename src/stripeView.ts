@@ -21,7 +21,7 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
 
     items.push(apiKeysItem);
 
-    let eventsItem = new StripeTreeItem("Open Events", "openDashboardEvents");
+    let eventsItem = new StripeTreeItem("Open events", "openDashboardEvents");
     eventsItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
       light: Resource.icons.light.linkExternal,
@@ -49,12 +49,12 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     items.push(logItem);
 
     let webhooksItem = new StripeTreeItem(
-      "Open Webhooks",
+      "Open webhooks",
       "openDashboardWebhooks"
     );
 
     let webhooksListenItem = new StripeTreeItem(
-      "Start Webhooks listening",
+      "Start webhooks listening",
       "openWebhooksListen"
     );
     webhooksListenItem.setIcon({
@@ -63,6 +63,17 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     });
 
     webhooksItem.addChild(webhooksListenItem);
+
+    let webhooksDebugItem = new StripeTreeItem(
+      "Configure debugging",
+      "openWebhooksDebugConfigure"
+    );
+    webhooksDebugItem.setIcon({
+      dark: Resource.icons.dark.settings,
+      light: Resource.icons.light.settings,
+    });
+
+    webhooksItem.addChild(webhooksDebugItem);
 
     webhooksItem.setIcon({
       dark: Resource.icons.dark.linkExternal,

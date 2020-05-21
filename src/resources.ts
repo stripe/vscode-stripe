@@ -25,6 +25,9 @@ export class Resource {
         book: context.asAbsolutePath(
           path.join("resources", "icons", "light", "book.svg")
         ),
+        settings: context.asAbsolutePath(
+          path.join("resources", "icons", "light", "settings-gear.svg")
+        ),
       },
       dark: {
         linkExternal: context.asAbsolutePath(
@@ -44,6 +47,9 @@ export class Resource {
         ),
         book: context.asAbsolutePath(
           path.join("resources", "icons", "dark", "book.svg")
+        ),
+        settings: context.asAbsolutePath(
+          path.join("resources", "icons", "dark", "settings-gear.svg")
         ),
       },
     };

@@ -17,6 +17,7 @@ import { Telemetry } from "./telemetry";
 
 import {
   openWebhooksListen,
+  openWebhooksDebugConfigure,
   openLogsStreaming,
   openCLI,
   openDashboardEvents,
@@ -162,6 +163,12 @@ export async function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(commands.registerCommand("stripe.openDocs", openDocs));
+  subscriptions.push(
+    commands.registerCommand(
+      "stripe.openWebhooksDebugConfigure",
+      openWebhooksDebugConfigure
+    )
+  );
 }
 
 export function deactivate() {}
