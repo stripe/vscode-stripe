@@ -7,7 +7,7 @@ const telemetry = Telemetry.getInstance();
 export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
   constructor() {
     vscode.debug.onDidTerminateDebugSession((e: vscode.DebugSession) => {
-      if (e.name === `Stripe: Listen`) {
+      if (e.name === `Stripe: Webhooks listen`) {
         // TODO: Find a way to stop the CLI from the given debug session.
       }
     });
@@ -19,7 +19,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
   ): Promise<vscode.DebugConfiguration[]> {
     return Promise.resolve([
       {
-        name: "Stripe: Webhooks Forward",
+        name: "Stripe: Webhooks listen",
         type: "stripe",
         request: "launch",
         command: "listen",

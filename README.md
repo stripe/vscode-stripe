@@ -30,7 +30,7 @@ Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installe
 - Easy access to key sections of the Stripe developer dashboard
 - See recent events from Stripe and trigger new ones.
 - Realtime API logs inside the integrated terminal
-- Launch and forward webhooks traffic to your local machine via commands and debug configurations.
+- Listen for and forward webhooks traffic to your local machine via commands and debug configurations.
 - Linting of Stripe API keys to make sure you don't expose them by mistake.
 - Inline links to Stripe API reference when hovering over Stripe library code.
 - JavaScript code snippets for most common Stripe API scenarios
@@ -41,9 +41,9 @@ The built-in API key linter checks for Stripe API keys inside your source code, 
 
 Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems.
 
-### Forward webhooks traffic with debugging
+### Listen to webhooks traffic with debugging
 
-You can forward webhooks traffic to your local machine by either running the command `Stripe: "Start Webhooks events listening with CLI` or by creating a debug configuration that allows you to launch webhooks forwarding when starting debugging or pressing `F5`.
+You can listen for and forward webhooks traffic to your local machine by either running the command `Stripe: "Start Webhooks events listening with CLI` or by creating a debug configuration that allows you to launch webhooks forwarding when starting debugging or pressing `F5`.
 
 The Stripe debug configuration can be combined with other configurations, so you with one click/press can launch both Stripe and your local API instance.
 
@@ -52,7 +52,7 @@ The Stripe debug configuration can be combined with other configurations, so you
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Stripe: Webhooks Forward",
+      "name": "Stripe: Webhooks listen",
       "type": "stripe",
       "request": "launch",
       "command": "listen",
@@ -73,7 +73,7 @@ You can combine the `stripe` debug configuration with `compounds` configurations
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Stripe: Webhooks Forward",
+      "name": "Stripe: Webhooks listen",
       "type": "stripe",
       "request": "launch",
       "command": "listen",
@@ -91,7 +91,7 @@ You can combine the `stripe` debug configuration with `compounds` configurations
   "compounds": [
     {
       "name": "Launch: Stripe + API",
-      "configurations": ["Node: Launch Program", "Stripe: Webhooks Forward"]
+      "configurations": ["Node: Launch Program", "Stripe: Webhooks listen"]
     }
   ]
 }

@@ -184,14 +184,13 @@
         "label": "Stripe",
         "configurationSnippets": [
           {
-            "label": "Stripe: Webhooks Forward",
-            "description": "Forward Stripe webhooks events",
+            "label": "Stripe: Webhooks listen",
+            "description": "Listen for and forward Stripe webhooks events",
             "body": {
-              "name": "Stripe: Webhooks Forward",
+              "name": "Stripe: Webhooks listen",
               "type": "stripe",
               "request": "launch",
-              "command": "listen",
-              "localUrl": "http://localhost:3000/stripe-events"
+              "command": "listen"
             }
           }
         ],
