@@ -20,7 +20,7 @@ Stripe for VS Code works by extending VS Code with a new “Stripe” panel in t
 ## Getting started
 
 1. Go to [releases](https://github.com/stripe/vscode-stripe/releases) and download the `.VSIX` file from the latest release
-2. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix)
+2. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix) or run `code --install-extension <path to myextension.vsix>` from your terminal.
 3. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
 
 Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installed on your computer.
