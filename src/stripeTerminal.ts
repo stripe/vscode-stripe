@@ -34,6 +34,11 @@ export class StripeTerminal {
       let singleUseTerminal = vscode.window.createTerminal();
       singleUseTerminal.sendText(command);
       singleUseTerminal.show();
+
+      // Dispose single use terminal after 8 sec / max duration a command seem to run
+      setTimeout(() => {
+        singleUseTerminal.dispose();
+      }, 8000);
     } else if (isActive) {
       // Terminal is still active, so exit running command
       this.terminal.sendText("\u0003");
