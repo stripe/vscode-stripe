@@ -25,12 +25,16 @@ export function openWebhooksListen(localUrl: string, events?: Array<string>) {
 
   let command = commandArgs.join(" ");
 
-  terminal.execute(command);
+  terminal.execute(command, {
+    longRuning: true,
+  });
 }
 
 export function openLogsStreaming() {
   telemetry.sendEvent("openLogsStreaming");
-  terminal.execute("stripe logs tail");
+  terminal.execute("stripe logs tail", {
+    longRuning: true,
+  });
 }
 
 export function startLogin() {
