@@ -12,16 +12,16 @@ export class StripeTerminal {
   }
 
   public async execute(command: string, options?: any): Promise<void> {
+    let terminalName = "Stripe";
     let isNew = false;
     //  We currently don't have a VS Code API to detect the launched process, or to know if the executed conmand has returned. So we are storing the intention of the last run command.
     let isCommandLongRunning = options ? options.longRuning : false;
 
     let stripeTerminal = vscode.window.terminals.find(
-      (f) => f.name == "Stripe"
+      (f) => f.name == terminalName
     );
 
     if (!stripeTerminal) {
-      let terminalName = isCommandLongRunning ? "Stripe (long-run)" : "Stripe";
       this.terminal = vscode.window.createTerminal(terminalName);
       isNew = true;
     } else {
