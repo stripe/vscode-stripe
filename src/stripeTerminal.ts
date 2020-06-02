@@ -30,7 +30,7 @@ export class StripeTerminal {
 
     let isActive = !isNew && this.terminal.exitStatus == undefined;
     if (isActive && this.lastCommandLongRunning) {
-      // Use single use termimal as the last command is expected to still run
+      // Use single use termimal as the last command is expected to still run in the Stripe termial
       let singleUseTerminal = vscode.window.createTerminal();
       singleUseTerminal.sendText(command);
       singleUseTerminal.show();
