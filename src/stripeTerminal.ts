@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import psList from "ps-list";
+import tasklist from "tasklist";
+import { getOSType, OSType } from "./utils";
 
 export class StripeTerminal {
   mainTerminal: vscode.Terminal | null;
@@ -74,11 +76,23 @@ export class StripeTerminal {
   }
 
   async isStripeCLIRunningWithLongRunningProcess(): Promise<boolean> {
-    let runningProcesses = await psList();
-    let stripeCLIprocess = runningProcesses.find((p) => p.name == "stripe");
+    if (getOSType() == OSType.windows) {
+      let runningProcesses = await tasklist();
+      let stripeCLIprocess = runningProcesses.find(
+        (p) => p.imageName == "stripe.exe"
+      );
 
-    if (stripeCLIprocess && stripeCLIprocess.cmd) {
-      return this.isCommandLongRunning(stripeCLIprocess.cmd);
+      if (stripeCLIprocess) {
+        // On Windows we can't get the process arguments, so always assume it's long running
+        return true;
+      }
+    } else {
+      let runningProcesses = await psList();
+      let stripeCLIprocess = runningProcesses.find((p) => p.name == "stripe");
+
+      if (stripeCLIprocess && stripeCLIprocess.cmd) {
+        return this.isCommandLongRunning(stripeCLIprocess.cmd);
+      }
     }
 
     return false;
