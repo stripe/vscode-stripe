@@ -4,11 +4,9 @@ import psList from "ps-list";
 export class StripeTerminal {
   mainTerminal: vscode.Terminal | null;
   splitTerminal: vscode.Terminal | null;
-  lastCommandLongRunning: boolean;
 
   constructor() {
     this.mainTerminal = null;
-    this.lastCommandLongRunning = false;
     this.splitTerminal = null;
 
     vscode.window.onDidCloseTerminal((terminal) => {
@@ -22,12 +20,11 @@ export class StripeTerminal {
     });
   }
 
-  public async execute(command: string, options?: any): Promise<void> {
-    let terminalName = "Stripe";
+  public async execute(command: string): Promise<void> {
     let isNewCommandLongRunning = this.isCommandLongRunning(command);
 
     if (!this.mainTerminal) {
-      this.mainTerminal = vscode.window.createTerminal(terminalName);
+      this.mainTerminal = vscode.window.createTerminal("Stripe");
     }
 
     let isLongRunningCommandRunning = await this.isStripeCLIRunningWithLongRunningProcess();
@@ -88,21 +85,15 @@ export class StripeTerminal {
   }
 
   isCommandLongRunning(command: string): boolean {
-    let commands = ["stripe listen", "stripe logs tail"];
+    let knownCommands = ["stripe listen", "stripe logs tail"];
 
-    for (let i = 0; i < commands.length; i++) {
-      const command = commands[i];
-      if (command.indexOf(command) > 0) {
+    for (let i = 0; i < knownCommands.length; i++) {
+      const knowCommand = knownCommands[i];
+      if (command.indexOf(knowCommand) > -1) {
         return true;
       }
     }
 
     return false;
-  }
-
-  async getOpenTerminalProcessIds(): Promise<(number | undefined)[]> {
-    return Promise.all(
-      vscode.window.terminals.map(async (f) => await f.processId)
-    );
   }
 }
