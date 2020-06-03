@@ -45,6 +45,7 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     });
 
     logItem.addChild(logStreamItem);
+    logItem.expand();
 
     items.push(logItem);
 
@@ -74,6 +75,8 @@ export class StripeViewDataProvider extends StripeTreeViewDataProvider {
     });
 
     webhooksItem.addChild(webhooksDebugItem);
+
+    webhooksItem.expand();
 
     webhooksItem.setIcon({
       dark: Resource.icons.dark.linkExternal,
