@@ -1,52 +1,108 @@
 import * as vscode from "vscode";
+import psList from "ps-list";
 
 export class StripeTerminal {
-  terminal: vscode.Terminal | null;
-  longRunTerminal: vscode.Terminal | null;
+  mainTerminal: vscode.Terminal | null;
+  splitTerminal: vscode.Terminal | null;
   lastCommandLongRunning: boolean;
 
   constructor() {
-    this.terminal = null;
+    this.mainTerminal = null;
     this.lastCommandLongRunning = false;
-    this.longRunTerminal = null;
+    this.splitTerminal = null;
+
+    vscode.window.onDidCloseTerminal((terminal) => {
+      if (terminal == this.mainTerminal) {
+        this.mainTerminal = null;
+      }
+
+      if (terminal == this.splitTerminal) {
+        this.splitTerminal = null;
+      }
+    });
   }
 
   public async execute(command: string, options?: any): Promise<void> {
     let terminalName = "Stripe";
-    let isNew = false;
-    //  We currently don't have a VS Code API to detect the launched process, or to know if the executed conmand has returned. So we are storing the intention of the last run command.
-    let isCommandLongRunning = options ? options.longRuning : false;
+    let isNewCommandLongRunning = this.isCommandLongRunning(command);
 
-    let stripeTerminal = vscode.window.terminals.find(
-      (f) => f.name == terminalName
-    );
+    if (!this.mainTerminal) {
+      this.mainTerminal = vscode.window.createTerminal(terminalName);
+    }
 
-    if (!stripeTerminal) {
-      this.terminal = vscode.window.createTerminal(terminalName);
-      isNew = true;
+    let isLongRunningCommandRunning = await this.isStripeCLIRunningWithLongRunningProcess();
+
+    if (isNewCommandLongRunning) {
+      // Always use main terminal for long runnig commands
+      if (isLongRunningCommandRunning) {
+        // Terminal is still active, so exit running command
+        this.mainTerminal.sendText("\u0003");
+      }
+
+      this.mainTerminal.sendText(command);
+      this.mainTerminal.show();
+    } else if (isLongRunningCommandRunning) {
+      // CLI is running, but new command isn't long running, so split
+      this.mainTerminal.show();
+
+      if (!this.splitTerminal) {
+        this.splitTerminal = await this.createNewSplitTerminal();
+      }
+
+      this.splitTerminal.sendText(command);
+      this.splitTerminal.show();
     } else {
-      this.terminal = stripeTerminal;
+      // Fallback to main terminal
+      this.mainTerminal.sendText(command);
+      this.mainTerminal.show();
+
+      if (this.splitTerminal) {
+        // Close split terminal as it isn't needed
+        this.splitTerminal.dispose();
+        this.splitTerminal = null;
+      }
+    }
+  }
+
+  async createNewSplitTerminal(): Promise<vscode.Terminal> {
+    return new Promise(async (resolve, reject) => {
+      await vscode.commands.executeCommand("workbench.action.terminal.split");
+
+      vscode.window.onDidChangeActiveTerminal((terminal) => {
+        if (terminal) {
+          resolve(terminal);
+        }
+      });
+    });
+  }
+
+  async isStripeCLIRunningWithLongRunningProcess(): Promise<boolean> {
+    let runningProcesses = await psList();
+    let stripeCLIprocess = runningProcesses.find((p) => p.name == "stripe");
+
+    if (stripeCLIprocess && stripeCLIprocess.cmd) {
+      return this.isCommandLongRunning(stripeCLIprocess.cmd);
     }
 
-    let isActive = !isNew && this.terminal.exitStatus == undefined;
-    if (isActive && this.lastCommandLongRunning) {
-      // Use single use termimal as the last command is expected to still run in the Stripe termial
-      let singleUseTerminal = vscode.window.createTerminal();
-      singleUseTerminal.sendText(command);
-      singleUseTerminal.show();
+    return false;
+  }
 
-      // Dispose single use terminal after 8 sec / max duration a command seem to run
-      setTimeout(() => {
-        singleUseTerminal.dispose();
-      }, 8000);
-    } else if (isActive) {
-      // Terminal is still active, so exit running command
-      this.terminal.sendText("\u0003");
+  isCommandLongRunning(command: string): boolean {
+    let commands = ["stripe listen", "stripe logs tail"];
+
+    for (let i = 0; i < commands.length; i++) {
+      const command = commands[i];
+      if (command.indexOf(command) > 0) {
+        return true;
+      }
     }
 
-    this.terminal.sendText(command);
-    this.terminal.show();
+    return false;
+  }
 
-    this.lastCommandLongRunning = isCommandLongRunning;
+  async getOpenTerminalProcessIds(): Promise<(number | undefined)[]> {
+    return Promise.all(
+      vscode.window.terminals.map(async (f) => await f.processId)
+    );
   }
 }
