@@ -42,28 +42,10 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
       ) {
         telemetry.sendEvent("debug.launch");
 
-        if (!config.localUrl) {
-          let action = await showQuickPickWithValues(
-            "Do you want to forward traffic to your local server?",
-            ["Yes", "No"]
-          );
-          if (action === "Yes") {
-            let localUrl = await vscode.window.showInputBox({
-              prompt: "Enter local server url",
-              placeHolder: "http://localhost:3000",
-            });
-
-            if (localUrl) {
-              config.localUrl = localUrl;
-            }
-          }
-        }
-
-        vscode.commands.executeCommand(
-          `stripe.openWebhooksListen`,
-          config.localUrl,
-          config.events
-        );
+        vscode.commands.executeCommand(`stripe.openWebhooksListen`, {
+          localUrl: config.localUrl,
+          events: config.events,
+        });
       }
     } else {
       vscode.window.showErrorMessage("No supported launch config was found.");

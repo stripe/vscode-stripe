@@ -10,17 +10,34 @@ const telemetry = Telemetry.getInstance();
 
 const terminal = new StripeTerminal();
 
-export function openWebhooksListen(localUrl: string, events?: Array<string>) {
+export async function openWebhooksListen(options: any) {
   telemetry.sendEvent("openWebhooksListen");
 
   let commandArgs = ["stripe listen"];
 
-  if (localUrl && typeof localUrl == "string") {
-    commandArgs.push(`--forward-to=${localUrl}`);
+  if (!options.localUrl) {
+    let action = await showQuickPickWithValues(
+      "Do you want to forward traffic to your local server?",
+      ["Yes", "No"]
+    );
+    if (action === "Yes") {
+      let input = await vscode.window.showInputBox({
+        prompt: "Enter local server url",
+        placeHolder: "http://localhost:3000",
+      });
+
+      if (input) {
+        options.localUrl = input;
+      }
+    }
   }
 
-  if (events && events.length > 0) {
-    commandArgs.push(`--events=${events.join(",")}`);
+  if (options.localUrl && typeof options.localUrl == "string") {
+    commandArgs.push(`--forward-to=${options.localUrl}`);
+  }
+
+  if (options.events && options.events.length > 0) {
+    commandArgs.push(`--events=${options.events.join(",")}`);
   }
 
   let command = commandArgs.join(" ");
