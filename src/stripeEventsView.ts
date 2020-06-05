@@ -44,8 +44,27 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
       light: Resource.icons.light.add,
     });
 
-    var items = [triggerEventItem];
+    let webhooksListenItem = new StripeTreeItem(
+      "Start webhooks listening",
+      "openWebhooksListen"
+    );
+    webhooksListenItem.setIcon({
+      dark: Resource.icons.dark.terminal,
+      light: Resource.icons.light.terminal,
+    });
+
+    let webhooksDebugItem = new StripeTreeItem(
+      "Configure debugging",
+      "openWebhooksDebugConfigure"
+    );
+    webhooksDebugItem.setIcon({
+      dark: Resource.icons.dark.settings,
+      light: Resource.icons.light.settings,
+    });
+
+    var items = [triggerEventItem, webhooksListenItem];
     items.push(eventsItem);
+    items.push(webhooksDebugItem);
 
     return items;
   }
