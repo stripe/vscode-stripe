@@ -34,6 +34,17 @@ export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
     });
     items.push(feedbackItem);
 
+    let webhooksDebugItem = new StripeTreeItem(
+      "Configure debugging",
+      "openWebhooksDebugConfigure"
+    );
+    webhooksDebugItem.setIcon({
+      dark: Resource.icons.dark.settings,
+      light: Resource.icons.light.settings,
+    });
+
+    items.push(webhooksDebugItem);
+
     return items;
   }
 }
