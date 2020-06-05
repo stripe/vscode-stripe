@@ -32,7 +32,10 @@
   "activationEvents": [
     "onDebugInitialConfigurations",
     "onDebug",
-    "onView:stripeView",
+    "onView:stripeEventsView",
+    "onView:stripeLogsView",
+    "onView:stripeDashboardView",
+    "onView:stripeHelpView",
     "onCommand:stripe.login",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
@@ -155,12 +158,16 @@
     "views": {
       "stripe": [
         {
-          "id": "stripeView",
-          "name": "Dashboard (in test mode)"
-        },
-        {
           "id": "stripeEventsView",
           "name": "Events"
+        },
+        {
+          "id": "stripeLogsView",
+          "name": "Logs"
+        },
+        {
+          "id": "stripeDashboardView",
+          "name": "Dashboard (in test mode)"
         },
         {
           "id": "stripeHelpView",

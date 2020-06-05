@@ -3,9 +3,10 @@ import { commands, debug, window, ExtensionContext } from "vscode";
 import { ServerOptions, TransportKind } from "vscode-languageclient";
 
 import path from "path";
-import { StripeViewDataProvider } from "./stripeView";
+import { StripeDashboardViewDataProvider } from "./stripeDashboardView";
 import { StripeEventsDataProvider } from "./stripeEventsView";
 import { StripeHelpViewDataProvider } from "./stripeHelpView";
+import { StripLogsDataProvider } from "./stripeLogsView";
 import { StripeDebugProvider } from "./stripeDebugProvider";
 import { StripeLinter } from "./stripeLinter";
 import { StripeLanguageClient } from "./stripeLanguageServer/client";
@@ -51,8 +52,8 @@ export async function activate(this: any, context: ExtensionContext) {
   Resource.initialize(context);
 
   // Activity bar view
-  window.createTreeView("stripeView", {
-    treeDataProvider: new StripeViewDataProvider(),
+  window.createTreeView("stripeDashboardView", {
+    treeDataProvider: new StripeDashboardViewDataProvider(),
     showCollapseAll: false,
   });
 
@@ -64,6 +65,12 @@ export async function activate(this: any, context: ExtensionContext) {
   let stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
   window.createTreeView("stripeEventsView", {
     treeDataProvider: stripeEventsViewProvider,
+    showCollapseAll: true,
+  });
+
+  let stripeLogsViewProvider = new StripLogsDataProvider(stripeClient);
+  window.createTreeView("stripeLogsView", {
+    treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
   });
 
