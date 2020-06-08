@@ -26,7 +26,7 @@ const gitAPI = isUsingGitExtension ? gitExtensionExports.getAPI(1) : null;
 
 const ignoredFileList = [".env"];
 const stripeKeysRegex = new RegExp(
-  "(sk_test|sk_live|pk_test|pk_live)_[a-zA-Z0-9]{10,64}",
+  "(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]{10,64}",
   "g"
 );
 const diagnosticMessageNoGit =
