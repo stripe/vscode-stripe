@@ -43,8 +43,8 @@
     "onCommand:stripe.openDashboardApikeys",
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
-    "onCommand:stripe.openDashboardEventDetails",
     "onCommand:stripe.openDashboardWebhooks",
+    "onCommand:stripe.openEventDetails",
     "onCommand:stripe.openTriggerEvent",
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
@@ -122,8 +122,8 @@
       },
       {
         "category": "Stripe",
-        "command": "stripe.openDashboardEventDetails",
-        "title": "Open Dashboard with a specific event"
+        "command": "stripe.openEventDetails",
+        "title": "Open read-only document with a specific event"
       },
       {
         "category": "Stripe",
@@ -185,7 +185,7 @@
       ],
       "commandPalette": [
         {
-          "command": "stripe.openDashboardEventDetails",
+          "command": "stripe.openEventDetails",
           "when": "false"
         }
       ]

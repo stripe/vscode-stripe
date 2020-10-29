@@ -147,6 +147,11 @@ export class StripeClient {
     let events = this.execute("events list");
     return events;
   }
+
+  getResourceById(id: string) {
+    const resource = this.execute(`get ${id}`);
+    return resource;
+  }
 }
 
 function getInstallPath(paths: string[]): string {
