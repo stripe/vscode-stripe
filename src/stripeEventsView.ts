@@ -24,7 +24,7 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
           let title = event.type;
           let eventItem = new StripeTreeItem(
             title,
-            "openDashboardEventDetails"
+            "openEventDetails"
           );
           eventItem.metadata = {
             type: event.type,

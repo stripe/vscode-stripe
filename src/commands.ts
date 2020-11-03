@@ -88,11 +88,19 @@ export function openDashboardWebhooks() {
   );
 }
 
-export function openDashboardEventDetails(data: any) {
-  telemetry.sendEvent("openDashboardEventDetails");
-  let id = data.id;
-  let url = `https://dashboard.stripe.com/test/events/${id}`;
-  vscode.env.openExternal(vscode.Uri.parse(url));
+export async function openEventDetails(data: any) {
+  telemetry.sendEvent("openEventDetails");
+  const {id, type} = data;
+  const filename = `${type} (${id})`;
+  const uri = vscode.Uri.parse(`stripeEvent:${filename}`);
+  vscode.window.withProgress({
+      location: vscode.ProgressLocation.Window,
+      title: "Fetching Stripe event details",
+  }, async () => {
+    const doc = await vscode.workspace.openTextDocument(uri);
+    vscode.languages.setTextDocumentLanguage(doc, "json");
+    vscode.window.showTextDocument(doc, {preview: false});
+  });
 }
 
 export function refreshEventsList(

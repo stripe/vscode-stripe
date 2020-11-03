@@ -1,4 +1,4 @@
-import { commands, debug, window, ExtensionContext } from "vscode";
+import { commands, debug, window, ExtensionContext, workspace } from "vscode";
 
 import { ServerOptions, TransportKind } from "vscode-languageclient";
 
@@ -25,7 +25,7 @@ import {
   openDashboardApikeys,
   openDashboardWebhooks,
   openDashboardLogs,
-  openDashboardEventDetails,
+  openEventDetails,
   refreshEventsList,
   startLogin,
   openTriggerEvent,
@@ -34,6 +34,7 @@ import {
   openReportIssue,
   openDocs,
 } from "./commands";
+import { StripeEventTextDocumentContentProvider } from "./stripeEventTextDocumentContentProvider";
 
 export async function activate(this: any, context: ExtensionContext) {
   // Stripe CLi client
@@ -76,6 +77,12 @@ export async function activate(this: any, context: ExtensionContext) {
 
   // Debug provider
   debug.registerDebugConfigurationProvider("stripe", new StripeDebugProvider());
+
+  // Virtual document content provider for displaying event data
+  workspace.registerTextDocumentContentProvider(
+    "stripeEvent",
+    new StripeEventTextDocumentContentProvider(stripeClient)
+  );
 
   // Stripe Linter
   let stripeLinter = new StripeLinter();
@@ -132,8 +139,8 @@ export async function activate(this: any, context: ExtensionContext) {
 
   subscriptions.push(
     commands.registerCommand(
-      "stripe.openDashboardEventDetails",
-      openDashboardEventDetails
+      "stripe.openEventDetails",
+      openEventDetails
     )
   );
 
