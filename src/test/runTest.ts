@@ -14,7 +14,11 @@ async function main() {
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
+    // The path to the extension test workspace
+    const testWorkspace = path.resolve(__dirname, extensionDevelopmentPath + '/src/test/workspace/');
+
     const launchArgs = [
+      testWorkspace,
       // This disables all extensions except the one being testing
       '--disable-extensions'
     ];

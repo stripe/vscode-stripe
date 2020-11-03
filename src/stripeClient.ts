@@ -34,7 +34,7 @@ export class StripeClient {
     }
 
     let flags: object[] = [];
-    if (!this.isTelemetryEnabled()) {
+    if (!telemetry.isTelemetryEnabled) {
       flags.push({
         STRIPE_CLI_TELEMETRY_OPTOUT: true,
       });
@@ -86,15 +86,6 @@ export class StripeClient {
       telemetry.sendEvent("cli.notAuthenticated");
       return false;
     }
-  }
-
-  isTelemetryEnabled() {
-    let config = vscode.workspace.getConfiguration("telemetry");
-    if (config) {
-      return config.get<boolean>("enableTelemetry");
-    }
-
-    return false;
   }
 
   detectInstalled() {
