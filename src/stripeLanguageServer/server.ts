@@ -54,7 +54,7 @@ connection.onInitialize((params: InitializeParams) => {
 
 function findHoverMatches(params: HoverParams): string[] {
   let document = documents.get(params.textDocument.uri);
-  if (!document) return [];
+  if (!document) { return []; }
 
   const text = document.getText();
   const line = text.split("\n")[params.position.line];
@@ -72,7 +72,7 @@ function findHoverMatches(params: HoverParams): string[] {
       document.languageId === "typescript" ? "javascript" : document.languageId;
 
     const pattern = stripeMethod.regexps[language];
-    if (!pattern) return [];
+    if (!pattern) { return []; }
     const regexp = new RegExp(pattern, "g");
 
     // in almost all cases there'll only be one match, but we might want to stack matches in the future

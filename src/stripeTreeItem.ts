@@ -37,7 +37,7 @@ export class StripeTreeItem extends TreeItem {
   addChild(item: StripeTreeItem) {
     this.children.push(item);
     if (this.children.length) {
-      if (this.collapsibleState != TreeItemCollapsibleState.Expanded) {
+      if (this.collapsibleState !== TreeItemCollapsibleState.Expanded) {
         this.makeCollapsible();
       }
     }

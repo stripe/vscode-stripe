@@ -1435,4 +1435,4 @@ export const stripeMethodList: Pattern[] = [
       "javascript": "reporting\\.reportType\\.list"
     }
   }
-]
+];

@@ -32,7 +32,7 @@ export async function openWebhooksListen(options: any) {
     }
   }
 
-  if (options.localUrl && typeof options.localUrl == "string") {
+  if (options.localUrl && typeof options.localUrl === "string") {
     commandArgs.push(`--forward-to=${options.localUrl}`);
   }
 

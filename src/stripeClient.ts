@@ -81,7 +81,7 @@ export class StripeClient {
   async isAuthenticated(): Promise<Boolean> {
     try {
       const { stdout } = await execa(this.cliPath, ["config", "--list"]);
-      return stdout != "";
+      return stdout !== "";
     } catch (err) {
       telemetry.sendEvent("cli.notAuthenticated");
       return false;
