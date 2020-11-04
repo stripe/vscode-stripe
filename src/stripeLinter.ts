@@ -91,9 +91,9 @@ const shouldSearchFile = (currentFilename: string): boolean => {
   let shouldSearch = true;
 
   // if this file is gitignored then don't search it for hardcoded keys
-  if (isGitRepo && !isCommitRisk(currentFilename)) shouldSearch = false;
+  if (isGitRepo && !isCommitRisk(currentFilename)) { shouldSearch = false; }
   // if this file is in the ignoredFiles list (eg. .env) then don't search it for hardcoded keys
-  if (ignoredFileMatches.length) shouldSearch = false;
+  if (ignoredFileMatches.length) { shouldSearch = false; }
 
   return shouldSearch;
 };
@@ -108,18 +108,18 @@ export class StripeLinter {
   constructor() {}
 
   activate() {
-    this.lookForHardCodedAPIKeys;
+    this.lookForHardCodedAPIKeys();
     workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
   }
 
   lookForHardCodedAPIKeys = (): void => {
     const editor = window.activeTextEditor;
-    if (!editor) return;
+    if (!editor) { return; }
 
     const { document } = editor;
 
     const currentFilename = document.uri.path;
-    if (!shouldSearchFile(currentFilename)) return;
+    if (!shouldSearchFile(currentFilename)) { return; }
 
     const text = document.getText();
     const lines = text.split("\n");
@@ -132,5 +132,5 @@ export class StripeLinter {
 
     // tell VS Code to show warnings and errors in syntax
     diagnosticCollection.set(document.uri, fileDiagnostics);
-  };
+  }
 }

@@ -12,11 +12,11 @@ export class StripeTerminal {
     this.splitTerminal = null;
 
     vscode.window.onDidCloseTerminal((terminal) => {
-      if (terminal == this.mainTerminal) {
+      if (terminal === this.mainTerminal) {
         this.mainTerminal = null;
       }
 
-      if (terminal == this.splitTerminal) {
+      if (terminal === this.splitTerminal) {
         this.splitTerminal = null;
       }
     });
@@ -76,10 +76,10 @@ export class StripeTerminal {
   }
 
   async isStripeCLIRunningWithLongRunningProcess(): Promise<boolean> {
-    if (getOSType() == OSType.windows) {
+    if (getOSType() === OSType.windows) {
       let runningProcesses = await tasklist();
       let stripeCLIprocess = runningProcesses.find(
-        (p) => p.imageName == "stripe.exe"
+        (p) => p.imageName === "stripe.exe"
       );
 
       if (stripeCLIprocess) {
@@ -88,7 +88,7 @@ export class StripeTerminal {
       }
     } else {
       let runningProcesses = await psList();
-      let stripeCLIprocess = runningProcesses.find((p) => p.name == "stripe");
+      let stripeCLIprocess = runningProcesses.find((p) => p.name === "stripe");
 
       if (stripeCLIprocess && stripeCLIprocess.cmd) {
         return this.isCommandLongRunning(stripeCLIprocess.cmd);
