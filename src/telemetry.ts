@@ -10,14 +10,12 @@ export class Telemetry {
   client: any;
   userId: string;
   ip: string;
-  isTelemetryEnabled: boolean;
+  private _isTelemetryEnabled: boolean;
 
   private constructor() {
     this.userId = vscode.env.machineId;
-    this.isTelemetryEnabled = false;
     this.ip = "";
-
-    this.getSettingFromConfig();
+    this._isTelemetryEnabled = this.areAllTelemetryConfigsEnabled();
     this.setup();
     vscode.workspace.onDidChangeConfiguration(this.configurationChanged, this);
   }
@@ -28,6 +26,10 @@ export class Telemetry {
     }
 
     return Telemetry.instance;
+  }
+
+  get isTelemetryEnabled(): boolean {
+    return this._isTelemetryEnabled;
   }
 
   async setup() {
@@ -75,17 +77,16 @@ export class Telemetry {
   }
 
   private configurationChanged(e: vscode.ConfigurationChangeEvent) {
-    this.getSettingFromConfig();
-  }
-
-  private getSettingFromConfig() {
-    let config = vscode.workspace.getConfiguration("telemetry");
-    if (config) {
-      let enableTelemetry = config.get<boolean>("enableTelemetry");
-      this.isTelemetryEnabled = !!enableTelemetry;
-    }
-    if (this.isTelemetryEnabled) {
+    this._isTelemetryEnabled = this.areAllTelemetryConfigsEnabled();
+    if (this._isTelemetryEnabled) {
       this.setup();
     }
+  }
+
+  private areAllTelemetryConfigsEnabled() {
+    // respect both the overall and Stripe-specific telemetry configs
+    const enableTelemetry = vscode.workspace.getConfiguration("telemetry").get("enableTelemetry", false);
+    const stripeEnableTelemetry = vscode.workspace.getConfiguration("stripe.telemetry").get("enabled", false);
+    return enableTelemetry && stripeEnableTelemetry;
   }
 }

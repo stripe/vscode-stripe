@@ -71,6 +71,12 @@
         "stripe.cliInstallPath": {
           "description": "Install path for the Stripe CLI executable (include the complete filepath to the executable)",
           "type": "string"
+        },
+        "stripe.telemetry.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Specifies whether to enable Stripe telemetry (even if enabled still abides by the overall `#telemetry.enableTelemetry#` setting)",
+          "scope": "window"
         }
       }
     },
