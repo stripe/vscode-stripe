@@ -1,69 +1,69 @@
 import * as vscode from "vscode";
 import psList from "ps-list";
-import tasklist from "tasklist";
 import { getOSType, OSType } from "./utils";
 
 export class StripeTerminal {
-  mainTerminal: vscode.Terminal | null;
-  splitTerminal: vscode.Terminal | null;
+  private static KNOWN_LONG_RUNNING_COMMANDS = [
+    "stripe listen",
+    "stripe logs tail",
+  ];
+
+  private terminals: Array<vscode.Terminal | null>;
 
   constructor() {
-    this.mainTerminal = null;
-    this.splitTerminal = null;
-
+    this.terminals = [];
     vscode.window.onDidCloseTerminal((terminal) => {
-      if (terminal === this.mainTerminal) {
-        this.mainTerminal = null;
-      }
-
-      if (terminal === this.splitTerminal) {
-        this.splitTerminal = null;
-      }
+      terminal.dispose();
+      const i = this.terminals.findIndex((t) => t === terminal);
+      this.terminals = this.terminals.slice(0, i).concat(this.terminals.slice(i + 1));
     });
   }
 
+  // Starting from the leftmost open terminal, send a command to the first available terminal and clean up unused ones.
   public async execute(command: string): Promise<void> {
-    let isNewCommandLongRunning = this.isCommandLongRunning(command);
+    let wasAvailableTerminalFound = false;
 
-    if (!this.mainTerminal) {
-      this.mainTerminal = vscode.window.createTerminal("Stripe");
-    }
-
-    let isLongRunningCommandRunning = await this.isStripeCLIRunningWithLongRunningProcess();
-
-    if (isNewCommandLongRunning) {
-      // Always use main terminal for long runnig commands
-      if (isLongRunningCommandRunning) {
-        // Terminal is still active, so exit running command
-        this.mainTerminal.sendText("\u0003");
+    for (let i = 0; i < this.terminals.length; i++) {
+      const t = this.terminals[i];
+      if (t === null) {
+        continue;
       }
 
-      this.mainTerminal.sendText(command);
-      this.mainTerminal.show();
-    } else if (isLongRunningCommandRunning) {
-      // CLI is running, but new command isn't long running, so split
-      this.mainTerminal.show();
+      const runningCommand = await this.getRunningCommand(t);
+      const isCommandLongRunning = runningCommand !== null && this.isCommandLongRunning(runningCommand);
 
-      if (!this.splitTerminal) {
-        this.splitTerminal = await this.createNewSplitTerminal();
-      }
+      const shouldUseThisTerminal = !wasAvailableTerminalFound && !runningCommand && !isCommandLongRunning;
+      const shouldRestartThisTerminal = !wasAvailableTerminalFound && isCommandLongRunning && runningCommand === command; // Always false on Windows
+      const shouldDisposeThisTerminal = wasAvailableTerminalFound && !runningCommand;
 
-      this.splitTerminal.sendText(command);
-      this.splitTerminal.show();
-    } else {
-      // Fallback to main terminal
-      this.mainTerminal.sendText(command);
-      this.mainTerminal.show();
-
-      if (this.splitTerminal) {
-        // Close split terminal as it isn't needed
-        this.splitTerminal.dispose();
-        this.splitTerminal = null;
+      if (shouldUseThisTerminal) {
+        wasAvailableTerminalFound = true;
+        t.sendText(command);
+        t.show();
+      } else if (shouldRestartThisTerminal) {
+        wasAvailableTerminalFound = true;
+        t.sendText('\x03');
+        t.sendText(command);
+        t.show();
+      } else if (shouldDisposeThisTerminal) {
+        t.dispose();
+        this.terminals[i] = null;
       }
     }
+
+    if (!wasAvailableTerminalFound) {
+      const newTerminal = this.terminals.length < 1 ?
+        vscode.window.createTerminal("Stripe") :
+        await this.createNewSplitTerminal();
+      this.terminals.push(newTerminal);
+      newTerminal.sendText(command);
+      newTerminal.show();
+    }
+
+    this.terminals = this.terminals.filter((terminal) => terminal !== null);
   }
 
-  async createNewSplitTerminal(): Promise<vscode.Terminal> {
+  private async createNewSplitTerminal(): Promise<vscode.Terminal> {
     return new Promise(async (resolve, reject) => {
       await vscode.commands.executeCommand("workbench.action.terminal.split");
 
@@ -75,39 +75,30 @@ export class StripeTerminal {
     });
   }
 
-  async isStripeCLIRunningWithLongRunningProcess(): Promise<boolean> {
+  private isCommandLongRunning(command: string): boolean {
     if (getOSType() === OSType.windows) {
-      let runningProcesses = await tasklist();
-      let stripeCLIprocess = runningProcesses.find(
-        (p) => p.imageName === "stripe.exe"
-      );
-
-      if (stripeCLIprocess) {
-        // On Windows we can't get the process arguments, so always assume it's long running
-        return true;
-      }
-    } else {
-      let runningProcesses = await psList();
-      let stripeCLIprocess = runningProcesses.find((p) => p.name === "stripe");
-
-      if (stripeCLIprocess && stripeCLIprocess.cmd) {
-        return this.isCommandLongRunning(stripeCLIprocess.cmd);
-      }
+      // On Windows we can't get the process command, so always assume it's long running
+      return true;
     }
-
-    return false;
+    return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
+      command.indexOf(knownCommand) > -1
+    ));
   }
 
-  isCommandLongRunning(command: string): boolean {
-    let knownCommands = ["stripe listen", "stripe logs tail"];
+  private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {
+    const shellId = await terminal.processId;
+    const runningProcesses = await psList();
+    const runningStripeCLIProcess = runningProcesses.find((p) => p.ppid === shellId);
 
-    for (let i = 0; i < knownCommands.length; i++) {
-      const knowCommand = knownCommands[i];
-      if (command.indexOf(knowCommand) > -1) {
-        return true;
+    if (getOSType() === OSType.windows) {
+      if (runningStripeCLIProcess && runningStripeCLIProcess.name) {
+        // On Windows we can't get the process command
+        return runningStripeCLIProcess.name;
       }
+    } else if (runningStripeCLIProcess && runningStripeCLIProcess.cmd) {
+      return runningStripeCLIProcess.cmd;
     }
 
-    return false;
+    return null;
   }
 }
