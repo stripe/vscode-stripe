@@ -42,7 +42,10 @@ export class StripeTerminal {
         t.show();
       } else if (shouldRestartThisTerminal) {
         wasAvailableTerminalFound = true;
-        t.sendText('\x03');
+        const runningProcess = await this.getRunningProcess(t);
+        if (runningProcess) {
+          process.kill(runningProcess.pid, 'SIGINT');
+        }
         t.sendText(command);
         t.show();
       } else if (shouldDisposeThisTerminal) {
@@ -85,18 +88,22 @@ export class StripeTerminal {
     ));
   }
 
-  private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {
-    const shellId = await terminal.processId;
+  private async getRunningProcess(terminal: vscode.Terminal): Promise<psList.ProcessDescriptor | null> {
+    const shellPid = await terminal.processId;
     const runningProcesses = await psList();
-    const runningStripeCLIProcess = runningProcesses.find((p) => p.ppid === shellId);
+    const runningProcess = runningProcesses.find((p) => p.ppid === shellPid);
+    return runningProcess ? runningProcess : null;
+  }
 
+  private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {
+    const runningProcess = await this.getRunningProcess(terminal);
     if (getOSType() === OSType.windows) {
-      if (runningStripeCLIProcess && runningStripeCLIProcess.name) {
+      if (runningProcess && runningProcess.name) {
         // On Windows we can't get the process command
-        return runningStripeCLIProcess.name;
+        return runningProcess.name;
       }
-    } else if (runningStripeCLIProcess && runningStripeCLIProcess.cmd) {
-      return runningStripeCLIProcess.cmd;
+    } else if (runningProcess && runningProcess.cmd) {
+      return runningProcess.cmd;
     }
 
     return null;
