@@ -11,6 +11,7 @@ import {
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { stripeMethodList } from "./patterns";
+import { getStripeApiReferenceUrl } from "./utils";
 
 let connection = createConnection(ProposedFeatures.all);
 
@@ -89,7 +90,7 @@ function findHoverMatches(params: HoverParams): string[] {
         hoverPosition <= methodPositionEnd
       ) {
         hoverMatches.push(
-          `See ${methodMatch} in the [Stripe API Reference](https://stripe.com/docs/api${stripeMethod.url})`
+          `See ${methodMatch} in the [Stripe API Reference](${getStripeApiReferenceUrl(stripeMethod, document.languageId)})`
         );
         connection.telemetry.logEvent({name: 'ls.apihover', data: methodMatch});
       }
