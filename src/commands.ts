@@ -15,7 +15,7 @@ export async function openWebhooksListen(options: any) {
 
   let commandArgs = ["stripe listen"];
 
-  if (!options.localUrl) {
+  if (!options.forwardTo) {
     let action = await showQuickPickWithValues(
       "Do you want to forward traffic to your local server?",
       ["Yes", "No"]
@@ -27,13 +27,13 @@ export async function openWebhooksListen(options: any) {
       });
 
       if (input) {
-        options.localUrl = input;
+        options.forwardTo = input;
       }
     }
   }
 
-  if (options.localUrl && typeof options.localUrl === "string") {
-    commandArgs.push(`--forward-to=${options.localUrl}`);
+  if (options.forwardTo && typeof options.forwardTo === "string") {
+    commandArgs.push(`--forward-to=${options.forwardTo}`);
   }
 
   if (options.events && options.events.length > 0) {

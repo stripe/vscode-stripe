@@ -23,7 +23,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
         type: "stripe",
         request: "launch",
         command: "listen",
-        localUrl: "http://localhost:3000/stripe-events",
+        forwardTo: "http://localhost:3000",
       },
     ]);
   }
@@ -43,7 +43,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
         telemetry.sendEvent("debug.launch");
 
         vscode.commands.executeCommand(`stripe.openWebhooksListen`, {
-          localUrl: config.localUrl,
+          forwardTo: config.forwardTo,
           events: config.events,
         });
       }
