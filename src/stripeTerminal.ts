@@ -52,7 +52,7 @@ export class StripeTerminal {
     const shellPid = await terminal.processId;
     const runningProcesses = await psList();
     const runningProcess = runningProcesses.find((p) => p.ppid === shellPid);
-    return runningProcess ? runningProcess : null;
+    return runningProcess || null;
   }
 
   private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {

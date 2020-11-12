@@ -52,17 +52,17 @@ export async function showQuickPickWithValues(
   });
 }
 
-export async function filterAsync(
-  arr: Array<any>,
-  predicate: (value: any, index: number, array: any[]) => any
-) {
+export async function filterAsync<T>(
+  arr: Array<T>,
+  predicate: (value: T, index: number, array: T[]) => Promise<boolean>,
+): Promise<Array<T>> {
   const results = await Promise.all(arr.map(predicate));
   return arr.filter((_v, index) => results[index]);
 }
 
 export async function findAsync<T>(
   arr: Array<T>,
-  predicate: (value: T, index: number, obj: T[]) => Promise<boolean>,
+  predicate: (value: T, index: number, array: T[]) => Promise<boolean>,
 ): Promise<T | undefined> {
   const promises = arr.map(predicate);
   const results = await Promise.all(promises);
