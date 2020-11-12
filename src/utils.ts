@@ -51,3 +51,21 @@ export async function showQuickPickWithValues(
     input.show();
   });
 }
+
+export async function filterAsync(
+  arr: Array<any>,
+  predicate: (value: any, index: number, array: any[]) => any
+) {
+  const results = await Promise.all(arr.map(predicate));
+  return arr.filter((_v, index) => results[index]);
+}
+
+export async function findAsync<T>(
+  arr: Array<T>,
+  predicate: (value: T, index: number, obj: T[]) => Promise<boolean>,
+): Promise<T | undefined> {
+  const promises = arr.map(predicate);
+  const results = await Promise.all(promises);
+  const index = results.findIndex(result => result);
+  return arr[index];
+}
