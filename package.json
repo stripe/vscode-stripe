@@ -227,7 +227,7 @@
               },
               "events": {
                 "type": "array",
-                "markdownDescription": "A list of specific events to listen for. For a list of all possible events, see: https://stripe.com/docs/api/events/types (default [*])",
+                "markdownDescription": "An array of specific events to listen for. For a list of all possible events, see: https://stripe.com/docs/api/events/types (default: listen for all events)",
                 "default": []
               }
             }
