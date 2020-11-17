@@ -56,13 +56,13 @@ The Stripe debug configuration can be combined with other configurations, so you
       "type": "stripe",
       "request": "launch",
       "command": "listen",
-      "localUrl": "http://localhost:3000/stripe-events"
+      "forwardTo": "http://localhost:3000",
     }
   ]
 }
 ```
 
-For the `stripe` debug configuration you can also specify `localUrl` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
+For the `stripe` debug configuration you can also specify `forwardTo` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
 #### Compound configurations
 
@@ -77,7 +77,7 @@ You can combine the `stripe` debug configuration with `compounds` configurations
       "type": "stripe",
       "request": "launch",
       "command": "listen",
-      "localUrl": "http://localhost:3000/stripe-events",
+      "forwardTo": "http://localhost:3000",
       "events": ["payment_intent.succeeded", "payment_intent.canceled"] // Optional array if only specific events are wanted
     },
     {

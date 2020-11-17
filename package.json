@@ -215,10 +215,10 @@
         "configurationAttributes": {
           "launch": {
             "properties": {
-              "localUrl": {
+              "forwardTo": {
                 "type": "string",
-                "description": "Url for local http server",
-                "default": "http://localhost:3000/stripe-events"
+                "description": "The URL to forward webhook events to",
+                "default": "http://localhost:3000"
               },
               "command": {
                 "type": "string",
@@ -227,7 +227,7 @@
               },
               "events": {
                 "type": "array",
-                "description": "String array of events to listen for",
+                "markdownDescription": "An array of specific events to listen for. For a list of all possible events, see: https://stripe.com/docs/api/events/types (default: listen for all events)",
                 "default": []
               }
             }
