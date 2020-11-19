@@ -1,69 +1,32 @@
 import * as vscode from "vscode";
 import psList from "ps-list";
-import tasklist from "tasklist";
-import { getOSType, OSType } from "./utils";
+import { getOSType, OSType, filterAsync, findAsync } from "./utils";
 
 export class StripeTerminal {
-  mainTerminal: vscode.Terminal | null;
-  splitTerminal: vscode.Terminal | null;
+  private static KNOWN_LONG_RUNNING_COMMANDS = [
+    "stripe listen",
+    "stripe logs tail",
+  ];
+
+  private terminals: Array<vscode.Terminal>;
 
   constructor() {
-    this.mainTerminal = null;
-    this.splitTerminal = null;
-
+    this.terminals = [];
     vscode.window.onDidCloseTerminal((terminal) => {
-      if (terminal === this.mainTerminal) {
-        this.mainTerminal = null;
-      }
-
-      if (terminal === this.splitTerminal) {
-        this.splitTerminal = null;
-      }
+      terminal.dispose();
+      this.terminals = this.terminals.filter((t) => t !== terminal);
     });
   }
 
   public async execute(command: string): Promise<void> {
-    let isNewCommandLongRunning = this.isCommandLongRunning(command);
-
-    if (!this.mainTerminal) {
-      this.mainTerminal = vscode.window.createTerminal("Stripe");
-    }
-
-    let isLongRunningCommandRunning = await this.isStripeCLIRunningWithLongRunningProcess();
-
-    if (isNewCommandLongRunning) {
-      // Always use main terminal for long runnig commands
-      if (isLongRunningCommandRunning) {
-        // Terminal is still active, so exit running command
-        this.mainTerminal.sendText("\u0003");
-      }
-
-      this.mainTerminal.sendText(command);
-      this.mainTerminal.show();
-    } else if (isLongRunningCommandRunning) {
-      // CLI is running, but new command isn't long running, so split
-      this.mainTerminal.show();
-
-      if (!this.splitTerminal) {
-        this.splitTerminal = await this.createNewSplitTerminal();
-      }
-
-      this.splitTerminal.sendText(command);
-      this.splitTerminal.show();
-    } else {
-      // Fallback to main terminal
-      this.mainTerminal.sendText(command);
-      this.mainTerminal.show();
-
-      if (this.splitTerminal) {
-        // Close split terminal as it isn't needed
-        this.splitTerminal.dispose();
-        this.splitTerminal = null;
-      }
-    }
+    const terminal = await this.terminalForCommand(command);
+    terminal.sendText(command);
+    terminal.show();
+    const otherTerminals = this.terminals.filter((t) => t !== terminal);
+    this.freeUnusedTerminals(otherTerminals);
   }
 
-  async createNewSplitTerminal(): Promise<vscode.Terminal> {
+  private async createNewSplitTerminal(): Promise<vscode.Terminal> {
     return new Promise(async (resolve, reject) => {
       await vscode.commands.executeCommand("workbench.action.terminal.split");
 
@@ -75,39 +38,82 @@ export class StripeTerminal {
     });
   }
 
-  async isStripeCLIRunningWithLongRunningProcess(): Promise<boolean> {
+  private isCommandLongRunning(command: string): boolean {
     if (getOSType() === OSType.windows) {
-      let runningProcesses = await tasklist();
-      let stripeCLIprocess = runningProcesses.find(
-        (p) => p.imageName === "stripe.exe"
-      );
-
-      if (stripeCLIprocess) {
-        // On Windows we can't get the process arguments, so always assume it's long running
-        return true;
-      }
-    } else {
-      let runningProcesses = await psList();
-      let stripeCLIprocess = runningProcesses.find((p) => p.name === "stripe");
-
-      if (stripeCLIprocess && stripeCLIprocess.cmd) {
-        return this.isCommandLongRunning(stripeCLIprocess.cmd);
-      }
+      // On Windows we can't get the process command, so always assume it's long running
+      return true;
     }
-
-    return false;
+    return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
+      command.indexOf(knownCommand) > -1
+    ));
   }
 
-  isCommandLongRunning(command: string): boolean {
-    let knownCommands = ["stripe listen", "stripe logs tail"];
+  private async getRunningProcess(terminal: vscode.Terminal): Promise<psList.ProcessDescriptor | null> {
+    const shellPid = await terminal.processId;
+    const runningProcesses = await psList();
+    const runningProcess = runningProcesses.find((p) => p.ppid === shellPid);
+    return runningProcess || null;
+  }
 
-    for (let i = 0; i < knownCommands.length; i++) {
-      const knowCommand = knownCommands[i];
-      if (command.indexOf(knowCommand) > -1) {
-        return true;
+  private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {
+    const runningProcess = await this.getRunningProcess(terminal);
+    if (getOSType() === OSType.windows) {
+      if (runningProcess && runningProcess.name) {
+        // On Windows we can't get the process command
+        return runningProcess.name;
+      }
+    } else if (runningProcess && runningProcess.cmd) {
+      return runningProcess.cmd;
+    }
+
+    return null;
+  }
+
+  private async terminalForCommand(command: string): Promise<vscode.Terminal> {
+    // If the command is a long-running one, and it's already running in a VS Code terminal,
+    // we restart it in the same terminal. This does not occur on Windows due to OS limitations.
+    if (this.isCommandLongRunning(command)) {
+      const terminalWithDesiredCommand = await findAsync(this.terminals, async (t) => {
+        const runningCommand = await this.getRunningCommand(t);
+        return runningCommand === command;
+      });
+      if (terminalWithDesiredCommand) {
+        const runningProcess = await this.getRunningProcess(terminalWithDesiredCommand);
+        if (runningProcess) {
+          process.kill(runningProcess.pid, 'SIGINT');
+        }
+        return terminalWithDesiredCommand;
       }
     }
 
-    return false;
+    const unusedTerminal = await findAsync(this.terminals, async (t) => {
+      const runningCommand = await this.getRunningCommand(t);
+      return !runningCommand;
+    });
+
+    if (unusedTerminal) {
+      return unusedTerminal;
+    }
+
+    if (this.terminals.length > 0) {
+      const terminal = await this.createNewSplitTerminal();
+      this.terminals.push(terminal);
+      return terminal;
+    }
+
+    const terminal = vscode.window.createTerminal("Stripe");
+    this.terminals.push(terminal);
+    return terminal;
+  }
+
+  private async freeUnusedTerminals(terminals: vscode.Terminal[]): Promise<void> {
+    const unusedTerminals = await filterAsync(terminals, async (t) => {
+      const runningCommand = await this.getRunningCommand(t);
+      return !runningCommand;
+    });
+    unusedTerminals.forEach((t) => {
+      t.dispose();
+    });
+    this.terminals = this.terminals.filter((t) => !unusedTerminals.includes(t));
   }
 }
