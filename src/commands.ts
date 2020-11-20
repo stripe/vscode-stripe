@@ -13,34 +13,34 @@ const terminal = new StripeTerminal();
 export async function openWebhooksListen(options: any) {
   telemetry.sendEvent("openWebhooksListen");
 
-  let commandArgs = ["stripe listen"];
-
-  if (!options.forwardTo) {
-    let action = await showQuickPickWithValues(
-      "Do you want to forward traffic to your local server?",
+  const shouldPromptForURL = !options.forwardTo &&
+    await showQuickPickWithValues(
+      "Do you want to forward webhook events to your local server?",
       ["Yes", "No"]
-    );
-    if (action === "Yes") {
-      let input = await vscode.window.showInputBox({
-        prompt: "Enter local server url",
-        placeHolder: "http://localhost:3000",
-      });
+    ) === 'Yes';
 
-      if (input) {
-        options.forwardTo = input;
-      }
-    }
-  }
+  const forwardTo = shouldPromptForURL
+    ? await vscode.window.showInputBox(
+        {
+          prompt: "Enter local server URL to forward webhook events to",
+          value: "http://localhost:3000",
+        }
+      )
+    : options.forwardTo;
 
-  if (options.forwardTo && typeof options.forwardTo === "string") {
-    commandArgs.push(`--forward-to=${options.forwardTo}`);
-  }
+  const forwardToFlag = forwardTo
+    ? ["--forward-to", forwardTo]
+    : [];
 
-  if (options.events && options.events.length > 0) {
-    commandArgs.push(`--events=${options.events.join(",")}`);
-  }
+  const eventsFlag = Array.isArray(options.events) && options.events.length > 0
+    ? ["--events", options.events.join(",")]
+    : [];
 
-  let command = commandArgs.join(" ");
+  const command = [
+    "stripe listen",
+    ...forwardToFlag,
+    ...eventsFlag
+  ].join(" ");
 
   terminal.execute(command);
 }
