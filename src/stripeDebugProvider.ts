@@ -13,21 +13,6 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
     });
   }
 
-  public async provideDebugConfigurations(
-    folder: vscode.WorkspaceFolder | undefined,
-    token?: vscode.CancellationToken
-  ): Promise<vscode.DebugConfiguration[]> {
-    return Promise.resolve([
-      {
-        name: "Stripe: Webhooks listen",
-        type: "stripe",
-        request: "launch",
-        command: "listen",
-        forwardTo: "http://localhost:3000",
-      },
-    ]);
-  }
-
   public async resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration,
@@ -44,6 +29,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
 
         vscode.commands.executeCommand(`stripe.openWebhooksListen`, {
           forwardTo: config.forwardTo,
+          forwardConnectTo: config.forwardConnectTo,
           events: config.events,
         });
       }
