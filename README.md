@@ -57,18 +57,19 @@ The Stripe debug configuration can be combined with other configurations, so you
       "request": "launch",
       "command": "listen",
       "forwardTo": "http://localhost:3000",
+      "forwardConnectTo": "http://localhost:3000",
     }
   ]
 }
 ```
 
-For the `stripe` debug configuration you can also specify `forwardTo` which is the URL of your local server that should receive your webhooks traffic. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
+For the `stripe` debug configuration you can also specify `forwardTo` and `forwardConnectTo`, which are the URLs of your local servers that should receive your normal and Connect webhooks events respectively. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
 
 #### Compound configurations
 
 You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
 
-```
+```json
 {
   "version": "0.2.0",
   "configurations": [
@@ -78,6 +79,7 @@ You can combine the `stripe` debug configuration with `compounds` configurations
       "request": "launch",
       "command": "listen",
       "forwardTo": "http://localhost:3000",
+      "forwardConnectTo": "http://localhost:3000",
       "events": ["payment_intent.succeeded", "payment_intent.canceled"] // Optional array if only specific events are wanted
     },
     {

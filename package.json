@@ -220,6 +220,11 @@
                 "description": "The URL to forward webhook events to",
                 "default": "http://localhost:3000"
               },
+              "forwardConnectTo": {
+                "type": "string",
+                "description": "The URL to forward Connect webhook events to (default: same as normal events)",
+                "default": "http://localhost:3000"
+              },
               "command": {
                 "type": "string",
                 "description": "Command to execute",

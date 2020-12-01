@@ -13,7 +13,7 @@ const terminal = new StripeTerminal();
 export async function openWebhooksListen(options: any) {
   telemetry.sendEvent("openWebhooksListen");
 
-  const shouldPromptForURL = !options.forwardTo &&
+  const shouldPromptForURL = !options.forwardTo && !options.forwardConnectTo &&
     await showQuickPickWithValues(
       "Do you want to forward webhook events to your local server?",
       ["Yes", "No"]
@@ -28,8 +28,21 @@ export async function openWebhooksListen(options: any) {
       )
     : options.forwardTo;
 
+  const forwardConnectTo = shouldPromptForURL
+    ? await vscode.window.showInputBox(
+        {
+          prompt: "Enter local server URL to forward Connect webhook events to (default: same as normal events)",
+          value: forwardTo || "http://localhost:3000",
+        }
+      )
+    : options.forwardConnectTo;
+
   const forwardToFlag = forwardTo
     ? ["--forward-to", forwardTo]
+    : [];
+
+  const forwardConnectToFlag = forwardConnectTo
+    ? ["--forward-connect-to", forwardConnectTo]
     : [];
 
   const eventsFlag = Array.isArray(options.events) && options.events.length > 0
@@ -39,6 +52,7 @@ export async function openWebhooksListen(options: any) {
   const command = [
     "stripe listen",
     ...forwardToFlag,
+    ...forwardConnectToFlag,
     ...eventsFlag
   ].join(" ");
 
