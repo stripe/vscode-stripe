@@ -2,6 +2,8 @@ import * as vscode from "vscode";
 import psList from "ps-list";
 import { getOSType, OSType, filterAsync, findAsync } from "./utils";
 
+type SupportedStripeCommand = "listen" | "logs" | "login" | "trigger";
+
 export class StripeTerminal {
   private static KNOWN_LONG_RUNNING_COMMANDS = [
     "stripe listen",
@@ -18,9 +20,13 @@ export class StripeTerminal {
     });
   }
 
-  public async execute(command: string): Promise<void> {
-    const terminal = await this.terminalForCommand(command);
-    terminal.sendText(command);
+  public async execute(
+    command: SupportedStripeCommand,
+    args: Array<string> = [],
+  ): Promise<void> {
+    const commandString = ["stripe", command, ...args].join(" ");
+    const terminal = await this.terminalForCommand(commandString);
+    terminal.sendText(commandString);
     terminal.show();
     const otherTerminals = this.terminals.filter((t) => t !== terminal);
     this.freeUnusedTerminals(otherTerminals);

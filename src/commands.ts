@@ -37,6 +37,22 @@ export async function openWebhooksListen(options: any) {
       )
     : options.forwardConnectTo;
 
+  const invalidURLCharsRE = /[^\w-.~:\/?#\[\]@!$&'()*+,;=]/;
+  const invalidURL = [forwardTo, forwardConnectTo].find((url) => invalidURLCharsRE.test(url));
+  if (invalidURL) {
+    await vscode.window.showErrorMessage(`Invalid URL: ${invalidURL}`);
+    return;
+  }
+
+  if (Array.isArray(options.events)) {
+    const invalidEventCharsRE = /[^a-z_.]/;
+    const invalidEvent = options.events.find((e: string) => invalidEventCharsRE.test(e));
+    if (invalidEvent) {
+      await vscode.window.showErrorMessage(`Invalid chararacters found in event: ${invalidEvent}. For a list of all possible events, see https://stripe.com/docs/api/events/types.`);
+      return;
+    }
+  }
+
   const forwardToFlag = forwardTo
     ? ["--forward-to", forwardTo]
     : [];
@@ -49,24 +65,24 @@ export async function openWebhooksListen(options: any) {
     ? ["--events", options.events.join(",")]
     : [];
 
-  const command = [
-    "stripe listen",
-    ...forwardToFlag,
-    ...forwardConnectToFlag,
-    ...eventsFlag
-  ].join(" ");
-
-  terminal.execute(command);
+  terminal.execute(
+    "listen",
+    [
+      ...forwardToFlag,
+      ...forwardConnectToFlag,
+      ...eventsFlag
+    ]
+  );
 }
 
 export function openLogsStreaming() {
   telemetry.sendEvent("openLogsStreaming");
-  terminal.execute("stripe logs tail");
+  terminal.execute("logs", ["tail"]);
 }
 
 export function startLogin() {
   telemetry.sendEvent("login");
-  terminal.execute("stripe login");
+  terminal.execute("login");
 }
 
 export function openCLI() {
@@ -174,7 +190,7 @@ export async function openTriggerEvent() {
   ]);
 
   if (eventName) {
-    terminal.execute(`stripe trigger ${eventName}`);
+    terminal.execute("trigger", [eventName]);
 
     // Trigger events refresh after 5s as we don't have a way to know when it has finished.
     setTimeout(() => {

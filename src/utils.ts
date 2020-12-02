@@ -33,7 +33,7 @@ export function getOSType(): OSType {
 export async function showQuickPickWithValues(
   placeholder: string,
   items: string[]
-) {
+): Promise<string> {
   return new Promise((resolve, reject) => {
     const input = vscode.window.createQuickPick();
     input.placeholder = placeholder;
