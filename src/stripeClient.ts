@@ -79,9 +79,19 @@ export class StripeClient {
   }
 
   async isAuthenticated(): Promise<Boolean> {
+    const projectName = vscode.workspace
+      .getConfiguration("stripe")
+      .get("projectName", null);
     try {
       const { stdout } = await execa(this.cliPath, ["config", "--list"]);
-      return stdout !== "";
+      const hasConfigForProject = stdout
+        .split("\n")
+        .some((line: string) => line === `[${projectName || "default"}]`);
+      if (hasConfigForProject) {
+        return true;
+      }
+      telemetry.sendEvent("cli.notAuthenticated");
+      return false;
     } catch (err) {
       telemetry.sendEvent("cli.notAuthenticated");
       return false;
