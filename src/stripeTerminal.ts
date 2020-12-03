@@ -24,7 +24,15 @@ export class StripeTerminal {
     command: SupportedStripeCommand,
     args: Array<string> = [],
   ): Promise<void> {
-    const commandString = ["stripe", command, ...args].join(" ");
+    const globalCLIFLags = this.getGlobalCLIFlags();
+
+    const commandString = [
+      "stripe",
+      command,
+      ...args,
+      ...globalCLIFLags
+    ].join(" ");
+
     const terminal = await this.terminalForCommand(commandString);
     terminal.sendText(commandString);
     terminal.show();
@@ -121,5 +129,18 @@ export class StripeTerminal {
       t.dispose();
     });
     this.terminals = this.terminals.filter((t) => !unusedTerminals.includes(t));
+  }
+
+  // The Stripe CLI supports a number of flags for every command. See https://stripe.com/docs/cli/flags
+  private getGlobalCLIFlags(): Array<string> {
+    const stripeConfig = vscode.workspace.getConfiguration("stripe");
+
+    const projectName = stripeConfig.get("projectName", null);
+
+    const projectNameFlag = projectName ? ["--project-name", projectName] : [];
+
+    return [
+      ...projectNameFlag,
+    ];
   }
 }

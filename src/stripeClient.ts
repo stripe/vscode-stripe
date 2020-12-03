@@ -16,6 +16,7 @@ export class StripeClient {
   constructor() {
     this.isInstalled = false;
     this.cliPath = "";
+    vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
   private async execute(command: string) {
@@ -69,7 +70,7 @@ export class StripeClient {
   private async promptLogin() {
     let actionText = "Run `stripe login` in the terminal to login";
     let returnValue = await window.showErrorMessage(
-      `You need to login with the Stripe CLI before you can continue`,
+      `You need to login with the Stripe CLI for this project before you can continue`,
       {},
       ...[actionText]
     );
@@ -79,9 +80,19 @@ export class StripeClient {
   }
 
   async isAuthenticated(): Promise<Boolean> {
+    const projectName = vscode.workspace
+      .getConfiguration("stripe")
+      .get("projectName", null);
     try {
       const { stdout } = await execa(this.cliPath, ["config", "--list"]);
-      return stdout !== "";
+      const hasConfigForProject = stdout
+        .split("\n")
+        .some((line: string) => line === `[${projectName || "default"}]`);
+      if (hasConfigForProject) {
+        return true;
+      }
+      telemetry.sendEvent("cli.notAuthenticated");
+      return false;
     } catch (err) {
       telemetry.sendEvent("cli.notAuthenticated");
       return false;
@@ -142,6 +153,16 @@ export class StripeClient {
   getResourceById(id: string) {
     const resource = this.execute(`get ${id}`);
     return resource;
+  }
+
+  private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
+    const shouldHandleConfigurationChange = e.affectsConfiguration("stripe");
+    if (shouldHandleConfigurationChange) {
+      const isAuthenticated = await this.isAuthenticated();
+      if (!isAuthenticated) {
+        await this.promptLogin();
+      }
+    }
   }
 }
 

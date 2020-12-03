@@ -72,6 +72,10 @@
           "description": "Install path for the Stripe CLI executable (include the complete filepath to the executable)",
           "type": "string"
         },
+        "stripe.projectName": {
+          "type": "string",
+          "description": "the project name to read from for config (default \"default\")"
+        },
         "stripe.telemetry.enabled": {
           "type": "boolean",
           "default": true,
