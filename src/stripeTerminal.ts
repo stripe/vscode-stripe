@@ -5,6 +5,7 @@ import { getOSType, OSType, filterAsync, findAsync } from "./utils";
 type SupportedStripeCommand = "listen" | "logs" | "login" | "trigger";
 
 export class StripeTerminal {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   private static KNOWN_LONG_RUNNING_COMMANDS = [
     "stripe listen",
     "stripe logs tail",

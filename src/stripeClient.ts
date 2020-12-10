@@ -37,6 +37,7 @@ export class StripeClient {
     let flags: object[] = [];
     if (!telemetry.isTelemetryEnabled) {
       flags.push({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         STRIPE_CLI_TELEMETRY_OPTOUT: true,
       });
     }

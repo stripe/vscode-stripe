@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import moment from "moment";
 
-enum storageKeys {
+enum StorageKeys {
   doNotShowAgain = "stripeDoNotShowAgain",
   lastSurveyDate = "stripeLastSurveyDate",
 }
@@ -27,13 +27,13 @@ export class SurveyPrompt {
   }
 
   public shouldShowBanner(): boolean {
-    if (this.storage.get(storageKeys.doNotShowAgain)) {
+    if (this.storage.get(StorageKeys.doNotShowAgain)) {
       return false;
     }
 
     // Only sample people took the survey more than 12 weeks ago
     const lastSurveyDateEpoch = this.storage.get(
-      storageKeys.lastSurveyDate
+      StorageKeys.lastSurveyDate
     ) as number;
 
     if (lastSurveyDateEpoch) {
@@ -69,10 +69,10 @@ export class SurveyPrompt {
     if (selection === "Take survey") {
       vscode.commands.executeCommand("stripe.openSurvey");
       let currentEpoch = moment().valueOf();
-      this.storage.update(storageKeys.lastSurveyDate, currentEpoch);
-      this.storage.update(storageKeys.doNotShowAgain, false);
+      this.storage.update(StorageKeys.lastSurveyDate, currentEpoch);
+      this.storage.update(StorageKeys.doNotShowAgain, false);
     } else if (selection === "Don't Show Again") {
-      this.storage.update(storageKeys.doNotShowAgain, true);
+      this.storage.update(StorageKeys.doNotShowAgain, true);
     }
   }
 }
