@@ -54,8 +54,8 @@ export class StripeTerminal {
 
   private isCommandLongRunning(command: string): boolean {
     if (getOSType() === OSType.windows) {
-      // On Windows we can't get the process command, so always assume it's long running
-      return true;
+      // On Windows we can't get the process command, so always assume terminals running `stripe` are long running
+      return command.indexOf("stripe") > -1;
     }
     return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
       command.indexOf(knownCommand) > -1
@@ -83,7 +83,24 @@ export class StripeTerminal {
     return null;
   }
 
+  private async getUsersStripeTerminal(): Promise<vscode.Terminal | undefined> {
+    const usersTerminals = vscode.window.terminals.filter((t) => !this.terminals.includes(t));
+    const usersStripeTerminal = await findAsync(usersTerminals, async (t) => {
+      const runningCommand = await this.getRunningCommand(t);
+      return !!runningCommand && this.isCommandLongRunning(runningCommand);
+    });
+    return usersStripeTerminal;
+  }
+
   private async terminalForCommand(command: string): Promise<vscode.Terminal> {
+    // If the user had manually created a terminal and ran `stripe listen` or `stripe logs tail`,
+    // we would want to know about it so that we can reuse that terminal or spawn new split
+    // terminals off of it. This gives a better experience than ignoring that terminal.
+    const usersStripeTerminal = await this.getUsersStripeTerminal();
+    if (this.terminals.length === 0 && usersStripeTerminal) {
+      this.terminals.push(usersStripeTerminal);
+    }
+
     // If the command is a long-running one, and it's already running in a VS Code terminal,
     // we restart it in the same terminal. This does not occur on Windows due to OS limitations.
     if (this.isCommandLongRunning(command)) {
@@ -110,6 +127,8 @@ export class StripeTerminal {
     }
 
     if (this.terminals.length > 0) {
+      const lastTerminal = this.terminals[this.terminals.length - 1];
+      lastTerminal.show();  // In case it is hidden
       const terminal = await this.createNewSplitTerminal();
       this.terminals.push(terminal);
       return terminal;
