@@ -132,5 +132,5 @@ export class StripeLinter {
 
     // tell VS Code to show warnings and errors in syntax
     diagnosticCollection.set(document.uri, fileDiagnostics);
-  }
+  };
 }

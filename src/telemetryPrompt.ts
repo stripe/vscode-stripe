@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-enum storageKeys {
+enum StorageKeys {
   doNotShowTelemetryPromptAgain = "stripeDoNotShowTelemetryPromptAgain",
 }
 
@@ -21,14 +21,14 @@ export class TelemetryPrompt {
   }
 
   public shouldShowBanner(): boolean {
-    if (this.storage.get(storageKeys.doNotShowTelemetryPromptAgain)) {
+    if (this.storage.get(StorageKeys.doNotShowTelemetryPromptAgain)) {
       return false;
     }
     return true;
   }
 
   public async showTelemetryPrompt() {
-    this.storage.update(storageKeys.doNotShowTelemetryPromptAgain, true);
+    this.storage.update(StorageKeys.doNotShowTelemetryPromptAgain, true);
     const prompts = ["Read More", "Okay"];
 
     const selection = await vscode.window.showInformationMessage(

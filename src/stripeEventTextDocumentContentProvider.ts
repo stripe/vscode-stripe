@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { StripeClient } from "./stripeClient";
 
 export class StripeEventTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
+  // eslint-disable-next-line
   private static EVENT_ID_REGEX = /evt_[\w]+/;
 
   private stripeClient: StripeClient;
