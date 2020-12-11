@@ -1,15 +1,15 @@
 import {
-  window,
+  Diagnostic,
+  DiagnosticCollection,
+  DiagnosticSeverity,
+  Range,
   extensions,
   languages,
-  Range,
-  Diagnostic,
-  DiagnosticSeverity,
-  DiagnosticCollection,
+  window,
   workspace,
-} from "vscode";
+} from 'vscode';
 
-import { Telemetry } from "./telemetry";
+import {Telemetry} from './telemetry';
 
 const telemetry = Telemetry.getInstance();
 
@@ -19,23 +19,23 @@ interface Resource {
   };
 }
 
-const gitExtension = extensions.getExtension("vscode.git");
+const gitExtension = extensions.getExtension('vscode.git');
 const gitExtensionExports = gitExtension ? gitExtension.exports : null;
 const isUsingGitExtension = gitExtensionExports && gitExtensionExports.enabled;
 const gitAPI = isUsingGitExtension ? gitExtensionExports.getAPI(1) : null;
 
-const ignoredFileList = [".env"];
+const ignoredFileList = ['.env'];
 const stripeKeysRegex = new RegExp(
-  "(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]+",
-  "g"
+  '(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]+',
+  'g'
 );
 const diagnosticMessageNoGit =
-  "This Stripe API Key is hardcoded. For better security, consider using a .env file.  See https://stripe.com/docs/keys#safe-keys for more advice.";
+  'This Stripe API Key is hardcoded. For better security, consider using a .env file.  See https://stripe.com/docs/keys#safe-keys for more advice.';
 const diagnosticMessageGit =
-  "This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#safe-keys for more advice.";
+  'This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#safe-keys for more advice.';
 
-let diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCollection(
-  "StripeHardCodedAPIKeys"
+const diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCollection(
+  'StripeHardCodedAPIKeys'
 );
 
 // isCommitRisk checks if a file is in the git working tree, which means that it's not gitignored and is a commit risk
@@ -73,7 +73,7 @@ const prepareLineDiagnostics = (line: string, index: number): Diagnostic[] => {
     // create new diagnostic and add to the list of total diagnostics for this line of code
     const diagnostic = new Diagnostic(range, message, severity);
 
-    telemetry.sendEvent("diagnostics.show", severity);
+    telemetry.sendEvent('diagnostics.show', severity);
     diagnostics.push(diagnostic);
   }
 
@@ -105,8 +105,6 @@ const shouldSearchFile = (currentFilename: string): boolean => {
 // these warnings / errors also show up in the "Problems" tab in the VS Code integrated Terminal panel.
 
 export class StripeLinter {
-  constructor() {}
-
   activate() {
     this.lookForHardCodedAPIKeys();
     workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
@@ -116,13 +114,13 @@ export class StripeLinter {
     const editor = window.activeTextEditor;
     if (!editor) { return; }
 
-    const { document } = editor;
+    const {document} = editor;
 
     const currentFilename = document.uri.path;
     if (!shouldSearchFile(currentFilename)) { return; }
 
     const text = document.getText();
-    const lines = text.split("\n");
+    const lines = text.split('\n');
 
     // get each line's possible API key warnings
     // then flatten nested diagnostics into a flat array

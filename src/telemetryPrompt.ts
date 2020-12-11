@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 enum StorageKeys {
-  doNotShowTelemetryPromptAgain = "stripeDoNotShowTelemetryPromptAgain",
+  doNotShowTelemetryPromptAgain = 'stripeDoNotShowTelemetryPromptAgain',
 }
 
 export class TelemetryPrompt {
@@ -11,7 +11,7 @@ export class TelemetryPrompt {
     this.storage = context.globalState;
   }
 
-  public async activate(): Promise<void> {
+  public activate(): void {
     const show = this.shouldShowBanner();
     if (!show) {
       return;
@@ -29,7 +29,7 @@ export class TelemetryPrompt {
 
   public async showTelemetryPrompt() {
     this.storage.update(StorageKeys.doNotShowTelemetryPromptAgain, true);
-    const prompts = ["Read More", "Okay"];
+    const prompts = ['Read More', 'Okay'];
 
     const selection = await vscode.window.showInformationMessage(
       "The Stripe VS Code Extension collects basic telemetry in order to improve this extension's experience. If you'd like to opt out we respect the global telemetry setting in VS Code, so we won't collect any data unless this setting is turned on.",
@@ -40,9 +40,9 @@ export class TelemetryPrompt {
       return;
     }
 
-    if (selection === "Read More") {
-      vscode.commands.executeCommand("stripe.openTelemetryInfo");
-      return;
+    if (selection === 'Read More') {
+      vscode.commands.executeCommand('stripe.openTelemetryInfo');
+
     }
   }
 }

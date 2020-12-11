@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as utils from '../../stripeLanguageServer/utils';
-import { stripeMethodList } from '../../stripeLanguageServer/patterns';
+import {stripeMethodList} from '../../stripeLanguageServer/patterns';
 
 suite('Stripe language server', () => {
   suite('API Reference URL', () => {

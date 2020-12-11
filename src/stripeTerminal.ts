@@ -1,14 +1,14 @@
-import * as vscode from "vscode";
-import psList from "ps-list";
-import { getOSType, OSType, filterAsync, findAsync } from "./utils";
+import * as vscode from 'vscode';
+import {OSType, filterAsync, findAsync, getOSType} from './utils';
+import psList from 'ps-list';
 
-type SupportedStripeCommand = "listen" | "logs" | "login" | "trigger";
+type SupportedStripeCommand = 'listen' | 'logs' | 'login' | 'trigger';
 
 export class StripeTerminal {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private static KNOWN_LONG_RUNNING_COMMANDS = [
-    "stripe listen",
-    "stripe logs tail",
+    'stripe listen',
+    'stripe logs tail',
   ];
 
   private terminals: Array<vscode.Terminal>;
@@ -28,11 +28,11 @@ export class StripeTerminal {
     const globalCLIFLags = this.getGlobalCLIFlags();
 
     const commandString = [
-      "stripe",
+      'stripe',
       command,
       ...args,
       ...globalCLIFLags
-    ].join(" ");
+    ].join(' ');
 
     const terminal = await this.terminalForCommand(commandString);
     terminal.sendText(commandString);
@@ -41,9 +41,9 @@ export class StripeTerminal {
     this.freeUnusedTerminals(otherTerminals);
   }
 
-  private async createNewSplitTerminal(): Promise<vscode.Terminal> {
+  private createNewSplitTerminal(): Promise<vscode.Terminal> {
     return new Promise(async (resolve, reject) => {
-      await vscode.commands.executeCommand("workbench.action.terminal.split");
+      await vscode.commands.executeCommand('workbench.action.terminal.split');
 
       vscode.window.onDidChangeActiveTerminal((terminal) => {
         if (terminal) {
@@ -56,7 +56,7 @@ export class StripeTerminal {
   private isCommandLongRunning(command: string): boolean {
     if (getOSType() === OSType.windows) {
       // On Windows we can't get the process command, so always assume terminals running `stripe` are long running
-      return command.indexOf("stripe") > -1;
+      return command.indexOf('stripe') > -1;
     }
     return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
       command.indexOf(knownCommand) > -1
@@ -129,13 +129,13 @@ export class StripeTerminal {
 
     if (this.terminals.length > 0) {
       const lastTerminal = this.terminals[this.terminals.length - 1];
-      lastTerminal.show();  // In case it is hidden
+      lastTerminal.show(); // In case it is hidden
       const terminal = await this.createNewSplitTerminal();
       this.terminals.push(terminal);
       return terminal;
     }
 
-    const terminal = vscode.window.createTerminal("Stripe");
+    const terminal = vscode.window.createTerminal('Stripe');
     this.terminals.push(terminal);
     return terminal;
   }
@@ -153,11 +153,11 @@ export class StripeTerminal {
 
   // The Stripe CLI supports a number of flags for every command. See https://stripe.com/docs/cli/flags
   private getGlobalCLIFlags(): Array<string> {
-    const stripeConfig = vscode.workspace.getConfiguration("stripe");
+    const stripeConfig = vscode.workspace.getConfiguration('stripe');
 
-    const projectName = stripeConfig.get("projectName", null);
+    const projectName = stripeConfig.get('projectName', null);
 
-    const projectNameFlag = projectName ? ["--project-name", projectName] : [];
+    const projectNameFlag = projectName ? ['--project-name', projectName] : [];
 
     return [
       ...projectNameFlag,

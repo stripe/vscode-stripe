@@ -1,50 +1,46 @@
-import { StripeTreeItem } from "./stripeTreeItem";
-import { StripeTreeViewDataProvider } from "./stripeTreeViewDataProvider";
-import { Resource } from "./resources";
+import {Resource} from './resources';
+import {StripeTreeItem} from './stripeTreeItem';
+import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 
 export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
-  constructor() {
-    super();
-  }
+  buildTree(): Promise<StripeTreeItem[]> {
+    const items = [];
 
-  async buildTree(): Promise<StripeTreeItem[]> {
-    let items = [];
-
-    let docsItem = new StripeTreeItem("Read documentation", "openDocs");
+    const docsItem = new StripeTreeItem('Read documentation', 'openDocs');
     docsItem.setIcon({
-      dark: Resource.icons.dark.book,
-      light: Resource.icons.light.book,
+      dark: Resource.ICONS.dark.book,
+      light: Resource.ICONS.light.book,
     });
     items.push(docsItem);
 
-    let reportItem = new StripeTreeItem("Report issue", "openReportIssue");
+    const reportItem = new StripeTreeItem('Report issue', 'openReportIssue');
     reportItem.setIcon({
-      dark: Resource.icons.dark.report,
-      light: Resource.icons.light.report,
+      dark: Resource.ICONS.dark.report,
+      light: Resource.ICONS.light.report,
     });
     items.push(reportItem);
 
-    let feedbackItem = new StripeTreeItem(
-      "Rate and provide feedback",
-      "openSurvey"
+    const feedbackItem = new StripeTreeItem(
+      'Rate and provide feedback',
+      'openSurvey'
     );
     feedbackItem.setIcon({
-      dark: Resource.icons.dark.feedback,
-      light: Resource.icons.light.feedback,
+      dark: Resource.ICONS.dark.feedback,
+      light: Resource.ICONS.light.feedback,
     });
     items.push(feedbackItem);
 
-    let webhooksDebugItem = new StripeTreeItem(
-      "Configure debugging",
-      "openWebhooksDebugConfigure"
+    const webhooksDebugItem = new StripeTreeItem(
+      'Configure debugging',
+      'openWebhooksDebugConfigure'
     );
     webhooksDebugItem.setIcon({
-      dark: Resource.icons.dark.settings,
-      light: Resource.icons.light.settings,
+      dark: Resource.ICONS.dark.settings,
+      light: Resource.ICONS.light.settings,
     });
 
     items.push(webhooksDebugItem);
 
-    return items;
+    return Promise.resolve(items);
   }
 }

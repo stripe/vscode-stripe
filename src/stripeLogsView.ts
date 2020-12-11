@@ -1,8 +1,7 @@
-import { StripeTreeItem } from "./stripeTreeItem";
-
-import { StripeTreeViewDataProvider } from "./stripeTreeViewDataProvider";
-import { StripeClient } from "./stripeClient";
-import { Resource } from "./resources";
+import {Resource} from './resources';
+import {StripeClient} from './stripeClient';
+import {StripeTreeItem} from './stripeTreeItem';
+import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 
 export class StripLogsDataProvider extends StripeTreeViewDataProvider {
   stripeClient: StripeClient;
@@ -12,16 +11,16 @@ export class StripLogsDataProvider extends StripeTreeViewDataProvider {
     this.stripeClient = stripeClient;
   }
 
-  async buildTree(): Promise<StripeTreeItem[]> {
-    let logStreamItem = new StripeTreeItem(
-      "Start API logs streaming",
-      "openLogsStreaming"
+  buildTree(): Promise<StripeTreeItem[]> {
+    const logStreamItem = new StripeTreeItem(
+      'Start API logs streaming',
+      'openLogsStreaming'
     );
     logStreamItem.setIcon({
-      dark: Resource.icons.dark.terminal,
-      light: Resource.icons.light.terminal,
+      dark: Resource.ICONS.dark.terminal,
+      light: Resource.ICONS.light.terminal,
     });
 
-    return [logStreamItem];
+    return Promise.resolve([logStreamItem]);
   }
 }

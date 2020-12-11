@@ -1,33 +1,27 @@
 import {
-  createConnection,
-  TextDocuments,
-  ProposedFeatures,
-  InitializeParams,
-  TextDocumentSyncKind,
-  InitializeResult,
   HoverParams,
-} from "vscode-languageserver";
+  InitializeParams,
+  InitializeResult,
+  ProposedFeatures,
+  TextDocumentSyncKind,
+  TextDocuments,
+  createConnection,
+} from 'vscode-languageserver';
+import {TextDocument} from 'vscode-languageserver-textdocument';
+import {getStripeApiReferenceUrl} from './utils';
+import {stripeMethodList} from './patterns';
 
-import { TextDocument } from "vscode-languageserver-textdocument";
+const connection = createConnection(ProposedFeatures.all);
 
-import { stripeMethodList } from "./patterns";
-import { getStripeApiReferenceUrl } from "./utils";
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let connection = createConnection(ProposedFeatures.all);
-
-let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
-
-let hasConfigurationCapability: boolean = false;
 let hasWorkspaceFolderCapability: boolean = false;
 
 connection.onInitialize((params: InitializeParams) => {
-  let capabilities = params.capabilities;
+  const capabilities = params.capabilities;
 
   // Does the client support the `workspace/configuration` request?
   // If not, we will fall back using global settings
-  hasConfigurationCapability = !!(
-    capabilities.workspace && !!capabilities.workspace.configuration
-  );
 
   hasWorkspaceFolderCapability = !!(
     capabilities.workspace && !!capabilities.workspace.workspaceFolders
@@ -54,14 +48,14 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 function findHoverMatches(params: HoverParams): string[] {
-  let document = documents.get(params.textDocument.uri);
+  const document = documents.get(params.textDocument.uri);
   if (!document) { return []; }
 
   const text = document.getText();
-  const line = text.split("\n")[params.position.line];
+  const line = text.split('\n')[params.position.line];
   const hoverPosition = params.position.character;
 
-  let hoverMatches: string[] = [];
+  const hoverMatches: string[] = [];
   let hasMatch = false;
 
   // run through all possible stripe method calls and try to match at least one on this hovered line of code
@@ -70,11 +64,11 @@ function findHoverMatches(params: HoverParams): string[] {
     const stripeMethod = stripeMethodList[i];
 
     const language =
-      document.languageId === "typescript" ? "javascript" : document.languageId;
+      document.languageId === 'typescript' ? 'javascript' : document.languageId;
 
     const pattern = stripeMethod.regexps[language];
     if (!pattern) { return []; }
-    const regexp = new RegExp(pattern, "g");
+    const regexp = new RegExp(pattern, 'g');
 
     // in almost all cases there'll only be one match, but we might want to stack matches in the future
     while ((match = regexp.exec(line)) !== null) {
@@ -106,7 +100,7 @@ function findHoverMatches(params: HoverParams): string[] {
 
 connection.onHover((params: HoverParams) => {
   const matches: string[] = findHoverMatches(params);
-  return { contents: matches };
+  return {contents: matches};
 });
 
 documents.listen(connection);

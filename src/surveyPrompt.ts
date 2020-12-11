@@ -1,9 +1,9 @@
-import * as vscode from "vscode";
-import moment from "moment";
+import * as vscode from 'vscode';
+import moment from 'moment';
 
 enum StorageKeys {
-  doNotShowAgain = "stripeDoNotShowAgain",
-  lastSurveyDate = "stripeLastSurveyDate",
+  doNotShowAgain = 'stripeDoNotShowAgain',
+  lastSurveyDate = 'stripeLastSurveyDate',
 }
 
 function getRandomInt(max: number) {
@@ -17,7 +17,7 @@ export class SurveyPrompt {
     this.storage = context.globalState;
   }
 
-  public async activate(): Promise<void> {
+  public activate(): void {
     const show = this.shouldShowBanner();
     if (!show) {
       return;
@@ -37,10 +37,10 @@ export class SurveyPrompt {
     ) as number;
 
     if (lastSurveyDateEpoch) {
-      let lastSurveyDate = moment(lastSurveyDateEpoch);
-      let currentDate = moment();
+      const lastSurveyDate = moment(lastSurveyDateEpoch);
+      const currentDate = moment();
 
-      if (currentDate.diff(lastSurveyDate, "weeks") < 12) {
+      if (currentDate.diff(lastSurveyDate, 'weeks') < 12) {
         return false;
       }
     }
@@ -55,10 +55,10 @@ export class SurveyPrompt {
   }
 
   public async showSurvey() {
-    const prompts = ["Take survey", "Maybe later", "Don't Show Again"];
+    const prompts = ['Take survey', 'Maybe later', "Don't Show Again"];
 
     const selection = await vscode.window.showInformationMessage(
-      "Got 2 minutes to tell us how the Stripe extension is working for you?",
+      'Got 2 minutes to tell us how the Stripe extension is working for you?',
       ...prompts
     );
 
@@ -66,9 +66,9 @@ export class SurveyPrompt {
       return;
     }
 
-    if (selection === "Take survey") {
-      vscode.commands.executeCommand("stripe.openSurvey");
-      let currentEpoch = moment().valueOf();
+    if (selection === 'Take survey') {
+      vscode.commands.executeCommand('stripe.openSurvey');
+      const currentEpoch = moment().valueOf();
       this.storage.update(StorageKeys.lastSurveyDate, currentEpoch);
       this.storage.update(StorageKeys.doNotShowAgain, false);
     } else if (selection === "Don't Show Again") {

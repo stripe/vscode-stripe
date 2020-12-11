@@ -1,102 +1,99 @@
-import { commands, debug, window, ExtensionContext, workspace } from "vscode";
-
-import { ServerOptions, TransportKind } from "vscode-languageclient";
-
-import path from "path";
-import { StripeDashboardViewDataProvider } from "./stripeDashboardView";
-import { StripeEventsDataProvider } from "./stripeEventsView";
-import { StripeHelpViewDataProvider } from "./stripeHelpView";
-import { StripLogsDataProvider } from "./stripeLogsView";
-import { StripeDebugProvider } from "./stripeDebugProvider";
-import { StripeLinter } from "./stripeLinter";
-import { StripeLanguageClient } from "./stripeLanguageServer/client";
-import { StripeClient } from "./stripeClient";
-import { Resource } from "./resources";
-import { SurveyPrompt } from "./surveyPrompt";
-import { TelemetryPrompt } from "./telemetryPrompt";
-import { Telemetry } from "./telemetry";
-
+import {ExtensionContext, commands, debug, window, workspace} from 'vscode';
+import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {
-  openWebhooksListen,
-  openWebhooksDebugConfigure,
-  openLogsStreaming,
   openCLI,
-  openDashboardEvents,
   openDashboardApikeys,
-  openDashboardWebhooks,
+  openDashboardEvents,
   openDashboardLogs,
+  openDashboardWebhooks,
+  openDocs,
   openEventDetails,
-  refreshEventsList,
-  startLogin,
-  openTriggerEvent,
+  openLogsStreaming,
+  openReportIssue,
   openSurvey,
   openTelemetryInfo,
-  openReportIssue,
-  openDocs,
-} from "./commands";
-import { StripeEventTextDocumentContentProvider } from "./stripeEventTextDocumentContentProvider";
+  openTriggerEvent,
+  openWebhooksDebugConfigure,
+  openWebhooksListen,
+  refreshEventsList,
+  startLogin,
+} from './commands';
+import {Resource} from './resources';
+import {StripLogsDataProvider} from './stripeLogsView';
+import {StripeClient} from './stripeClient';
+import {StripeDashboardViewDataProvider} from './stripeDashboardView';
+import {StripeDebugProvider} from './stripeDebugProvider';
+import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
+import {StripeEventsDataProvider} from './stripeEventsView';
+import {StripeHelpViewDataProvider} from './stripeHelpView';
+import {StripeLanguageClient} from './stripeLanguageServer/client';
+import {StripeLinter} from './stripeLinter';
+import {SurveyPrompt} from './surveyPrompt';
+import {Telemetry} from './telemetry';
+import {TelemetryPrompt} from './telemetryPrompt';
+import path from 'path';
 
-export async function activate(this: any, context: ExtensionContext) {
+export function activate(this: any, context: ExtensionContext) {
   // Stripe CLi client
-  let stripeClient = new StripeClient();
+  const stripeClient = new StripeClient();
 
   // disclosure of telemetry prompt
-  let telemetryPrompt = new TelemetryPrompt(context).activate();
+  new TelemetryPrompt(context).activate();
 
   // Telemetry
   const telemetry = Telemetry.getInstance();
-  telemetry.sendEvent("activate");
+  telemetry.sendEvent('activate');
 
   // CSAT survey prompt
-  let surveyPrompt = new SurveyPrompt(context).activate();
+  new SurveyPrompt(context).activate();
 
   Resource.initialize(context);
 
   // Activity bar view
-  window.createTreeView("stripeDashboardView", {
+  window.createTreeView('stripeDashboardView', {
     treeDataProvider: new StripeDashboardViewDataProvider(),
     showCollapseAll: false,
   });
 
-  window.createTreeView("stripeHelpView", {
+  window.createTreeView('stripeHelpView', {
     treeDataProvider: new StripeHelpViewDataProvider(),
     showCollapseAll: false,
   });
 
-  let stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
-  window.createTreeView("stripeEventsView", {
+  const stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
+  window.createTreeView('stripeEventsView', {
     treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true,
   });
 
-  let stripeLogsViewProvider = new StripLogsDataProvider(stripeClient);
-  window.createTreeView("stripeLogsView", {
+  const stripeLogsViewProvider = new StripLogsDataProvider(stripeClient);
+  window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
   });
 
   // Debug provider
-  debug.registerDebugConfigurationProvider("stripe", new StripeDebugProvider());
+  debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider());
 
   // Virtual document content provider for displaying event data
   workspace.registerTextDocumentContentProvider(
-    "stripeEvent",
+    'stripeEvent',
     new StripeEventTextDocumentContentProvider(stripeClient)
   );
 
   // Stripe Linter
-  let stripeLinter = new StripeLinter();
+  const stripeLinter = new StripeLinter();
   stripeLinter.activate();
 
   // Language Server for hover matching of Stripe methods
-  let serverModule = context.asAbsolutePath(
-    path.join("out", "stripeLanguageServer", "server.js")
+  const serverModule = context.asAbsolutePath(
+    path.join('out', 'stripeLanguageServer', 'server.js')
   );
 
-  let debugOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
+  const debugOptions = {execArgv: ['--nolazy', '--inspect=6009']};
 
-  let serverOptions: ServerOptions = {
-    run: { module: serverModule, transport: TransportKind.ipc },
+  const serverOptions: ServerOptions = {
+    run: {module: serverModule, transport: TransportKind.ipc},
     debug: {
       module: serverModule,
       transport: TransportKind.ipc,
@@ -107,79 +104,79 @@ export async function activate(this: any, context: ExtensionContext) {
   StripeLanguageClient.activate(context, serverOptions);
 
   // Commands
-  let subscriptions = context.subscriptions;
-  let boundRefreshEventsList = refreshEventsList.bind(
+  const subscriptions = context.subscriptions;
+  const boundRefreshEventsList = refreshEventsList.bind(
     this,
     stripeEventsViewProvider
   );
 
   context.subscriptions.push(
-    commands.registerCommand("stripe.openCLI", openCLI)
+    commands.registerCommand('stripe.openCLI', openCLI)
   );
 
   context.subscriptions.push(
-    commands.registerCommand("stripe.login", startLogin)
+    commands.registerCommand('stripe.login', startLogin)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openWebhooksListen", openWebhooksListen)
+    commands.registerCommand('stripe.openWebhooksListen', openWebhooksListen)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openLogsStreaming", openLogsStreaming)
+    commands.registerCommand('stripe.openLogsStreaming', openLogsStreaming)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openDashboardEvents", openDashboardEvents)
+    commands.registerCommand('stripe.openDashboardEvents', openDashboardEvents)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openDashboardLogs", openDashboardLogs)
+    commands.registerCommand('stripe.openDashboardLogs', openDashboardLogs)
   );
 
   subscriptions.push(
     commands.registerCommand(
-      "stripe.openEventDetails",
+      'stripe.openEventDetails',
       openEventDetails
     )
   );
 
   subscriptions.push(
     commands.registerCommand(
-      "stripe.openDashboardApikeys",
+      'stripe.openDashboardApikeys',
       openDashboardApikeys
     )
   );
 
   subscriptions.push(
     commands.registerCommand(
-      "stripe.openDashboardWebhooks",
+      'stripe.openDashboardWebhooks',
       openDashboardWebhooks
     )
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.refreshEventsList", boundRefreshEventsList)
+    commands.registerCommand('stripe.refreshEventsList', boundRefreshEventsList)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openTriggerEvent", openTriggerEvent)
+    commands.registerCommand('stripe.openTriggerEvent', openTriggerEvent)
   );
 
-  subscriptions.push(commands.registerCommand("stripe.openSurvey", openSurvey));
+  subscriptions.push(commands.registerCommand('stripe.openSurvey', openSurvey));
 
   subscriptions.push(
-    commands.registerCommand("stripe.openTelemetryInfo", openTelemetryInfo)
+    commands.registerCommand('stripe.openTelemetryInfo', openTelemetryInfo)
   );
 
   subscriptions.push(
-    commands.registerCommand("stripe.openReportIssue", openReportIssue)
+    commands.registerCommand('stripe.openReportIssue', openReportIssue)
   );
 
-  subscriptions.push(commands.registerCommand("stripe.openDocs", openDocs));
+  subscriptions.push(commands.registerCommand('stripe.openDocs', openDocs));
   subscriptions.push(
     commands.registerCommand(
-      "stripe.openWebhooksDebugConfigure",
+      'stripe.openWebhooksDebugConfigure',
       openWebhooksDebugConfigure
     )
   );

@@ -1,4 +1,4 @@
-import { Pattern } from './patterns';
+import {Pattern} from './patterns';
 import querystring from 'querystring';
 
 // Convert an LSP language identifier to a URL param `lang` for the Stripe API Reference pages

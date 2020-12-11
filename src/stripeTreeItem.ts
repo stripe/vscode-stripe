@@ -1,4 +1,4 @@
-import { TreeItem, TreeItemCollapsibleState } from "vscode";
+import {TreeItem, TreeItemCollapsibleState} from 'vscode';
 
 export class StripeTreeItem extends TreeItem {
   parent: StripeTreeItem | undefined;
@@ -8,11 +8,12 @@ export class StripeTreeItem extends TreeItem {
 
   constructor(label: string, commandString?: string) {
     super(label, TreeItemCollapsibleState.None);
-    this.contextValue = "stripe";
+    this.contextValue = 'stripe';
     this.commandString = commandString;
     this.metadata = {};
   }
 
+  // eslint-disable-next-line accessor-pairs
   set metadata(data: any) {
     this._metadata = data;
     if (this.commandString) {

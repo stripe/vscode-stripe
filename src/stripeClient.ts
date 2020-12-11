@@ -1,11 +1,12 @@
-"use strict";
-const execa = require("execa");
-import * as vscode from "vscode";
-import * as path from "path";
-import * as fs from "fs";
-import { window, commands, env, Uri } from "vscode";
-import { Telemetry } from "./telemetry";
-import { OSType, getOSType } from "./utils";
+'use strict';
+
+import * as fs from 'fs';
+import * as path from 'path';
+import * as vscode from 'vscode';
+import {OSType, getOSType} from './utils';
+import {Telemetry} from './telemetry';
+
+const execa = require('execa');
 
 const telemetry = Telemetry.getInstance();
 
@@ -15,7 +16,7 @@ export class StripeClient {
 
   constructor() {
     this.isInstalled = false;
-    this.cliPath = "";
+    this.cliPath = '';
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
@@ -27,14 +28,14 @@ export class StripeClient {
       return;
     }
 
-    let isAuthenticated = await this.isAuthenticated();
+    const isAuthenticated = await this.isAuthenticated();
 
     if (!isAuthenticated) {
       await this.promptLogin();
       return;
     }
 
-    let flags: object[] = [];
+    const flags: object[] = [];
     if (!telemetry.isTelemetryEnabled) {
       flags.push({
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -43,12 +44,12 @@ export class StripeClient {
     }
 
     try {
-      let args: string[] = command.split(" ");
-      const { stdout } = await execa(this.cliPath, args, {
+      const args: string[] = command.split(' ');
+      const {stdout} = await execa(this.cliPath, args, {
         env: flags,
       });
 
-      let json = JSON.parse(stdout);
+      const json = JSON.parse(stdout);
       return json;
     } catch (err) {
       return err;
@@ -56,98 +57,98 @@ export class StripeClient {
   }
 
   private async promptInstall() {
-    let actionText = "Read instructions on how to install Stripe CLI";
-    let returnValue = await window.showErrorMessage(
-      `Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine`,
+    const actionText = 'Read instructions on how to install Stripe CLI';
+    const returnValue = await vscode.window.showErrorMessage(
+      'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
       {},
       ...[actionText]
     );
 
     if (returnValue === actionText) {
-      env.openExternal(Uri.parse(`https://stripe.com/docs/stripe-cli`));
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli'));
     }
   }
 
   private async promptLogin() {
-    let actionText = "Run `stripe login` in the terminal to login";
-    let returnValue = await window.showErrorMessage(
-      `You need to login with the Stripe CLI for this project before you can continue`,
+    const actionText = 'Run `stripe login` in the terminal to login';
+    const returnValue = await vscode.window.showErrorMessage(
+      'You need to login with the Stripe CLI for this project before you can continue',
       {},
       ...[actionText]
     );
     if (returnValue === actionText) {
-      commands.executeCommand(`stripe.login`);
+      vscode.commands.executeCommand('stripe.login');
     }
   }
 
   async isAuthenticated(): Promise<Boolean> {
     const projectName = vscode.workspace
-      .getConfiguration("stripe")
-      .get("projectName", null);
+      .getConfiguration('stripe')
+      .get('projectName', null);
     try {
-      const { stdout } = await execa(this.cliPath, ["config", "--list"]);
+      const {stdout} = await execa(this.cliPath, ['config', '--list']);
       const hasConfigForProject = stdout
-        .split("\n")
-        .some((line: string) => line === `[${projectName || "default"}]`);
+        .split('\n')
+        .some((line: string) => line === `[${projectName || 'default'}]`);
       if (hasConfigForProject) {
         return true;
       }
-      telemetry.sendEvent("cli.notAuthenticated");
+      telemetry.sendEvent('cli.notAuthenticated');
       return false;
     } catch (err) {
-      telemetry.sendEvent("cli.notAuthenticated");
+      telemetry.sendEvent('cli.notAuthenticated');
       return false;
     }
   }
 
   detectInstalled() {
-    let osType: OSType = getOSType();
+    const osType: OSType = getOSType();
     let installPaths: string[] = [];
 
     switch (osType) {
       case OSType.macOS:
         // HomeBrew install path on macOS
-        installPaths = ["/usr/local/bin/stripe"];
+        installPaths = ['/usr/local/bin/stripe'];
         break;
       case OSType.linux:
         // apt-get install path on ubuntu + yum install path on centOS
-        installPaths = ["/usr/local/bin/stripe"];
+        installPaths = ['/usr/local/bin/stripe'];
         break;
       case OSType.windows:
         // scoop install path on Windows 10
-        let userProfile = process.env.USERPROFILE || "";
-        installPaths = [path.join(userProfile, "scoop", "shims", "stripe.exe")];
+        const userProfile = process.env.USERPROFILE || '';
+        installPaths = [path.join(userProfile, 'scoop', 'shims', 'stripe.exe')];
         break;
     }
 
     // Handle custom CLI path setting
-    let config = vscode.workspace.getConfiguration("stripe");
+    const config = vscode.workspace.getConfiguration('stripe');
     if (config) {
-      let cliInstallPath = config.get<string>("cliInstallPath");
+      const cliInstallPath = config.get<string>('cliInstallPath');
       if (cliInstallPath) {
-        let validInstallPath = getInstallPath([cliInstallPath]);
+        const validInstallPath = getInstallPath([cliInstallPath]);
         if (!validInstallPath) {
           vscode.window.showErrorMessage(
             `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${cliInstallPath}'`,
-            ...["Ok"]
+            ...['Ok']
           );
         }
       }
     }
 
-    let validInstallPath = getInstallPath(installPaths);
+    const validInstallPath = getInstallPath(installPaths);
 
     if (validInstallPath) {
       this.isInstalled = true;
       this.cliPath = validInstallPath;
     } else {
       this.isInstalled = false;
-      telemetry.sendEvent("cli.notInstalled");
+      telemetry.sendEvent('cli.notInstalled');
     }
   }
 
   getEvents() {
-    let events = this.execute("events list");
+    const events = this.execute('events list');
     return events;
   }
 
@@ -157,7 +158,7 @@ export class StripeClient {
   }
 
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
-    const shouldHandleConfigurationChange = e.affectsConfiguration("stripe");
+    const shouldHandleConfigurationChange = e.affectsConfiguration('stripe');
     if (shouldHandleConfigurationChange) {
       const isAuthenticated = await this.isAuthenticated();
       if (!isAuthenticated) {
@@ -171,12 +172,13 @@ function getInstallPath(paths: string[]): string {
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i];
     try {
-      let isValidPath = fs.statSync(path).isFile();
+      // eslint-disable-next-line no-sync
+      const isValidPath = fs.statSync(path).isFile();
       if (isValidPath) {
         return path;
       }
     } catch (err) {}
   }
 
-  return "";
+  return '';
 }
