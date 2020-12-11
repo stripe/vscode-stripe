@@ -1,13 +1,11 @@
-import { Event, EventEmitter, TreeDataProvider, TreeItem } from "vscode";
-import { StripeTreeItem } from "./stripeTreeItem";
+import {Event, EventEmitter, TreeDataProvider, TreeItem} from 'vscode';
+import {StripeTreeItem} from './stripeTreeItem';
 
 export class StripeTreeViewDataProvider implements TreeDataProvider<TreeItem> {
   private treeItems: TreeItem[] | null = null;
   private _onDidChangeTreeData: EventEmitter<TreeItem | null> = new EventEmitter<TreeItem | null>();
   readonly onDidChangeTreeData: Event<TreeItem | null> = this
     ._onDidChangeTreeData.event;
-
-  constructor() {}
 
   public refresh() {
     this.treeItems = null;
@@ -42,7 +40,7 @@ export class StripeTreeViewDataProvider implements TreeDataProvider<TreeItem> {
     return [];
   }
 
-  async buildTree(): Promise<StripeTreeItem[]> {
-    return [];
+  buildTree(): Promise<StripeTreeItem[]> {
+    return Promise.resolve([]);
   }
 }

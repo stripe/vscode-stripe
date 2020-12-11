@@ -1,14 +1,14 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 export enum OSType {
-  macOS = "macOS",
-  linux = "linux",
-  unknown = "unknown",
-  windows = "windows",
+  macOS = 'macOS',
+  linux = 'linux',
+  unknown = 'unknown',
+  windows = 'windows',
 }
 
 export function getExtensionInfo() {
-  let extension = vscode.extensions.getExtension("stripe.vscode-stripe");
+  const extension = vscode.extensions.getExtension('stripe.vscode-stripe');
   if (extension) {
     return extension.packageJSON;
   }
@@ -17,7 +17,7 @@ export function getExtensionInfo() {
 }
 
 export function getOSType(): OSType {
-  let platform: string = process.platform;
+  const platform: string = process.platform;
 
   if (/^win/.test(platform)) {
     return OSType.windows;
@@ -30,7 +30,7 @@ export function getOSType(): OSType {
   }
 }
 
-export async function showQuickPickWithValues(
+export function showQuickPickWithValues(
   placeholder: string,
   items: string[]
 ): Promise<string> {
@@ -44,7 +44,7 @@ export async function showQuickPickWithValues(
     });
 
     input.onDidAccept(() => {
-      let value = input.selectedItems[0].label;
+      const value = input.selectedItems[0].label;
       resolve(value);
     });
 
@@ -66,6 +66,6 @@ export async function findAsync<T>(
 ): Promise<T | undefined> {
   const promises = arr.map(predicate);
   const results = await Promise.all(promises);
-  const index = results.findIndex(result => result);
+  const index = results.findIndex((result) => result);
   return arr[index];
 }

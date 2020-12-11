@@ -1,11 +1,11 @@
-import ua from "universal-analytics";
-import * as vscode from "vscode";
-import { getExtensionInfo } from "./utils";
-const osName = require("os-name");
-const publicIp = require("public-ip");
+import * as vscode from 'vscode';
+import {getExtensionInfo} from './utils';
+import ua from 'universal-analytics';
+const osName = require('os-name');
+const publicIp = require('public-ip');
 
 export class Telemetry {
-  private static instance: Telemetry;
+  private static INSTANCE: Telemetry;
 
   client: any;
   userId: string;
@@ -14,18 +14,18 @@ export class Telemetry {
 
   private constructor() {
     this.userId = vscode.env.machineId;
-    this.ip = "";
+    this.ip = '';
     this._isTelemetryEnabled = this.areAllTelemetryConfigsEnabled();
     this.setup();
     vscode.workspace.onDidChangeConfiguration(this.configurationChanged, this);
   }
 
   public static getInstance(): Telemetry {
-    if (!Telemetry.instance) {
-      Telemetry.instance = new Telemetry();
+    if (!Telemetry.INSTANCE) {
+      Telemetry.INSTANCE = new Telemetry();
     }
 
-    return Telemetry.instance;
+    return Telemetry.INSTANCE;
   }
 
   get isTelemetryEnabled(): boolean {
@@ -41,22 +41,22 @@ export class Telemetry {
       return;
     }
 
-    this.client = ua("UA-12675062-9");
+    this.client = ua('UA-12675062-9');
 
-    let extensionInfo = getExtensionInfo();
+    const extensionInfo = getExtensionInfo();
 
     // Store
     this.ip = await publicIp.v4();
 
     // User custom dimensions to store user metadata
-    this.client.set("cd1", vscode.env.sessionId);
-    this.client.set("cd2", vscode.env.language);
-    this.client.set("cd3", vscode.version);
-    this.client.set("cd4", osName());
-    this.client.set("cd5", extensionInfo.version);
+    this.client.set('cd1', vscode.env.sessionId);
+    this.client.set('cd2', vscode.env.language);
+    this.client.set('cd3', vscode.version);
+    this.client.set('cd4', osName());
+    this.client.set('cd5', extensionInfo.version);
 
     // Set userID
-    this.client.set("uid", this.userId);
+    this.client.set('uid', this.userId);
   }
 
   sendEvent(eventName: string, eventValue?: any) {
@@ -64,8 +64,8 @@ export class Telemetry {
       return;
     }
 
-    let requestParams = {
-      eventCategory: "All",
+    const requestParams = {
+      eventCategory: 'All',
       eventAction: eventName,
       //   eventLabel: "",
       eventValue: eventValue,
@@ -85,8 +85,8 @@ export class Telemetry {
 
   private areAllTelemetryConfigsEnabled() {
     // respect both the overall and Stripe-specific telemetry configs
-    const enableTelemetry = vscode.workspace.getConfiguration("telemetry").get("enableTelemetry", false);
-    const stripeEnableTelemetry = vscode.workspace.getConfiguration("stripe.telemetry").get("enabled", false);
+    const enableTelemetry = vscode.workspace.getConfiguration('telemetry').get('enableTelemetry', false);
+    const stripeEnableTelemetry = vscode.workspace.getConfiguration('stripe.telemetry').get('enabled', false);
     return enableTelemetry && stripeEnableTelemetry;
   }
 }

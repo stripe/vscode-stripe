@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { Telemetry } from '../../telemetry';
+import {Telemetry} from '../../telemetry';
 
 suite('Telemetry', function () {
   this.timeout(20000);
@@ -9,8 +9,8 @@ suite('Telemetry', function () {
   suite('Telemetry configs', () => {
     test('Respects overall and Stripe-specific telemetry configs', async () => {
       const workspaceFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
-      const telemetryConfig = vscode.workspace.getConfiguration("telemetry", workspaceFolder);
-      const stripeTelemetryConfig = vscode.workspace.getConfiguration("stripe.telemetry", workspaceFolder);
+      const telemetryConfig = vscode.workspace.getConfiguration('telemetry', workspaceFolder);
+      const stripeTelemetryConfig = vscode.workspace.getConfiguration('stripe.telemetry', workspaceFolder);
 
       await telemetryConfig.update('enableTelemetry', false);
       await stripeTelemetryConfig.update('enabled', false);

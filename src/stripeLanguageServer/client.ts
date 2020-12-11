@@ -1,28 +1,28 @@
+import {ExtensionContext, workspace} from 'vscode';
+
 import {
-  ServerOptions,
-  LanguageClientOptions,
   LanguageClient,
-} from "vscode-languageclient";
+  LanguageClientOptions,
+  ServerOptions,
+} from 'vscode-languageclient';
 
-import { workspace, ExtensionContext, languages } from "vscode";
-
-import { Telemetry } from "../telemetry";
+import {Telemetry} from '../telemetry';
 
 const telemetry = Telemetry.getInstance();
 
 export class StripeLanguageClient {
   static activate(context: ExtensionContext, serverOptions: ServerOptions) {
-    let clientOptions: LanguageClientOptions = {
+    const clientOptions: LanguageClientOptions = {
       // Register the server for javascript (more languages to come)
-      documentSelector: [{ scheme: "file", language: "javascript" }, { scheme: "file", language: "typescript" }],
+      documentSelector: [{scheme: 'file', language: 'javascript'}, {scheme: 'file', language: 'typescript'}],
       synchronize: {
-        fileEvents: workspace.createFileSystemWatcher("**/.clientrc"),
+        fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
       },
     };
 
-    let client = new LanguageClient(
-      "stripeLanguageServer",
-      "Stripe Language Server",
+    const client = new LanguageClient(
+      'stripeLanguageServer',
+      'Stripe Language Server',
       serverOptions,
       clientOptions
     );

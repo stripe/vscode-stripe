@@ -1,4 +1,4 @@
-declare module "tasklist" {
+declare module 'tasklist' {
   interface ProcessDescriptor {
     readonly imageName?: string;
     readonly pid?: number;

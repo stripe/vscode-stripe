@@ -2,7 +2,7 @@
 // It runs the same tests as the debugger step 'Run Extension Tests' from launch.json
 import * as path from 'path';
 
-import { runTests } from 'vscode-test';
+import {runTests} from 'vscode-test';
 
 async function main() {
   try {
@@ -32,6 +32,7 @@ async function main() {
   } catch (err) {
     console.log(err);
     console.error('Failed to run tests (src/test/runTest.ts)');
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
 }

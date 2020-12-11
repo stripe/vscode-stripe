@@ -1,9 +1,8 @@
-import * as vscode from "vscode";
-import { StripeClient } from "./stripeClient";
+import * as vscode from 'vscode';
+import {StripeClient} from './stripeClient';
 
 export class StripeEventTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-  // eslint-disable-next-line
-  private static EVENT_ID_REGEX = /evt_[\w]+/;
+  private static EVENT_ID_REGEXP = /evt_[\w]+/;
 
   private stripeClient: StripeClient;
 
@@ -31,7 +30,7 @@ export class StripeEventTextDocumentContentProvider implements vscode.TextDocume
 
   private getResourceIdFromUri(uri: vscode.Uri): string | null {
     const {path} = uri;
-    const match = path.match(StripeEventTextDocumentContentProvider.EVENT_ID_REGEX);
+    const match = path.match(StripeEventTextDocumentContentProvider.EVENT_ID_REGEXP);
     if (!match || match.length < 1) {
       return null;
     }
