@@ -3,9 +3,9 @@ import {
   DiagnosticCollection,
   DiagnosticSeverity,
   Range,
+  TextDocument,
   extensions,
   languages,
-  window,
   workspace,
 } from 'vscode';
 
@@ -106,16 +106,14 @@ const shouldSearchFile = (currentFilename: string): boolean => {
 
 export class StripeLinter {
   activate() {
-    this.lookForHardCodedAPIKeys();
-    workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
+    workspace.textDocuments.forEach(this.lookForHardCodedAPIKeys);
+    workspace.onDidOpenTextDocument(this.lookForHardCodedAPIKeys);
+    workspace.onDidChangeTextDocument(({document}) => {
+      this.lookForHardCodedAPIKeys(document);
+    });
   }
 
-  lookForHardCodedAPIKeys = (): void => {
-    const editor = window.activeTextEditor;
-    if (!editor) { return; }
-
-    const {document} = editor;
-
+  lookForHardCodedAPIKeys = (document: TextDocument): void => {
     const currentFilename = document.uri.path;
     if (!shouldSearchFile(currentFilename)) { return; }
 
