@@ -6,11 +6,12 @@ export class StripeTreeItem extends TreeItem {
   private _metadata: object | undefined;
   private commandString: string | undefined;
 
-  constructor(label: string, commandString?: string) {
+  constructor(label: string, commandString?: string, tooltip?: string) {
     super(label, TreeItemCollapsibleState.None);
     this.contextValue = 'stripe';
     this.commandString = commandString;
     this.metadata = {};
+    this.tooltip = tooltip;
   }
 
   // eslint-disable-next-line accessor-pairs
