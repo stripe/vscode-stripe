@@ -34,11 +34,12 @@ export class StripeTerminal {
       ...globalCLIFLags
     ].join(' ');
 
-    const terminal = await this.terminalForCommand(commandString);
+    const allRunningProcesses = await psList();
+    const terminal = await this.terminalForCommand(commandString, allRunningProcesses);
     terminal.sendText(commandString);
     terminal.show();
     const otherTerminals = this.terminals.filter((t) => t !== terminal);
-    this.freeUnusedTerminals(otherTerminals);
+    this.freeUnusedTerminals(otherTerminals, allRunningProcesses);
   }
 
   private createNewSplitTerminal(): Promise<vscode.Terminal> {
@@ -63,15 +64,20 @@ export class StripeTerminal {
     ));
   }
 
-  private async getRunningProcess(terminal: vscode.Terminal): Promise<psList.ProcessDescriptor | null> {
+  private async getRunningProcess(
+    terminal: vscode.Terminal,
+    allRunningProcesses: psList.ProcessDescriptor[],
+  ): Promise<psList.ProcessDescriptor | null> {
     const shellPid = await terminal.processId;
-    const runningProcesses = await psList();
-    const runningProcess = runningProcesses.find((p) => p.ppid === shellPid);
+    const runningProcess = allRunningProcesses.find((p) => p.ppid === shellPid);
     return runningProcess || null;
   }
 
-  private async getRunningCommand(terminal: vscode.Terminal): Promise<string | null> {
-    const runningProcess = await this.getRunningProcess(terminal);
+  private async getRunningCommand(
+    terminal: vscode.Terminal,
+    allRunningProcesses: psList.ProcessDescriptor[],
+  ): Promise<string | null> {
+    const runningProcess = await this.getRunningProcess(terminal, allRunningProcesses);
     if (getOSType() === OSType.windows) {
       if (runningProcess && runningProcess.name) {
         // On Windows we can't get the process command
@@ -84,20 +90,25 @@ export class StripeTerminal {
     return null;
   }
 
-  private async getUsersStripeTerminal(): Promise<vscode.Terminal | undefined> {
+  private async getUsersStripeTerminal(
+    allRunningProcesses: psList.ProcessDescriptor[]
+  ): Promise<vscode.Terminal | undefined> {
     const usersTerminals = vscode.window.terminals.filter((t) => !this.terminals.includes(t));
     const usersStripeTerminal = await findAsync(usersTerminals, async (t) => {
-      const runningCommand = await this.getRunningCommand(t);
+      const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
       return !!runningCommand && this.isCommandLongRunning(runningCommand);
     });
     return usersStripeTerminal;
   }
 
-  private async terminalForCommand(command: string): Promise<vscode.Terminal> {
+  private async terminalForCommand(
+    command: string,
+    allRunningProcesses: psList.ProcessDescriptor[],
+  ): Promise<vscode.Terminal> {
     // If the user had manually created a terminal and ran `stripe listen` or `stripe logs tail`,
     // we would want to know about it so that we can reuse that terminal or spawn new split
     // terminals off of it. This gives a better experience than ignoring that terminal.
-    const usersStripeTerminal = await this.getUsersStripeTerminal();
+    const usersStripeTerminal = await this.getUsersStripeTerminal(allRunningProcesses);
     if (this.terminals.length === 0 && usersStripeTerminal) {
       this.terminals.push(usersStripeTerminal);
     }
@@ -106,11 +117,11 @@ export class StripeTerminal {
     // we restart it in the same terminal. This does not occur on Windows due to OS limitations.
     if (this.isCommandLongRunning(command)) {
       const terminalWithDesiredCommand = await findAsync(this.terminals, async (t) => {
-        const runningCommand = await this.getRunningCommand(t);
+        const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
         return runningCommand === command;
       });
       if (terminalWithDesiredCommand) {
-        const runningProcess = await this.getRunningProcess(terminalWithDesiredCommand);
+        const runningProcess = await this.getRunningProcess(terminalWithDesiredCommand, allRunningProcesses);
         if (runningProcess) {
           process.kill(runningProcess.pid, 'SIGINT');
         }
@@ -119,7 +130,7 @@ export class StripeTerminal {
     }
 
     const unusedTerminal = await findAsync(this.terminals, async (t) => {
-      const runningCommand = await this.getRunningCommand(t);
+      const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
       return !runningCommand;
     });
 
@@ -140,9 +151,12 @@ export class StripeTerminal {
     return terminal;
   }
 
-  private async freeUnusedTerminals(terminals: vscode.Terminal[]): Promise<void> {
+  private async freeUnusedTerminals(
+    terminals: vscode.Terminal[],
+    allRunningProcesses: psList.ProcessDescriptor[],
+  ): Promise<void> {
     const unusedTerminals = await filterAsync(terminals, async (t) => {
-      const runningCommand = await this.getRunningCommand(t);
+      const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
       return !runningCommand;
     });
     unusedTerminals.forEach((t) => {
