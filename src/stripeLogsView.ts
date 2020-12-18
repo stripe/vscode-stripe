@@ -1,16 +1,8 @@
 import {Resource} from './resources';
-import {StripeClient} from './stripeClient';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 
-export class StripLogsDataProvider extends StripeTreeViewDataProvider {
-  stripeClient: StripeClient;
-
-  constructor(stripeClient: StripeClient) {
-    super();
-    this.stripeClient = stripeClient;
-  }
-
+export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const logStreamItem = new StripeTreeItem(
       'Start API logs streaming',

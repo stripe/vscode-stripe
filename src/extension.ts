@@ -19,7 +19,6 @@ import {
   startLogin,
 } from './commands';
 import {Resource} from './resources';
-import {StripLogsDataProvider} from './stripeLogsView';
 import {StripeClient} from './stripeClient';
 import {StripeDashboardViewDataProvider} from './stripeDashboardView';
 import {StripeDebugProvider} from './stripeDebugProvider';
@@ -28,6 +27,7 @@ import {StripeEventsDataProvider} from './stripeEventsView';
 import {StripeHelpViewDataProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
+import {StripeLogsDataProvider} from './stripeLogsView';
 import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
 import {TelemetryPrompt} from './telemetryPrompt';
@@ -66,7 +66,7 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripLogsDataProvider(stripeClient);
+  const stripeLogsViewProvider = new StripeLogsDataProvider();
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
