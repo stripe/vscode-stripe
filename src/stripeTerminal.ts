@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {OSType, filterAsync, findAsync, getOSType} from './utils';
 import psList from 'ps-list';
 
-type SupportedStripeCommand = 'listen' | 'logs' | 'login' | 'trigger';
+type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger';
 
 export class StripeTerminal {
   // eslint-disable-next-line @typescript-eslint/naming-convention

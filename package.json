@@ -122,6 +122,11 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.openDashboardEvent",
+        "title": "Open event in Dashboard"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.openDashboardEvents",
         "title": "Open Dashboard to see recent Events"
       },
@@ -163,6 +168,11 @@
         "category": "Stripe",
         "command": "stripe.openSurvey",
         "title": "Rate and provide feedback"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.resendEvent",
+        "title": "Resend event"
       }
     ],
     "views": {
@@ -193,9 +203,27 @@
           "group": "navigation"
         }
       ],
+      "view/item/context": [
+        {
+          "command": "stripe.openDashboardEvent",
+          "when": "viewItem == eventItem"
+        },
+        {
+          "command": "stripe.resendEvent",
+          "when": "viewItem == eventItem"
+        }
+      ],
       "commandPalette": [
         {
+          "command": "stripe.openDashboardEvent",
+          "when": "false"
+        },
+        {
           "command": "stripe.openEventDetails",
+          "when": "false"
+        },
+        {
+          "command": "stripe.resendEvent",
           "when": "false"
         }
       ]
