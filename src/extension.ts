@@ -55,10 +55,11 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: false,
   });
 
-  window.createTreeView('stripeHelpView', {
+  const stripeHelpView = window.createTreeView('stripeHelpView', {
     treeDataProvider: new StripeHelpViewDataProvider(),
     showCollapseAll: false,
   });
+  stripeHelpView.message = 'This extension runs with your Stripe account in test mode.';
 
   const stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
   window.createTreeView('stripeEventsView', {
