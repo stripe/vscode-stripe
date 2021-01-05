@@ -25,6 +25,7 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
             title,
             'openEventDetails',
             new Date(event.created * 1000).toString(),
+            'eventItem',
           );
           eventItem.metadata = {
             type: event.type,

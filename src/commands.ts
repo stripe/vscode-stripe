@@ -4,6 +4,7 @@ import {getExtensionInfo, showQuickPickWithValues} from './utils';
 import osName = require('os-name');
 import {StripeEventsDataProvider} from './stripeEventsView';
 import {StripeTerminal} from './stripeTerminal';
+import {StripeTreeItem} from './stripeTreeItem';
 import {Telemetry} from './telemetry';
 
 const telemetry = Telemetry.getInstance();
@@ -98,6 +99,14 @@ export function openDashboardApikeys() {
     vscode.Uri.parse('https://dashboard.stripe.com/test/apikeys')
   );
 }
+
+export function openDashboardEvent(stripeTreeItem: StripeTreeItem) {
+  telemetry.sendEvent('openDashboardEvent');
+  vscode.env.openExternal(
+    vscode.Uri.parse(`https://dashboard.stripe.com/test/events/${stripeTreeItem.metadata.id}`)
+  );
+}
+
 export function openDashboardEvents() {
   telemetry.sendEvent('openDashboardEvents');
   vscode.env.openExternal(
@@ -238,4 +247,9 @@ export function openTelemetryInfo() {
   vscode.env.openExternal(
     vscode.Uri.parse('https://code.visualstudio.com/docs/getstarted/telemetry')
   );
+}
+
+export function resendEvent(stripeTreeItem: StripeTreeItem) {
+  telemetry.sendEvent('resendEvent');
+  terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
 }

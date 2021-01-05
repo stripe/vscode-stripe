@@ -3,6 +3,7 @@ import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {
   openCLI,
   openDashboardApikeys,
+  openDashboardEvent,
   openDashboardEvents,
   openDashboardLogs,
   openDashboardWebhooks,
@@ -16,6 +17,7 @@ import {
   openWebhooksDebugConfigure,
   openWebhooksListen,
   refreshEventsList,
+  resendEvent,
   startLogin,
 } from './commands';
 import {Resource} from './resources';
@@ -179,6 +181,14 @@ export function activate(this: any, context: ExtensionContext) {
       'stripe.openWebhooksDebugConfigure',
       openWebhooksDebugConfigure
     )
+  );
+
+  subscriptions.push(
+    commands.registerCommand('stripe.resendEvent', resendEvent)
+  );
+
+  subscriptions.push(
+    commands.registerCommand('stripe.openDashboardEvent', openDashboardEvent)
   );
 }
 
