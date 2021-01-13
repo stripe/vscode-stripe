@@ -1,5 +1,3 @@
-**NOTICE: This project is PRE-RELEASE and has not been released to the public. Please provide your feedback by sending an email to auchenberg@stripe.com or open issues here on GitHub. Don't talk about this project in public. Yet.**
-
 <h1 align="center">
   <br>
     <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo_128.png?raw=true" alt="logo" width="150">
@@ -9,97 +7,23 @@
   <br>
 </h1>
 
-<h4 align="center">Bringing you Stripe inside your editor.</h4>
+<h4 align="center">Build, test, and use Stripe inside your editor.</h4>
 
-Stripe for VS Code is a new extension for Visual Studio Code that enables developers to have an easier integration experience with Stripe by having easy access to Stripe specific information such as code snippets, API requests logs and events directly from their editor.
+Stripe’s extension for Visual Studio Code makes it easy to generate sample code, view API request logs, forward events to your application, and use Stripe within your editor.
 
-Stripe for VS Code works by extending VS Code with a new “Stripe” panel in the activity bar, provides code snippets for top languages, debug configurations and extends the command palette with Stripe specific commands to make workflows easier.
+A new Stripe panel in the activity bar provides easy access to code snippets for several languages, adds debug configurations, and extends the command palette with common developer workflows.
 
-![Stripe](resources/stripe.png)
+![Stripe](resources/extension.png)
 
-## Getting started
+Read more about this extension in the official Stripe documentation at [https://stripe.com/docs/stripe-vscode](https://stripe.com/docs/stripe-vscode)
 
-1. Go to [releases](https://github.com/stripe/vscode-stripe/releases) and download the `.VSIX` file from the latest release
-2. See the VS Code docs on [how to install the VSIX](https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix) or run `code --install-extension <path to myextension.vsix>` from your terminal.
-3. Once installed, click the new Stripe icon in the Activity Bar or explore the new Stripe commands in the command palette.
+## Contributions
 
-Make sure you have the [Stripe CLI](https://stripe.com/docs/stripe-cli) installed on your computer.
+Stripe for Visual Studio Code is an open source project, and is currently in **public beta**. We do development in the open, where our [issue tracker](https://github.com/stripe/vscode-stripe/issues) is public here in GitHub. 
 
-## Features
+Contributions and feedback to the project are welcome, so please open issues for feature requests, questions and alike. 
 
-- Easy access to key sections of the Stripe developer dashboard
-- See recent events from Stripe and trigger new ones.
-- Realtime API logs inside the integrated terminal
-- Listen for and forward webhooks traffic to your local machine via commands and debug configurations.
-- Linting of Stripe API keys to make sure you don't expose them by mistake.
-- Inline links to Stripe API reference when hovering over Stripe library code.
-- JavaScript code snippets for most common Stripe API scenarios
-
-### Stripe API key linting
-
-The built-in API key linter checks for Stripe API keys inside your source code, and warns you if you expose an API key inside your code.
-
-Test-mode keys will be treated as warnings, and live-mode keys will be marked as problems.
-
-### Listen to webhooks traffic with debugging
-
-You can listen for and forward webhooks traffic to your local machine by either running the command `Stripe: "Start Webhooks events listening with CLI` or by creating a debug configuration that allows you to launch webhooks forwarding when starting debugging or pressing `F5`.
-
-The Stripe debug configuration can be combined with other configurations, so you with one click/press can launch both Stripe and your local API instance.
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Stripe: Webhooks listen",
-      "type": "stripe",
-      "request": "launch",
-      "command": "listen",
-      "forwardTo": "http://localhost:3000",
-      "forwardConnectTo": "http://localhost:3000",
-    }
-  ]
-}
-```
-
-For the `stripe` debug configuration you can also specify `forwardTo` and `forwardConnectTo`, which are the URLs of your local servers that should receive your normal and Connect webhooks events respectively. You can also specify `events` which is an optional array that allows you to filter which events you want to have forwarded.
-
-#### Compound configurations
-
-You can combine the `stripe` debug configuration with `compounds` configurations to have one configuration that launches your API and stripe at the same time:
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Stripe: Webhooks listen",
-      "type": "stripe",
-      "request": "launch",
-      "command": "listen",
-      "forwardTo": "http://localhost:3000",
-      "forwardConnectTo": "http://localhost:3000",
-      "events": ["payment_intent.succeeded", "payment_intent.canceled"] // Optional array if only specific events are wanted
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Node: Launch Program",
-      "program": "${workspaceFolder}/examples/standalone.js",
-      "skipFiles": ["<node_internals>/**"]
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Launch: Stripe + API",
-      "configurations": ["Node: Launch Program", "Stripe: Webhooks listen"]
-    }
-  ]
-}
-```
-
-## Developing this extension
+### Developing this extension
 
 1. Checkout this repo
 1. Run `npm install` in terminal to install dependencies
@@ -107,13 +31,13 @@ You can combine the `stripe` debug configuration with `compounds` configurations
    - Start a task `npm: watch` to compile the code
    - Run the extension in a new VS Code window
 
+## License
+
+See [LICENSE.md](LICENSE.md)
 ## Telemetry
 
 The Stripe VS Code Extension collects basic telemetry in order to improve this extension's experience. If you'd like to opt out we respect the [global telemetry setting in VS Code](https://code.visualstudio.com/docs/getstarted/telemetry), so we won't collect any data unless this setting is turned on.
 
-## License
-
-See [LICENSE.md](LICENSE.md)
 
 ## Third-Party Notices
 
