@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo_128.png?raw=true" alt="logo" width="150">
+    <img src="https://github.com/stripe/vscode-stripe/blob/master/resources/logo.png?raw=true" alt="logo" width="150">
   <br>
   Stripe for Visual Studio Code
   <br>
