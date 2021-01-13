@@ -239,7 +239,7 @@ export function openSurvey() {
     machineId: encodeURIComponent(vscode.env.machineId),
   });
 
-  const url = `https://forms.gle/eP2mtQ8Jmra4pZBP7?${query}`;
+  const url = `https://stri.pe/vscode-feedback?${query}`;
   vscode.env.openExternal(vscode.Uri.parse(url));
 }
 
