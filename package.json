@@ -1,11 +1,12 @@
 {
   "name": "vscode-stripe",
   "displayName": "Stripe",
-  "description": "Stripe for Visual Studio Code",
+  "description": "Build, test, and use Stripe inside your editor.",
   "version": "0.4.0",
   "publisher": "stripe",
   "author": "Stripe (https://www.stripe.com)",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://stripe.com/docs/stripe-vscode",
   "repository": {
     "type": "git",
     "url": "https://github.com/stripe/vscode-stripe.git"
@@ -18,6 +19,7 @@
   },
   "icon": "resources/logo_128.png",
   "categories": [
+    "Debuggers",
     "Other",
     "Snippets"
   ],
