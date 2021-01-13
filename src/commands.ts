@@ -224,7 +224,7 @@ export function openWebhooksDebugConfigure() {
 export function openDocs() {
   telemetry.sendEvent('openDocs');
   vscode.env.openExternal(
-    vscode.Uri.parse('https://stripe.com/docs/development')
+    vscode.Uri.parse('https://stripe.com/docs/stripe-vscode')
   );
 }
 
