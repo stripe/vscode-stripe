@@ -152,7 +152,7 @@ export function refreshEventsList(
 
 export async function openTriggerEvent(stripeClient: StripeClient) {
   telemetry.sendEvent('openTriggerEvent');
-  const events = await buildTriggerEventsList(allEvents, stripeClient);
+  const events = await buildTriggerEventsList(supportedEvents, stripeClient);
   const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
   if (eventName) {
     terminal.execute('trigger', [eventName]);
@@ -170,7 +170,10 @@ export async function buildTriggerEventsList(events: string[], stripeClient: Str
 
   // Get a unique list of events and take the first 5
   const recentEvents = (historicEvents.data) ?
-    [...new Set<string>(historicEvents.data.map((e:any):string => e.type))].slice(0,5) : [];
+    [...new Set<string>(
+      historicEvents.data.map((e:any):string => e.type).filter((e: string) => events.includes(e))
+    )].slice(0,5) : [];
+
   const remainingEvents = events.filter((e) => !recentEvents.includes(e));
 
   const recentItems = recentEvents.map((e) => {
@@ -234,7 +237,7 @@ export function resendEvent(stripeTreeItem: StripeTreeItem) {
   terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
 }
 
-const allEvents: string[] = [
+const supportedEvents: string[] = [
   'balance.available',
   'charge.captured',
   'charge.dispute.created',

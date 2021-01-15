@@ -23,34 +23,50 @@ suite('commands', () => {
   });
 
   suite('buildTriggerEventsList',() => {
-    test('displays all original events when no recent events', async() => {
+    test('returns all original events when no recent events', async() => {
       const stripeClient = <StripeClient>{
         ...stripeClientStub,
       };
       const getEventsStub = createGetEventStub(stripeClient, []);
 
-      const allEvents = ['a', 'b', 'c', 'd', 'e'];
-      const events = await commands.buildTriggerEventsList(allEvents, stripeClient);
+      const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
+      const events = await commands.buildTriggerEventsList(supportedEvents, stripeClient);
 
       assert.strictEqual(getEventsStub.calledOnce, true);
       const labels = events.map((x) => x.label);
-      assert.deepStrictEqual(labels, allEvents);
+      assert.deepStrictEqual(labels, supportedEvents);
     });
 
-    test('displays recent events on top', async() => {
+    test('returns recent events on top', async() => {
       const stripeClient = <StripeClient>{
         ...stripeClientStub,
       };
 
       const getEventsStub = createGetEventStub(stripeClient, ['c']);
 
-      const allEvents = ['a', 'b', 'c', 'd', 'e'];
-      const events = await commands.buildTriggerEventsList(allEvents, stripeClient);
+      const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
+      const events = await commands.buildTriggerEventsList(supportedEvents, stripeClient);
 
       assert.strictEqual(getEventsStub.calledOnce, true);
       const labels = events.map((x) => x.label);
       assert.deepStrictEqual(labels, ['c', 'a', 'b', 'd', 'e']);
       assert.strictEqual(events[0].description, 'recently triggered');
+    });
+
+    test('does not include events that are not supported', async() => {
+      const stripeClient = <StripeClient>{
+        ...stripeClientStub,
+      };
+
+      const getEventsStub = createGetEventStub(stripeClient, ['c', 'unsupported']);
+      const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
+      const events = await commands.buildTriggerEventsList(supportedEvents, stripeClient);
+
+      assert.strictEqual(getEventsStub.calledOnce, true);
+      const labels = events.map((x) => x.label);
+      assert.deepStrictEqual(labels, ['c', 'a', 'b', 'd', 'e']);
+      assert.strictEqual(events[0].description, 'recently triggered');
+
     });
 
     function createGetEventStub(stripeClient: StripeClient, eventNames: string[]) {
@@ -60,5 +76,4 @@ suite('commands', () => {
       return sandbox.stub(stripeClient, 'getEvents').returns(Promise.resolve(eventsData));
     }
   });
-
 });
