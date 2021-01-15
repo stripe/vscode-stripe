@@ -1,7 +1,8 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
-import {getExtensionInfo, showQuickPickWithValues} from './utils';
+import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
 import osName = require('os-name');
+import {StripeClient} from './stripeClient';
 import {StripeEventsDataProvider} from './stripeEventsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
@@ -149,55 +150,10 @@ export function refreshEventsList(
   stripeEventsViewProvider.refresh();
 }
 
-export async function openTriggerEvent() {
+export async function openTriggerEvent(stripeClient: StripeClient) {
   telemetry.sendEvent('openTriggerEvent');
-
-  const eventName = await showQuickPickWithValues('Enter event name to trigger', [
-    'balance.available',
-    'charge.captured',
-    'charge.dispute.created',
-    'charge.failed',
-    'charge.refunded',
-    'charge.succeeded',
-    'checkout.session.completed',
-    'customer.created',
-    'customer.deleted',
-    'customer.source.created',
-    'customer.source.updated',
-    'customer.subscription.created',
-    'customer.subscription.deleted',
-    'customer.subscription.updated',
-    'customer.updated',
-    'invoice.created',
-    'invoice.finalized',
-    'invoice.payment_failed',
-    'invoice.payment_succeeded',
-    'invoice.updated',
-    'issuing_authorization.request',
-    'issuing_card.created',
-    'issuing_cardholder.created',
-    'payment_intent.amount_capturable_updated',
-    'payment_intent.canceled',
-    'payment_intent.created',
-    'payment_intent.payment_failed',
-    'payment_intent.succeeded',
-    'payment_method.attached',
-    'plan.created',
-    'plan.deleted',
-    'plan.updated',
-    'product.created',
-    'product.deleted',
-    'product.updated',
-    'setup_intent.canceled',
-    'setup_intent.created',
-    'setup_intent.setup_failed',
-    'setup_intent.succeeded',
-    'subscription_schedule.canceled',
-    'subscription_schedule.created',
-    'subscription_schedule.released',
-    'subscription_schedule.updated',
-  ]);
-
+  const events = await buildTriggerEventsList(allEvents, stripeClient);
+  const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
   if (eventName) {
     terminal.execute('trigger', [eventName]);
 
@@ -206,6 +162,30 @@ export async function openTriggerEvent() {
       vscode.commands.executeCommand('stripe.refreshEventsList');
     }, 5000);
   }
+}
+
+export async function buildTriggerEventsList(events: string[], stripeClient: StripeClient):
+    Promise<vscode.QuickPickItem[]> {
+  const historicEvents = await stripeClient.getEvents();
+
+  // Get a unique list of events and take the first 5
+  const recentEvents = (historicEvents.data) ?
+    [...new Set<string>(historicEvents.data.map((e:any):string => e.type))].slice(0,5) : [];
+  const remainingEvents = events.filter((e) => !recentEvents.includes(e));
+
+  const recentItems = recentEvents.map((e) => {
+    return {
+      label: e,
+      description: 'recently triggered'
+    };
+  });
+
+  const remainingItems = remainingEvents.map((e) => {
+    return {
+      label: e,
+    };
+  });
+  return [...recentItems, ...remainingItems];
 }
 
 export function openReportIssue() {
@@ -253,3 +233,49 @@ export function resendEvent(stripeTreeItem: StripeTreeItem) {
   telemetry.sendEvent('resendEvent');
   terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
 }
+
+const allEvents: string[] = [
+  'balance.available',
+  'charge.captured',
+  'charge.dispute.created',
+  'charge.failed',
+  'charge.refunded',
+  'charge.succeeded',
+  'checkout.session.completed',
+  'customer.created',
+  'customer.deleted',
+  'customer.source.created',
+  'customer.source.updated',
+  'customer.subscription.created',
+  'customer.subscription.deleted',
+  'customer.subscription.updated',
+  'customer.updated',
+  'invoice.created',
+  'invoice.finalized',
+  'invoice.payment_failed',
+  'invoice.payment_succeeded',
+  'invoice.updated',
+  'issuing_authorization.request',
+  'issuing_card.created',
+  'issuing_cardholder.created',
+  'payment_intent.amount_capturable_updated',
+  'payment_intent.canceled',
+  'payment_intent.created',
+  'payment_intent.payment_failed',
+  'payment_intent.succeeded',
+  'payment_method.attached',
+  'plan.created',
+  'plan.deleted',
+  'plan.updated',
+  'product.created',
+  'product.deleted',
+  'product.updated',
+  'setup_intent.canceled',
+  'setup_intent.created',
+  'setup_intent.setup_failed',
+  'setup_intent.succeeded',
+  'subscription_schedule.canceled',
+  'subscription_schedule.created',
+  'subscription_schedule.released',
+  'subscription_schedule.updated',
+];

@@ -32,17 +32,25 @@ export function getOSType(): OSType {
 
 export function showQuickPickWithValues(
   placeholder: string,
-  items: string[]
+  value: string[]
 ): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const input = vscode.window.createQuickPick();
-    input.placeholder = placeholder;
-    input.items = items.map((i) => {
+  const items:vscode.QuickPickItem[] = value.map((i) => {
       return {
         label: i,
       };
     });
 
+  return showQuickPickWithItems(placeholder, items);
+}
+
+export function showQuickPickWithItems(
+  placeholder: string,
+  items: vscode.QuickPickItem[]
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const input = vscode.window.createQuickPick();
+    input.placeholder = placeholder;
+    input.items = items;
     input.onDidAccept(() => {
       const value = input.selectedItems[0].label;
       resolve(value);
