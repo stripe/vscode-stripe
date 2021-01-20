@@ -163,7 +163,7 @@ export function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openTriggerEvent', () => openTriggerEvent(stripeClient))
+    commands.registerCommand('stripe.openTriggerEvent', () => openTriggerEvent(context))
   );
 
   subscriptions.push(commands.registerCommand('stripe.openSurvey', openSurvey));

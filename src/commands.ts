@@ -1,8 +1,8 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
+import {getRecentEvents, recordEvent} from './stripeWorkspaceState';
 import osName = require('os-name');
-import {StripeClient} from './stripeClient';
 import {StripeEventsDataProvider} from './stripeEventsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
@@ -150,12 +150,13 @@ export function refreshEventsList(
   stripeEventsViewProvider.refresh();
 }
 
-export async function openTriggerEvent(stripeClient: StripeClient) {
+export async function openTriggerEvent(extensionContext: vscode.ExtensionContext) {
   telemetry.sendEvent('openTriggerEvent');
-  const events = await buildTriggerEventsList(supportedEvents, stripeClient);
+  const events = buildTriggerEventsList(supportedEvents, extensionContext);
   const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
   if (eventName) {
     terminal.execute('trigger', [eventName]);
+    recordEvent(extensionContext, eventName);
 
     // Trigger events refresh after 5s as we don't have a way to know when it has finished.
     setTimeout(() => {
@@ -164,15 +165,13 @@ export async function openTriggerEvent(stripeClient: StripeClient) {
   }
 }
 
-export async function buildTriggerEventsList(events: string[], stripeClient: StripeClient):
-    Promise<vscode.QuickPickItem[]> {
-  const historicEvents = await stripeClient.getEvents();
+export function buildTriggerEventsList(events: string[], extensionContext: vscode.ExtensionContext):
+    vscode.QuickPickItem[] {
+  const historicEvents = getRecentEvents(extensionContext, 20);
 
   // Get a unique list of events and take the first 5
-  const recentEvents = (historicEvents.data) ?
-    [...new Set<string>(
-      historicEvents.data.map((e:any):string => e.type).filter((e: string) => events.includes(e))
-    )].slice(0,5) : [];
+  const recentEvents =
+    [...new Set<string>(historicEvents.filter((e: string) => events.includes(e)))].slice(0,5);
 
   const remainingEvents = events.filter((e) => !recentEvents.includes(e));
 
