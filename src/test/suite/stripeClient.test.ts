@@ -34,7 +34,7 @@ suite('stripeClient', () => {
           });
 
           test('detects installed', () => {
-            statSyncStub.returns(<any>{isFile: () => true});
+            statSyncStub.returns(<any>{isFile: () => true}); // the path is a file; CLI found
             const stripeClient = new StripeClient();
             stripeClient.detectInstalled();
             assert.deepStrictEqual(statSyncStub.args[0], [path]);
@@ -43,7 +43,7 @@ suite('stripeClient', () => {
           });
 
           test('detects not installed', () => {
-            statSyncStub.returns(<any>{isFile: () => false});
+            statSyncStub.returns(<any>{isFile: () => false}); // the path is not a file; CLI not found
             const stripeClient = new StripeClient();
             stripeClient.detectInstalled();
             assert.deepStrictEqual(statSyncStub.args[0], [path]);
