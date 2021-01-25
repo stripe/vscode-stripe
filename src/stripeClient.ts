@@ -102,46 +102,39 @@ export class StripeClient {
   }
 
   detectInstalled() {
-    const osType: OSType = getOSType();
-    let installPaths: string[] = [];
-
-    switch (osType) {
-      case OSType.macOS:
-        // HomeBrew install path on macOS
-        installPaths = ['/usr/local/bin/stripe'];
-        break;
-      case OSType.linux:
-        // apt-get install path on ubuntu + yum install path on centOS
-        installPaths = ['/usr/local/bin/stripe'];
-        break;
-      case OSType.windows:
-        // scoop install path on Windows 10
-        const userProfile = process.env.USERPROFILE || '';
-        installPaths = [path.join(userProfile, 'scoop', 'shims', 'stripe.exe')];
-        break;
-    }
-
-    // Handle custom CLI path setting
-    const config = vscode.workspace.getConfiguration('stripe');
-    if (config) {
-      const cliInstallPath = config.get<string>('cliInstallPath');
-      if (cliInstallPath) {
-        const validInstallPath = getInstallPath([cliInstallPath]);
-        if (!validInstallPath) {
-          vscode.window.showErrorMessage(
-            `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${cliInstallPath}'`,
-            ...['Ok']
-          );
-        }
+    const defaultInstallPath = (() => {
+      const osType: OSType = getOSType();
+      switch (osType) {
+        case OSType.macOS:
+          // HomeBrew install path on macOS
+          return '/usr/local/bin/stripe';
+        case OSType.linux:
+          // apt-get install path on ubuntu + yum install path on centOS
+          return '/usr/local/bin/stripe';
+        case OSType.windows:
+          // scoop install path on Windows 10
+          const userProfile = process.env.USERPROFILE || '';
+          return path.join(userProfile, 'scoop', 'shims', 'stripe.exe');
+        default:
+          return null;
       }
-    }
+    })();
 
-    const validInstallPath = getInstallPath(installPaths);
+    const config = vscode.workspace.getConfiguration('stripe');
+    const customInstallPath = config.get('cliInstallPath', null);
 
-    if (validInstallPath) {
+    const installPath = customInstallPath || defaultInstallPath;
+
+    if (installPath && isFile(installPath)) {
       this.isInstalled = true;
-      this.cliPath = validInstallPath;
+      this.cliPath = installPath;
     } else {
+      if (customInstallPath) {
+        vscode.window.showErrorMessage(
+          `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
+          ...['Ok']
+        );
+      }
       this.isInstalled = false;
       telemetry.sendEvent('cli.notInstalled');
     }
@@ -168,17 +161,11 @@ export class StripeClient {
   }
 }
 
-function getInstallPath(paths: string[]): string {
-  for (let i = 0; i < paths.length; i++) {
-    const path = paths[i];
-    try {
-      // eslint-disable-next-line no-sync
-      const isValidPath = fs.statSync(path).isFile();
-      if (isValidPath) {
-        return path;
-      }
-    } catch (err) {}
+function isFile(path: string): boolean {
+  try {
+    // eslint-disable-next-line no-sync
+    return fs.statSync(path).isFile();
+  } catch (err) {
+    return false;
   }
-
-  return '';
 }
