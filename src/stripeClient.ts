@@ -1,12 +1,12 @@
 'use strict';
 
-import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import {OSType, getOSType} from './utils';
 import {Telemetry} from './telemetry';
 
 const execa = require('execa');
+const fs = require('fs');
 
 const telemetry = Telemetry.getInstance();
 
