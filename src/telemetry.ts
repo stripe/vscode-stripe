@@ -4,8 +4,34 @@ import ua from 'universal-analytics';
 const osName = require('os-name');
 const publicIp = require('public-ip');
 
-export class Telemetry {
-  private static INSTANCE: Telemetry;
+export interface Telemetry {
+  sendEvent(eventName: string, eventValue?: any): void;
+  isTelemetryEnabled(): boolean;
+}
+
+// A NoOp implementation of telemetry
+export class NoOpTelemetry implements Telemetry {
+  sendEvent(eventName: string, eventValue?: any) {}
+
+  isTelemetryEnabled() {
+    return true;
+  }
+}
+
+// A Local implementation of telemetry
+export class LocalTelemetry implements Telemetry {
+  sendEvent(eventName: string, eventValue?: any) {
+    console.log('[TelemetryEvent] %s: %s', eventName, eventValue);
+  }
+
+  isTelemetryEnabled() {
+    return true;
+  }
+}
+
+// Google Auth Implementation of Telemetry
+export class GATelemetry implements Telemetry {
+  private static INSTANCE: GATelemetry;
 
   client: any;
   userId: string;
@@ -21,14 +47,14 @@ export class Telemetry {
   }
 
   public static getInstance(): Telemetry {
-    if (!Telemetry.INSTANCE) {
-      Telemetry.INSTANCE = new Telemetry();
+    if (!GATelemetry.INSTANCE) {
+      GATelemetry.INSTANCE = new GATelemetry();
     }
 
-    return Telemetry.INSTANCE;
+    return GATelemetry.INSTANCE;
   }
 
-  get isTelemetryEnabled(): boolean {
+  isTelemetryEnabled(): boolean {
     return this._isTelemetryEnabled;
   }
 

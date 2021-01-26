@@ -2,10 +2,11 @@
 import * as vscode from 'vscode';
 import {Telemetry} from './telemetry';
 
-const telemetry = Telemetry.getInstance();
-
 export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
-  constructor() {
+  telemetry: Telemetry;
+
+  constructor(telemetry: Telemetry) {
+    this.telemetry = telemetry;
     vscode.debug.onDidTerminateDebugSession((e: vscode.DebugSession) => {
       if (e.name === 'Stripe: Webhooks listen') {
         // TODO: Find a way to stop the CLI from the given debug session.
@@ -25,7 +26,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
         config.command &&
         config.command === 'listen'
       ) {
-        telemetry.sendEvent('debug.launch');
+        this.telemetry.sendEvent('debug.launch');
 
         vscode.commands.executeCommand('stripe.openWebhooksListen', {
           forwardTo: config.forwardTo,

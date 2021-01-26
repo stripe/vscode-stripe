@@ -3,12 +3,12 @@ import * as vscode from 'vscode';
 import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
 import {getRecentEvents, recordEvent} from './stripeWorkspaceState';
 import osName = require('os-name');
+import {GATelemetry} from './telemetry';
 import {StripeEventsDataProvider} from './stripeEventsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
-import {Telemetry} from './telemetry';
 
-const telemetry = Telemetry.getInstance();
+const telemetry = GATelemetry.getInstance();
 
 const terminal = new StripeTerminal();
 

@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as utils from '../../utils';
 import * as vscode from 'vscode';
+import {NoOpTelemetry} from '../../telemetry';
 import {StripeClient} from '../../stripeClient';
 
 const fs = require('fs');
@@ -42,7 +43,7 @@ suite('stripeClient', () => {
 
           test('detects installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             const isInstalled = await stripeClient.detectInstalled();
             assert.strictEqual(isInstalled, true);
             assert.deepStrictEqual(realpathStub.args[0], [path]);
@@ -52,7 +53,7 @@ suite('stripeClient', () => {
 
           test('detects not installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             const isInstalled = await stripeClient.detectInstalled();
             assert.strictEqual(isInstalled, false);
             assert.deepStrictEqual(realpathStub.args[0], [path]);
@@ -90,7 +91,7 @@ suite('stripeClient', () => {
 
           test('detects installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             const isInstalled = await stripeClient.detectInstalled();
             assert.strictEqual(isInstalled, true);
             assert.deepStrictEqual(realpathStub.args[0], [customPath]);
@@ -100,7 +101,7 @@ suite('stripeClient', () => {
 
           test('detects not installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             const isInstalled = await stripeClient.detectInstalled();
             assert.strictEqual(isInstalled, false);
             assert.deepStrictEqual(realpathStub.args[0], [customPath]);

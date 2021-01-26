@@ -20,6 +20,7 @@ import {
   resendEvent,
   startLogin,
 } from './commands';
+import {GATelemetry} from './telemetry';
 import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
 import {StripeDashboardViewDataProvider} from './stripeDashboardView';
@@ -31,20 +32,19 @@ import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsDataProvider} from './stripeLogsView';
 import {SurveyPrompt} from './surveyPrompt';
-import {Telemetry} from './telemetry';
 import {TelemetryPrompt} from './telemetryPrompt';
 import path from 'path';
 
 export function activate(this: any, context: ExtensionContext) {
-  // Stripe CLi client
-  const stripeClient = new StripeClient();
-
   // disclosure of telemetry prompt
   new TelemetryPrompt(context).activate();
 
   // Telemetry
-  const telemetry = Telemetry.getInstance();
+  const telemetry = GATelemetry.getInstance();
   telemetry.sendEvent('activate');
+
+  // Stripe CLi client
+  const stripeClient = new StripeClient(telemetry);
 
   // CSAT survey prompt
   new SurveyPrompt(context).activate();
@@ -76,7 +76,7 @@ export function activate(this: any, context: ExtensionContext) {
   });
 
   // Debug provider
-  debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider());
+  debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry));
 
   // Virtual document content provider for displaying event data
   workspace.registerTextDocumentContentProvider(
@@ -104,7 +104,7 @@ export function activate(this: any, context: ExtensionContext) {
     },
   };
 
-  StripeLanguageClient.activate(context, serverOptions);
+  StripeLanguageClient.activate(context, serverOptions, telemetry);
 
   // Commands
   const subscriptions = context.subscriptions;

@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import {Telemetry} from '../../telemetry';
+import {GATelemetry} from '../../telemetry';
 
-suite('Telemetry', function () {
+suite('GATelemetry', function () {
   this.timeout(20000);
-  const telemetry = Telemetry.getInstance();
+  const telemetry = GATelemetry.getInstance();
 
   suite('Telemetry configs', () => {
     test('Respects overall and Stripe-specific telemetry configs', async () => {
@@ -14,19 +14,19 @@ suite('Telemetry', function () {
 
       await telemetryConfig.update('enableTelemetry', false);
       await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled, false);
+      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
 
       await telemetryConfig.update('enableTelemetry', false);
       await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled, false);
+      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
 
       await telemetryConfig.update('enableTelemetry', true);
       await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled, false);
+      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
 
       await telemetryConfig.update('enableTelemetry', true);
       await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled, true);
+      assert.strictEqual(telemetry.isTelemetryEnabled(), true);
     });
   });
 });
