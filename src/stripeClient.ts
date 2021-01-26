@@ -13,14 +13,11 @@ export class StripeClient {
   isInstalled: boolean;
   cliPath: string | null;
 
-  constructor(telemetry: Telemetry) {
+  constructor(telemetry:Telemetry) {
     this.telemetry = telemetry;
     this.isInstalled = false;
     this.cliPath = null;
-    vscode.workspace.onDidChangeConfiguration(
-      this.handleDidChangeConfiguration,
-      this
-    );
+    vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
   private async execute(command: string) {
@@ -68,9 +65,7 @@ export class StripeClient {
     );
 
     if (returnValue === actionText) {
-      vscode.env.openExternal(
-        vscode.Uri.parse('https://stripe.com/docs/stripe-cli')
-      );
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli'));
     }
   }
 
@@ -130,7 +125,7 @@ export class StripeClient {
 
     const installPath = customInstallPath || defaultInstallPath;
 
-    if (installPath && (await isFile(installPath))) {
+    if (installPath && await isFile(installPath)) {
       this.cliPath = installPath;
       return true;
     }
@@ -156,9 +151,7 @@ export class StripeClient {
     return resource;
   }
 
-  private async handleDidChangeConfiguration(
-    e: vscode.ConfigurationChangeEvent
-  ) {
+  private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
     const shouldHandleConfigurationChange = e.affectsConfiguration('stripe');
     if (shouldHandleConfigurationChange) {
       const isAuthenticated = await this.isAuthenticated();

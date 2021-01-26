@@ -29,13 +29,13 @@ suite('stripeClient', () => {
 
       osPathPairs.forEach(([os, path]) => {
         suite(`on ${os}`, () => {
+
           let realpathStub: sinon.SinonStub;
           let statStub: sinon.SinonStub;
 
           setup(() => {
             sandbox.stub(utils, 'getOSType').returns(os);
-            realpathStub = sandbox
-              .stub(fs.promises, 'realpath')
+            realpathStub = sandbox.stub(fs.promises, 'realpath')
               .withArgs(path)
               .returns(Promise.resolve(resolvedPath));
             statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
@@ -65,11 +65,7 @@ suite('stripeClient', () => {
     });
 
     suite('with custom CLI install path', () => {
-      const osTypes = [
-        utils.OSType.linux,
-        utils.OSType.macOS,
-        utils.OSType.windows,
-      ];
+      const osTypes = [utils.OSType.linux, utils.OSType.macOS, utils.OSType.windows];
       const customPath = '/foo/bar/baz';
       const resolvedPath = '/resolved/path/to/stripe';
 
@@ -77,15 +73,14 @@ suite('stripeClient', () => {
       let statStub: sinon.SinonStub;
 
       setup(() => {
-        sandbox
-          .stub(vscode.workspace, 'getConfiguration')
+        sandbox.stub(vscode.workspace, 'getConfiguration')
           .withArgs('stripe')
           .returns(<any>{get: () => customPath});
-        realpathStub = sandbox
-          .stub(fs.promises, 'realpath')
+        realpathStub = sandbox.stub(fs.promises, 'realpath')
           .withArgs(customPath)
           .returns(Promise.resolve(resolvedPath));
         statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
+
       });
 
       osTypes.forEach((os) => {
