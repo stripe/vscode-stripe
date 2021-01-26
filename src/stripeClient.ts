@@ -8,13 +8,13 @@ import {Telemetry} from './telemetry';
 const execa = require('execa');
 const fs = require('fs');
 
-const telemetry = Telemetry.getInstance();
-
 export class StripeClient {
+  telemetry: Telemetry;
   isInstalled: boolean;
   cliPath: string;
 
-  constructor() {
+  constructor(telemetry:Telemetry) {
+    this.telemetry = telemetry;
     this.isInstalled = false;
     this.cliPath = '';
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
@@ -36,7 +36,7 @@ export class StripeClient {
     }
 
     const flags: object[] = [];
-    if (!telemetry.isTelemetryEnabled) {
+    if (!this.telemetry.isTelemetryEnabled()) {
       flags.push({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         STRIPE_CLI_TELEMETRY_OPTOUT: true,
@@ -93,10 +93,10 @@ export class StripeClient {
       if (hasConfigForProject) {
         return true;
       }
-      telemetry.sendEvent('cli.notAuthenticated');
+      this.telemetry.sendEvent('cli.notAuthenticated');
       return false;
     } catch (err) {
-      telemetry.sendEvent('cli.notAuthenticated');
+      this.telemetry.sendEvent('cli.notAuthenticated');
       return false;
     }
   }
@@ -143,7 +143,7 @@ export class StripeClient {
       this.cliPath = validInstallPath;
     } else {
       this.isInstalled = false;
-      telemetry.sendEvent('cli.notInstalled');
+      this.telemetry.sendEvent('cli.notInstalled');
     }
   }
 

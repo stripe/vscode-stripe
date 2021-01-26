@@ -9,9 +9,9 @@ import {
   workspace,
 } from 'vscode';
 
-import {Telemetry} from './telemetry';
+import {GATelemetry} from './telemetry';
 
-const telemetry = Telemetry.getInstance();
+const telemetry = GATelemetry.getInstance();
 
 interface Resource {
   uri: {

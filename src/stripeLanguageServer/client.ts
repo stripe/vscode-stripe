@@ -8,10 +8,8 @@ import {
 
 import {Telemetry} from '../telemetry';
 
-const telemetry = Telemetry.getInstance();
-
 export class StripeLanguageClient {
-  static activate(context: ExtensionContext, serverOptions: ServerOptions) {
+  static activate(context: ExtensionContext, serverOptions: ServerOptions, telemetry: Telemetry) {
     const clientOptions: LanguageClientOptions = {
       // Register the server for javascript (more languages to come)
       documentSelector: [{scheme: 'file', language: 'javascript'}, {scheme: 'file', language: 'typescript'}],

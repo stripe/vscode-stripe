@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as utils from '../../utils';
+import {NoOpTelemetry} from '../../telemetry';
 import {StripeClient} from '../../stripeClient';
 
 const fs = require('fs');
@@ -35,7 +36,7 @@ suite('stripeClient', () => {
 
           test('detects installed', () => {
             statSyncStub.returns(<any>{isFile: () => true}); // the path is a file; CLI found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             stripeClient.detectInstalled();
             assert.deepStrictEqual(statSyncStub.args[0], [path]);
             assert.strictEqual(stripeClient.isInstalled, true);
@@ -44,7 +45,7 @@ suite('stripeClient', () => {
 
           test('detects not installed', () => {
             statSyncStub.returns(<any>{isFile: () => false}); // the path is not a file; CLI not found
-            const stripeClient = new StripeClient();
+            const stripeClient = new StripeClient(new NoOpTelemetry());
             stripeClient.detectInstalled();
             assert.deepStrictEqual(statSyncStub.args[0], [path]);
             assert.strictEqual(stripeClient.isInstalled, false);
