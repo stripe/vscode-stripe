@@ -24,31 +24,40 @@ suite('stripeClient', () => {
         [utils.OSType.macOS, '/usr/local/bin/stripe'],
         [utils.OSType.windows, 'scoop/shims/stripe.exe'],
       ];
+      const resolvedPath = '/resolved/path/to/stripe';
 
       osPathPairs.forEach(([os, path]) => {
         suite(`on ${os}`, () => {
-          let statSyncStub: sinon.SinonStub;
+
+          let realpathStub: sinon.SinonStub;
+          let statStub: sinon.SinonStub;
 
           setup(() => {
             sandbox.stub(utils, 'getOSType').returns(os);
-            statSyncStub = sandbox.stub(fs, 'statSync').withArgs(path);
+            realpathStub = sandbox.stub(fs.promises, 'realpath')
+              .withArgs(path)
+              .returns(Promise.resolve(resolvedPath));
+            statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
           });
 
-          test('detects installed', () => {
-            statSyncStub.returns(<any>{isFile: () => true}); // the path is a file; CLI found
+          test('detects installed', async () => {
+            statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
             const stripeClient = new StripeClient();
-            stripeClient.detectInstalled();
-            assert.deepStrictEqual(statSyncStub.args[0], [path]);
-            assert.strictEqual(stripeClient.isInstalled, true);
+            const isInstalled = await stripeClient.detectInstalled();
+            assert.strictEqual(isInstalled, true);
+            assert.deepStrictEqual(realpathStub.args[0], [path]);
+            assert.deepStrictEqual(statStub.args[0], [resolvedPath]);
             assert.strictEqual(stripeClient.cliPath, path);
           });
 
-          test('detects not installed', () => {
-            statSyncStub.returns(<any>{isFile: () => false}); // the path is not a file; CLI not found
+          test('detects not installed', async () => {
+            statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
             const stripeClient = new StripeClient();
-            stripeClient.detectInstalled();
-            assert.deepStrictEqual(statSyncStub.args[0], [path]);
-            assert.strictEqual(stripeClient.isInstalled, false);
+            const isInstalled = await stripeClient.detectInstalled();
+            assert.strictEqual(isInstalled, false);
+            assert.deepStrictEqual(realpathStub.args[0], [path]);
+            assert.deepStrictEqual(statStub.args[0], [resolvedPath]);
+            assert.strictEqual(stripeClient.cliPath, null);
           });
         });
       });
@@ -57,14 +66,20 @@ suite('stripeClient', () => {
     suite('with custom CLI install path', () => {
       const osTypes = [utils.OSType.linux, utils.OSType.macOS, utils.OSType.windows];
       const customPath = '/foo/bar/baz';
+      const resolvedPath = '/resolved/path/to/stripe';
 
-      let statSyncStub: sinon.SinonStub;
+      let realpathStub: sinon.SinonStub;
+      let statStub: sinon.SinonStub;
 
       setup(() => {
         sandbox.stub(vscode.workspace, 'getConfiguration')
           .withArgs('stripe')
           .returns(<any>{get: () => customPath});
-        statSyncStub = sandbox.stub(fs, 'statSync').withArgs(customPath);
+        realpathStub = sandbox.stub(fs.promises, 'realpath')
+          .withArgs(customPath)
+          .returns(Promise.resolve(resolvedPath));
+        statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
+
       });
 
       osTypes.forEach((os) => {
@@ -73,21 +88,24 @@ suite('stripeClient', () => {
             sandbox.stub(utils, 'getOSType').returns(os);
           });
 
-          test('detects installed', () => {
-            statSyncStub.returns(<any>{isFile: () => true}); // the path is a file; CLI found
+          test('detects installed', async () => {
+            statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
             const stripeClient = new StripeClient();
-            stripeClient.detectInstalled();
-            assert.deepStrictEqual(statSyncStub.args[0], [customPath]);
-            assert.strictEqual(stripeClient.isInstalled, true);
+            const isInstalled = await stripeClient.detectInstalled();
+            assert.strictEqual(isInstalled, true);
+            assert.deepStrictEqual(realpathStub.args[0], [customPath]);
+            assert.deepStrictEqual(statStub.args[0], [resolvedPath]);
             assert.strictEqual(stripeClient.cliPath, customPath);
           });
 
-          test('detects not installed', () => {
-            statSyncStub.returns(<any>{isFile: () => false}); // the path is not a file; CLI not found
+          test('detects not installed', async () => {
+            statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
             const stripeClient = new StripeClient();
-            stripeClient.detectInstalled();
-            assert.deepStrictEqual(statSyncStub.args[0], [customPath]);
-            assert.strictEqual(stripeClient.isInstalled, false);
+            const isInstalled = await stripeClient.detectInstalled();
+            assert.strictEqual(isInstalled, false);
+            assert.deepStrictEqual(realpathStub.args[0], [customPath]);
+            assert.deepStrictEqual(statStub.args[0], [resolvedPath]);
+            assert.strictEqual(stripeClient.cliPath, null);
           });
         });
       });

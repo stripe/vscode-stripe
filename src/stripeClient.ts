@@ -11,19 +11,17 @@ const fs = require('fs');
 const telemetry = Telemetry.getInstance();
 
 export class StripeClient {
-  isInstalled: boolean;
-  cliPath: string;
+  cliPath: string | null;
 
   constructor() {
-    this.isInstalled = false;
-    this.cliPath = '';
+    this.cliPath = null;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
   private async execute(command: string) {
-    this.detectInstalled();
+    const isInstalled = await this.detectInstalled();
 
-    if (!this.isInstalled) {
+    if (!isInstalled) {
       this.promptInstall();
       return;
     }
@@ -101,7 +99,7 @@ export class StripeClient {
     }
   }
 
-  detectInstalled() {
+  async detectInstalled() {
     const defaultInstallPath = (() => {
       const osType: OSType = getOSType();
       switch (osType) {
@@ -125,19 +123,20 @@ export class StripeClient {
 
     const installPath = customInstallPath || defaultInstallPath;
 
-    if (installPath && isFile(installPath)) {
-      this.isInstalled = true;
+    if (installPath && await isFile(installPath)) {
       this.cliPath = installPath;
-    } else {
-      if (customInstallPath) {
-        vscode.window.showErrorMessage(
-          `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
-          ...['Ok']
-        );
-      }
-      this.isInstalled = false;
-      telemetry.sendEvent('cli.notInstalled');
+      return true;
     }
+
+    if (customInstallPath) {
+      vscode.window.showErrorMessage(
+        `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
+        ...['Ok']
+      );
+    }
+    this.cliPath = null;
+    telemetry.sendEvent('cli.notInstalled');
+    return false;
   }
 
   getEvents() {
@@ -161,10 +160,11 @@ export class StripeClient {
   }
 }
 
-function isFile(path: string): boolean {
+async function isFile(path: string): Promise<boolean> {
   try {
-    // eslint-disable-next-line no-sync
-    return fs.statSync(path).isFile();
+    const resolvedPath = await fs.promises.realpath(path);
+    const fileStat = await fs.promises.stat(resolvedPath);
+    return fileStat.isFile();
   } catch (err) {
     return false;
   }
