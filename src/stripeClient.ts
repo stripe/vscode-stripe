@@ -11,19 +11,17 @@ const fs = require('fs');
 const telemetry = Telemetry.getInstance();
 
 export class StripeClient {
-  isInstalled: boolean;
-  cliPath: string;
+  cliPath: string | null;
 
   constructor() {
-    this.isInstalled = false;
-    this.cliPath = '';
+    this.cliPath = null;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
   private async execute(command: string) {
-    this.detectInstalled();
+    const isInstalled = await this.detectInstalled();
 
-    if (!this.isInstalled) {
+    if (!isInstalled) {
       this.promptInstall();
       return;
     }
@@ -101,50 +99,44 @@ export class StripeClient {
     }
   }
 
-  detectInstalled() {
-    const osType: OSType = getOSType();
-    let installPaths: string[] = [];
-
-    switch (osType) {
-      case OSType.macOS:
-        // HomeBrew install path on macOS
-        installPaths = ['/usr/local/bin/stripe'];
-        break;
-      case OSType.linux:
-        // apt-get install path on ubuntu + yum install path on centOS
-        installPaths = ['/usr/local/bin/stripe'];
-        break;
-      case OSType.windows:
-        // scoop install path on Windows 10
-        const userProfile = process.env.USERPROFILE || '';
-        installPaths = [path.join(userProfile, 'scoop', 'shims', 'stripe.exe')];
-        break;
-    }
-
-    // Handle custom CLI path setting
-    const config = vscode.workspace.getConfiguration('stripe');
-    if (config) {
-      const cliInstallPath = config.get<string>('cliInstallPath');
-      if (cliInstallPath) {
-        const validInstallPath = getInstallPath([cliInstallPath]);
-        if (!validInstallPath) {
-          vscode.window.showErrorMessage(
-            `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${cliInstallPath}'`,
-            ...['Ok']
-          );
-        }
+  async detectInstalled() {
+    const defaultInstallPath = (() => {
+      const osType: OSType = getOSType();
+      switch (osType) {
+        case OSType.macOS:
+          // HomeBrew install path on macOS
+          return '/usr/local/bin/stripe';
+        case OSType.linux:
+          // apt-get install path on ubuntu + yum install path on centOS
+          return '/usr/local/bin/stripe';
+        case OSType.windows:
+          // scoop install path on Windows 10
+          const userProfile = process.env.USERPROFILE || '';
+          return path.join(userProfile, 'scoop', 'shims', 'stripe.exe');
+        default:
+          return null;
       }
+    })();
+
+    const config = vscode.workspace.getConfiguration('stripe');
+    const customInstallPath = config.get('cliInstallPath', null);
+
+    const installPath = customInstallPath || defaultInstallPath;
+
+    if (installPath && await isFile(installPath)) {
+      this.cliPath = installPath;
+      return true;
     }
 
-    const validInstallPath = getInstallPath(installPaths);
-
-    if (validInstallPath) {
-      this.isInstalled = true;
-      this.cliPath = validInstallPath;
-    } else {
-      this.isInstalled = false;
-      telemetry.sendEvent('cli.notInstalled');
+    if (customInstallPath) {
+      vscode.window.showErrorMessage(
+        `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
+        ...['Ok']
+      );
     }
+    this.cliPath = null;
+    telemetry.sendEvent('cli.notInstalled');
+    return false;
   }
 
   getEvents() {
@@ -168,17 +160,12 @@ export class StripeClient {
   }
 }
 
-function getInstallPath(paths: string[]): string {
-  for (let i = 0; i < paths.length; i++) {
-    const path = paths[i];
-    try {
-      // eslint-disable-next-line no-sync
-      const isValidPath = fs.statSync(path).isFile();
-      if (isValidPath) {
-        return path;
-      }
-    } catch (err) {}
+async function isFile(path: string): Promise<boolean> {
+  try {
+    const resolvedPath = await fs.promises.realpath(path);
+    const fileStat = await fs.promises.stat(resolvedPath);
+    return fileStat.isFile();
+  } catch (err) {
+    return false;
   }
-
-  return '';
 }
