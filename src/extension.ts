@@ -1,25 +1,6 @@
 import {ExtensionContext, commands, debug, window, workspace} from 'vscode';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
-import {
-  openCLI,
-  openDashboardApikeys,
-  openDashboardEvent,
-  openDashboardEvents,
-  openDashboardLogs,
-  openDashboardWebhooks,
-  openDocs,
-  openEventDetails,
-  openLogsStreaming,
-  openReportIssue,
-  openSurvey,
-  openTelemetryInfo,
-  openTriggerEvent,
-  openWebhooksDebugConfigure,
-  openWebhooksListen,
-  refreshEventsList,
-  resendEvent,
-  startLogin,
-} from './commands';
+import {Commands} from './commands';
 import {GATelemetry} from './telemetry';
 import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
@@ -31,6 +12,7 @@ import {StripeHelpViewDataProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsDataProvider} from './stripeLogsView';
+import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import path from 'path';
@@ -50,6 +32,8 @@ export function activate(this: any, context: ExtensionContext) {
   new SurveyPrompt(context).activate();
 
   Resource.initialize(context);
+
+  const stripeCommands = new Commands(telemetry, new StripeTerminal());
 
   // Activity bar view
   window.createTreeView('stripeDashboardView', {
@@ -108,53 +92,53 @@ export function activate(this: any, context: ExtensionContext) {
 
   // Commands
   const subscriptions = context.subscriptions;
-  const boundRefreshEventsList = refreshEventsList.bind(
+  const boundRefreshEventsList = stripeCommands.refreshEventsList.bind(
     this,
     stripeEventsViewProvider
   );
 
   context.subscriptions.push(
-    commands.registerCommand('stripe.openCLI', openCLI)
+    commands.registerCommand('stripe.openCLI', stripeCommands.openCLI)
   );
 
   context.subscriptions.push(
-    commands.registerCommand('stripe.login', startLogin)
+    commands.registerCommand('stripe.login', stripeCommands.startLogin)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openWebhooksListen', openWebhooksListen)
+    commands.registerCommand('stripe.openWebhooksListen', stripeCommands.openWebhooksListen)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openLogsStreaming', openLogsStreaming)
+    commands.registerCommand('stripe.openLogsStreaming', stripeCommands.openLogsStreaming)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvents', openDashboardEvents)
+    commands.registerCommand('stripe.openDashboardEvents', stripeCommands.openDashboardEvents)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardLogs', openDashboardLogs)
+    commands.registerCommand('stripe.openDashboardLogs', stripeCommands.openDashboardLogs)
   );
 
   subscriptions.push(
     commands.registerCommand(
       'stripe.openEventDetails',
-      openEventDetails
+      stripeCommands.openEventDetails
     )
   );
 
   subscriptions.push(
     commands.registerCommand(
       'stripe.openDashboardApikeys',
-      openDashboardApikeys
+      stripeCommands.openDashboardApikeys
     )
   );
 
   subscriptions.push(
     commands.registerCommand(
       'stripe.openDashboardWebhooks',
-      openDashboardWebhooks
+      stripeCommands.openDashboardWebhooks
     )
   );
 
@@ -163,33 +147,33 @@ export function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openTriggerEvent', () => openTriggerEvent(context))
+    commands.registerCommand('stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context))
   );
 
-  subscriptions.push(commands.registerCommand('stripe.openSurvey', openSurvey));
+  subscriptions.push(commands.registerCommand('stripe.openSurvey', stripeCommands.openSurvey));
 
   subscriptions.push(
-    commands.registerCommand('stripe.openTelemetryInfo', openTelemetryInfo)
+    commands.registerCommand('stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openReportIssue', openReportIssue)
+    commands.registerCommand('stripe.openReportIssue', stripeCommands.openReportIssue)
   );
 
-  subscriptions.push(commands.registerCommand('stripe.openDocs', openDocs));
+  subscriptions.push(commands.registerCommand('stripe.openDocs', stripeCommands.openDocs));
   subscriptions.push(
     commands.registerCommand(
       'stripe.openWebhooksDebugConfigure',
-      openWebhooksDebugConfigure
+      stripeCommands.openWebhooksDebugConfigure
     )
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.resendEvent', resendEvent)
+    commands.registerCommand('stripe.resendEvent', stripeCommands.resendEvent)
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvent', openDashboardEvent)
+    commands.registerCommand('stripe.openDashboardEvent', stripeCommands.openDashboardEvent)
   );
 }
 
