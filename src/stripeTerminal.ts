@@ -90,29 +90,10 @@ export class StripeTerminal {
     return null;
   }
 
-  private async getUsersStripeTerminal(
-    allRunningProcesses: psList.ProcessDescriptor[]
-  ): Promise<vscode.Terminal | undefined> {
-    const usersTerminals = vscode.window.terminals.filter((t) => !this.terminals.includes(t));
-    const usersStripeTerminal = await findAsync(usersTerminals, async (t) => {
-      const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
-      return !!runningCommand && this.isCommandLongRunning(runningCommand);
-    });
-    return usersStripeTerminal;
-  }
-
   private async terminalForCommand(
     command: string,
     allRunningProcesses: psList.ProcessDescriptor[],
   ): Promise<vscode.Terminal> {
-    // If the user had manually created a terminal and ran `stripe listen` or `stripe logs tail`,
-    // we would want to know about it so that we can reuse that terminal or spawn new split
-    // terminals off of it. This gives a better experience than ignoring that terminal.
-    const usersStripeTerminal = await this.getUsersStripeTerminal(allRunningProcesses);
-    if (this.terminals.length === 0 && usersStripeTerminal) {
-      this.terminals.push(usersStripeTerminal);
-    }
-
     // If the command is a long-running one, and it's already running in a VS Code terminal,
     // we restart it in the same terminal. This does not occur on Windows due to OS limitations.
     if (this.isCommandLongRunning(command)) {
