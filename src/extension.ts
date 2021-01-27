@@ -69,7 +69,7 @@ export function activate(this: any, context: ExtensionContext) {
   );
 
   // Stripe Linter
-  const stripeLinter = new StripeLinter();
+  const stripeLinter = new StripeLinter(telemetry);
   stripeLinter.activate();
 
   // Language Server for hover matching of Stripe methods
