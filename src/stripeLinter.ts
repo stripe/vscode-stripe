@@ -9,10 +9,7 @@ import {
   workspace,
 } from 'vscode';
 
-import {GATelemetry} from './telemetry';
-
-const telemetry = GATelemetry.getInstance();
-
+import {Telemetry} from './telemetry';
 interface Resource {
   uri: {
     path: string;
@@ -50,39 +47,9 @@ const isCommitRisk = (documentUri: string): boolean => {
   return commitRiskMatch;
 };
 
-// prepareAPIKeyDiagnostics regex matches all instances of a Stripe API Key in a supplied line of text
-// will return a list of Diagnostics pointing at instances of the Stripe API Keys it found
-const prepareLineDiagnostics = (line: string, index: number): Diagnostic[] => {
-  const isGitRepo = isUsingGitExtension && gitAPI.repositories.length;
-  const diagnostics: Diagnostic[] = [];
-
-  let match;
-  while ((match = stripeKeysRegex.exec(line)) !== null) {
-    const severity = /sk_live/.test(match[0])
-      ? DiagnosticSeverity.Error
-      : DiagnosticSeverity.Warning;
-    const message = isGitRepo ? diagnosticMessageGit : diagnosticMessageNoGit;
-
-    // specify line and character range to draw the squiggly line under the API Key in the document
-    const range = new Range(
-      index,
-      match.index,
-      index,
-      match.index + match[0].length
-    );
-    // create new diagnostic and add to the list of total diagnostics for this line of code
-    const diagnostic = new Diagnostic(range, message, severity);
-
-    telemetry.sendEvent('diagnostics.show', severity);
-    diagnostics.push(diagnostic);
-  }
-
-  return diagnostics;
-};
-
 // should search file checks if a file is either a git commit risk, or if git is not being used, will check if it's not an .env file
 // returns a boolean: true if we should search the file for API Keys, false if we should not search the file
-const shouldSearchFile = (currentFilename: string): boolean => {
+export const shouldSearchFile = (currentFilename: string): boolean => {
   const isGitRepo = isUsingGitExtension && gitAPI.repositories.length;
   const ignoredFileMatches = ignoredFileList.filter(
     (ignoredFile) => currentFilename.search(ignoredFile) > -1
@@ -105,6 +72,12 @@ const shouldSearchFile = (currentFilename: string): boolean => {
 // these warnings / errors also show up in the "Problems" tab in the VS Code integrated Terminal panel.
 
 export class StripeLinter {
+  telemetry: Telemetry;
+
+  constructor(telemetry: Telemetry) {
+    this.telemetry = telemetry;
+  }
+
   activate() {
     this.lookForHardCodedAPIKeys();
     workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
@@ -125,10 +98,41 @@ export class StripeLinter {
     // get each line's possible API key warnings
     // then flatten nested diagnostics into a flat array
     const fileDiagnostics: Diagnostic[] = lines
-      .map(prepareLineDiagnostics)
+      .map(this.prepareLineDiagnostics)
       .reduce((acc, next) => acc.concat([...next]), []);
 
     // tell VS Code to show warnings and errors in syntax
     diagnosticCollection.set(document.uri, fileDiagnostics);
+  };
+
+
+  // prepareAPIKeyDiagnostics regex matches all instances of a Stripe API Key in a supplied line of text
+  // will return a list of Diagnostics pointing at instances of the Stripe API Keys it found
+  prepareLineDiagnostics = (line: string, index: number): Diagnostic[] => {
+    const isGitRepo = isUsingGitExtension && gitAPI.repositories.length;
+    const diagnostics: Diagnostic[] = [];
+
+    let match;
+    while ((match = stripeKeysRegex.exec(line)) !== null) {
+      const severity = /sk_live/.test(match[0])
+        ? DiagnosticSeverity.Error
+        : DiagnosticSeverity.Warning;
+      const message = isGitRepo ? diagnosticMessageGit : diagnosticMessageNoGit;
+
+      // specify line and character range to draw the squiggly line under the API Key in the document
+      const range = new Range(
+        index,
+        match.index,
+        index,
+        match.index + match[0].length
+      );
+      // create new diagnostic and add to the list of total diagnostics for this line of code
+      const diagnostic = new Diagnostic(range, message, severity);
+
+      this.telemetry.sendEvent('diagnostics.show', severity);
+      diagnostics.push(diagnostic);
+    }
+
+    return diagnostics;
   };
 }
