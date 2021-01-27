@@ -37,47 +37,4 @@ suite('stripeTerminal', function() {
     assert.strictEqual(createTerminalStub.callCount, 1);
     assert.strictEqual(sendTextStub.getCalls()[0].args[0], 'stripe listen --foward-to localhost');
   });
-
-  test('sends long-running command to a user-created Stripe terminal', async () => {
-    // The user created a terminal and ran `stripe listen` manually.
-    const sendTextStub = sandbox.stub(terminalStub, 'sendText');
-    sandbox.stub(vscode.window, 'terminals').value([terminalStub]);
-    sandbox.stub(StripeTerminal.prototype, <any>'getRunningCommand').returns('stripe listen');
-
-    const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal');
-
-    // The user invokes "Start webhooks listening" from the extension.
-    const stripeTerminal = new StripeTerminal();
-    await stripeTerminal.execute('listen');
-
-    assert.strictEqual(createTerminalStub.callCount, 0);
-    assert.strictEqual(sendTextStub.getCalls()[0].args[0], 'stripe listen');
-  });
-
-  test('splits off of a user-created Stripe terminal', async () => {
-    // The user created a terminal and ran `stripe listen` manually.
-    const usersSendTextStub = sandbox.stub(terminalStub, 'sendText');
-    sandbox.stub(vscode.window, 'terminals').value([terminalStub]);
-    sandbox.stub(StripeTerminal.prototype, <any>'getRunningCommand').returns('stripe listen');
-
-    const newTerminalStub = {
-      ...terminalStub,
-      sendText: (text: string, addNewLine?: boolean) => {},
-    };
-    const createNewSplitTerminalStub = sandbox
-      .stub(StripeTerminal.prototype, <any>'createNewSplitTerminal')
-      .returns(newTerminalStub);
-    const newSendTextStub = sandbox.stub(newTerminalStub, 'sendText');
-
-    const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal');
-
-    // The user invokes "Start API logs streaming" from the extension.
-    const stripeTerminal = new StripeTerminal();
-    await stripeTerminal.execute('logs', ['tail']);
-
-    assert.strictEqual(createTerminalStub.callCount, 0);
-    assert.strictEqual(usersSendTextStub.callCount, 0);
-    assert.strictEqual(createNewSplitTerminalStub.callCount, 1);
-    assert.strictEqual(newSendTextStub.getCalls()[0].args[0], 'stripe logs tail');
-  });
 });
