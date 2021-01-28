@@ -62,6 +62,22 @@ suite('stripeClient', () => {
           });
         });
       });
+
+      test('prompts install when CLI is not installed', async () => {
+        sandbox.stub(fs.promises, 'stat').returns(Promise.resolve({isFile: () => false}));
+        const showErrorMessageSpy = sandbox.stub(vscode.window, 'showErrorMessage');
+        const stripeClient = new StripeClient(new NoOpTelemetry());
+        const isInstalled = await stripeClient.detectInstalled();
+        assert.strictEqual(isInstalled, false);
+        assert.deepStrictEqual(
+          showErrorMessageSpy.args[0],
+          [
+            'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
+            {},
+            'Read instructions on how to install Stripe CLI',
+          ]
+        );
+      });
     });
 
     suite('with custom CLI install path', () => {
@@ -109,6 +125,18 @@ suite('stripeClient', () => {
             assert.strictEqual(stripeClient.cliPath, null);
           });
         });
+      });
+
+      test('shows error when CLI is not at that path', async () => {
+        statStub.returns(Promise.resolve({isFile: () => false}));
+        const showErrorMessageSpy = sandbox.stub(vscode.window, 'showErrorMessage');
+        const stripeClient = new StripeClient(new NoOpTelemetry());
+        const isInstalled = await stripeClient.detectInstalled();
+        assert.strictEqual(isInstalled, false);
+        assert.deepStrictEqual(
+          showErrorMessageSpy.args[0],
+          ["You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '/foo/bar/baz'", 'Ok'],
+        );
       });
     });
   });
