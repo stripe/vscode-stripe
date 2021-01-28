@@ -24,7 +24,7 @@ async function main() {
     ];
 
     const extensionTestsEnv = {
-      IS_DEVELOPEMENT_MODE: 'development'
+      EXTENSION_MODE: 'development'
     };
 
     // Download VS Code, unzip it and run the integration test

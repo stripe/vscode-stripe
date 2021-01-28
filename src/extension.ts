@@ -180,12 +180,12 @@ export function activate(this: any, context: ExtensionContext) {
 export function deactivate() {}
 
 /**
- * Checks for the explicit setting of the IS_DEVELOPEMENT_MODE and
+ * Checks for the explicit setting of the EXTENSION_MODE and
  * Implcitly checks by using the magic session string. This session value is used whenever an extension
  * is running on a development host. https://github.com/microsoft/vscode/issues/10272
  */
 function getTelemetry() {
-  if (process.env.IS_DEVELOPEMENT_MODE === 'true' || env.sessionId === 'someValue.sessionId') {
+  if (process.env.EXTENSION_MODE === 'development' || env.sessionId === 'someValue.sessionId') {
     console.log('Extension is running in development mode. Using local telemetry instance');
     return new LocalTelemetry();
   } else {

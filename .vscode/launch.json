@@ -17,7 +17,7 @@
 			],
 			"preLaunchTask": "npm: watch",
 			"env": {
-				"IS_DEVELOPEMENT_MODE": "true"
+				"EXTENSION_MODE": "development"
 			}
 		}
 	]
