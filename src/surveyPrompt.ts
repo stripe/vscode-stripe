@@ -54,7 +54,7 @@ export class SurveyPrompt {
     return true;
   }
 
-  public async showSurvey() {
+  showSurvey = async() => {
     const prompts = ['Take survey', 'Maybe later', "Don't Show Again"];
 
     const selection = await vscode.window.showInformationMessage(
@@ -74,5 +74,5 @@ export class SurveyPrompt {
     } else if (selection === "Don't Show Again") {
       this.storage.update(StorageKeys.doNotShowAgain, true);
     }
-  }
+  };
 }
