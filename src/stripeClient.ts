@@ -10,12 +10,10 @@ const fs = require('fs');
 
 export class StripeClient {
   telemetry: Telemetry;
-  isInstalled: boolean;
   cliPath: string | null;
 
   constructor(telemetry:Telemetry) {
     this.telemetry = telemetry;
-    this.isInstalled = false;
     this.cliPath = null;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
@@ -24,7 +22,6 @@ export class StripeClient {
     const isInstalled = await this.detectInstalled();
 
     if (!isInstalled) {
-      this.promptInstall();
       return;
     }
 
@@ -135,6 +132,8 @@ export class StripeClient {
         `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
         ...['Ok']
       );
+    } else {
+      this.promptInstall();
     }
     this.cliPath = null;
     this.telemetry.sendEvent('cli.notInstalled');
@@ -154,9 +153,12 @@ export class StripeClient {
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
     const shouldHandleConfigurationChange = e.affectsConfiguration('stripe');
     if (shouldHandleConfigurationChange) {
-      const isAuthenticated = await this.isAuthenticated();
-      if (!isAuthenticated) {
-        await this.promptLogin();
+      const isInstalled = await this.detectInstalled();
+      if (isInstalled) {
+        const isAuthenticated = await this.isAuthenticated();
+        if (!isAuthenticated) {
+          await this.promptLogin();
+        }
       }
     }
   }
