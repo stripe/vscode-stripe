@@ -31,7 +31,7 @@ Contributions and feedback to the project are welcome, so please open issues for
    - Start a task `npm: watch` to compile the code
    - Run the extension in a new VS Code window
 1. Disable the Stripe Extension for this workspace.
-   - Right click "Stripe" from the Extensions markeyplace
+   - Right click "Stripe" from the Extensions marketplace
    - Click Disable (Workspace)
 
 ## License

@@ -15,7 +15,10 @@
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"
 			],
-			"preLaunchTask": "npm: watch"
+			"preLaunchTask": "npm: watch",
+			"env": {
+				"EXTENSION_MODE": "development"
+			}
 		}
 	]
 }

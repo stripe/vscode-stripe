@@ -23,11 +23,16 @@ async function main() {
       '--disable-extensions'
     ];
 
+    const extensionTestsEnv = {
+      EXTENSION_MODE: 'development'
+    };
+
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs,
+      extensionTestsEnv
     });
   } catch (err) {
     console.log(err);
