@@ -16,6 +16,11 @@ interface Resource {
   };
 }
 
+
+
+
+
+
 const gitExtension = extensions.getExtension('vscode.git');
 const gitExtensionExports = gitExtension ? gitExtension.exports : null;
 const isUsingGitExtension = gitExtensionExports && gitExtensionExports.enabled;
