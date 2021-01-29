@@ -27,14 +27,59 @@ suite('stripeTerminal', function() {
     sandbox.restore();
   });
 
-  test('sends command to a new terminal if no terminals exist', async () => {
-    const sendTextStub = sandbox.stub(terminalStub, 'sendText');
-    const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
+  [
+    '/usr/local/bin/stripe',
+    '/custom/path/to/stripe'
+  ].forEach((path) => {
+    suite(`when the Stripe CLI is installed at ${path}`, () => {
+      test(`runs command with ${path}`, async () => {
+        const sendTextStub = sandbox.stub(terminalStub, 'sendText');
+        const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
+        const stripeClientStub = <any>{getCLIPath: () => {}};
+        const getCLIPathStub = sandbox.stub(stripeClientStub, 'getCLIPath').returns(Promise.resolve(path));
 
-    const stripeTerminal = new StripeTerminal();
-    await stripeTerminal.execute('listen', ['--foward-to', 'localhost']);
+        const stripeTerminal = new StripeTerminal(stripeClientStub);
+        await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
 
-    assert.strictEqual(createTerminalStub.callCount, 1);
-    assert.strictEqual(sendTextStub.getCalls()[0].args[0], 'stripe listen --foward-to localhost');
+        assert.strictEqual(getCLIPathStub.callCount, 1);
+        assert.strictEqual(createTerminalStub.callCount, 1);
+        assert.deepStrictEqual(sendTextStub.args[0], [`${path} listen --forward-to localhost`]);
+      });
+    });
+  });
+
+  suite('with no Stripe CLI installed', () => {
+    test('does not run command', async () => {
+      const sendTextStub = sandbox.stub(terminalStub, 'sendText');
+      const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
+      const stripeClientStub = <any>{getCLIPath: () => {}};
+      sandbox.stub(stripeClientStub, 'getCLIPath').returns(null);
+
+      const stripeTerminal = new StripeTerminal(stripeClientStub);
+      await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
+
+      assert.strictEqual(createTerminalStub.callCount, 0);
+      assert.deepStrictEqual(sendTextStub.callCount, 0);
+    });
+  });
+
+  suite('if a Stripe terminal already exists', () => {
+    test('reuses terminal if the command is the same', async () => {
+      const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
+      const sendTextStub = sandbox.stub(terminalStub, 'sendText');
+      const stripeClientStub = <any>{getCLIPath: () => {}};
+      sandbox.stub(stripeClientStub, 'getCLIPath')
+        .returns(Promise.resolve('/usr/local/bin/stripe'));
+
+      const stripeTerminal = new StripeTerminal(stripeClientStub);
+      await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
+
+      // same command => reuse the same terminal
+      await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
+
+      assert.strictEqual(createTerminalStub.callCount, 1);
+      assert.deepStrictEqual(sendTextStub.args[0], ['/usr/local/bin/stripe listen --forward-to localhost']);
+      assert.deepStrictEqual(sendTextStub.args[1], ['/usr/local/bin/stripe listen --forward-to localhost']);
+    });
   });
 });
