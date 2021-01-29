@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import {OSType, filterAsync, findAsync, getOSType} from './utils';
+import {StripeClient} from './stripeClient';
 import psList from 'ps-list';
 
 type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger';
@@ -7,13 +8,15 @@ type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger'
 export class StripeTerminal {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private static KNOWN_LONG_RUNNING_COMMANDS = [
-    'stripe listen',
-    'stripe logs tail',
+    'listen',
+    'logs tail',
   ];
 
+  private stripeClient: StripeClient;
   private terminals: Array<vscode.Terminal>;
 
-  constructor() {
+  constructor(stripeClient: StripeClient) {
+    this.stripeClient = stripeClient;
     this.terminals = [];
     vscode.window.onDidCloseTerminal((terminal) => {
       terminal.dispose();
@@ -25,17 +28,22 @@ export class StripeTerminal {
     command: SupportedStripeCommand,
     args: Array<string> = [],
   ): Promise<void> {
+    const cliPath = await this.stripeClient.getCLIPath();
+    if (!cliPath) {
+      return;
+    }
+
     const globalCLIFLags = this.getGlobalCLIFlags();
 
     const commandString = [
-      'stripe',
+      cliPath,
       command,
       ...args,
       ...globalCLIFLags
     ].join(' ');
 
     const allRunningProcesses = await psList();
-    const terminal = await this.terminalForCommand(commandString, allRunningProcesses);
+    const terminal = await this.terminalForCommand(commandString, cliPath, allRunningProcesses);
     terminal.sendText(commandString);
     terminal.show();
     const otherTerminals = this.terminals.filter((t) => t !== terminal);
@@ -56,8 +64,8 @@ export class StripeTerminal {
 
   private isCommandLongRunning(command: string): boolean {
     if (getOSType() === OSType.windows) {
-      // On Windows we can't get the process command, so always assume terminals running `stripe` are long running
-      return command.indexOf('stripe') > -1;
+      // On Windows we can't get the process command, so always assume commands are long-running
+      return true;
     }
     return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
       command.indexOf(knownCommand) > -1
@@ -92,11 +100,14 @@ export class StripeTerminal {
 
   private async terminalForCommand(
     command: string,
+    cliPath: string,
     allRunningProcesses: psList.ProcessDescriptor[],
   ): Promise<vscode.Terminal> {
+    const isStripeCLICommand = command.startsWith(cliPath);
+
     // If the command is a long-running one, and it's already running in a VS Code terminal,
     // we restart it in the same terminal. This does not occur on Windows due to OS limitations.
-    if (this.isCommandLongRunning(command)) {
+    if (isStripeCLICommand && this.isCommandLongRunning(command)) {
       const terminalWithDesiredCommand = await findAsync(this.terminals, async (t) => {
         const runningCommand = await this.getRunningCommand(t, allRunningProcesses);
         return runningCommand === command;

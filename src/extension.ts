@@ -33,7 +33,9 @@ export function activate(this: any, context: ExtensionContext) {
 
   Resource.initialize(context);
 
-  const stripeCommands = new Commands(telemetry, new StripeTerminal());
+  const stripeTerminal = new StripeTerminal(stripeClient);
+
+  const stripeCommands = new Commands(telemetry, stripeTerminal);
 
   // Activity bar view
   window.createTreeView('stripeDashboardView', {

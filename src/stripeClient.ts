@@ -10,7 +10,7 @@ const fs = require('fs');
 
 export class StripeClient {
   telemetry: Telemetry;
-  cliPath: string | null;
+  private cliPath: string | null;
 
   constructor(telemetry:Telemetry) {
     this.telemetry = telemetry;
@@ -98,7 +98,25 @@ export class StripeClient {
     }
   }
 
-  async detectInstalled() {
+  getEvents() {
+    const events = this.execute('events list');
+    return events;
+  }
+
+  getResourceById(id: string) {
+    const resource = this.execute(`get ${id}`);
+    return resource;
+  }
+
+  async getCLIPath(): Promise<string | null> {
+    const isInstalled = await this.detectInstalled();
+    if (!isInstalled) {
+      return null;
+    }
+    return this.cliPath;
+  }
+
+  private async detectInstalled() {
     const defaultInstallPath = (() => {
       const osType: OSType = getOSType();
       switch (osType) {
@@ -138,16 +156,6 @@ export class StripeClient {
     this.cliPath = null;
     this.telemetry.sendEvent('cli.notInstalled');
     return false;
-  }
-
-  getEvents() {
-    const events = this.execute('events list');
-    return events;
-  }
-
-  getResourceById(id: string) {
-    const resource = this.execute(`get ${id}`);
-    return resource;
   }
 
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
