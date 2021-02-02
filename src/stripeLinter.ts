@@ -82,9 +82,9 @@ export class StripeLinter {
     this.git = git;
   }
 
-  activate() {
+  async activate() {
     if (window.activeTextEditor) {
-      this.lookForHardCodedAPIKeys(window.activeTextEditor.document);
+      await this.lookForHardCodedAPIKeys(window.activeTextEditor.document);
     }
     workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
   }

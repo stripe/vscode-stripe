@@ -30,7 +30,7 @@ suite('StripeLinter', () => {
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const linter = new stripeLinter.StripeLinter(telemetry, git);
-      linter.activate();
+      await linter.activate();
 
       const diagnostics = vscode.languages.getDiagnostics();
       assert.strictEqual(shouldSearchStub.calledOnce, true);
@@ -47,7 +47,7 @@ suite('StripeLinter', () => {
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const linter = new stripeLinter.StripeLinter(telemetry, git);
-      linter.activate();
+      await linter.activate();
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(shouldSearchStub.calledOnce, true);
@@ -65,7 +65,7 @@ suite('StripeLinter', () => {
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const linter = new stripeLinter.StripeLinter(telemetry, git);
-      linter.activate();
+      await linter.activate();
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(shouldSearchStub.calledOnce, true);
