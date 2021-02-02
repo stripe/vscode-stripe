@@ -98,11 +98,7 @@ export class StripeLinter {
 
     const message = await this.git.isGitRepo(document.uri) ? diagnosticMessageGit : diagnosticMessageNoGit;
 
-    // get each line's possible API key warnings
-    // then flatten nested diagnostics into a flat array
-    const fileDiagnostics: Diagnostic[] = lines
-      .map(this.prepareLineDiagnostics(message))
-      .reduce((acc, next) => acc.concat([...next]), []);
+    const fileDiagnostics: Diagnostic[] = lines.flatMap(this.prepareLineDiagnostics(message));
 
     // tell VS Code to show warnings and errors in syntax
     diagnosticCollection.set(document.uri, fileDiagnostics);
