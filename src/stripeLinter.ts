@@ -3,11 +3,13 @@ import {
   DiagnosticCollection,
   DiagnosticSeverity,
   Range,
+  TextDocument,
   extensions,
   languages,
   window,
   workspace,
 } from 'vscode';
+import {Git} from './git';
 
 import {Telemetry} from './telemetry';
 interface Resource {
@@ -73,32 +75,33 @@ export const shouldSearchFile = (currentFilename: string): boolean => {
 
 export class StripeLinter {
   telemetry: Telemetry;
+  git: Git;
 
-  constructor(telemetry: Telemetry) {
+  constructor(telemetry: Telemetry, git: Git) {
     this.telemetry = telemetry;
+    this.git = git;
   }
 
   activate() {
-    this.lookForHardCodedAPIKeys();
+    if (window.activeTextEditor) {
+      this.lookForHardCodedAPIKeys(window.activeTextEditor.document);
+    }
     workspace.onDidSaveTextDocument(this.lookForHardCodedAPIKeys);
   }
 
-  lookForHardCodedAPIKeys = (): void => {
-    const editor = window.activeTextEditor;
-    if (!editor) { return; }
-
-    const {document} = editor;
-
+  lookForHardCodedAPIKeys = async (document: TextDocument): Promise<void> => {
     const currentFilename = document.uri.path;
     if (!shouldSearchFile(currentFilename)) { return; }
 
     const text = document.getText();
     const lines = text.split('\n');
 
+    const message = await this.git.isGitRepo(document.uri) ? diagnosticMessageGit : diagnosticMessageNoGit;
+
     // get each line's possible API key warnings
     // then flatten nested diagnostics into a flat array
     const fileDiagnostics: Diagnostic[] = lines
-      .map(this.prepareLineDiagnostics)
+      .map(this.prepareLineDiagnostics(message))
       .reduce((acc, next) => acc.concat([...next]), []);
 
     // tell VS Code to show warnings and errors in syntax
@@ -108,8 +111,7 @@ export class StripeLinter {
 
   // prepareAPIKeyDiagnostics regex matches all instances of a Stripe API Key in a supplied line of text
   // will return a list of Diagnostics pointing at instances of the Stripe API Keys it found
-  prepareLineDiagnostics = (line: string, index: number): Diagnostic[] => {
-    const isGitRepo = isUsingGitExtension && gitAPI.repositories.length;
+  prepareLineDiagnostics = (message: string) => (line: string, index: number): Diagnostic[] => {
     const diagnostics: Diagnostic[] = [];
 
     let match;
@@ -117,7 +119,6 @@ export class StripeLinter {
       const severity = /sk_live/.test(match[0])
         ? DiagnosticSeverity.Error
         : DiagnosticSeverity.Warning;
-      const message = isGitRepo ? diagnosticMessageGit : diagnosticMessageNoGit;
 
       // specify line and character range to draw the squiggly line under the API Key in the document
       const range = new Range(
