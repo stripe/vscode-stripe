@@ -3,11 +3,13 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as stripeLinter from '../../stripeLinter';
 import * as vscode from 'vscode';
+import {Git} from '../../git';
 import {NoOpTelemetry} from '../../telemetry';
 
 suite('StripeLinter', () => {
   let sandbox: sinon.SinonSandbox;
   const telemetry = new NoOpTelemetry();
+  const git = new Git();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -27,8 +29,8 @@ suite('StripeLinter', () => {
       const shouldSearchStub = sandbox.stub(stripeLinter, 'shouldSearchFile').returns(false);
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
-      const linter = new stripeLinter.StripeLinter(telemetry);
-      linter.activate();
+      const linter = new stripeLinter.StripeLinter(telemetry, git);
+      await linter.activate();
 
       const diagnostics = vscode.languages.getDiagnostics();
       assert.strictEqual(shouldSearchStub.calledOnce, true);
@@ -44,8 +46,8 @@ suite('StripeLinter', () => {
       const shouldSearchStub = sandbox.stub(stripeLinter, 'shouldSearchFile').returns(true);
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
-      const linter = new stripeLinter.StripeLinter(telemetry);
-      linter.activate();
+      const linter = new stripeLinter.StripeLinter(telemetry, git);
+      await linter.activate();
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(shouldSearchStub.calledOnce, true);
@@ -62,8 +64,8 @@ suite('StripeLinter', () => {
       const shouldSearchStub = sandbox.stub(stripeLinter, 'shouldSearchFile').returns(true);
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
-      const linter = new stripeLinter.StripeLinter(telemetry);
-      linter.activate();
+      const linter = new stripeLinter.StripeLinter(telemetry, git);
+      await linter.activate();
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(shouldSearchStub.calledOnce, true);

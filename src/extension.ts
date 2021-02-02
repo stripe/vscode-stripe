@@ -2,6 +2,7 @@ import {ExtensionContext, commands, debug, env, window, workspace} from 'vscode'
 import {GATelemetry, LocalTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
+import {Git} from './git';
 import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
 import {StripeDashboardViewDataProvider} from './stripeDashboardView';
@@ -70,8 +71,10 @@ export function activate(this: any, context: ExtensionContext) {
     new StripeEventTextDocumentContentProvider(stripeClient)
   );
 
+  const git = new Git();
+
   // Stripe Linter
-  const stripeLinter = new StripeLinter(telemetry);
+  const stripeLinter = new StripeLinter(telemetry, git);
   stripeLinter.activate();
 
   // Language Server for hover matching of Stripe methods
