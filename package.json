@@ -24,7 +24,7 @@
     "Snippets"
   ],
   "extensionKind": [
-    "ui"
+    "workspace"
   ],
   "keywords": [
     "stripe",
@@ -60,9 +60,6 @@
     "onLanguage:ruby",
     "onLanguage:java",
     "onLanguage:php"
-  ],
-  "extensionDependencies": [
-    "vscode.git"
   ],
   "main": "./out/extension.js",
   "contributes": {
