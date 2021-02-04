@@ -4,26 +4,15 @@ import {
   DiagnosticSeverity,
   Range,
   TextDocument,
-  extensions,
   languages,
   window,
   workspace,
 } from 'vscode';
+import {PerformanceObserver, performance} from 'perf_hooks';
 import {Git} from './git';
 
 import {Telemetry} from './telemetry';
-interface Resource {
-  uri: {
-    path: string;
-  };
-}
 
-const gitExtension = extensions.getExtension('vscode.git');
-const gitExtensionExports = gitExtension ? gitExtension.exports : null;
-const isUsingGitExtension = gitExtensionExports && gitExtensionExports.enabled;
-const gitAPI = isUsingGitExtension ? gitExtensionExports.getAPI(1) : null;
-
-const ignoredFileList = ['.env'];
 const stripeKeysRegex = new RegExp(
   '(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]+',
   'g'
@@ -37,49 +26,21 @@ const diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCol
   'StripeHardCodedAPIKeys'
 );
 
-// isCommitRisk checks if a file is in the git working tree, which means that it's not gitignored and is a commit risk
-// returns true if found in working tree, false if not.
-const isCommitRisk = (documentUri: string): boolean => {
-  const repos = gitAPI.repositories;
-  const workingTreeChanges = repos[0].state.workingTreeChanges.map(
-    (resource: Resource) => resource.uri.path
-  );
-  const commitRiskMatch = workingTreeChanges.includes(documentUri);
-
-  return commitRiskMatch;
-};
-
-// should search file checks if a file is either a git commit risk, or if git is not being used, will check if it's not an .env file
-// returns a boolean: true if we should search the file for API Keys, false if we should not search the file
-export const shouldSearchFile = (currentFilename: string): boolean => {
-  const isGitRepo = isUsingGitExtension && gitAPI.repositories.length;
-  const ignoredFileMatches = ignoredFileList.filter(
-    (ignoredFile) => currentFilename.search(ignoredFile) > -1
-  );
-
-  let shouldSearch = true;
-
-  // if this file is gitignored then don't search it for hardcoded keys
-  if (isGitRepo && !isCommitRisk(currentFilename)) { shouldSearch = false; }
-  // if this file is in the ignoredFiles list (eg. .env) then don't search it for hardcoded keys
-  if (ignoredFileMatches.length) { shouldSearch = false; }
-
-  return shouldSearch;
-};
-
-// lookForHardCodedAPIKeys is the main exported function that is run each time we want to see if
-// a user has hardcoded Stripe API Keys in an 'at risk' file
-// an 'at risk' file is a file that could end up in source control commits or accidentally copy+pasted somewhere unsafe
-// the function will draw squiggly lines with hover tooltips for each hardcoded key in the currently open file
-// these warnings / errors also show up in the "Problems" tab in the VS Code integrated Terminal panel.
-
 export class StripeLinter {
   telemetry: Telemetry;
   git: Git;
+  private perfObserver: PerformanceObserver;
 
   constructor(telemetry: Telemetry, git: Git) {
     this.telemetry = telemetry;
     this.git = git;
+
+    this.perfObserver = new PerformanceObserver((items) => {
+      items.getEntries().forEach((entry) => {
+        this.telemetry.sendEvent('linter.perf.git-check-ignore-duration', entry.duration);
+      });
+    });
+    this.perfObserver.observe({entryTypes: ['measure'], buffered: true});
   }
 
   async activate() {
@@ -90,8 +51,15 @@ export class StripeLinter {
   }
 
   lookForHardCodedAPIKeys = async (document: TextDocument): Promise<void> => {
-    const currentFilename = document.uri.path;
-    if (!shouldSearchFile(currentFilename)) { return; }
+    performance.mark('ignore-start');
+    const isIgnored = await this.git.isIgnored(document.uri);
+    performance.mark('ignore-end');
+    performance.measure('ignore', 'ignore-start', 'ignore-end');
+
+    if (isIgnored) {
+      diagnosticCollection.delete(document.uri);
+      return;
+    }
 
     const text = document.getText();
     const lines = text.split('\n');
