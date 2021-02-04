@@ -8,6 +8,7 @@ import {
   window,
   workspace,
 } from 'vscode';
+import {PerformanceObserver, performance} from 'perf_hooks';
 import {Git} from './git';
 
 import {Telemetry} from './telemetry';
@@ -28,10 +29,18 @@ const diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCol
 export class StripeLinter {
   telemetry: Telemetry;
   git: Git;
+  private perfObserver: PerformanceObserver;
 
   constructor(telemetry: Telemetry, git: Git) {
     this.telemetry = telemetry;
     this.git = git;
+
+    this.perfObserver = new PerformanceObserver((items) => {
+      items.getEntries().forEach((entry) => {
+        this.telemetry.sendEvent('linter.perf.git-check-ignore-duration', entry.duration);
+      });
+    });
+    this.perfObserver.observe({entryTypes: ['measure'], buffered: true});
   }
 
   async activate() {
@@ -42,7 +51,11 @@ export class StripeLinter {
   }
 
   lookForHardCodedAPIKeys = async (document: TextDocument): Promise<void> => {
+    performance.mark('ignore-start');
     const isIgnored = await this.git.isIgnored(document.uri);
+    performance.mark('ignore-end');
+    performance.measure('ignore', 'ignore-start', 'ignore-end');
+
     if (isIgnored) {
       diagnosticCollection.delete(document.uri);
       return;
