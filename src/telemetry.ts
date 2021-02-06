@@ -111,8 +111,12 @@ export class GATelemetry implements Telemetry {
 
   private areAllTelemetryConfigsEnabled() {
     // respect both the overall and Stripe-specific telemetry configs
-    const enableTelemetry = vscode.workspace.getConfiguration('telemetry').get('enableTelemetry', false);
-    const stripeEnableTelemetry = vscode.workspace.getConfiguration('stripe.telemetry').get('enabled', false);
+    const enableTelemetry = vscode.workspace
+      .getConfiguration('telemetry')
+      .get('enableTelemetry', false);
+    const stripeEnableTelemetry = vscode.workspace
+      .getConfiguration('stripe.telemetry')
+      .get('enabled', false);
     return enableTelemetry && stripeEnableTelemetry;
   }
 }

@@ -32,9 +32,7 @@ export class SurveyPrompt {
     }
 
     // Only sample people took the survey more than 12 weeks ago
-    const lastSurveyDateEpoch = this.storage.get(
-      StorageKeys.lastSurveyDate
-    ) as number;
+    const lastSurveyDateEpoch = this.storage.get(StorageKeys.lastSurveyDate) as number;
 
     if (lastSurveyDateEpoch) {
       const lastSurveyDate = moment(lastSurveyDateEpoch);
@@ -54,12 +52,12 @@ export class SurveyPrompt {
     return true;
   }
 
-  showSurvey = async() => {
+  showSurvey = async () => {
     const prompts = ['Take survey', 'Maybe later', "Don't Show Again"];
 
     const selection = await vscode.window.showInformationMessage(
       'Got 2 minutes to tell us how the Stripe extension is working for you?',
-      ...prompts
+      ...prompts,
     );
 
     if (!selection) {

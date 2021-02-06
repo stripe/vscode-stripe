@@ -4,8 +4,7 @@ import {StripeTreeItem} from './stripeTreeItem';
 export class StripeTreeViewDataProvider implements TreeDataProvider<TreeItem> {
   private treeItems: TreeItem[] | null = null;
   private _onDidChangeTreeData: EventEmitter<TreeItem | null> = new EventEmitter<TreeItem | null>();
-  readonly onDidChangeTreeData: Event<TreeItem | null> = this
-    ._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: Event<TreeItem | null> = this._onDidChangeTreeData.event;
 
   public refresh() {
     this.treeItems = null;

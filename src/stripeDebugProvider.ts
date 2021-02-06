@@ -17,7 +17,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
   public resolveDebugConfiguration(
     folder: vscode.WorkspaceFolder | undefined,
     config: vscode.DebugConfiguration,
-    token?: vscode.CancellationToken
+    token?: vscode.CancellationToken,
   ): Promise<vscode.DebugConfiguration> {
     if (config && config.type === 'stripe') {
       if (

@@ -4,7 +4,6 @@ import * as sinon from 'sinon';
 import {TestMemento, mocks} from '../mocks/vscode';
 import {getRecentEvents, recentEventsKey, recordEvent} from '../../stripeWorkspaceState';
 
-
 suite('RecentEvents', () => {
   let sandbox: sinon.SinonSandbox;
   setup(() => {
@@ -51,5 +50,4 @@ suite('RecentEvents', () => {
 
     assert.deepStrictEqual(recentEvents, ['c', 'b', 'a']);
   });
-
 });

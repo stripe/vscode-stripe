@@ -15,16 +15,19 @@ async function main() {
     const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
     // The path to the extension test workspace
-    const testWorkspace = path.resolve(__dirname, extensionDevelopmentPath + '/src/test/workspace/');
+    const testWorkspace = path.resolve(
+      __dirname,
+      extensionDevelopmentPath + '/src/test/workspace/',
+    );
 
     const launchArgs = [
       testWorkspace,
       // This disables all extensions except the one being testing
-      '--disable-extensions'
+      '--disable-extensions',
     ];
 
     const extensionTestsEnv = {
-      EXTENSION_MODE: 'development'
+      EXTENSION_MODE: 'development',
     };
 
     // Download VS Code, unzip it and run the integration test
@@ -32,7 +35,7 @@ async function main() {
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs,
-      extensionTestsEnv
+      extensionTestsEnv,
     });
   } catch (err) {
     console.log(err);

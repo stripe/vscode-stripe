@@ -33,7 +33,7 @@ export class TelemetryPrompt {
 
     const selection = await vscode.window.showInformationMessage(
       "The Stripe VS Code Extension collects basic telemetry in order to improve this extension's experience. If you'd like to opt out we respect the global telemetry setting in VS Code, so we won't collect any data unless this setting is turned on.",
-      ...prompts
+      ...prompts,
     );
 
     if (!selection) {
@@ -42,7 +42,6 @@ export class TelemetryPrompt {
 
     if (selection === 'Read More') {
       vscode.commands.executeCommand('stripe.openTelemetryInfo');
-
     }
   }
 }

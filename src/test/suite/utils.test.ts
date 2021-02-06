@@ -4,7 +4,6 @@ import * as utils from '../../utils';
 import * as vscode from 'vscode';
 
 suite('Utils', () => {
-
   const arr = [1, 2, 3];
   let sandbox: sinon.SinonSandbox;
 
@@ -17,10 +16,12 @@ suite('Utils', () => {
   });
 
   suite('showQuickPick', () => {
-    test('showQuickPickWithValues shows expected items and returns selected', async() => {
+    test('showQuickPickWithValues shows expected items and returns selected', async () => {
       const quickPickInstance = vscode.window.createQuickPick();
       const showSpy = sandbox.spy(quickPickInstance, 'show');
-      const createQuickPickStub = sandbox.stub(vscode.window, 'createQuickPick').returns(quickPickInstance);
+      const createQuickPickStub = sandbox
+        .stub(vscode.window, 'createQuickPick')
+        .returns(quickPickInstance);
 
       const placeholder = 'I am placeholder text';
       const itemValues = ['a', 'b', 'c'];
@@ -39,21 +40,25 @@ suite('Utils', () => {
       assert.strictEqual(selectedEvent, 'a');
     });
 
-    test('showQuickPickWithItem shows expected items and returns selected', async() => {
+    test('showQuickPickWithItem shows expected items and returns selected', async () => {
       const quickPickInstance = vscode.window.createQuickPick();
       const showSpy = sandbox.spy(quickPickInstance, 'show');
-      const createQuickPickStub = sandbox.stub(vscode.window, 'createQuickPick').returns(quickPickInstance);
+      const createQuickPickStub = sandbox
+        .stub(vscode.window, 'createQuickPick')
+        .returns(quickPickInstance);
 
       const placeholder = 'I am placeholder text';
-      const items = [{
-        label: 'test_label',
-        description: 'test_description',
-        detail: 'test_detail',
-        picked: false,
-        alwaysShow: false
-        }, {
-          label: 'another_label'
-        }
+      const items = [
+        {
+          label: 'test_label',
+          description: 'test_description',
+          detail: 'test_detail',
+          picked: false,
+          alwaysShow: false,
+        },
+        {
+          label: 'another_label',
+        },
       ];
 
       const selectedEvent = await (async () => {
@@ -69,7 +74,6 @@ suite('Utils', () => {
       assert.strictEqual(selectedEvent, 'test_label');
     });
   });
-
 
   suite('findAsync', () => {
     test('Finds an item', async () => {

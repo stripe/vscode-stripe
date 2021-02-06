@@ -20,10 +20,7 @@ export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
     });
     items.push(reportItem);
 
-    const feedbackItem = new StripeTreeItem(
-      'Rate and provide feedback',
-      'openSurvey'
-    );
+    const feedbackItem = new StripeTreeItem('Rate and provide feedback', 'openSurvey');
     feedbackItem.setIcon({
       dark: Resource.ICONS.dark.feedback,
       light: Resource.ICONS.light.feedback,
@@ -32,7 +29,7 @@ export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
 
     const webhooksDebugItem = new StripeTreeItem(
       'Configure debugging',
-      'openWebhooksDebugConfigure'
+      'openWebhooksDebugConfigure',
     );
     webhooksDebugItem.setIcon({
       dark: Resource.ICONS.dark.settings,
