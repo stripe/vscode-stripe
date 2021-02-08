@@ -30,22 +30,19 @@ export function getOSType(): OSType {
   }
 }
 
-export function showQuickPickWithValues(
-  placeholder: string,
-  value: string[]
-): Promise<string> {
-  const items:vscode.QuickPickItem[] = value.map((i) => {
-      return {
-        label: i,
-      };
-    });
+export function showQuickPickWithValues(placeholder: string, value: string[]): Promise<string> {
+  const items: vscode.QuickPickItem[] = value.map((i) => {
+    return {
+      label: i,
+    };
+  });
 
   return showQuickPickWithItems(placeholder, items);
 }
 
 export function showQuickPickWithItems(
   placeholder: string,
-  items: vscode.QuickPickItem[]
+  items: vscode.QuickPickItem[],
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const input = vscode.window.createQuickPick();

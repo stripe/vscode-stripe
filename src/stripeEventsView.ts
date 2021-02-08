@@ -36,19 +36,13 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
       }
     } catch (e) {}
 
-    const triggerEventItem = new StripeTreeItem(
-      'Trigger new event',
-      'openTriggerEvent'
-    );
+    const triggerEventItem = new StripeTreeItem('Trigger new event', 'openTriggerEvent');
     triggerEventItem.setIcon({
       dark: Resource.ICONS.dark.add,
       light: Resource.ICONS.light.add,
     });
 
-    const webhooksListenItem = new StripeTreeItem(
-      'Start webhooks listening',
-      'openWebhooksListen'
-    );
+    const webhooksListenItem = new StripeTreeItem('Start webhooks listening', 'openWebhooksListen');
     webhooksListenItem.setIcon({
       dark: Resource.ICONS.dark.terminal,
       light: Resource.ICONS.light.terminal,

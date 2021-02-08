@@ -18,7 +18,7 @@ suite('Stripe language server', () => {
       ].forEach(([languageId, langUrlParam]) => {
         assert.strictEqual(
           utils.getStripeApiReferenceUrl(stripeMethod, languageId),
-          `https://stripe.com/docs/api/balance/balance_retrieve?lang=${langUrlParam}`
+          `https://stripe.com/docs/api/balance/balance_retrieve?lang=${langUrlParam}`,
         );
       });
     });
@@ -27,7 +27,7 @@ suite('Stripe language server', () => {
       const stripeMethod = stripeMethodList[0];
       assert.strictEqual(
         utils.getStripeApiReferenceUrl(stripeMethod, 'unsupportedLanguage'),
-        'https://stripe.com/docs/api/balance/balance_retrieve'
+        'https://stripe.com/docs/api/balance/balance_retrieve',
       );
     });
   });

@@ -24,7 +24,7 @@ function getLangUrlParamFromLanguageId(languageId: string): string | null {
 export function getStripeApiReferenceUrl(stripeMethod: Pattern, languageId: string) {
   const lang = getLangUrlParamFromLanguageId(languageId);
   const urlParams = {
-    ...(lang ? {lang} : {})
+    ...(lang ? {lang} : {}),
   };
   const paramsString = querystring.stringify(urlParams);
   const prefixedParamString = paramsString ? `?${paramsString}` : '';

@@ -7,10 +7,7 @@ type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger'
 
 export class StripeTerminal {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private static KNOWN_LONG_RUNNING_COMMANDS = [
-    'listen',
-    'logs tail',
-  ];
+  private static KNOWN_LONG_RUNNING_COMMANDS = ['listen', 'logs tail'];
 
   private stripeClient: StripeClient;
   private terminals: Array<vscode.Terminal>;
@@ -24,10 +21,7 @@ export class StripeTerminal {
     });
   }
 
-  public async execute(
-    command: SupportedStripeCommand,
-    args: Array<string> = [],
-  ): Promise<void> {
+  public async execute(command: SupportedStripeCommand, args: Array<string> = []): Promise<void> {
     const cliPath = await this.stripeClient.getCLIPath();
     if (!cliPath) {
       return;
@@ -35,12 +29,7 @@ export class StripeTerminal {
 
     const globalCLIFLags = this.getGlobalCLIFlags();
 
-    const commandString = [
-      cliPath,
-      command,
-      ...args,
-      ...globalCLIFLags
-    ].join(' ');
+    const commandString = [cliPath, command, ...args, ...globalCLIFLags].join(' ');
 
     const allRunningProcesses = await psList();
     const terminal = await this.terminalForCommand(commandString, cliPath, allRunningProcesses);
@@ -67,9 +56,9 @@ export class StripeTerminal {
       // On Windows we can't get the process command, so always assume commands are long-running
       return true;
     }
-    return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some((knownCommand) => (
-      command.indexOf(knownCommand) > -1
-    ));
+    return StripeTerminal.KNOWN_LONG_RUNNING_COMMANDS.some(
+      (knownCommand) => command.indexOf(knownCommand) > -1,
+    );
   }
 
   private async getRunningProcess(
@@ -113,7 +102,10 @@ export class StripeTerminal {
         return runningCommand === command;
       });
       if (terminalWithDesiredCommand) {
-        const runningProcess = await this.getRunningProcess(terminalWithDesiredCommand, allRunningProcesses);
+        const runningProcess = await this.getRunningProcess(
+          terminalWithDesiredCommand,
+          allRunningProcesses,
+        );
         if (runningProcess) {
           process.kill(runningProcess.pid, 'SIGINT');
         }
@@ -165,8 +157,6 @@ export class StripeTerminal {
 
     const projectNameFlag = projectName ? ['--project-name', projectName] : [];
 
-    return [
-      ...projectNameFlag,
-    ];
+    return [...projectNameFlag];
   }
 }

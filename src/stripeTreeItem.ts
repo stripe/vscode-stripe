@@ -15,7 +15,9 @@ export class StripeTreeItem extends TreeItem {
     this.contextValue = contextValue;
   }
 
-  get metadata() { return this._metadata; }
+  get metadata() {
+    return this._metadata;
+  }
 
   set metadata(data: any) {
     this._metadata = data;
@@ -34,7 +36,7 @@ export class StripeTreeItem extends TreeItem {
     this.collapsibleState = TreeItemCollapsibleState.Expanded;
   }
 
-  setIcon(icons: { light: string; dark: string }) {
+  setIcon(icons: {light: string; dark: string}) {
     this.iconPath = icons;
   }
 

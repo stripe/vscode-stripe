@@ -49,7 +49,9 @@ connection.onInitialize((params: InitializeParams) => {
 
 function findHoverMatches(params: HoverParams): string[] {
   const document = documents.get(params.textDocument.uri);
-  if (!document) { return []; }
+  if (!document) {
+    return [];
+  }
 
   const text = document.getText();
   const line = text.split('\n')[params.position.line];
@@ -63,11 +65,12 @@ function findHoverMatches(params: HoverParams): string[] {
     let match;
     const stripeMethod = stripeMethodList[i];
 
-    const language =
-      document.languageId === 'typescript' ? 'javascript' : document.languageId;
+    const language = document.languageId === 'typescript' ? 'javascript' : document.languageId;
 
     const pattern = stripeMethod.regexps[language];
-    if (!pattern) { return []; }
+    if (!pattern) {
+      return [];
+    }
     const regexp = new RegExp(pattern, 'g');
 
     // in almost all cases there'll only be one match, but we might want to stack matches in the future
@@ -79,12 +82,12 @@ function findHoverMatches(params: HoverParams): string[] {
 
       // are any stripe method calls on this line being hovered over?
       // check for where the stripe method call is and see if the hover position is within that character range
-      if (
-        hoverPosition >= methodPositionStart &&
-        hoverPosition <= methodPositionEnd
-      ) {
+      if (hoverPosition >= methodPositionStart && hoverPosition <= methodPositionEnd) {
         hoverMatches.push(
-          `See ${methodMatch} in the [Stripe API Reference](${getStripeApiReferenceUrl(stripeMethod, document.languageId)})`
+          `See ${methodMatch} in the [Stripe API Reference](${getStripeApiReferenceUrl(
+            stripeMethod,
+            document.languageId,
+          )})`,
         );
         connection.telemetry.logEvent({name: 'ls.apihover', data: methodMatch});
       }

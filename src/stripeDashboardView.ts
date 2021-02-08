@@ -6,10 +6,7 @@ export class StripeDashboardViewDataProvider extends StripeTreeViewDataProvider 
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
-    const apiKeysItem = new StripeTreeItem(
-      'Open API keys page',
-      'openDashboardApikeys'
-    );
+    const apiKeysItem = new StripeTreeItem('Open API keys page', 'openDashboardApikeys');
     apiKeysItem.setIcon({
       dark: Resource.ICONS.dark.linkExternal,
       light: Resource.ICONS.light.linkExternal,
@@ -17,10 +14,7 @@ export class StripeDashboardViewDataProvider extends StripeTreeViewDataProvider 
 
     items.push(apiKeysItem);
 
-    const eventsItem = new StripeTreeItem(
-      'Open events page',
-      'openDashboardEvents'
-    );
+    const eventsItem = new StripeTreeItem('Open events page', 'openDashboardEvents');
     eventsItem.setIcon({
       dark: Resource.ICONS.dark.linkExternal,
       light: Resource.ICONS.light.linkExternal,
@@ -36,10 +30,7 @@ export class StripeDashboardViewDataProvider extends StripeTreeViewDataProvider 
 
     items.push(logItem);
 
-    const webhooksItem = new StripeTreeItem(
-      'Open webhooks page',
-      'openDashboardWebhooks'
-    );
+    const webhooksItem = new StripeTreeItem('Open webhooks page', 'openDashboardWebhooks');
 
     webhooksItem.setIcon({
       dark: Resource.ICONS.dark.linkExternal,

@@ -5,8 +5,10 @@ const recentEventsLimit = 100;
 
 export const recentEventsKey = 'RecentEvents';
 
-export function getRecentEvents(extensionContext: vscode.ExtensionContext,
-  limit?: number): string[] {
+export function getRecentEvents(
+  extensionContext: vscode.ExtensionContext,
+  limit?: number,
+): string[] {
   const data: any = extensionContext.workspaceState.get(recentEventsKey, []);
   return limit ? data.slice(0, limit) : data;
 }
@@ -17,6 +19,6 @@ export function recordEvent(extensionContext: vscode.ExtensionContext, eventName
   extensionContext.workspaceState.update(recentEventsKey, updatedList);
 }
 
-export function clearRecordedEvents(extensionContext: vscode.ExtensionContext,) {
+export function clearRecordedEvents(extensionContext: vscode.ExtensionContext) {
   extensionContext.workspaceState.update(recentEventsKey, []);
 }

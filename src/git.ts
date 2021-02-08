@@ -27,7 +27,9 @@ export class Git {
         return;
       }
       try {
-        const gitCheckIgnore = spawn('git', ['check-ignore', uri.fsPath], {cwd: workspaceFolder.uri.fsPath});
+        const gitCheckIgnore = spawn('git', ['check-ignore', uri.fsPath], {
+          cwd: workspaceFolder.uri.fsPath,
+        });
         gitCheckIgnore.on('close', (code: number) => {
           resolve(code === 0);
         });

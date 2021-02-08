@@ -23,23 +23,20 @@ suite('git', () => {
     const fileUri = vscode.Uri.parse(`file://${filePath}`);
 
     setup(() => {
-      sandbox.stub(vscode.workspace, 'getWorkspaceFolder')
+      sandbox
+        .stub(vscode.workspace, 'getWorkspaceFolder')
         .withArgs(fileUri)
         .returns(<any>{uri: {fsPath: workspaceFolder}});
     });
 
     test('identifies a workspace initialized with git', async () => {
-      sandbox.stub(fs.promises, 'access')
-        .withArgs(dotGitPath, fs.constants.F_OK)
-        .resolves();
+      sandbox.stub(fs.promises, 'access').withArgs(dotGitPath, fs.constants.F_OK).resolves();
       const git = new Git();
       assert.strictEqual(await git.isGitRepo(fileUri), true);
     });
 
     test('identifies a workspace without git', async () => {
-      sandbox.stub(fs.promises, 'access')
-        .withArgs(dotGitPath, fs.constants.F_OK)
-        .rejects();
+      sandbox.stub(fs.promises, 'access').withArgs(dotGitPath, fs.constants.F_OK).rejects();
       const git = new Git();
       assert.strictEqual(await git.isGitRepo(fileUri), false);
     });

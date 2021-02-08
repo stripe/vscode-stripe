@@ -7,7 +7,7 @@ export class TestMemento implements vscode.Memento {
     this.storage = new Map();
   }
 
-  public get(key:string, defaultValue?: any): any {
+  public get(key: string, defaultValue?: any): any {
     const data = this.storage.has(key) ? this.storage.get(key) : undefined;
     return data ? data : defaultValue;
   }
@@ -16,7 +16,6 @@ export class TestMemento implements vscode.Memento {
     this.storage.set(key, value);
     return Promise.resolve();
   }
-
 }
 
 export const mocks = {
@@ -28,7 +27,6 @@ export const mocks = {
     asAbsolutePath: (relativePath: string) => '',
     storagePath: '',
     globalStoragePath: '',
-    logPath: ''
-  }
+    logPath: '',
+  },
 };
-
