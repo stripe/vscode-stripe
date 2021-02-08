@@ -9,23 +9,23 @@ import {Telemetry} from './telemetry';
 const execa = require('execa');
 const fs = require('fs');
 
-export enum StripeProcess {
+export enum StripeProcessName {
   LogsTail,
 }
 
-const stripeProcessToArgsMap: Map<StripeProcess, string[]> = new Map([
-  [StripeProcess.LogsTail, ['logs', 'tail']],
+const stripeProcessNameToArgsMap: Map<StripeProcessName, string[]> = new Map([
+  [StripeProcessName.LogsTail, ['logs', 'tail']],
 ]);
 
 export class StripeClient {
   telemetry: Telemetry;
   private cliPath: string | null;
-  private stripeProcesses: ChildProcess[];
+  private stripeProcesses: Map<StripeProcessName, ChildProcess>;
 
   constructor(telemetry: Telemetry) {
     this.telemetry = telemetry;
     this.cliPath = null;
-    this.stripeProcesses = [];
+    this.stripeProcesses = new Map<StripeProcessName, ChildProcess>();
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
@@ -126,11 +126,12 @@ export class StripeClient {
   }
 
   async getOrCreateStripeProcess(
-    stripeProcess: StripeProcess,
+    stripeProcessName: StripeProcessName,
     flags: string[] = [],
   ): Promise<ChildProcess | null> {
-    if (this.stripeProcesses[stripeProcess]) {
-      return this.stripeProcesses[stripeProcess];
+    const existingStripeProcess = this.stripeProcesses.get(stripeProcessName);
+    if (existingStripeProcess) {
+      return existingStripeProcess;
     }
 
     const cliPath = await this.getCLIPath();
@@ -138,7 +139,7 @@ export class StripeClient {
       return null;
     }
 
-    const commandArgs = stripeProcessToArgsMap.get(stripeProcess);
+    const commandArgs = stripeProcessNameToArgsMap.get(stripeProcessName);
     if (!commandArgs) {
       return null;
     }
@@ -147,14 +148,16 @@ export class StripeClient {
 
     const allFlags = [...(projectName ? ['--project-name', projectName] : []), ...flags];
 
-    this.stripeProcesses[stripeProcess] = spawn(cliPath, [...commandArgs, ...allFlags]);
-    return this.stripeProcesses[stripeProcess];
+    const newStripeProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
+    this.stripeProcesses.set(stripeProcessName, newStripeProcess);
+    return newStripeProcess;
   }
 
-  endStripeProcess(stripeProcess: StripeProcess): void {
-    if (this.stripeProcesses[stripeProcess]) {
-      this.stripeProcesses[stripeProcess].kill();
-      delete this.stripeProcesses[stripeProcess];
+  endStripeProcess(stripeProcessName: StripeProcessName): void {
+    const existingStripeProcess = this.stripeProcesses.get(stripeProcessName);
+    if (existingStripeProcess) {
+      existingStripeProcess.kill();
+      this.stripeProcesses.delete(stripeProcessName);
     }
   }
 
