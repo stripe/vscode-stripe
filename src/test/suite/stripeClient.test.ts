@@ -2,8 +2,9 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as utils from '../../utils';
 import * as vscode from 'vscode';
+import {StripeClient, StripeProcess} from '../../stripeClient';
 import {NoOpTelemetry} from '../../telemetry';
-import {StripeClient} from '../../stripeClient';
+import childProcess from 'child_process';
 
 const fs = require('fs');
 
@@ -132,6 +133,71 @@ suite('stripeClient', () => {
           'Ok',
         ]);
       });
+    });
+  });
+
+  suite('stripe processes', () => {
+    let spawnStub: sinon.SinonStub;
+
+    setup(() => {
+      spawnStub = sandbox
+        .stub(childProcess, 'spawn')
+        .returns(<childProcess.ChildProcess>{kill: () => {}});
+    });
+
+    test('spawns a child process with stripe logs tail', async () => {
+      const stripeClient = new StripeClient(new NoOpTelemetry());
+      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeLogsTailProcess = await stripeClient.getOrCreateStripeProcess(
+        StripeProcess.LogsTail,
+      );
+      assert.strictEqual(spawnStub.callCount, 1);
+      assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
+      assert.ok(stripeLogsTailProcess);
+    });
+
+    test('reuses existing stripe process if it already exists', async () => {
+      const stripeClient = new StripeClient(new NoOpTelemetry());
+      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeLogsTailProcess = await stripeClient.getOrCreateStripeProcess(
+        StripeProcess.LogsTail,
+      );
+      const stripeLogsTailProcess2 = await stripeClient.getOrCreateStripeProcess(
+        StripeProcess.LogsTail,
+      );
+      assert.strictEqual(spawnStub.callCount, 1);
+      assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
+      assert.deepStrictEqual(stripeLogsTailProcess, stripeLogsTailProcess2);
+    });
+
+    test('passes flags to spawn', async () => {
+      const flags = ['--format', 'JSON'];
+      const stripeClient = new StripeClient(new NoOpTelemetry());
+      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeLogsTailProcess = await stripeClient.getOrCreateStripeProcess(
+        StripeProcess.LogsTail,
+        flags,
+      );
+      assert.strictEqual(spawnStub.callCount, 1);
+      assert.deepStrictEqual(spawnStub.args[0], [
+        'path/to/stripe',
+        ['logs', 'tail', '--format', 'JSON'],
+      ]);
+      assert.ok(stripeLogsTailProcess);
+    });
+
+    test('ends stripe process', async () => {
+      const stripeClient = new StripeClient(new NoOpTelemetry());
+      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeLogsTailProcess = await stripeClient.getOrCreateStripeProcess(
+        StripeProcess.LogsTail,
+      );
+      if (!stripeLogsTailProcess) {
+        throw new assert.AssertionError();
+      }
+      const killStub = sandbox.stub(stripeLogsTailProcess, 'kill');
+      stripeClient.endStripeProcess(StripeProcess.LogsTail);
+      assert.strictEqual(killStub.callCount, 1);
     });
   });
 });

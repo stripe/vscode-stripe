@@ -2,19 +2,30 @@
 
 import * as path from 'path';
 import * as vscode from 'vscode';
+import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
 import {Telemetry} from './telemetry';
 
 const execa = require('execa');
 const fs = require('fs');
 
+export enum StripeProcess {
+  LogsTail,
+}
+
+const stripeProcessToArgsMap: Map<StripeProcess, string[]> = new Map([
+  [StripeProcess.LogsTail, ['logs', 'tail']],
+]);
+
 export class StripeClient {
   telemetry: Telemetry;
   private cliPath: string | null;
+  private stripeProcesses: ChildProcess[];
 
   constructor(telemetry: Telemetry) {
     this.telemetry = telemetry;
     this.cliPath = null;
+    this.stripeProcesses = [];
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
@@ -112,6 +123,39 @@ export class StripeClient {
       return null;
     }
     return this.cliPath;
+  }
+
+  async getOrCreateStripeProcess(
+    stripeProcess: StripeProcess,
+    flags: string[] = [],
+  ): Promise<ChildProcess | null> {
+    if (this.stripeProcesses[stripeProcess]) {
+      return this.stripeProcesses[stripeProcess];
+    }
+
+    const cliPath = await this.getCLIPath();
+    if (!cliPath) {
+      return null;
+    }
+
+    const commandArgs = stripeProcessToArgsMap.get(stripeProcess);
+    if (!commandArgs) {
+      return null;
+    }
+
+    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
+
+    const allFlags = [...(projectName ? ['--project-name', projectName] : []), ...flags];
+
+    this.stripeProcesses[stripeProcess] = spawn(cliPath, [...commandArgs, ...allFlags]);
+    return this.stripeProcesses[stripeProcess];
+  }
+
+  endStripeProcess(stripeProcess: StripeProcess): void {
+    if (this.stripeProcesses[stripeProcess]) {
+      this.stripeProcesses[stripeProcess].kill();
+      delete this.stripeProcesses[stripeProcess];
+    }
   }
 
   private async detectInstalled() {
