@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
+const os = require('os'); // Not sure if this is needed/will work
 
 export enum OSType {
   macOS = 'macOS',
+  macOSapple = 'macOSapple', // Need a new OSType value for M1 Macs because Homebrew uses a different directory than on Intel Macs
   linux = 'linux',
   unknown = 'unknown',
   windows = 'windows',
@@ -18,11 +20,18 @@ export function getExtensionInfo() {
 
 export function getOSType(): OSType {
   const platform: string = process.platform;
+  
+  const cpus = os.cpus(); // Returns an array of all CPU cores
+  const cpu: string = cpus[0]model; // Copying syntax of line 22, not sure if this will work
 
   if (/^win/.test(platform)) {
     return OSType.windows;
   } else if (/^darwin/.test(platform)) {
-    return OSType.macOS;
+    if(/^Apple/.test(cpu)) { // Adding a CPU type check if MacOS 
+      return OSType.macOSapple;
+    } else {
+      return OSType.macOS;
+    }
   } else if (/^linux/.test(platform)) {
     return OSType.linux;
   } else {
