@@ -197,7 +197,6 @@ suite('stripeClient', () => {
       assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), true);
       stripeClient.endCLIProcess(CLICommand.LogsTail);
       assert.strictEqual(killStub.callCount, 1);
-      assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), false);
     });
 
     suite('on child process events', () => {

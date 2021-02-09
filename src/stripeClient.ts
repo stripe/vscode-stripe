@@ -161,7 +161,6 @@ export class StripeClient {
     const cliProcess = this.cliProcesses.get(cliCommand);
     if (cliProcess) {
       cliProcess.kill();
-      this.cleanupCLIProcess(cliCommand);
     }
   }
 
