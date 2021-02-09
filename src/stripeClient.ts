@@ -158,9 +158,9 @@ export class StripeClient {
   }
 
   endCLIProcess(cliCommand: CLICommand): void {
-    const existingStripeProcess = this.cliProcesses.get(cliCommand);
-    if (existingStripeProcess) {
-      existingStripeProcess.kill();
+    const cliProcess = this.cliProcesses.get(cliCommand);
+    if (cliProcess) {
+      cliProcess.kill();
       this.cleanupCLIProcess(cliCommand);
     }
   }

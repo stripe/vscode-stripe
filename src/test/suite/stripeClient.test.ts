@@ -138,17 +138,17 @@ suite('stripeClient', () => {
     });
   });
 
-  suite('stripe processes', () => {
+  suite('CLI processes', () => {
     let spawnStub: sinon.SinonStub;
-    let stripeProcessStub: childProcess.ChildProcess;
+    let cliProcessStub: childProcess.ChildProcess;
 
     setup(() => {
-      stripeProcessStub = <childProcess.ChildProcess>new EventEmitter();
-      stripeProcessStub.stdin = new Writable();
-      stripeProcessStub.stdout = <Readable>new EventEmitter();
-      stripeProcessStub.stderr = <Readable>new EventEmitter();
-      stripeProcessStub.kill = () => {};
-      spawnStub = sandbox.stub(childProcess, 'spawn').returns(stripeProcessStub);
+      cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
+      cliProcessStub.stdin = new Writable();
+      cliProcessStub.stdout = <Readable>new EventEmitter();
+      cliProcessStub.stderr = <Readable>new EventEmitter();
+      cliProcessStub.kill = () => {};
+      spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
     });
 
     test('spawns a child process with stripe logs tail', async () => {
