@@ -69,29 +69,27 @@ export class Commands {
   openWebhooksListen = async (options: any) => {
     this.telemetry.sendEvent('openWebhooksListen');
 
-    const shouldPromptForURL = !options.forwardTo && !options.forwardConnectTo &&
-      await showQuickPickWithValues(
+    const shouldPromptForURL =
+      !options.forwardTo &&
+      !options.forwardConnectTo &&
+      (await showQuickPickWithValues(
         'Do you want to forward webhook events to your local server?',
-        ['Yes', 'No']
-      ) === 'Yes';
+        ['Yes', 'No'],
+      )) === 'Yes';
 
     const forwardTo = shouldPromptForURL
-    ? await vscode.window.showInputBox(
-        {
+      ? await vscode.window.showInputBox({
           prompt: 'Enter local server URL to forward webhook events to',
           value: 'http://localhost:3000',
-        }
-      )
+        })
       : options.forwardTo;
 
     const forwardConnectTo = shouldPromptForURL
-    ? await vscode.window.showInputBox(
-        {
+      ? await vscode.window.showInputBox({
           prompt:
             'Enter local server URL to forward Connect webhook events to (default: same as normal events)',
           value: forwardTo || 'http://localhost:3000',
-        }
-      )
+        })
       : options.forwardConnectTo;
 
     const invalidURLCharsRE = /[^\w-.~:\/?#\[\]@!$&'()*+,;=]/;
@@ -105,21 +103,20 @@ export class Commands {
       const invalidEventCharsRE = /[^a-z_.]/;
       const invalidEvent = options.events.find((e: string) => invalidEventCharsRE.test(e));
       if (invalidEvent) {
-        await vscode.window.showErrorMessage(`Invalid chararacters found in event: ${invalidEvent}. For a list of all possible events, see https://stripe.com/docs/api/events/types.`);
+        await vscode.window.showErrorMessage(
+          `Invalid chararacters found in event: ${invalidEvent}. For a list of all possible events, see https://stripe.com/docs/api/events/types.`,
+        );
         return;
       }
     }
-    const forwardToFlag = forwardTo
-      ? ['--forward-to', forwardTo]
-      : [];
+    const forwardToFlag = forwardTo ? ['--forward-to', forwardTo] : [];
 
-    const forwardConnectToFlag = forwardConnectTo
-      ? ['--forward-connect-to', forwardConnectTo]
-      : [];
+    const forwardConnectToFlag = forwardConnectTo ? ['--forward-connect-to', forwardConnectTo] : [];
 
-    const eventsFlag = Array.isArray(options.events) && options.events.length > 0
-      ? ['--events', options.events.join(',')]
-      : [];
+    const eventsFlag =
+      Array.isArray(options.events) && options.events.length > 0
+        ? ['--events', options.events.join(',')]
+        : [];
 
     this.terminal.execute('listen', [...forwardToFlag, ...forwardConnectToFlag, ...eventsFlag]);
   };
@@ -143,37 +140,29 @@ export class Commands {
 
   openDashboardApikeys = () => {
     this.telemetry.sendEvent('openDashboardApikeys');
-    vscode.env.openExternal(
-      vscode.Uri.parse('https://dashboard.stripe.com/test/apikeys')
-    );
+    vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/apikeys'));
   };
 
   openDashboardEvent = (stripeTreeItem: StripeTreeItem) => {
     this.telemetry.sendEvent('openDashboardEvent');
     vscode.env.openExternal(
-      vscode.Uri.parse(`https://dashboard.stripe.com/test/events/${stripeTreeItem.metadata.id}`)
+      vscode.Uri.parse(`https://dashboard.stripe.com/test/events/${stripeTreeItem.metadata.id}`),
     );
   };
 
   openDashboardEvents = () => {
     this.telemetry.sendEvent('openDashboardEvents');
-    vscode.env.openExternal(
-      vscode.Uri.parse('https://dashboard.stripe.com/test/events')
-    );
+    vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/events'));
   };
 
   openDashboardLogs = () => {
     this.telemetry.sendEvent('openDashboardLogs');
-    vscode.env.openExternal(
-      vscode.Uri.parse('https://dashboard.stripe.com/test/logs')
-    );
+    vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/logs'));
   };
 
   openDashboardWebhooks = () => {
     this.telemetry.sendEvent('openDashboardWebhooks');
-    vscode.env.openExternal(
-      vscode.Uri.parse('https://dashboard.stripe.com/test/webhooks')
-    );
+    vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/webhooks'));
   };
 
   openEventDetails = (data: any) => {
@@ -181,14 +170,17 @@ export class Commands {
     const {id, type} = data;
     const filename = `${type} (${id})`;
     const uri = vscode.Uri.parse(`stripeEvent:${filename}`);
-    vscode.window.withProgress({
+    vscode.window.withProgress(
+      {
         location: vscode.ProgressLocation.Window,
         title: 'Fetching Stripe event details',
-    }, async () => {
-      const doc = await vscode.workspace.openTextDocument(uri);
-      vscode.languages.setTextDocumentLanguage(doc, 'json');
-      vscode.window.showTextDocument(doc, {preview: false});
-    });
+      },
+      async () => {
+        const doc = await vscode.workspace.openTextDocument(uri);
+        vscode.languages.setTextDocumentLanguage(doc, 'json');
+        vscode.window.showTextDocument(doc, {preview: false});
+      },
+    );
   };
 
   refreshEventsList = (stripeEventsViewProvider: StripeEventsDataProvider) => {
@@ -213,7 +205,7 @@ export class Commands {
 
   buildTriggerEventsList = (
     events: string[],
-    extensionContext: vscode.ExtensionContext
+    extensionContext: vscode.ExtensionContext,
   ): vscode.QuickPickItem[] => {
     const historicEvents = getRecentEvents(extensionContext, 20);
 
@@ -227,7 +219,7 @@ export class Commands {
     const recentItems = recentEvents.map((e) => {
       return {
         label: e,
-        description: 'recently triggered'
+        description: 'recently triggered',
       };
     });
 
@@ -254,9 +246,7 @@ export class Commands {
 
   openDocs = () => {
     this.telemetry.sendEvent('openDocs');
-    vscode.env.openExternal(
-      vscode.Uri.parse('https://stripe.com/docs/stripe-vscode')
-    );
+    vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-vscode'));
   };
 
   openSurvey = () => {
@@ -276,7 +266,7 @@ export class Commands {
 
   openTelemetryInfo = () => {
     vscode.env.openExternal(
-      vscode.Uri.parse('https://code.visualstudio.com/docs/getstarted/telemetry')
+      vscode.Uri.parse('https://code.visualstudio.com/docs/getstarted/telemetry'),
     );
   };
 

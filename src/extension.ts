@@ -68,7 +68,7 @@ export function activate(this: any, context: ExtensionContext) {
   // Virtual document content provider for displaying event data
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
-    new StripeEventTextDocumentContentProvider(stripeClient)
+    new StripeEventTextDocumentContentProvider(stripeClient),
   );
 
   const git = new Git();
@@ -79,7 +79,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   // Language Server for hover matching of Stripe methods
   const serverModule = context.asAbsolutePath(
-    path.join('out', 'stripeLanguageServer', 'server.js')
+    path.join('out', 'stripeLanguageServer', 'server.js'),
   );
 
   const debugOptions = {execArgv: ['--nolazy', '--inspect=6009']};
@@ -99,86 +99,71 @@ export function activate(this: any, context: ExtensionContext) {
   const subscriptions = context.subscriptions;
   const boundRefreshEventsList = stripeCommands.refreshEventsList.bind(
     this,
-    stripeEventsViewProvider
+    stripeEventsViewProvider,
   );
 
-  context.subscriptions.push(
-    commands.registerCommand('stripe.openCLI', stripeCommands.openCLI)
-  );
+  context.subscriptions.push(commands.registerCommand('stripe.openCLI', stripeCommands.openCLI));
 
-  context.subscriptions.push(
-    commands.registerCommand('stripe.login', stripeCommands.startLogin)
+  context.subscriptions.push(commands.registerCommand('stripe.login', stripeCommands.startLogin));
+
+  subscriptions.push(
+    commands.registerCommand('stripe.openWebhooksListen', stripeCommands.openWebhooksListen),
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openWebhooksListen', stripeCommands.openWebhooksListen)
+    commands.registerCommand('stripe.openLogsStreaming', stripeCommands.openLogsStreaming),
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openLogsStreaming', stripeCommands.openLogsStreaming)
+    commands.registerCommand('stripe.openDashboardEvents', stripeCommands.openDashboardEvents),
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvents', stripeCommands.openDashboardEvents)
+    commands.registerCommand('stripe.openDashboardLogs', stripeCommands.openDashboardLogs),
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardLogs', stripeCommands.openDashboardLogs)
+    commands.registerCommand('stripe.openEventDetails', stripeCommands.openEventDetails),
   );
 
   subscriptions.push(
-    commands.registerCommand(
-      'stripe.openEventDetails',
-      stripeCommands.openEventDetails
-    )
+    commands.registerCommand('stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys),
   );
 
   subscriptions.push(
-    commands.registerCommand(
-      'stripe.openDashboardApikeys',
-      stripeCommands.openDashboardApikeys
-    )
+    commands.registerCommand('stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks),
   );
 
-  subscriptions.push(
-    commands.registerCommand(
-      'stripe.openDashboardWebhooks',
-      stripeCommands.openDashboardWebhooks
-    )
-  );
+  subscriptions.push(commands.registerCommand('stripe.refreshEventsList', boundRefreshEventsList));
 
   subscriptions.push(
-    commands.registerCommand('stripe.refreshEventsList', boundRefreshEventsList)
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context))
+    commands.registerCommand('stripe.openTriggerEvent', () =>
+      stripeCommands.openTriggerEvent(context),
+    ),
   );
 
   subscriptions.push(commands.registerCommand('stripe.openSurvey', stripeCommands.openSurvey));
 
   subscriptions.push(
-    commands.registerCommand('stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo)
+    commands.registerCommand('stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo),
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openReportIssue', stripeCommands.openReportIssue)
+    commands.registerCommand('stripe.openReportIssue', stripeCommands.openReportIssue),
   );
 
   subscriptions.push(commands.registerCommand('stripe.openDocs', stripeCommands.openDocs));
   subscriptions.push(
     commands.registerCommand(
       'stripe.openWebhooksDebugConfigure',
-      stripeCommands.openWebhooksDebugConfigure
-    )
+      stripeCommands.openWebhooksDebugConfigure,
+    ),
   );
 
-  subscriptions.push(
-    commands.registerCommand('stripe.resendEvent', stripeCommands.resendEvent)
-  );
+  subscriptions.push(commands.registerCommand('stripe.resendEvent', stripeCommands.resendEvent));
 
   subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvent', stripeCommands.openDashboardEvent)
+    commands.registerCommand('stripe.openDashboardEvent', stripeCommands.openDashboardEvent),
   );
 }
 
@@ -196,5 +181,4 @@ function getTelemetry() {
   } else {
     return GATelemetry.getInstance();
   }
-
 }
