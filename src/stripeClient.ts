@@ -151,13 +151,8 @@ export class StripeClient {
     const newStripeProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
     this.stripeProcesses.set(stripeProcessName, newStripeProcess);
 
-    newStripeProcess.on('exit', () => {
-      this.stripeProcesses.delete(stripeProcessName);
-    });
-
-    newStripeProcess.on('error', () => {
-      this.stripeProcesses.delete(stripeProcessName);
-    });
+    newStripeProcess.on('close', () => this.cleanupStripeProcess(stripeProcessName));
+    newStripeProcess.on('error', () => this.cleanupStripeProcess(stripeProcessName));
 
     return newStripeProcess;
   }
@@ -166,9 +161,13 @@ export class StripeClient {
     const existingStripeProcess = this.stripeProcesses.get(stripeProcessName);
     if (existingStripeProcess) {
       existingStripeProcess.kill();
-      this.stripeProcesses.delete(stripeProcessName);
+      this.cleanupStripeProcess(stripeProcessName);
     }
   }
+
+  private cleanupStripeProcess = (stripeProcessName: StripeProcessName) => {
+    this.stripeProcesses.delete(stripeProcessName);
+  };
 
   private async detectInstalled() {
     const defaultInstallPath = (() => {
