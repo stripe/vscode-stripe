@@ -1,15 +1,164 @@
-import {Resource} from './resources';
+import {CLICommand, StripeClient} from './stripeClient';
+import {ThemeIcon, window} from 'vscode';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import stream from 'stream';
+
+enum ViewState {
+  Idle,
+  Loading,
+  Streaming,
+}
 
 export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
-  buildTree(): Promise<StripeTreeItem[]> {
-    const logStreamItem = new StripeTreeItem('Start API logs streaming', 'openLogsStreaming');
-    logStreamItem.setIcon({
-      dark: Resource.ICONS.dark.terminal,
-      light: Resource.ICONS.light.terminal,
-    });
+  private stripeClient: StripeClient;
+  private logTreeItems: StripeTreeItem[];
+  private viewState: ViewState;
+  private logsStdoutStream: stream.Writable | null;
+  private logsStderrStream: stream.Writable | null;
 
-    return Promise.resolve([logStreamItem]);
+  constructor(stripeClient: StripeClient) {
+    super();
+    this.stripeClient = stripeClient;
+    this.logTreeItems = [];
+    this.logsStdoutStream = null;
+    this.logsStderrStream = null;
+    this.viewState = ViewState.Idle;
+  }
+
+  async startLogsStreaming() {
+    this.setViewState(ViewState.Loading);
+    try {
+      await this.setupStreams();
+      this.setViewState(ViewState.Streaming);
+    } catch (e) {
+      window.showErrorMessage(e.message);
+      this.cleanupStreams();
+      this.setViewState(ViewState.Idle);
+    }
+  }
+
+  stopLogsStreaming() {
+    this.stripeClient.endCLIProcess(CLICommand.LogsTail);
+    this.cleanupStreams();
+    this.setViewState(ViewState.Idle);
+  }
+
+  buildTree(): Promise<StripeTreeItem[]> {
+    const streamingControlItemArgs = (() => {
+      switch (this.viewState) {
+        case ViewState.Idle:
+          return {
+            label: 'Start streaming API logs',
+            command: 'startLogsStreaming',
+            iconId: 'play-circle',
+          };
+        case ViewState.Loading:
+          return {
+            label: 'Starting streaming API logs...',
+            command: 'stopLogsStreaming',
+            iconId: 'loading',
+          };
+        case ViewState.Streaming:
+          return {
+            label: 'Stop streaming API logs',
+            command: 'stopLogsStreaming',
+            iconId: 'stop-circle',
+          };
+      }
+    })();
+
+    const streamingControlItem = this.createItemWithCommand(streamingControlItemArgs);
+
+    const treeItems = [streamingControlItem];
+
+    if (this.logTreeItems.length > 0) {
+      const logsStreamRootItem = new StripeTreeItem('Recent logs');
+      logsStreamRootItem.children = this.logTreeItems;
+      logsStreamRootItem.expand();
+      treeItems.push(logsStreamRootItem);
+    }
+
+    return Promise.resolve(treeItems);
+  }
+
+  private createItemWithCommand({
+    label,
+    command,
+    iconId,
+  }: {
+    label: string;
+    command?: string;
+    iconId?: string;
+  }) {
+    const item = new StripeTreeItem(label, command);
+    if (iconId) {
+      item.iconPath = new ThemeIcon(iconId);
+    }
+    return item;
+  }
+
+  private async setupStreams() {
+    const stripeLogsTailProcess = await this.stripeClient.getOrCreateCLIProcess(
+      CLICommand.LogsTail,
+      ['--format', 'JSON'],
+    );
+    if (!stripeLogsTailProcess) {
+      throw new Error('Failed to start `stripe logs tail` process');
+    }
+
+    // The CLI lets you know that streaming is ready via stderr
+    if (!this.logsStderrStream) {
+      await new Promise<void>((resolve) => {
+        this.logsStderrStream = new stream.Writable({
+          write: (chunk, _, callback) => {
+            const label = chunk.toString();
+            if (label.includes('Ready!')) {
+              resolve();
+            }
+            callback();
+          },
+        });
+        stripeLogsTailProcess.stderr.pipe(this.logsStderrStream);
+      });
+    }
+
+    if (!this.logsStdoutStream) {
+      this.logsStdoutStream = new stream.Writable({
+        write: (chunk, _, callback) => {
+          try {
+            const logObject = JSON.parse(chunk.toString());
+            if (logObject && typeof logObject === 'object') {
+              const label = `[${logObject.status}] ${logObject.method} ${logObject.url} [${logObject.request_id}]`;
+              const logTreeItem = new StripeTreeItem(label);
+              this.insertLog(logTreeItem);
+            }
+          } catch {}
+          callback();
+        },
+      });
+      stripeLogsTailProcess.stdout.pipe(this.logsStdoutStream);
+    }
+  }
+
+  private cleanupStreams = () => {
+    if (this.logsStdoutStream) {
+      this.logsStdoutStream.destroy();
+      this.logsStdoutStream = null;
+    }
+    if (this.logsStderrStream) {
+      this.logsStderrStream.destroy();
+      this.logsStderrStream = null;
+    }
+  };
+
+  private insertLog = (logTreeItem: StripeTreeItem) => {
+    this.logTreeItems.unshift(logTreeItem);
+    this.refresh();
+  };
+
+  private setViewState(viewState: ViewState) {
+    this.viewState = viewState;
+    this.refresh();
   }
 }

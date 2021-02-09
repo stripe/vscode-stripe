@@ -56,7 +56,7 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsDataProvider();
+  const stripeLogsViewProvider = new StripeLogsDataProvider(stripeClient);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
@@ -102,6 +102,16 @@ export function activate(this: any, context: ExtensionContext) {
     stripeEventsViewProvider,
   );
 
+  const boundStartLogsStreaming = stripeCommands.startLogsStreaming.bind(
+    this,
+    stripeLogsViewProvider,
+  );
+
+  const boundStopLogsStreaming = stripeCommands.stopLogsStreaming.bind(
+    this,
+    stripeLogsViewProvider,
+  );
+
   context.subscriptions.push(commands.registerCommand('stripe.openCLI', stripeCommands.openCLI));
 
   context.subscriptions.push(commands.registerCommand('stripe.login', stripeCommands.startLogin));
@@ -111,8 +121,10 @@ export function activate(this: any, context: ExtensionContext) {
   );
 
   subscriptions.push(
-    commands.registerCommand('stripe.openLogsStreaming', stripeCommands.openLogsStreaming),
+    commands.registerCommand('stripe.startLogsStreaming', boundStartLogsStreaming),
   );
+
+  subscriptions.push(commands.registerCommand('stripe.stopLogsStreaming', boundStopLogsStreaming));
 
   subscriptions.push(
     commands.registerCommand('stripe.openDashboardEvents', stripeCommands.openDashboardEvents),

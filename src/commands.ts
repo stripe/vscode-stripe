@@ -4,6 +4,7 @@ import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from 
 import {getRecentEvents, recordEvent} from './stripeWorkspaceState';
 import osName = require('os-name');
 import {StripeEventsDataProvider} from './stripeEventsView';
+import {StripeLogsDataProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {Telemetry} from './telemetry';
@@ -121,9 +122,14 @@ export class Commands {
     this.terminal.execute('listen', [...forwardToFlag, ...forwardConnectToFlag, ...eventsFlag]);
   };
 
-  openLogsStreaming = () => {
-    this.telemetry.sendEvent('openLogsStreaming');
-    this.terminal.execute('logs', ['tail']);
+  startLogsStreaming = (stripeLogsDataProvider: StripeLogsDataProvider) => {
+    this.telemetry.sendEvent('startLogsStreaming');
+    stripeLogsDataProvider.startLogsStreaming();
+  };
+
+  stopLogsStreaming = (stripeLogsDataProvider: StripeLogsDataProvider) => {
+    this.telemetry.sendEvent('stopLogsStreaming');
+    stripeLogsDataProvider.stopLogsStreaming();
   };
 
   startLogin = () => {
