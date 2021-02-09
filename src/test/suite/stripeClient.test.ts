@@ -29,13 +29,13 @@ suite('stripeClient', () => {
 
       osPathPairs.forEach(([os, path]) => {
         suite(`on ${os}`, () => {
-
           let realpathStub: sinon.SinonStub;
           let statStub: sinon.SinonStub;
 
           setup(() => {
             sandbox.stub(utils, 'getOSType').returns(os);
-            realpathStub = sandbox.stub(fs.promises, 'realpath')
+            realpathStub = sandbox
+              .stub(fs.promises, 'realpath')
               .withArgs(path)
               .returns(Promise.resolve(resolvedPath));
             statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
@@ -67,14 +67,11 @@ suite('stripeClient', () => {
         const stripeClient = new StripeClient(new NoOpTelemetry());
         const cliPath = await stripeClient.getCLIPath();
         assert.strictEqual(cliPath, null);
-        assert.deepStrictEqual(
-          showErrorMessageSpy.args[0],
-          [
-            'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-            {},
-            'Read instructions on how to install Stripe CLI',
-          ]
-        );
+        assert.deepStrictEqual(showErrorMessageSpy.args[0], [
+          'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
+          {},
+          'Read instructions on how to install Stripe CLI',
+        ]);
       });
     });
 
@@ -87,14 +84,15 @@ suite('stripeClient', () => {
       let statStub: sinon.SinonStub;
 
       setup(() => {
-        sandbox.stub(vscode.workspace, 'getConfiguration')
+        sandbox
+          .stub(vscode.workspace, 'getConfiguration')
           .withArgs('stripe')
           .returns(<any>{get: () => customPath});
-        realpathStub = sandbox.stub(fs.promises, 'realpath')
+        realpathStub = sandbox
+          .stub(fs.promises, 'realpath')
           .withArgs(customPath)
           .returns(Promise.resolve(resolvedPath));
         statStub = sandbox.stub(fs.promises, 'stat').withArgs(resolvedPath);
-
       });
 
       osTypes.forEach((os) => {
@@ -129,10 +127,10 @@ suite('stripeClient', () => {
         const stripeClient = new StripeClient(new NoOpTelemetry());
         const cliPath = await stripeClient.getCLIPath();
         assert.strictEqual(cliPath, null);
-        assert.deepStrictEqual(
-          showErrorMessageSpy.args[0],
-          ["You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '/foo/bar/baz'", 'Ok'],
-        );
+        assert.deepStrictEqual(showErrorMessageSpy.args[0], [
+          "You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '/foo/bar/baz'",
+          'Ok',
+        ]);
       });
     });
   });

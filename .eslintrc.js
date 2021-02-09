@@ -28,8 +28,8 @@ module.exports = {
       {
         selector: ['classProperty'],
         modifiers: ['static'],
-        format: ['UPPER_CASE']
-      }
+        format: ['UPPER_CASE'],
+      },
     ],
     '@typescript-eslint/no-unused-expressions': 'warn',
     '@typescript-eslint/semi': ['warn', 'always'],
@@ -81,13 +81,6 @@ module.exports = {
     'init-declarations': 'off',
     'jsx-quotes': 'error',
     'key-spacing': 'error',
-    'keyword-spacing': [
-      'error',
-      {
-        after: true,
-        before: true,
-      },
-    ],
     'line-comment-position': 'off',
     'linebreak-style': ['error', 'unix'],
     'lines-around-directive': 'error',

@@ -12,7 +12,7 @@ export class StripeClient {
   telemetry: Telemetry;
   private cliPath: string | null;
 
-  constructor(telemetry:Telemetry) {
+  constructor(telemetry: Telemetry) {
     this.telemetry = telemetry;
     this.cliPath = null;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
@@ -58,7 +58,7 @@ export class StripeClient {
     const returnValue = await vscode.window.showErrorMessage(
       'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
       {},
-      ...[actionText]
+      ...[actionText],
     );
 
     if (returnValue === actionText) {
@@ -71,7 +71,7 @@ export class StripeClient {
     const returnValue = await vscode.window.showErrorMessage(
       'You need to login with the Stripe CLI for this project before you can continue',
       {},
-      ...[actionText]
+      ...[actionText],
     );
     if (returnValue === actionText) {
       vscode.commands.executeCommand('stripe.login');
@@ -79,9 +79,7 @@ export class StripeClient {
   }
 
   async isAuthenticated(): Promise<Boolean> {
-    const projectName = vscode.workspace
-      .getConfiguration('stripe')
-      .get('projectName', null);
+    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
     try {
       const {stdout} = await execa(this.cliPath, ['config', '--list']);
       const hasConfigForProject = stdout
@@ -140,7 +138,7 @@ export class StripeClient {
 
     const installPath = customInstallPath || defaultInstallPath;
 
-    if (installPath && await isFile(installPath)) {
+    if (installPath && (await isFile(installPath))) {
       this.cliPath = installPath;
       return true;
     }
@@ -148,7 +146,7 @@ export class StripeClient {
     if (customInstallPath) {
       vscode.window.showErrorMessage(
         `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
-        ...['Ok']
+        ...['Ok'],
       );
     } else {
       this.promptInstall();
