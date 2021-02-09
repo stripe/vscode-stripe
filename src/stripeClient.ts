@@ -2,19 +2,30 @@
 
 import * as path from 'path';
 import * as vscode from 'vscode';
+import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
 import {Telemetry} from './telemetry';
 
 const execa = require('execa');
 const fs = require('fs');
 
+export enum CLICommand {
+  LogsTail,
+}
+
+const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([
+  [CLICommand.LogsTail, ['logs', 'tail']],
+]);
+
 export class StripeClient {
   telemetry: Telemetry;
   private cliPath: string | null;
+  cliProcesses: Map<CLICommand, ChildProcess>;
 
   constructor(telemetry: Telemetry) {
     this.telemetry = telemetry;
     this.cliPath = null;
+    this.cliProcesses = new Map<CLICommand, ChildProcess>();
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
@@ -113,6 +124,49 @@ export class StripeClient {
     }
     return this.cliPath;
   }
+
+  async getOrCreateCLIProcess(
+    cliCommand: CLICommand,
+    flags: string[] = [],
+  ): Promise<ChildProcess | null> {
+    const existingCLIProcess = this.cliProcesses.get(cliCommand);
+    if (existingCLIProcess) {
+      return existingCLIProcess;
+    }
+
+    const cliPath = await this.getCLIPath();
+    if (!cliPath) {
+      return null;
+    }
+
+    const commandArgs = cliCommandToArgsMap.get(cliCommand);
+    if (!commandArgs) {
+      return null;
+    }
+
+    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
+
+    const allFlags = [...(projectName ? ['--project-name', projectName] : []), ...flags];
+
+    const newCLIProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
+    this.cliProcesses.set(cliCommand, newCLIProcess);
+
+    newCLIProcess.on('close', () => this.cleanupCLIProcess(cliCommand));
+    newCLIProcess.on('error', () => this.cleanupCLIProcess(cliCommand));
+
+    return newCLIProcess;
+  }
+
+  endCLIProcess(cliCommand: CLICommand): void {
+    const cliProcess = this.cliProcesses.get(cliCommand);
+    if (cliProcess) {
+      cliProcess.kill();
+    }
+  }
+
+  private cleanupCLIProcess = (cliCommand: CLICommand) => {
+    this.cliProcesses.delete(cliCommand);
+  };
 
   private async detectInstalled() {
     const defaultInstallPath = (() => {
