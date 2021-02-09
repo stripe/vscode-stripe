@@ -20,7 +20,7 @@ const stripeProcessNameToArgsMap: Map<StripeProcessName, string[]> = new Map([
 export class StripeClient {
   telemetry: Telemetry;
   private cliPath: string | null;
-  private stripeProcesses: Map<StripeProcessName, ChildProcess>;
+  stripeProcesses: Map<StripeProcessName, ChildProcess>;
 
   constructor(telemetry: Telemetry) {
     this.telemetry = telemetry;
@@ -150,6 +150,15 @@ export class StripeClient {
 
     const newStripeProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
     this.stripeProcesses.set(stripeProcessName, newStripeProcess);
+
+    newStripeProcess.on('exit', () => {
+      this.stripeProcesses.delete(stripeProcessName);
+    });
+
+    newStripeProcess.on('error', () => {
+      this.stripeProcesses.delete(stripeProcessName);
+    });
+
     return newStripeProcess;
   }
 

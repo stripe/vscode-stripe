@@ -2,7 +2,9 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as utils from '../../utils';
 import * as vscode from 'vscode';
+import {Readable, Writable} from 'stream';
 import {StripeClient, StripeProcessName} from '../../stripeClient';
+import {EventEmitter} from 'events';
 import {NoOpTelemetry} from '../../telemetry';
 import childProcess from 'child_process';
 
@@ -138,11 +140,15 @@ suite('stripeClient', () => {
 
   suite('stripe processes', () => {
     let spawnStub: sinon.SinonStub;
+    let stripeProcessStub: childProcess.ChildProcess;
 
     setup(() => {
-      spawnStub = sandbox
-        .stub(childProcess, 'spawn')
-        .returns(<childProcess.ChildProcess>{kill: () => {}});
+      stripeProcessStub = <childProcess.ChildProcess>new EventEmitter();
+      stripeProcessStub.stdin = new Writable();
+      stripeProcessStub.stdout = <Readable>new EventEmitter();
+      stripeProcessStub.stderr = <Readable>new EventEmitter();
+      stripeProcessStub.kill = () => {};
+      spawnStub = sandbox.stub(childProcess, 'spawn').returns(stripeProcessStub);
     });
 
     test('spawns a child process with stripe logs tail', async () => {
@@ -196,8 +202,33 @@ suite('stripeClient', () => {
         throw new assert.AssertionError();
       }
       const killStub = sandbox.stub(stripeLogsTailProcess, 'kill');
+      assert.strictEqual(stripeClient.stripeProcesses.has(StripeProcessName.LogsTail), true);
       stripeClient.endStripeProcess(StripeProcessName.LogsTail);
       assert.strictEqual(killStub.callCount, 1);
+      assert.strictEqual(stripeClient.stripeProcesses.has(StripeProcessName.LogsTail), false);
+    });
+
+    suite('on child process events', () => {
+      ['exit', 'error'].forEach((event) => {
+        test(`on ${event}, removes child process`, async () => {
+          const stripeClient = new StripeClient(new NoOpTelemetry());
+          sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+          const stripeLogsTailProcess = await stripeClient.getOrCreateStripeProcess(
+            StripeProcessName.LogsTail,
+          );
+          if (!stripeLogsTailProcess) {
+            throw new assert.AssertionError();
+          }
+
+          assert.strictEqual(stripeClient.stripeProcesses.has(StripeProcessName.LogsTail), true);
+          const spy = sandbox.spy();
+          stripeLogsTailProcess.on(event, spy);
+          stripeLogsTailProcess.emit(event);
+          assert.strictEqual(spawnStub.callCount, 1);
+          assert.strictEqual(spy.callCount, 1);
+          assert.strictEqual(stripeClient.stripeProcesses.has(StripeProcessName.LogsTail), false);
+        });
+      });
     });
   });
 });
