@@ -119,8 +119,11 @@ export class StripeClient {
       const osType: OSType = getOSType();
       switch (osType) {
         case OSType.macOS:
-          // HomeBrew install path on macOS
+          // HomeBrew install path on macOS Intel Macs
           return '/usr/local/bin/stripe';
+        case OSType.macOSapple:
+          // HomeBrew install path on macOS M1 Macs
+          return '/opt/homebrew/Cellar/stripe';
         case OSType.linux:
           // apt-get install path on ubuntu + yum install path on centOS
           return '/usr/local/bin/stripe';
