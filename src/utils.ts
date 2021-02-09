@@ -22,7 +22,7 @@ export function getOSType(): OSType {
   const platform: string = process.platform;
   
   const cpus = os.cpus(); // Returns an array of all CPU cores
-  const cpu: string = cpus[0]model; // Copying syntax of line 22, not sure if this will work
+  const cpu: string = cpus[0].model; // Copying syntax of line 22, not sure if this will work
 
   if (/^win/.test(platform)) {
     return OSType.windows;
