@@ -74,3 +74,14 @@ export async function findAsync<T>(
   const index = results.findIndex((result) => result);
   return arr[index];
 }
+
+export function debounce(func: (...args: any[]) => any, wait: number): (...args: any[]) => any {
+  let timeout: NodeJS.Timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      clearTimeout(timeout);
+      func(...args);
+    }, wait);
+  };
+};

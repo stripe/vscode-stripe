@@ -3,6 +3,7 @@ import {ThemeIcon, window} from 'vscode';
 import {LineStream} from 'byline';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import {debounce} from './utils';
 import stream from 'stream';
 
 enum ViewState {
@@ -181,9 +182,11 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     this.stripeClient.endCLIProcess(CLICommand.LogsTail);
   };
 
+  private debouncedRefresh = debounce(this.refresh.bind(this), 1000);
+
   private insertLog = (logTreeItem: StripeTreeItem) => {
     this.logTreeItems.unshift(logTreeItem);
-    this.refresh();
+    this.debouncedRefresh();
   };
 
   private setViewState(viewState: ViewState) {
