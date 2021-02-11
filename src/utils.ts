@@ -84,4 +84,4 @@ export function debounce(func: (...args: any[]) => any, wait: number): (...args:
       func(...args);
     }, wait);
   };
-};
+}

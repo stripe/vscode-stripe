@@ -25,10 +25,12 @@ const isLogObject = (object: any): object is LogObject => {
     return false;
   }
   const possibleLogObject = object as LogObject;
-  return typeof possibleLogObject.status === 'number'
-    && typeof possibleLogObject.method === 'string'
-    && typeof possibleLogObject.url === 'string'
-    && typeof possibleLogObject.request_id === 'string';
+  return (
+    typeof possibleLogObject.status === 'number' &&
+    typeof possibleLogObject.method === 'string' &&
+    typeof possibleLogObject.url === 'string' &&
+    typeof possibleLogObject.request_id === 'string'
+  );
 };
 
 export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
@@ -144,7 +146,10 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
           },
           decodeStrings: false,
         });
-        stripeLogsTailProcess.stderr.setEncoding('utf8').pipe(new LineStream()).pipe(this.logsStderrStream);
+        stripeLogsTailProcess.stderr
+          .setEncoding('utf8')
+          .pipe(new LineStream())
+          .pipe(this.logsStderrStream);
       });
     }
 
@@ -165,7 +170,10 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
         },
         decodeStrings: false,
       });
-      stripeLogsTailProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(this.logsStdoutStream);
+      stripeLogsTailProcess.stdout
+        .setEncoding('utf8')
+        .pipe(new LineStream())
+        .pipe(this.logsStdoutStream);
     }
   }
 
