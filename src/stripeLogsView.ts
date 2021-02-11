@@ -40,7 +40,6 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   }
 
   stopLogsStreaming() {
-    this.stripeClient.endCLIProcess(CLICommand.LogsTail);
     this.cleanupStreams();
     this.setViewState(ViewState.Idle);
   }
@@ -156,6 +155,7 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
       this.logsStderrStream.destroy();
       this.logsStderrStream = null;
     }
+    this.stripeClient.endCLIProcess(CLICommand.LogsTail);
   };
 
   private insertLog = (logTreeItem: StripeTreeItem) => {
