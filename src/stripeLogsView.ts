@@ -112,33 +112,38 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     if (!this.logsStderrStream) {
       await new Promise<void>((resolve) => {
         this.logsStderrStream = new stream.Writable({
-          write: (chunk, _, callback) => {
-            const label = chunk.toString();
-            if (label.includes('Ready!')) {
-              resolve();
+          write: (chunk, encoding, callback) => {
+            if (encoding === 'utf8') {
+              if (chunk.includes('Ready!')) {
+                resolve();
+              }
             }
             callback();
           },
+          decodeStrings: false,
         });
-        stripeLogsTailProcess.stderr.pipe(new LineStream()).pipe(this.logsStderrStream);
+        stripeLogsTailProcess.stderr.setEncoding('utf8').pipe(new LineStream()).pipe(this.logsStderrStream);
       });
     }
 
     if (!this.logsStdoutStream) {
       this.logsStdoutStream = new stream.Writable({
-        write: (chunk, _, callback) => {
-          try {
-            const logObject = JSON.parse(chunk.toString());
-            if (logObject && typeof logObject === 'object') {
-              const label = `[${logObject.status}] ${logObject.method} ${logObject.url} [${logObject.request_id}]`;
-              const logTreeItem = new StripeTreeItem(label);
-              this.insertLog(logTreeItem);
-            }
-          } catch {}
+        write: (chunk, encoding, callback) => {
+          if (encoding === 'utf8') {
+            try {
+              const logObject = JSON.parse(chunk);
+              if (logObject && typeof logObject === 'object') {
+                const label = `[${logObject.status}] ${logObject.method} ${logObject.url} [${logObject.request_id}]`;
+                const logTreeItem = new StripeTreeItem(label);
+                this.insertLog(logTreeItem);
+              }
+            } catch {}
+          }
           callback();
         },
+        decodeStrings: false,
       });
-      stripeLogsTailProcess.stdout.pipe(new LineStream()).pipe(this.logsStdoutStream);
+      stripeLogsTailProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(this.logsStdoutStream);
     }
   }
 
