@@ -11,6 +11,26 @@ enum ViewState {
   Streaming,
 }
 
+type LogObject = {
+  status: number;
+  method: string;
+  url: string;
+  // eslint-disable-next-line camelcase
+  request_id: string;
+  randomField: string;
+};
+
+const isLogObject = (object: any): object is LogObject => {
+  if (!object || typeof object !== 'object') {
+    return false;
+  }
+  const possibleLogObject = object as LogObject;
+  return typeof possibleLogObject.status === 'number'
+    && typeof possibleLogObject.method === 'string'
+    && typeof possibleLogObject.url === 'string'
+    && typeof possibleLogObject.request_id === 'string';
+};
+
 export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   private stripeClient: StripeClient;
   private logTreeItems: StripeTreeItem[];
@@ -133,9 +153,9 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
         write: (chunk, encoding, callback) => {
           if (encoding === 'utf8') {
             try {
-              const logObject = JSON.parse(chunk);
-              if (logObject && typeof logObject === 'object') {
-                const label = `[${logObject.status}] ${logObject.method} ${logObject.url} [${logObject.request_id}]`;
+              const object = JSON.parse(chunk);
+              if (isLogObject(object)) {
+                const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
                 const logTreeItem = new StripeTreeItem(label);
                 this.insertLog(logTreeItem);
               }
