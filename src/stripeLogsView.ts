@@ -18,7 +18,6 @@ type LogObject = {
   url: string;
   // eslint-disable-next-line camelcase
   request_id: string;
-  randomField: string;
 };
 
 const isLogObject = (object: any): object is LogObject => {
