@@ -1,5 +1,6 @@
 import {CLICommand, StripeClient} from './stripeClient';
 import {ThemeIcon, window} from 'vscode';
+import {LineStream} from 'byline';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import stream from 'stream';
@@ -119,7 +120,7 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
             callback();
           },
         });
-        stripeLogsTailProcess.stderr.pipe(this.logsStderrStream);
+        stripeLogsTailProcess.stderr.pipe(new LineStream()).pipe(this.logsStderrStream);
       });
     }
 
@@ -137,7 +138,7 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
           callback();
         },
       });
-      stripeLogsTailProcess.stdout.pipe(this.logsStdoutStream);
+      stripeLogsTailProcess.stdout.pipe(new LineStream()).pipe(this.logsStdoutStream);
     }
   }
 
