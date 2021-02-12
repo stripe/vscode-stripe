@@ -52,11 +52,14 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   }
 
   startLogsStreaming = async () => {
-    try {
-      await this.setupStreams();
-    } catch (e) {
-      window.showErrorMessage(e.message);
-      this.stopLogsStreaming();
+    if (this.viewState === ViewState.Idle) {
+      this.setViewState(ViewState.Loading);
+      try {
+        await this.setupStreams();
+      } catch (e) {
+        window.showErrorMessage(e.message);
+        this.stopLogsStreaming();
+      }
     }
   };
 
@@ -120,8 +123,6 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   }
 
   private async setupStreams() {
-    this.setViewState(ViewState.Loading);
-
     const stripeLogsTailProcess = await this.stripeClient.getOrCreateCLIProcess(
       CLICommand.LogsTail,
       ['--format', 'JSON'],
