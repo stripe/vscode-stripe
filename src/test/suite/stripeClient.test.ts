@@ -200,7 +200,7 @@ suite('stripeClient', () => {
     });
 
     suite('on child process events', () => {
-      ['close', 'error'].forEach((event) => {
+      ['exit', 'error'].forEach((event) => {
         test(`on ${event}, removes child process`, async () => {
           const stripeClient = new StripeClient(new NoOpTelemetry());
           sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
