@@ -51,22 +51,19 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     this.viewState = ViewState.Idle;
   }
 
-  async startLogsStreaming() {
-    this.setViewState(ViewState.Loading);
+  startLogsStreaming = async () => {
     try {
       await this.setupStreams();
-      this.setViewState(ViewState.Streaming);
     } catch (e) {
       window.showErrorMessage(e.message);
-      this.cleanupStreams();
-      this.setViewState(ViewState.Idle);
+      this.stopLogsStreaming();
     }
-  }
+  };
 
-  stopLogsStreaming() {
+  stopLogsStreaming = () => {
     this.cleanupStreams();
     this.setViewState(ViewState.Idle);
-  }
+  };
 
   buildTree(): Promise<StripeTreeItem[]> {
     const streamingControlItemArgs = (() => {
@@ -123,6 +120,8 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
   }
 
   private async setupStreams() {
+    this.setViewState(ViewState.Loading);
+
     const stripeLogsTailProcess = await this.stripeClient.getOrCreateCLIProcess(
       CLICommand.LogsTail,
       ['--format', 'JSON'],
@@ -131,26 +130,34 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
       throw new Error('Failed to start `stripe logs tail` process');
     }
 
-    stripeLogsTailProcess.on('close', this.cleanupStreams);
-    stripeLogsTailProcess.on('error', this.cleanupStreams);
+    stripeLogsTailProcess.on('close', this.stopLogsStreaming);
 
-    // The CLI lets you know that streaming is ready via stderr
+    /**
+     * The CLI lets you know that streaming is ready via stderr. In the happy path:
+     *
+     * $ stripe logs tail
+     * Getting ready...
+     * Ready! You're now waiting to receive API request logs (^C to quit)
+     *
+     * We interpret any other message as an error.
+     */
     if (!this.logsStderrStream) {
-      await new Promise<void>((resolve) => {
-        this.logsStderrStream = new stream.Writable({
-          write: (chunk, _, callback) => {
-            if (chunk.includes('Ready!')) {
-              resolve();
-            }
-            callback();
-          },
-          decodeStrings: false,
-        });
-        stripeLogsTailProcess.stderr
-          .setEncoding('utf8')
-          .pipe(new LineStream())
-          .pipe(this.logsStderrStream);
+      this.logsStderrStream = new stream.Writable({
+        write: (chunk, _, callback) => {
+          if (chunk.includes('Ready!')) {
+            this.setViewState(ViewState.Streaming);
+          } else if (!chunk.includes('Getting ready')) {
+            window.showErrorMessage(chunk);
+            this.stopLogsStreaming();
+          }
+          callback();
+        },
+        decodeStrings: false,
       });
+      stripeLogsTailProcess.stderr
+        .setEncoding('utf8')
+        .pipe(new LineStream())
+        .pipe(this.logsStderrStream);
     }
 
     if (!this.logsStdoutStream) {
