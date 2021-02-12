@@ -151,7 +151,7 @@ export class StripeClient {
     const newCLIProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
     this.cliProcesses.set(cliCommand, newCLIProcess);
 
-    newCLIProcess.on('close', () => this.cleanupCLIProcess(cliCommand));
+    newCLIProcess.on('exit', () => this.cleanupCLIProcess(cliCommand));
     newCLIProcess.on('error', () => this.cleanupCLIProcess(cliCommand));
 
     return newCLIProcess;

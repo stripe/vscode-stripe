@@ -131,7 +131,7 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
       throw new Error('Failed to start `stripe logs tail` process');
     }
 
-    stripeLogsTailProcess.on('close', this.stopLogsStreaming);
+    stripeLogsTailProcess.on('exit', this.stopLogsStreaming);
 
     /**
      * The CLI lets you know that streaming is ready via stderr. In the happy path:
