@@ -34,6 +34,8 @@ export const isLogObject = (object: any): object is LogObject => {
 };
 
 export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
+  private static readonly REFRESH_DEBOUNCE_MILLIS = 1000;
+
   private stripeClient: StripeClient;
   private logTreeItems: StripeTreeItem[];
   private viewState: ViewState;
@@ -136,11 +138,9 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     if (!this.logsStderrStream) {
       await new Promise<void>((resolve) => {
         this.logsStderrStream = new stream.Writable({
-          write: (chunk, encoding, callback) => {
-            if (encoding === 'utf8') {
-              if (chunk.includes('Ready!')) {
-                resolve();
-              }
+          write: (chunk, _, callback) => {
+            if (chunk.includes('Ready!')) {
+              resolve();
             }
             callback();
           },
@@ -155,17 +155,15 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
 
     if (!this.logsStdoutStream) {
       this.logsStdoutStream = new stream.Writable({
-        write: (chunk, encoding, callback) => {
-          if (encoding === 'utf8') {
-            try {
-              const object = JSON.parse(chunk);
-              if (isLogObject(object)) {
-                const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
-                const logTreeItem = new StripeTreeItem(label);
-                this.insertLog(logTreeItem);
-              }
-            } catch {}
-          }
+        write: (chunk, _, callback) => {
+          try {
+            const object = JSON.parse(chunk);
+            if (isLogObject(object)) {
+              const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
+              const logTreeItem = new StripeTreeItem(label);
+              this.insertLog(logTreeItem);
+            }
+          } catch {}
           callback();
         },
         decodeStrings: false,
@@ -189,7 +187,10 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     this.stripeClient.endCLIProcess(CLICommand.LogsTail);
   };
 
-  private debouncedRefresh = debounce(this.refresh.bind(this), 1000);
+  private debouncedRefresh = debounce(
+    this.refresh.bind(this),
+    StripeLogsDataProvider.REFRESH_DEBOUNCE_MILLIS,
+  );
 
   private insertLog = (logTreeItem: StripeTreeItem) => {
     this.logTreeItems.unshift(logTreeItem);
