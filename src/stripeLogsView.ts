@@ -20,7 +20,7 @@ type LogObject = {
   request_id: string;
 };
 
-const isLogObject = (object: any): object is LogObject => {
+export const isLogObject = (object: any): object is LogObject => {
   if (!object || typeof object !== 'object') {
     return false;
   }
