@@ -283,7 +283,7 @@
     "snippets": [
       {
         "language": "javascript",
-        "path": "./snippets/javascript.json"
+        "path": "./config/snippets/javascript.json"
       }
     ]
   },

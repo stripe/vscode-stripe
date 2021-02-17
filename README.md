@@ -34,13 +34,19 @@ Contributions and feedback to the project are welcome, so please open issues for
    - Right click "Stripe" from the Extensions marketplace
    - Click Disable (Workspace)
 
+### Debugging this extension
+
+1. Open the Run view, select the "Run Extension" button to launch an additional Extension Development Host instance of VSCode that executes the extension code in your workspace.
+1. To debug the stripe language server, select the "Client + Server" button. This will allow you to set breakpoints for code that lives within the stripeLanguageServer directory.
+   - You can find more info on the language server here: https://code.visualstudio.com/api/language-extensions/language-server-extension-guide
+
 ## License
 
 See [LICENSE.md](LICENSE.md)
+
 ## Telemetry
 
 The Stripe VS Code Extension collects basic telemetry in order to improve this extension's experience. If you'd like to opt out we respect the [global telemetry setting in VS Code](https://code.visualstudio.com/docs/getstarted/telemetry), so we won't collect any data unless this setting is turned on.
-
 
 ## Third-Party Notices
 
