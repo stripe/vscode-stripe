@@ -3,7 +3,7 @@ import querystring from 'querystring';
 
 // Convert an LSP language identifier to a URL param `lang` for the Stripe API Reference pages
 // See https://microsoft.github.io/language-server-protocol/specification#textDocumentItem
-function getLangUrlParamFromLanguageId(languageId: string): string | null {
+export function getLangUrlParamFromLanguageId(languageId: string): string | null {
   switch (languageId) {
     case 'csharp':
       return 'dotnet';

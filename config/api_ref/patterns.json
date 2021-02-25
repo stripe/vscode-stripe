@@ -2,1423 +2,2993 @@
   {
     "url": "/balance/balance_retrieve",
     "regexps": {
-      "javascript": "balance\\.retrieve"
+      "ruby": "Balance\\.retrieve\\(",
+      "go": "balance\\.Get\\(",
+      "python": "Balance\\.retrieve\\(",
+      "java": "Balance\\.retrieve\\(",
+      "node": "balance\\.retrieve\\(",
+      "php": "balance->retrieve\\("
     }
   },
   {
     "url": "/balance_transactions/retrieve",
     "regexps": {
-      "javascript": "balanceTransactions\\.retrieve"
+      "ruby": "BalanceTransaction\\.retrieve\\(",
+      "go": "balancetransaction\\.Get\\(",
+      "python": "BalanceTransaction\\.retrieve\\(",
+      "java": "BalanceTransaction\\.retrieve\\(",
+      "node": "balanceTransactions\\.retrieve\\(",
+      "php": "balanceTransactions->retrieve\\("
     }
   },
   {
     "url": "/balance_transactions/list",
     "regexps": {
-      "javascript": "balanceTransactions\\.list"
-    }
-  },
-  {
-    "url": "/charges/retrieve",
-    "regexps": {
-      "javascript": "charges\\.retrieve"
-    }
-  },
-  {
-    "url": "/charges/update",
-    "regexps": {
-      "javascript": "charges\\.update"
-    }
-  },
-  {
-    "url": "/charges/capture",
-    "regexps": {
-      "javascript": "charges\\.capture"
+      "ruby": "BalanceTransaction\\.list\\(",
+      "go": "balancetransaction\\.List\\(",
+      "python": "BalanceTransaction\\.list\\(",
+      "java": "BalanceTransaction\\.list\\(",
+      "node": "balanceTransactions\\.list\\(",
+      "php": "balanceTransactions->all\\("
     }
   },
   {
     "url": "/charges/create",
     "regexps": {
-      "javascript": "charges\\.create"
+      "ruby": "Charge\\.create\\(",
+      "go": "charge\\.New\\(",
+      "python": "Charge\\.create\\(",
+      "java": "Charge\\.create\\(",
+      "node": "charges\\.create\\(",
+      "php": "charges->create\\("
+    }
+  },
+  {
+    "url": "/charges/retrieve",
+    "regexps": {
+      "ruby": "Charge\\.retrieve\\(",
+      "go": "charge\\.Get\\(",
+      "python": "Charge\\.retrieve\\(",
+      "java": "Charge\\.retrieve\\(",
+      "node": "charges\\.retrieve\\(",
+      "php": "charges->retrieve\\("
+    }
+  },
+  {
+    "url": "/charges/update",
+    "regexps": {
+      "ruby": "Charge\\.update\\(",
+      "go": "charge\\.Update\\(",
+      "python": "Charge\\.modify\\(",
+      "node": "charges\\.update\\(",
+      "php": "charges->update\\("
+    }
+  },
+  {
+    "url": "/charges/capture",
+    "regexps": {
+      "ruby": "Charge\\.capture\\(",
+      "go": "charge\\.Capture\\(",
+      "python": "Charge\\.capture\\(",
+      "node": "charges\\.capture\\(",
+      "php": "charges->capture\\("
     }
   },
   {
     "url": "/charges/list",
     "regexps": {
-      "javascript": "charges\\.list"
-    }
-  },
-  {
-    "url": "/customers/retrieve",
-    "regexps": {
-      "javascript": "customers\\.retrieve"
-    }
-  },
-  {
-    "url": "/customers/update",
-    "regexps": {
-      "javascript": "customers\\.update"
-    }
-  },
-  {
-    "url": "/customers/delete",
-    "regexps": {
-      "javascript": "customers\\.del"
+      "ruby": "Charge\\.list\\(",
+      "go": "charge\\.List\\(",
+      "python": "Charge\\.list\\(",
+      "java": "Charge\\.list\\(",
+      "node": "charges\\.list\\(",
+      "php": "charges->all\\("
     }
   },
   {
     "url": "/customers/create",
     "regexps": {
-      "javascript": "customers\\.create"
+      "ruby": "Customer\\.create\\(",
+      "go": "customer\\.New\\(",
+      "python": "Customer\\.create\\(",
+      "java": "Customer\\.create\\(",
+      "node": "customers\\.create\\(",
+      "php": "customers->create\\("
+    }
+  },
+  {
+    "url": "/customers/retrieve",
+    "regexps": {
+      "ruby": "Customer\\.retrieve\\(",
+      "go": "customer\\.Get\\(",
+      "python": "Customer\\.retrieve\\(",
+      "java": "Customer\\.retrieve\\(",
+      "node": "customers\\.retrieve\\(",
+      "php": "customers->retrieve\\("
+    }
+  },
+  {
+    "url": "/customers/update",
+    "regexps": {
+      "ruby": "Customer\\.update\\(",
+      "go": "customer\\.Update\\(",
+      "python": "Customer\\.modify\\(",
+      "node": "customers\\.update\\(",
+      "php": "customers->update\\("
+    }
+  },
+  {
+    "url": "/customers/delete",
+    "regexps": {
+      "ruby": "Customer\\.delete\\(",
+      "go": "customer\\.Del\\(",
+      "python": "Customer\\.delete\\(",
+      "node": "customers\\.del\\(",
+      "php": "customers->delete\\("
     }
   },
   {
     "url": "/customers/list",
     "regexps": {
-      "javascript": "customers\\.list"
+      "ruby": "Customer\\.list\\(",
+      "go": "customer\\.List\\(",
+      "python": "Customer\\.list\\(",
+      "java": "Customer\\.list\\(",
+      "node": "customers\\.list\\(",
+      "php": "customers->all\\("
     }
   },
   {
     "url": "/disputes/retrieve",
     "regexps": {
-      "javascript": "disputes\\.retrieve"
+      "ruby": "Dispute\\.retrieve\\(",
+      "go": "dispute\\.Get\\(",
+      "python": "Dispute\\.retrieve\\(",
+      "java": "Dispute\\.retrieve\\(",
+      "node": "disputes\\.retrieve\\(",
+      "php": "disputes->retrieve\\("
     }
   },
   {
     "url": "/disputes/update",
     "regexps": {
-      "javascript": "disputes\\.update"
+      "ruby": "Dispute\\.update\\(",
+      "go": "dispute\\.Update\\(",
+      "python": "Dispute\\.modify\\(",
+      "node": "disputes\\.update\\(",
+      "php": "disputes->update\\("
     }
   },
   {
     "url": "/disputes/close",
     "regexps": {
-      "javascript": "disputes\\.close"
+      "ruby": "Dispute\\.close\\(",
+      "go": "dispute\\.Close\\(",
+      "python": "Dispute\\.close\\(",
+      "node": "disputes\\.close\\(",
+      "php": "disputes->close\\("
     }
   },
   {
     "url": "/disputes/list",
     "regexps": {
-      "javascript": "disputes\\.list"
+      "ruby": "Dispute\\.list\\(",
+      "go": "dispute\\.List\\(",
+      "python": "Dispute\\.list\\(",
+      "java": "Dispute\\.list\\(",
+      "node": "disputes\\.list\\(",
+      "php": "disputes->all\\("
     }
   },
   {
     "url": "/events/retrieve",
     "regexps": {
-      "javascript": "events\\.retrieve"
+      "ruby": "Event\\.retrieve\\(",
+      "go": "event\\.Get\\(",
+      "python": "Event\\.retrieve\\(",
+      "java": "Event\\.retrieve\\(",
+      "node": "events\\.retrieve\\(",
+      "php": "events->retrieve\\("
     }
   },
   {
     "url": "/events/list",
     "regexps": {
-      "javascript": "events\\.list"
+      "ruby": "Event\\.list\\(",
+      "go": "event\\.List\\(",
+      "python": "Event\\.list\\(",
+      "java": "Event\\.list\\(",
+      "node": "events\\.list\\(",
+      "php": "events->all\\("
     }
   },
   {
     "url": "/files/create",
     "regexps": {
-      "javascript": "files\\.create"
-    }
-  },
-  {
-    "url": "/files/list",
-    "regexps": {
-      "javascript": "files\\.list"
+      "ruby": "File\\.create\\(",
+      "go": "file\\.New\\(",
+      "python": "File\\.create\\(",
+      "java": "File\\.create\\(",
+      "node": "files\\.create\\(",
+      "php": "files->create\\("
     }
   },
   {
     "url": "/files/retrieve",
     "regexps": {
-      "javascript": "files\\.retrieve"
+      "ruby": "File\\.retrieve\\(",
+      "go": "file\\.Get\\(",
+      "python": "File\\.retrieve\\(",
+      "java": "File\\.retrieve\\(",
+      "node": "files\\.retrieve\\(",
+      "php": "files->retrieve\\("
+    }
+  },
+  {
+    "url": "/files/list",
+    "regexps": {
+      "ruby": "File\\.list\\(",
+      "go": "file\\.List\\(",
+      "python": "File\\.list\\(",
+      "java": "File\\.list\\(",
+      "node": "files\\.list\\(",
+      "php": "files->all\\("
     }
   },
   {
     "url": "/file_links/create",
     "regexps": {
-      "javascript": "fileLinks\\.create"
-    }
-  },
-  {
-    "url": "/file_links/list",
-    "regexps": {
-      "javascript": "fileLinks\\.list"
-    }
-  },
-  {
-    "url": "/file_links/update",
-    "regexps": {
-      "javascript": "fileLinks\\.update"
+      "ruby": "FileLink\\.create\\(",
+      "go": "filelink\\.New\\(",
+      "python": "FileLink\\.create\\(",
+      "java": "FileLink\\.create\\(",
+      "node": "fileLinks\\.create\\(",
+      "php": "fileLinks->create\\("
     }
   },
   {
     "url": "/file_links/retrieve",
     "regexps": {
-      "javascript": "fileLinks\\.retrieve"
+      "ruby": "FileLink\\.retrieve\\(",
+      "go": "filelink\\.Get\\(",
+      "python": "FileLink\\.retrieve\\(",
+      "java": "FileLink\\.retrieve\\(",
+      "node": "fileLinks\\.retrieve\\(",
+      "php": "fileLinks->retrieve\\("
+    }
+  },
+  {
+    "url": "/file_links/update",
+    "regexps": {
+      "ruby": "FileLink\\.update\\(",
+      "go": "filelink\\.Update\\(",
+      "python": "FileLink\\.modify\\(",
+      "node": "fileLinks\\.update\\(",
+      "php": "fileLinks->update\\("
+    }
+  },
+  {
+    "url": "/file_links/list",
+    "regexps": {
+      "ruby": "FileLink\\.list\\(",
+      "go": "filelink\\.List\\(",
+      "python": "FileLink\\.list\\(",
+      "java": "FileLink\\.list\\(",
+      "node": "fileLinks\\.list\\(",
+      "php": "fileLinks->all\\("
     }
   },
   {
     "url": "/mandates/retrieve",
     "regexps": {
-      "javascript": "mandates\\.retrieve"
-    }
-  },
-  {
-    "url": "/payment_intents/retrieve",
-    "regexps": {
-      "javascript": "paymentIntents\\.retrieve"
-    }
-  },
-  {
-    "url": "/payment_intents/update",
-    "regexps": {
-      "javascript": "paymentIntents\\.update"
-    }
-  },
-  {
-    "url": "/payment_intents/capture",
-    "regexps": {
-      "javascript": "paymentIntents\\.capture"
-    }
-  },
-  {
-    "url": "/payment_intents/confirm",
-    "regexps": {
-      "javascript": "paymentIntents\\.confirm"
+      "ruby": "Mandate\\.retrieve\\(",
+      "go": "mandate\\.Get\\(",
+      "python": "Mandate\\.retrieve\\(",
+      "java": "Mandate\\.retrieve\\(",
+      "node": "mandates\\.retrieve\\(",
+      "php": "mandates->retrieve\\("
     }
   },
   {
     "url": "/payment_intents/create",
     "regexps": {
-      "javascript": "paymentIntents\\.create"
+      "ruby": "PaymentIntent\\.create\\(",
+      "go": "paymentintent\\.New\\(",
+      "python": "PaymentIntent\\.create\\(",
+      "java": "PaymentIntent\\.create\\(",
+      "node": "paymentIntents\\.create\\(",
+      "php": "paymentIntents->create\\("
+    }
+  },
+  {
+    "url": "/payment_intents/retrieve",
+    "regexps": {
+      "ruby": "PaymentIntent\\.retrieve\\(",
+      "go": "paymentintent\\.Get\\(",
+      "python": "PaymentIntent\\.retrieve\\(",
+      "java": "PaymentIntent\\.retrieve\\(",
+      "node": "paymentIntents\\.retrieve\\(",
+      "php": "paymentIntents->retrieve\\("
+    }
+  },
+  {
+    "url": "/payment_intents/update",
+    "regexps": {
+      "ruby": "PaymentIntent\\.update\\(",
+      "go": "paymentintent\\.Update\\(",
+      "python": "PaymentIntent\\.modify\\(",
+      "node": "paymentIntents\\.update\\(",
+      "php": "paymentIntents->update\\("
+    }
+  },
+  {
+    "url": "/payment_intents/confirm",
+    "regexps": {
+      "ruby": "PaymentIntent\\.confirm\\(",
+      "go": "paymentintent\\.Confirm\\(",
+      "python": "PaymentIntent\\.confirm\\(",
+      "node": "paymentIntents\\.confirm\\(",
+      "php": "paymentIntents->confirm\\("
+    }
+  },
+  {
+    "url": "/payment_intents/capture",
+    "regexps": {
+      "ruby": "PaymentIntent\\.capture\\(",
+      "go": "paymentintent\\.Capture\\(",
+      "python": "PaymentIntent\\.capture\\(",
+      "node": "paymentIntents\\.capture\\(",
+      "php": "paymentIntents->capture\\("
+    }
+  },
+  {
+    "url": "/payment_intents/cancel",
+    "regexps": {
+      "ruby": "PaymentIntent\\.cancel\\(",
+      "go": "paymentintent\\.Cancel\\(",
+      "python": "PaymentIntent\\.cancel\\(",
+      "node": "paymentIntents\\.cancel\\(",
+      "php": "paymentIntents->cancel\\("
     }
   },
   {
     "url": "/payment_intents/list",
     "regexps": {
-      "javascript": "paymentIntents\\.list"
-    }
-  },
-  {
-    "url": "/setup_intents/retrieve",
-    "regexps": {
-      "javascript": "setupIntents\\.retrieve"
-    }
-  },
-  {
-    "url": "/setup_intents/update",
-    "regexps": {
-      "javascript": "setupIntents\\.update"
-    }
-  },
-  {
-    "url": "/setup_intents/confirm",
-    "regexps": {
-      "javascript": "setupIntents\\.confirm"
+      "ruby": "PaymentIntent\\.list\\(",
+      "go": "paymentintent\\.List\\(",
+      "python": "PaymentIntent\\.list\\(",
+      "java": "PaymentIntent\\.list\\(",
+      "node": "paymentIntents\\.list\\(",
+      "php": "paymentIntents->all\\("
     }
   },
   {
     "url": "/setup_intents/create",
     "regexps": {
-      "javascript": "setupIntents\\.create"
+      "ruby": "SetupIntent\\.create\\(",
+      "go": "setupintent\\.New\\(",
+      "python": "SetupIntent\\.create\\(",
+      "java": "SetupIntent\\.create\\(",
+      "node": "setupIntents\\.create\\(",
+      "php": "setupIntents->create\\("
+    }
+  },
+  {
+    "url": "/setup_intents/retrieve",
+    "regexps": {
+      "ruby": "SetupIntent\\.retrieve\\(",
+      "go": "setupintent\\.Get\\(",
+      "python": "SetupIntent\\.retrieve\\(",
+      "java": "SetupIntent\\.retrieve\\(",
+      "node": "setupIntents\\.retrieve\\(",
+      "php": "setupIntents->retrieve\\("
+    }
+  },
+  {
+    "url": "/setup_intents/update",
+    "regexps": {
+      "ruby": "SetupIntent\\.update\\(",
+      "go": "setupintent\\.Update\\(",
+      "python": "SetupIntent\\.modify\\(",
+      "node": "setupIntents\\.update\\(",
+      "php": "setupIntents->update\\("
+    }
+  },
+  {
+    "url": "/setup_intents/confirm",
+    "regexps": {
+      "ruby": "SetupIntent\\.confirm\\(",
+      "go": "setupintent\\.Confirm\\(",
+      "python": "SetupIntent\\.confirm\\(",
+      "node": "setupIntents\\.confirm\\(",
+      "php": "setupIntents->confirm\\("
+    }
+  },
+  {
+    "url": "/setup_intents/cancel",
+    "regexps": {
+      "ruby": "SetupIntent\\.cancel\\(",
+      "go": "setupintent\\.Cancel\\(",
+      "python": "SetupIntent\\.cancel\\(",
+      "node": "setupIntents\\.cancel\\(",
+      "php": "setupIntents->cancel\\("
     }
   },
   {
     "url": "/setup_intents/list",
     "regexps": {
-      "javascript": "setupIntents\\.list"
+      "ruby": "SetupIntent\\.list\\(",
+      "go": "setupintent\\.List\\(",
+      "python": "SetupIntent\\.list\\(",
+      "java": "SetupIntent\\.list\\(",
+      "node": "setupIntents\\.list\\(",
+      "php": "setupIntents->all\\("
     }
   },
   {
-    "url": "/payouts/retrieve",
+    "url": "/setup_attempts/list",
     "regexps": {
-      "javascript": "payouts\\.retrieve"
-    }
-  },
-  {
-    "url": "/payouts/update",
-    "regexps": {
-      "javascript": "payouts\\.update"
-    }
-  },
-  {
-    "url": "/payouts/cancel",
-    "regexps": {
-      "javascript": "payouts\\.cancel"
+      "ruby": "SetupAttempt\\.list\\(",
+      "go": "setupattempt\\.List\\(",
+      "python": "SetupAttempt\\.list\\(",
+      "java": "SetupAttempt\\.list\\(",
+      "node": "setupAttempts\\.list\\(",
+      "php": "setupAttempts->all\\("
     }
   },
   {
     "url": "/payouts/create",
     "regexps": {
-      "javascript": "payouts\\.create"
+      "ruby": "Payout\\.create\\(",
+      "go": "payout\\.New\\(",
+      "python": "Payout\\.create\\(",
+      "java": "Payout\\.create\\(",
+      "node": "payouts\\.create\\(",
+      "php": "payouts->create\\("
+    }
+  },
+  {
+    "url": "/payouts/retrieve",
+    "regexps": {
+      "ruby": "Payout\\.retrieve\\(",
+      "go": "payout\\.Get\\(",
+      "python": "Payout\\.retrieve\\(",
+      "java": "Payout\\.retrieve\\(",
+      "node": "payouts\\.retrieve\\(",
+      "php": "payouts->retrieve\\("
+    }
+  },
+  {
+    "url": "/payouts/update",
+    "regexps": {
+      "ruby": "Payout\\.update\\(",
+      "go": "payout\\.Update\\(",
+      "python": "Payout\\.modify\\(",
+      "node": "payouts\\.update\\(",
+      "php": "payouts->update\\("
     }
   },
   {
     "url": "/payouts/list",
     "regexps": {
-      "javascript": "payouts\\.list"
+      "ruby": "Payout\\.list\\(",
+      "go": "payout\\.List\\(",
+      "python": "Payout\\.list\\(",
+      "java": "Payout\\.list\\(",
+      "node": "payouts\\.list\\(",
+      "php": "payouts->all\\("
     }
   },
   {
-    "url": "/products/retrieve",
+    "url": "/payouts/cancel",
     "regexps": {
-      "javascript": "products\\.retrieve"
+      "ruby": "Payout\\.cancel\\(",
+      "go": "payout\\.Cancel\\(",
+      "python": "Payout\\.cancel\\(",
+      "node": "payouts\\.cancel\\(",
+      "php": "payouts->cancel\\("
     }
   },
   {
-    "url": "/products/update",
+    "url": "/payouts/reverse",
     "regexps": {
-      "javascript": "products\\.update"
-    }
-  },
-  {
-    "url": "/products/delete",
-    "regexps": {
-      "javascript": "products\\.del"
+      "ruby": "Payout\\.reverse\\(",
+      "go": "payout\\.Reverse\\(",
+      "python": "Payout\\.reverse\\(",
+      "node": "payouts\\.reverse\\(",
+      "php": "payouts->reverse\\("
     }
   },
   {
     "url": "/products/create",
     "regexps": {
-      "javascript": "products\\.create"
+      "ruby": "Product\\.create\\(",
+      "go": "product\\.New\\(",
+      "python": "Product\\.create\\(",
+      "java": "Product\\.create\\(",
+      "node": "products\\.create\\(",
+      "php": "products->create\\("
+    }
+  },
+  {
+    "url": "/products/retrieve",
+    "regexps": {
+      "ruby": "Product\\.retrieve\\(",
+      "go": "product\\.Get\\(",
+      "python": "Product\\.retrieve\\(",
+      "java": "Product\\.retrieve\\(",
+      "node": "products\\.retrieve\\(",
+      "php": "products->retrieve\\("
+    }
+  },
+  {
+    "url": "/products/update",
+    "regexps": {
+      "ruby": "Product\\.update\\(",
+      "go": "product\\.Update\\(",
+      "python": "Product\\.modify\\(",
+      "node": "products\\.update\\(",
+      "php": "products->update\\("
     }
   },
   {
     "url": "/products/list",
     "regexps": {
-      "javascript": "products\\.list"
+      "ruby": "Product\\.list\\(",
+      "go": "product\\.List\\(",
+      "python": "Product\\.list\\(",
+      "java": "Product\\.list\\(",
+      "node": "products\\.list\\(",
+      "php": "products->all\\("
     }
   },
   {
-    "url": "/refunds/retrieve",
+    "url": "/products/delete",
     "regexps": {
-      "javascript": "refunds\\.retrieve"
+      "ruby": "Product\\.delete\\(",
+      "go": "product\\.Del\\(",
+      "python": "Product\\.delete\\(",
+      "node": "products\\.del\\(",
+      "php": "products->delete\\("
     }
   },
   {
-    "url": "/refunds/update",
+    "url": "/prices/create",
     "regexps": {
-      "javascript": "refunds\\.update"
+      "ruby": "Price\\.create\\(",
+      "go": "price\\.New\\(",
+      "python": "Price\\.create\\(",
+      "java": "Price\\.create\\(",
+      "node": "prices\\.create\\(",
+      "php": "prices->create\\("
+    }
+  },
+  {
+    "url": "/prices/retrieve",
+    "regexps": {
+      "ruby": "Price\\.retrieve\\(",
+      "go": "price\\.Get\\(",
+      "python": "Price\\.retrieve\\(",
+      "java": "Price\\.retrieve\\(",
+      "node": "prices\\.retrieve\\(",
+      "php": "prices->retrieve\\("
+    }
+  },
+  {
+    "url": "/prices/update",
+    "regexps": {
+      "ruby": "Price\\.update\\(",
+      "go": "price\\.Update\\(",
+      "python": "Price\\.modify\\(",
+      "node": "prices\\.update\\(",
+      "php": "prices->update\\("
+    }
+  },
+  {
+    "url": "/prices/list",
+    "regexps": {
+      "ruby": "Price\\.list\\(",
+      "go": "price\\.List\\(",
+      "python": "Price\\.list\\(",
+      "java": "Price\\.list\\(",
+      "node": "prices\\.list\\(",
+      "php": "prices->all\\("
     }
   },
   {
     "url": "/refunds/create",
     "regexps": {
-      "javascript": "refunds\\.create"
+      "ruby": "Refund\\.create\\(",
+      "go": "refund\\.New\\(",
+      "python": "Refund\\.create\\(",
+      "java": "Refund\\.create\\(",
+      "node": "refunds\\.create\\(",
+      "php": "refunds->create\\("
+    }
+  },
+  {
+    "url": "/refunds/retrieve",
+    "regexps": {
+      "ruby": "Refund\\.retrieve\\(",
+      "go": "refund\\.Get\\(",
+      "python": "Refund\\.retrieve\\(",
+      "java": "Refund\\.retrieve\\(",
+      "node": "refunds\\.retrieve\\(",
+      "php": "refunds->retrieve\\("
+    }
+  },
+  {
+    "url": "/refunds/update",
+    "regexps": {
+      "ruby": "Refund\\.update\\(",
+      "go": "refund\\.Update\\(",
+      "python": "Refund\\.modify\\(",
+      "node": "refunds\\.update\\(",
+      "php": "refunds->update\\("
     }
   },
   {
     "url": "/refunds/list",
     "regexps": {
-      "javascript": "refunds\\.list"
+      "ruby": "Refund\\.list\\(",
+      "go": "refund\\.List\\(",
+      "python": "Refund\\.list\\(",
+      "java": "Refund\\.list\\(",
+      "node": "refunds\\.list\\(",
+      "php": "refunds->all\\("
     }
   },
   {
-    "url": "/tokens/object",
+    "url": "/tokens/create_card",
     "regexps": {
-      "javascript": "tokens\\.create"
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
     }
   },
   {
-    "url": "/payment_methods/retrieve",
+    "url": "/tokens/create_bank_account",
     "regexps": {
-      "javascript": "paymentMethods\\.retrieve"
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
     }
   },
   {
-    "url": "/payment_methods/update",
+    "url": "/tokens/create_pii",
     "regexps": {
-      "javascript": "paymentMethods\\.update"
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
+    }
+  },
+  {
+    "url": "/tokens/create_account",
+    "regexps": {
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
+    }
+  },
+  {
+    "url": "/tokens/create_person",
+    "regexps": {
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
+    }
+  },
+  {
+    "url": "/tokens/create_cvc_update",
+    "regexps": {
+      "ruby": "Token\\.create\\(",
+      "go": "token\\.New\\(",
+      "python": "Token\\.create\\(",
+      "java": "Token\\.create\\(",
+      "node": "tokens\\.create\\(",
+      "php": "tokens->create\\("
+    }
+  },
+  {
+    "url": "/tokens/retrieve",
+    "regexps": {
+      "ruby": "Token\\.retrieve\\(",
+      "go": "token\\.Get\\(",
+      "python": "Token\\.retrieve\\(",
+      "java": "Token\\.retrieve\\(",
+      "node": "tokens\\.retrieve\\(",
+      "php": "tokens->retrieve\\("
     }
   },
   {
     "url": "/payment_methods/create",
     "regexps": {
-      "javascript": "paymentMethods\\.create"
+      "ruby": "PaymentMethod\\.create\\(",
+      "go": "paymentmethod\\.New\\(",
+      "python": "PaymentMethod\\.create\\(",
+      "java": "PaymentMethod\\.create\\(",
+      "node": "paymentMethods\\.create\\(",
+      "php": "paymentMethods->create\\("
+    }
+  },
+  {
+    "url": "/payment_methods/retrieve",
+    "regexps": {
+      "ruby": "PaymentMethod\\.retrieve\\(",
+      "go": "paymentmethod\\.Get\\(",
+      "python": "PaymentMethod\\.retrieve\\(",
+      "java": "PaymentMethod\\.retrieve\\(",
+      "node": "paymentMethods\\.retrieve\\(",
+      "php": "paymentMethods->retrieve\\("
+    }
+  },
+  {
+    "url": "/payment_methods/update",
+    "regexps": {
+      "ruby": "PaymentMethod\\.update\\(",
+      "go": "paymentmethod\\.Update\\(",
+      "python": "PaymentMethod\\.modify\\(",
+      "node": "paymentMethods\\.update\\(",
+      "php": "paymentMethods->update\\("
     }
   },
   {
     "url": "/payment_methods/list",
     "regexps": {
-      "javascript": "paymentMethods\\.list"
+      "ruby": "PaymentMethod\\.list\\(",
+      "go": "paymentmethod\\.List\\(",
+      "python": "PaymentMethod\\.list\\(",
+      "java": "PaymentMethod\\.list\\(",
+      "node": "paymentMethods\\.list\\(",
+      "php": "paymentMethods->all\\("
     }
   },
   {
     "url": "/payment_methods/attach",
     "regexps": {
-      "javascript": "paymentMethods\\.attach"
+      "ruby": "PaymentMethod\\.attach\\(",
+      "go": "paymentmethod\\.Attach\\(",
+      "python": "PaymentMethod\\.attach\\(",
+      "node": "paymentMethods\\.attach\\(",
+      "php": "paymentMethods->attach\\("
     }
   },
   {
     "url": "/payment_methods/detach",
     "regexps": {
-      "javascript": "paymentMethods\\.detach"
+      "ruby": "PaymentMethod\\.detach\\(",
+      "go": "paymentmethod\\.Detach\\(",
+      "python": "PaymentMethod\\.detach\\(",
+      "node": "paymentMethods\\.detach\\(",
+      "php": "paymentMethods->detach\\("
     }
   },
   {
-    "url": "/sources/retrieve",
+    "url": "/customer_bank_accounts/create",
     "regexps": {
-      "javascript": "sources\\.retrieve"
+      "ruby": "Customer\\.create_source\\(",
+      "go": "card\\.New\\(",
+      "python": "Customer\\.create_source\\(",
+      "node": "customers\\.createSource\\(",
+      "php": "customers->createSource\\("
     }
   },
   {
-    "url": "/sources/update",
+    "url": "/customer_bank_accounts/retrieve",
     "regexps": {
-      "javascript": "sources\\.update"
+      "ruby": "Customer\\.retrieve_source\\(",
+      "go": "card\\.Get\\(",
+      "python": "Customer\\.retrieve_source\\(",
+      "node": "customers\\.retrieveSource\\(",
+      "php": "customers->retrieveSource\\("
+    }
+  },
+  {
+    "url": "/customer_bank_accounts/update",
+    "regexps": {
+      "ruby": "Customer\\.update_source\\(",
+      "go": "card\\.Update\\(",
+      "python": "Customer\\.modify_source\\(",
+      "node": "customers\\.updateSource\\(",
+      "php": "customers->updateSource\\("
+    }
+  },
+  {
+    "url": "/customer_bank_accounts/verify",
+    "regexps": {
+      "ruby": "Customer\\.verify_source\\(",
+      "go": "bankaccount\\.Verify\\(",
+      "python": "Customer\\.verify_source\\(",
+      "node": "customers\\.verifySource\\(",
+      "php": "customers->verifySource\\("
+    }
+  },
+  {
+    "url": "/customer_bank_accounts/delete",
+    "regexps": {
+      "ruby": "Customer\\.delete_source\\(",
+      "go": "card\\.Del\\(",
+      "python": "Customer\\.delete_source\\(",
+      "node": "customers\\.deleteSource\\(",
+      "php": "customers->deleteSource\\("
+    }
+  },
+  {
+    "url": "/customer_bank_accounts/list",
+    "regexps": {
+      "ruby": "Customer\\.list_sources\\(",
+      "go": "bankaccount\\.List\\(",
+      "python": "Customer\\.list_sources\\(",
+      "node": "customers\\.listSources\\(",
+      "php": "customers->allSources\\("
+    }
+  },
+  {
+    "url": "/cards/create",
+    "regexps": {
+      "ruby": "Customer\\.create_source\\(",
+      "go": "card\\.New\\(",
+      "python": "Customer\\.create_source\\(",
+      "node": "customers\\.createSource\\(",
+      "php": "customers->createSource\\("
+    }
+  },
+  {
+    "url": "/cards/retrieve",
+    "regexps": {
+      "ruby": "Customer\\.retrieve_source\\(",
+      "go": "card\\.Get\\(",
+      "python": "Customer\\.retrieve_source\\(",
+      "node": "customers\\.retrieveSource\\(",
+      "php": "customers->retrieveSource\\("
+    }
+  },
+  {
+    "url": "/cards/update",
+    "regexps": {
+      "ruby": "Customer\\.update_source\\(",
+      "go": "card\\.Update\\(",
+      "python": "Customer\\.modify_source\\(",
+      "node": "customers\\.updateSource\\(",
+      "php": "customers->updateSource\\("
+    }
+  },
+  {
+    "url": "/cards/delete",
+    "regexps": {
+      "ruby": "Customer\\.delete_source\\(",
+      "go": "card\\.Del\\(",
+      "python": "Customer\\.delete_source\\(",
+      "node": "customers\\.deleteSource\\(",
+      "php": "customers->deleteSource\\("
+    }
+  },
+  {
+    "url": "/cards/list",
+    "regexps": {
+      "ruby": "Customer\\.list_sources\\(",
+      "go": "card\\.List\\(",
+      "python": "Customer\\.list_sources\\(",
+      "node": "customers\\.listSources\\(",
+      "php": "customers->allSources\\("
     }
   },
   {
     "url": "/sources/create",
     "regexps": {
-      "javascript": "sources\\.create"
+      "ruby": "Source\\.create\\(",
+      "go": "source\\.New\\(",
+      "python": "Source\\.create\\(",
+      "java": "Source\\.create\\(",
+      "node": "sources\\.create\\(",
+      "php": "sources->create\\("
+    }
+  },
+  {
+    "url": "/sources/retrieve",
+    "regexps": {
+      "ruby": "Source\\.retrieve\\(",
+      "go": "source\\.Get\\(",
+      "python": "Source\\.retrieve\\(",
+      "java": "Source\\.retrieve\\(",
+      "node": "sources\\.retrieve\\(",
+      "php": "sources->retrieve\\("
+    }
+  },
+  {
+    "url": "/sources/update",
+    "regexps": {
+      "ruby": "Source\\.update\\(",
+      "go": "source\\.Update\\(",
+      "python": "Source\\.modify\\(",
+      "node": "sources\\.update\\(",
+      "php": "sources->update\\("
     }
   },
   {
     "url": "/sources/attach",
     "regexps": {
-      "javascript": "sources\\.attach"
+      "ruby": "Customer\\.create_source\\(",
+      "go": "card\\.New\\(",
+      "python": "Customer\\.create_source\\(",
+      "node": "customers\\.createSource\\(",
+      "php": "customers->createSource\\("
     }
   },
   {
     "url": "/sources/detach",
     "regexps": {
-      "javascript": "sources\\.detach"
-    }
-  },
-  {
-    "url": "/checkout/sessions/retrieve",
-    "regexps": {
-      "javascript": "checkout\\.sessions\\.retrieve"
-    }
-  },
-  {
-    "url": "/checkout/sessions/list",
-    "regexps": {
-      "javascript": "checkout\\.sessions\\.list"
+      "ruby": "Customer\\.delete_source\\(",
+      "go": "card\\.Del\\(",
+      "python": "Customer\\.delete_source\\(",
+      "node": "customers\\.deleteSource\\(",
+      "php": "customers->deleteSource\\("
     }
   },
   {
     "url": "/checkout/sessions/create",
     "regexps": {
-      "javascript": "checkout\\.sessions\\.create"
+      "ruby": "Checkout::Session\\.create\\(",
+      "go": "session\\.New\\(",
+      "python": "checkout\\.Session\\.create\\(",
+      "java": "Session\\.create\\(",
+      "node": "checkout\\.sessions\\.create\\(",
+      "php": "checkout->sessions->create\\("
     }
   },
   {
-    "url": "/coupons/retrieve",
+    "url": "/checkout/sessions/retrieve",
     "regexps": {
-      "javascript": "coupons\\.retrieve"
+      "ruby": "Checkout::Session\\.retrieve\\(",
+      "go": "session\\.Get\\(",
+      "python": "checkout\\.Session\\.retrieve\\(",
+      "java": "Session\\.retrieve\\(",
+      "node": "checkout\\.sessions\\.retrieve\\(",
+      "php": "checkout->sessions->retrieve\\("
     }
   },
   {
-    "url": "/coupons/update",
+    "url": "/checkout/sessions/list",
     "regexps": {
-      "javascript": "coupons\\.update"
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "java": "Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/line_items",
+    "regexps": {
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "java": "Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
     }
   },
   {
     "url": "/coupons/create",
     "regexps": {
-      "javascript": "coupons\\.create"
+      "ruby": "Coupon\\.create\\(",
+      "go": "coupon\\.New\\(",
+      "python": "Coupon\\.create\\(",
+      "java": "Coupon\\.create\\(",
+      "node": "coupons\\.create\\(",
+      "php": "coupons->create\\("
+    }
+  },
+  {
+    "url": "/coupons/retrieve",
+    "regexps": {
+      "ruby": "Coupon\\.retrieve\\(",
+      "go": "coupon\\.Get\\(",
+      "python": "Coupon\\.retrieve\\(",
+      "java": "Coupon\\.retrieve\\(",
+      "node": "coupons\\.retrieve\\(",
+      "php": "coupons->retrieve\\("
+    }
+  },
+  {
+    "url": "/coupons/update",
+    "regexps": {
+      "ruby": "Coupon\\.update\\(",
+      "go": "coupon\\.Update\\(",
+      "python": "Coupon\\.modify\\(",
+      "node": "coupons\\.update\\(",
+      "php": "coupons->update\\("
     }
   },
   {
     "url": "/coupons/delete",
     "regexps": {
-      "javascript": "coupons\\.del"
+      "ruby": "Coupon\\.delete\\(",
+      "go": "coupon\\.Del\\(",
+      "python": "Coupon\\.delete\\(",
+      "node": "coupons\\.del\\(",
+      "php": "coupons->delete\\("
     }
   },
   {
     "url": "/coupons/list",
     "regexps": {
-      "javascript": "creditNotes\\.list"
+      "ruby": "Coupon\\.list\\(",
+      "go": "coupon\\.List\\(",
+      "python": "Coupon\\.list\\(",
+      "java": "Coupon\\.list\\(",
+      "node": "coupons\\.list\\(",
+      "php": "coupons->all\\("
     }
   },
   {
-    "url": "/credit_notes/retrieve",
+    "url": "/credit_notes/preview",
     "regexps": {
-      "javascript": "creditNotes\\.retrieve"
-    }
-  },
-  {
-    "url": "/credit_notes/update",
-    "regexps": {
-      "javascript": "creditNotes\\.update"
+      "ruby": "CreditNote\\.preview\\(",
+      "go": "creditnote\\.Preview\\(",
+      "python": "CreditNote\\.preview\\(",
+      "java": "CreditNote\\.preview\\(",
+      "node": "creditNotes\\.preview\\(",
+      "php": "creditNotes->preview\\("
     }
   },
   {
     "url": "/credit_notes/create",
     "regexps": {
-      "javascript": "creditNotes\\.create"
+      "ruby": "CreditNote\\.create\\(",
+      "go": "creditnote\\.New\\(",
+      "python": "CreditNote\\.create\\(",
+      "java": "CreditNote\\.create\\(",
+      "node": "creditNotes\\.create\\(",
+      "php": "creditNotes->create\\("
     }
   },
   {
-    "url": "/credit_notes/delete",
+    "url": "/credit_notes/retrieve",
     "regexps": {
-      "javascript": "creditNotes\\.del"
+      "ruby": "CreditNote\\.retrieve\\(",
+      "go": "creditnote\\.Get\\(",
+      "python": "CreditNote\\.retrieve\\(",
+      "java": "CreditNote\\.retrieve\\(",
+      "node": "creditNotes\\.retrieve\\(",
+      "php": "creditNotes->retrieve\\("
     }
   },
   {
-    "url": "/credit_notes/list",
+    "url": "/credit_notes/update",
     "regexps": {
-      "javascript": "creditNotes\\.list"
+      "ruby": "CreditNote\\.update\\(",
+      "go": "creditnote\\.Update\\(",
+      "python": "CreditNote\\.modify\\(",
+      "node": "creditNotes\\.update\\(",
+      "php": "creditNotes->update\\("
     }
   },
   {
-    "url": "/credit_notes/void",
+    "url": "/credit_notes/lines",
     "regexps": {
-      "javascript": "creditNotes\\.void"
+      "ruby": "CreditNote\\.list_line_items\\(",
+      "go": "lineitem\\.List\\(",
+      "python": "CreditNote\\.list_line_items\\(",
+      "node": "creditNotes\\.listLineItems\\(",
+      "php": "creditNotes->allLines\\("
     }
   },
   {
     "url": "/credit_notes/preview_lines",
     "regexps": {
-      "javascript": "creditNoteLineItems\\.retrieve"
+      "ruby": "CreditNote\\.list_credit_note_line_items\\(",
+      "go": "creditnotelineitem\\.List\\(",
+      "python": "CreditNote\\.list_credit_note_line_items\\(",
+      "node": "creditNotes\\.listCreditNoteLineItems\\(",
+      "php": "creditNotes->allCreditNoteLineItems\\("
     }
   },
   {
-    "url": "/customer_balance_transactions/update",
+    "url": "/credit_notes/void",
     "regexps": {
-      "javascript": "customers\\.updateBalanceTransaction"
+      "ruby": "CreditNote\\.void_credit_note\\(",
+      "go": "creditnote\\.VoidCreditNote\\(",
+      "python": "CreditNote\\.void_credit_note\\(",
+      "node": "creditNotes\\.voidCreditNote\\(",
+      "php": "creditNotes->voidCreditNote\\("
+    }
+  },
+  {
+    "url": "/credit_notes/list",
+    "regexps": {
+      "ruby": "CreditNote\\.list\\(",
+      "go": "creditnote\\.List\\(",
+      "python": "CreditNote\\.list\\(",
+      "java": "CreditNote\\.list\\(",
+      "node": "creditNotes\\.list\\(",
+      "php": "creditNotes->all\\("
     }
   },
   {
     "url": "/customer_balance_transactions/create",
     "regexps": {
-      "javascript": "customers\\.createBalanceTransaction"
+      "ruby": "Customer\\.create_balance_transaction\\(",
+      "go": "customerbalancetransaction\\.New\\(",
+      "python": "Customer\\.create_balance_transaction\\(",
+      "node": "customers\\.createBalanceTransaction\\(",
+      "php": "customers->createBalanceTransaction\\("
     }
   },
   {
     "url": "/customer_balance_transactions/retrieve",
     "regexps": {
-      "javascript": "customers\\.retrieveBalanceTransaction"
+      "ruby": "Customer\\.retrieve_balance_transaction\\(",
+      "go": "customerbalancetransaction\\.Get\\(",
+      "python": "Customer\\.retrieve_balance_transaction\\(",
+      "node": "customers\\.retrieveBalanceTransaction\\(",
+      "php": "customers->retrieveBalanceTransaction\\("
+    }
+  },
+  {
+    "url": "/customer_balance_transactions/update",
+    "regexps": {
+      "ruby": "Customer\\.update_balance_transaction\\(",
+      "go": "customerbalancetransaction\\.Update\\(",
+      "python": "Customer\\.modify_balance_transaction\\(",
+      "node": "customers\\.updateBalanceTransaction\\(",
+      "php": "customers->updateBalanceTransaction\\("
     }
   },
   {
     "url": "/customer_balance_transactions/list",
     "regexps": {
-      "javascript": "customers\\.listBalanceTransactions"
+      "ruby": "Customer\\.list_balance_transactions\\(",
+      "go": "customerbalancetransaction\\.List\\(",
+      "python": "Customer\\.list_balance_transactions\\(",
+      "node": "customers\\.listBalanceTransactions\\(",
+      "php": "customers->allBalanceTransactions\\("
     }
   },
   {
-    "url": "/customer_tax_ids/update",
+    "url": "/customer_portal/create",
     "regexps": {
-      "javascript": "customers\\.updateTaxId"
+      "ruby": "BillingPortal::Session\\.create\\(",
+      "go": "session\\.New\\(",
+      "python": "billing_portal\\.Session\\.create\\(",
+      "java": "Session\\.create\\(",
+      "node": "billingPortal\\.sessions\\.create\\(",
+      "php": "billingPortal->sessions->create\\("
     }
   },
   {
     "url": "/customer_tax_ids/create",
     "regexps": {
-      "javascript": "customers\\.createTaxId"
+      "ruby": "Customer\\.create_tax_id\\(",
+      "go": "taxid\\.New\\(",
+      "python": "Customer\\.create_tax_id\\(",
+      "node": "customers\\.createTaxId\\(",
+      "php": "customers->createTaxId\\("
     }
   },
   {
     "url": "/customer_tax_ids/retrieve",
     "regexps": {
-      "javascript": "customers\\.retrieveTaxId"
+      "ruby": "Customer\\.retrieve_tax_id\\(",
+      "go": "taxid\\.Get\\(",
+      "python": "Customer\\.retrieve_tax_id\\(",
+      "node": "customers\\.retrieveTaxId\\(",
+      "php": "customers->retrieveTaxId\\("
+    }
+  },
+  {
+    "url": "/customer_tax_ids/delete",
+    "regexps": {
+      "ruby": "Customer\\.delete_tax_id\\(",
+      "go": "taxid\\.Del\\(",
+      "python": "Customer\\.delete_tax_id\\(",
+      "node": "customers\\.deleteTaxId\\(",
+      "php": "customers->deleteTaxId\\("
+    }
+  },
+  {
+    "url": "/customer_tax_ids/list",
+    "regexps": {
+      "ruby": "Customer\\.list_tax_ids\\(",
+      "go": "taxid\\.List\\(",
+      "python": "Customer\\.list_tax_ids\\(",
+      "node": "customers\\.listTaxIds\\(",
+      "php": "customers->allTaxIds\\("
     }
   },
   {
     "url": "/discounts/delete",
     "regexps": {
-      "javascript": "customers\\.deleteDiscount"
+      "ruby": "Customer\\.discount\\(",
+      "go": "customer\\.Discount\\(",
+      "python": "Customer\\.discount\\(",
+      "java": "Customer\\.discount\\(",
+      "node": "customers\\.discount\\(",
+      "php": "customers->discount\\("
     }
   },
   {
     "url": "/discounts/subscription_delete",
     "regexps": {
-      "javascript": "subscriptions\\.deleteDiscount"
-    }
-  },
-  {
-    "url": "/invoices/retrieve",
-    "regexps": {
-      "javascript": "invoices\\.retrieve"
-    }
-  },
-  {
-    "url": "/invoices/update",
-    "regexps": {
-      "javascript": "invoices\\.update"
+      "ruby": "Subscription\\.discount\\(",
+      "go": "sub\\.Discount\\(",
+      "python": "Subscription\\.discount\\(",
+      "java": "Subscription\\.discount\\(",
+      "node": "subscriptions\\.discount\\(",
+      "php": "subscriptions->discount\\("
     }
   },
   {
     "url": "/invoices/create",
     "regexps": {
-      "javascript": "invoices\\.create"
+      "ruby": "Invoice\\.create\\(",
+      "go": "invoice\\.New\\(",
+      "python": "Invoice\\.create\\(",
+      "java": "Invoice\\.create\\(",
+      "node": "invoices\\.create\\(",
+      "php": "invoices->create\\("
     }
   },
   {
-    "url": "/invoices/list",
+    "url": "/invoices/retrieve",
     "regexps": {
-      "javascript": "invoices\\.list"
+      "ruby": "Invoice\\.retrieve\\(",
+      "go": "invoice\\.Get\\(",
+      "python": "Invoice\\.retrieve\\(",
+      "java": "Invoice\\.retrieve\\(",
+      "node": "invoices\\.retrieve\\(",
+      "php": "invoices->retrieve\\("
+    }
+  },
+  {
+    "url": "/invoices/update",
+    "regexps": {
+      "ruby": "Invoice\\.update\\(",
+      "go": "invoice\\.Update\\(",
+      "python": "Invoice\\.modify\\(",
+      "node": "invoices\\.update\\(",
+      "php": "invoices->update\\("
     }
   },
   {
     "url": "/invoices/delete",
     "regexps": {
-      "javascript": "invoices\\.del"
+      "ruby": "Invoice\\.delete\\(",
+      "go": "invoice\\.Del\\(",
+      "python": "Invoice\\.delete\\(",
+      "node": "invoices\\.del\\(",
+      "php": "invoices->delete\\("
     }
   },
   {
     "url": "/invoices/finalize",
     "regexps": {
-      "javascript": "invoices\\.finalizeInvoice"
+      "ruby": "Invoice\\.finalize_invoice\\(",
+      "go": "invoice\\.FinalizeInvoice\\(",
+      "python": "Invoice\\.finalize_invoice\\(",
+      "node": "invoices\\.finalizeInvoice\\(",
+      "php": "invoices->finalizeInvoice\\("
     }
   },
   {
     "url": "/invoices/pay",
     "regexps": {
-      "javascript": "invoices\\.pay"
+      "ruby": "Invoice\\.pay\\(",
+      "go": "invoice\\.Pay\\(",
+      "python": "Invoice\\.pay\\(",
+      "node": "invoices\\.pay\\(",
+      "php": "invoices->pay\\("
     }
   },
   {
     "url": "/invoices/send",
     "regexps": {
-      "javascript": "invoices\\.sendInvoice"
+      "ruby": "Invoice\\.send_invoice\\(",
+      "go": "invoice\\.SendInvoice\\(",
+      "python": "Invoice\\.send_invoice\\(",
+      "node": "invoices\\.sendInvoice\\(",
+      "php": "invoices->sendInvoice\\("
     }
   },
   {
     "url": "/invoices/void",
     "regexps": {
-      "javascript": "invoices\\.voidInvoice"
+      "ruby": "Invoice\\.void_invoice\\(",
+      "go": "invoice\\.VoidInvoice\\(",
+      "python": "Invoice\\.void_invoice\\(",
+      "node": "invoices\\.voidInvoice\\(",
+      "php": "invoices->voidInvoice\\("
     }
   },
   {
-    "url": "/invoices/mark_uncollectable",
+    "url": "/invoices/mark_uncollectible",
     "regexps": {
-      "javascript": "invoices\\.markUncollectable"
+      "ruby": "Invoice\\.mark_uncollectible\\(",
+      "go": "invoice\\.MarkUncollectible\\(",
+      "python": "Invoice\\.mark_uncollectible\\(",
+      "node": "invoices\\.markUncollectible\\(",
+      "php": "invoices->markUncollectible\\("
     }
   },
   {
     "url": "/invoices/invoice_lines",
     "regexps": {
-      "javascript": "invoices\\.listLineItems"
+      "ruby": "Invoice\\.list\\(",
+      "go": "invoice\\.List\\(",
+      "python": "Invoice\\.list\\(",
+      "java": "Invoice\\.list\\(",
+      "node": "invoices\\.list\\(",
+      "php": "invoices->all\\("
     }
   },
   {
     "url": "/invoices/upcoming",
     "regexps": {
-      "javascript": "invoices\\.retrieveUpcoming"
+      "ruby": "Invoice\\.upcoming\\(",
+      "go": "invoice\\.GetNext\\(",
+      "python": "Invoice\\.upcoming\\(",
+      "java": "Invoice\\.upcoming\\(",
+      "node": "invoices\\.retrieveUpcoming\\(",
+      "php": "invoices->upcoming\\("
     }
   },
   {
     "url": "/invoices/upcoming_invoice_lines",
     "regexps": {
-      "javascript": "invoices\\.listUpcomingLineItems"
+      "go": "invoice\\.ListLines\\(",
+      "node": "invoices\\.listUpcomingLineItems\\(",
+      "php": "invoices->upcomingLines\\("
     }
   },
   {
-    "url": "/invoiceitems/retrieve",
+    "url": "/invoices/list",
     "regexps": {
-      "javascript": "invoiceItems\\.retrieve"
-    }
-  },
-  {
-    "url": "/invoiceitems/update",
-    "regexps": {
-      "javascript": "invoiceItems\\.update"
+      "ruby": "Invoice\\.list\\(",
+      "go": "invoice\\.List\\(",
+      "python": "Invoice\\.list\\(",
+      "java": "Invoice\\.list\\(",
+      "node": "invoices\\.list\\(",
+      "php": "invoices->all\\("
     }
   },
   {
     "url": "/invoiceitems/create",
     "regexps": {
-      "javascript": "invoiceItems\\.create"
+      "ruby": "InvoiceItem\\.create\\(",
+      "go": "invoiceitem\\.New\\(",
+      "python": "InvoiceItem\\.create\\(",
+      "java": "InvoiceItem\\.create\\(",
+      "node": "invoiceItems\\.create\\(",
+      "php": "invoiceItems->create\\("
     }
   },
   {
-    "url": "/invoiceitems/list",
+    "url": "/invoiceitems/retrieve",
     "regexps": {
-      "javascript": "invoiceItems\\.list"
+      "ruby": "InvoiceItem\\.retrieve\\(",
+      "go": "invoiceitem\\.Get\\(",
+      "python": "InvoiceItem\\.retrieve\\(",
+      "java": "InvoiceItem\\.retrieve\\(",
+      "node": "invoiceItems\\.retrieve\\(",
+      "php": "invoiceItems->retrieve\\("
+    }
+  },
+  {
+    "url": "/invoiceitems/update",
+    "regexps": {
+      "ruby": "InvoiceItem\\.update\\(",
+      "go": "invoiceitem\\.Update\\(",
+      "python": "InvoiceItem\\.modify\\(",
+      "node": "invoiceItems\\.update\\(",
+      "php": "invoiceItems->update\\("
     }
   },
   {
     "url": "/invoiceitems/delete",
     "regexps": {
-      "javascript": "invoiceItems\\.del"
+      "ruby": "InvoiceItem\\.delete\\(",
+      "go": "invoiceitem\\.Del\\(",
+      "python": "InvoiceItem\\.delete\\(",
+      "node": "invoiceItems\\.del\\(",
+      "php": "invoiceItems->delete\\("
     }
   },
   {
-    "url": "/plans/retrieve",
+    "url": "/invoiceitems/list",
     "regexps": {
-      "javascript": "plans\\.retrieve"
-    }
-  },
-  {
-    "url": "/plans/update",
-    "regexps": {
-      "javascript": "plans\\.update"
+      "ruby": "InvoiceItem\\.list\\(",
+      "go": "invoiceitem\\.List\\(",
+      "python": "InvoiceItem\\.list\\(",
+      "java": "InvoiceItem\\.list\\(",
+      "node": "invoiceItems\\.list\\(",
+      "php": "invoiceItems->all\\("
     }
   },
   {
     "url": "/plans/create",
     "regexps": {
-      "javascript": "plans\\.create"
+      "ruby": "Plan\\.create\\(",
+      "go": "plan\\.New\\(",
+      "python": "Plan\\.create\\(",
+      "java": "Plan\\.create\\(",
+      "node": "plans\\.create\\(",
+      "php": "plans->create\\("
     }
   },
   {
-    "url": "/plans/list",
+    "url": "/plans/retrieve",
     "regexps": {
-      "javascript": "plans\\.list"
+      "ruby": "Plan\\.retrieve\\(",
+      "go": "plan\\.Get\\(",
+      "python": "Plan\\.retrieve\\(",
+      "java": "Plan\\.retrieve\\(",
+      "node": "plans\\.retrieve\\(",
+      "php": "plans->retrieve\\("
+    }
+  },
+  {
+    "url": "/plans/update",
+    "regexps": {
+      "ruby": "Plan\\.update\\(",
+      "go": "plan\\.Update\\(",
+      "python": "Plan\\.modify\\(",
+      "node": "plans\\.update\\(",
+      "php": "plans->update\\("
     }
   },
   {
     "url": "/plans/delete",
     "regexps": {
-      "javascript": "plans\\.del"
+      "ruby": "Plan\\.delete\\(",
+      "go": "plan\\.Del\\(",
+      "python": "Plan\\.delete\\(",
+      "node": "plans\\.del\\(",
+      "php": "plans->delete\\("
     }
   },
   {
-    "url": "/products/retrieve",
+    "url": "/plans/list",
     "regexps": {
-      "javascript": "products\\.retrieve"
+      "ruby": "Plan\\.list\\(",
+      "go": "plan\\.List\\(",
+      "python": "Plan\\.list\\(",
+      "java": "Plan\\.list\\(",
+      "node": "plans\\.list\\(",
+      "php": "plans->all\\("
     }
   },
   {
-    "url": "/products/update",
+    "url": "/promotion_codes/create",
     "regexps": {
-      "javascript": "products\\.update"
+      "ruby": "PromotionCode\\.create\\(",
+      "go": "promotioncode\\.New\\(",
+      "python": "PromotionCode\\.create\\(",
+      "java": "PromotionCode\\.create\\(",
+      "node": "promotionCodes\\.create\\(",
+      "php": "promotionCodes->create\\("
     }
   },
   {
-    "url": "/products/create",
+    "url": "/promotion_codes/update",
     "regexps": {
-      "javascript": "products\\.create"
+      "ruby": "PromotionCode\\.update\\(",
+      "go": "promotioncode\\.Update\\(",
+      "python": "PromotionCode\\.modify\\(",
+      "node": "promotionCodes\\.update\\(",
+      "php": "promotionCodes->update\\("
     }
   },
   {
-    "url": "/products/list",
+    "url": "/promotion_codes/retrieve",
     "regexps": {
-      "javascript": "products\\.list"
+      "ruby": "PromotionCode\\.retrieve\\(",
+      "go": "promotioncode\\.Get\\(",
+      "python": "PromotionCode\\.retrieve\\(",
+      "java": "PromotionCode\\.retrieve\\(",
+      "node": "promotionCodes\\.retrieve\\(",
+      "php": "promotionCodes->retrieve\\("
     }
   },
   {
-    "url": "/products/delete",
+    "url": "/promotion_codes/list",
     "regexps": {
-      "javascript": "products\\.del"
-    }
-  },
-  {
-    "url": "/subscriptions/retrieve",
-    "regexps": {
-      "javascript": "subscriptions\\.retrieve"
-    }
-  },
-  {
-    "url": "/subscriptions/update",
-    "regexps": {
-      "javascript": "subscriptions\\.update"
+      "ruby": "PromotionCode\\.list\\(",
+      "go": "promotioncode\\.List\\(",
+      "python": "PromotionCode\\.list\\(",
+      "java": "PromotionCode\\.list\\(",
+      "node": "promotionCodes\\.list\\(",
+      "php": "promotionCodes->all\\("
     }
   },
   {
     "url": "/subscriptions/create",
     "regexps": {
-      "javascript": "subscriptions\\.create"
+      "ruby": "Subscription\\.create\\(",
+      "go": "sub\\.New\\(",
+      "python": "Subscription\\.create\\(",
+      "java": "Subscription\\.create\\(",
+      "node": "subscriptions\\.create\\(",
+      "php": "subscriptions->create\\("
     }
   },
   {
-    "url": "/subscriptions/list",
+    "url": "/subscriptions/retrieve",
     "regexps": {
-      "javascript": "subscriptions\\.list"
+      "ruby": "Subscription\\.retrieve\\(",
+      "go": "sub\\.Get\\(",
+      "python": "Subscription\\.retrieve\\(",
+      "java": "Subscription\\.retrieve\\(",
+      "node": "subscriptions\\.retrieve\\(",
+      "php": "subscriptions->retrieve\\("
+    }
+  },
+  {
+    "url": "/subscriptions/update",
+    "regexps": {
+      "ruby": "Subscription\\.update\\(",
+      "go": "sub\\.Update\\(",
+      "python": "Subscription\\.modify\\(",
+      "node": "subscriptions\\.update\\(",
+      "php": "subscriptions->update\\("
     }
   },
   {
     "url": "/subscriptions/cancel",
     "regexps": {
-      "javascript": "subscriptions\\.cancel"
+      "ruby": "Subscription\\.delete\\(",
+      "go": "sub\\.Cancel\\(",
+      "python": "Subscription\\.delete\\(",
+      "node": "subscriptions\\.del\\(",
+      "php": "subscriptions->cancel\\("
     }
   },
   {
-    "url": "/subscription_items/retrieve",
+    "url": "/subscriptions/list",
     "regexps": {
-      "javascript": "subscriptionItems\\.retrieve"
-    }
-  },
-  {
-    "url": "/subscription_items/update",
-    "regexps": {
-      "javascript": "subscriptionItems\\.update"
+      "ruby": "Subscription\\.list\\(",
+      "go": "sub\\.List\\(",
+      "python": "Subscription\\.list\\(",
+      "java": "Subscription\\.list\\(",
+      "node": "subscriptions\\.list\\(",
+      "php": "subscriptions->all\\("
     }
   },
   {
     "url": "/subscription_items/create",
     "regexps": {
-      "javascript": "subscriptionItems\\.create"
+      "ruby": "SubscriptionItem\\.create\\(",
+      "go": "subitem\\.New\\(",
+      "python": "SubscriptionItem\\.create\\(",
+      "java": "SubscriptionItem\\.create\\(",
+      "node": "subscriptionItems\\.create\\(",
+      "php": "subscriptionItems->create\\("
     }
   },
   {
-    "url": "/subscription_items/list",
+    "url": "/subscription_items/retrieve",
     "regexps": {
-      "javascript": "subscriptionItems\\.list"
+      "ruby": "SubscriptionItem\\.retrieve\\(",
+      "go": "subitem\\.Get\\(",
+      "python": "SubscriptionItem\\.retrieve\\(",
+      "java": "SubscriptionItem\\.retrieve\\(",
+      "node": "subscriptionItems\\.retrieve\\(",
+      "php": "subscriptionItems->retrieve\\("
+    }
+  },
+  {
+    "url": "/subscription_items/update",
+    "regexps": {
+      "ruby": "SubscriptionItem\\.update\\(",
+      "go": "subitem\\.Update\\(",
+      "python": "SubscriptionItem\\.modify\\(",
+      "node": "subscriptionItems\\.update\\(",
+      "php": "subscriptionItems->update\\("
     }
   },
   {
     "url": "/subscription_items/delete",
     "regexps": {
-      "javascript": "subscriptionItems\\.del"
+      "ruby": "SubscriptionItem\\.delete\\(",
+      "go": "subitem\\.Del\\(",
+      "python": "SubscriptionItem\\.delete\\(",
+      "node": "subscriptionItems\\.del\\(",
+      "php": "subscriptionItems->delete\\("
     }
   },
   {
-    "url": "/usage_records/subscription_item_summary",
+    "url": "/subscription_items/list",
     "regexps": {
-      "javascript": "subscriptionItems\\.listUsageRecordSummaries"
-    }
-  },
-  {
-    "url": "/usage_records/create",
-    "regexps": {
-      "javascript": "subscriptionItems\\.createUsageRecord"
-    }
-  },
-  {
-    "url": "/subscription_schedules/retrieve",
-    "regexps": {
-      "javascript": "subscriptionSchedules\\.retrieve"
-    }
-  },
-  {
-    "url": "/subscription_schedules/update",
-    "regexps": {
-      "javascript": "subscriptionSchedules\\.update"
+      "ruby": "SubscriptionItem\\.list\\(",
+      "go": "subitem\\.List\\(",
+      "python": "SubscriptionItem\\.list\\(",
+      "java": "SubscriptionItem\\.list\\(",
+      "node": "subscriptionItems\\.list\\(",
+      "php": "subscriptionItems->all\\("
     }
   },
   {
     "url": "/subscription_schedules/create",
     "regexps": {
-      "javascript": "subscriptionSchedules\\.create"
+      "ruby": "SubscriptionSchedule\\.create\\(",
+      "go": "subschedule\\.New\\(",
+      "python": "SubscriptionSchedule\\.create\\(",
+      "java": "SubscriptionSchedule\\.create\\(",
+      "node": "subscriptionSchedules\\.create\\(",
+      "php": "subscriptionSchedules->create\\("
     }
   },
   {
-    "url": "/subscription_schedules/list",
+    "url": "/subscription_schedules/retrieve",
     "regexps": {
-      "javascript": "subscriptionSchedules\\.list"
+      "ruby": "SubscriptionSchedule\\.retrieve\\(",
+      "go": "subschedule\\.Get\\(",
+      "python": "SubscriptionSchedule\\.retrieve\\(",
+      "java": "SubscriptionSchedule\\.retrieve\\(",
+      "node": "subscriptionSchedules\\.retrieve\\(",
+      "php": "subscriptionSchedules->retrieve\\("
+    }
+  },
+  {
+    "url": "/subscription_schedules/update",
+    "regexps": {
+      "ruby": "SubscriptionSchedule\\.update\\(",
+      "go": "subschedule\\.Update\\(",
+      "python": "SubscriptionSchedule\\.modify\\(",
+      "node": "subscriptionSchedules\\.update\\(",
+      "php": "subscriptionSchedules->update\\("
     }
   },
   {
     "url": "/subscription_schedules/cancel",
     "regexps": {
-      "javascript": "subscriptionSchedules\\.cancel"
+      "ruby": "SubscriptionSchedule\\.cancel\\(",
+      "go": "subschedule\\.Cancel\\(",
+      "python": "SubscriptionSchedule\\.cancel\\(",
+      "node": "subscriptionSchedules\\.cancel\\(",
+      "php": "subscriptionSchedules->cancel\\("
     }
   },
   {
     "url": "/subscription_schedules/release",
     "regexps": {
-      "javascript": "subscriptionSchedules\\.release"
+      "ruby": "SubscriptionSchedule\\.release\\(",
+      "go": "subschedule\\.Release\\(",
+      "python": "SubscriptionSchedule\\.release\\(",
+      "node": "subscriptionSchedules\\.release\\(",
+      "php": "subscriptionSchedules->release\\("
     }
   },
   {
-    "url": "/tax_rates/retrieve",
+    "url": "/subscription_schedules/list",
     "regexps": {
-      "javascript": "taxRates\\.retrieve"
-    }
-  },
-  {
-    "url": "/tax_rates/update",
-    "regexps": {
-      "javascript": "taxRates\\.update"
+      "ruby": "SubscriptionSchedule\\.list\\(",
+      "go": "subschedule\\.List\\(",
+      "python": "SubscriptionSchedule\\.list\\(",
+      "java": "SubscriptionSchedule\\.list\\(",
+      "node": "subscriptionSchedules\\.list\\(",
+      "php": "subscriptionSchedules->all\\("
     }
   },
   {
     "url": "/tax_rates/create",
     "regexps": {
-      "javascript": "taxRates\\.create"
+      "ruby": "TaxRate\\.create\\(",
+      "go": "taxrate\\.New\\(",
+      "python": "TaxRate\\.create\\(",
+      "java": "TaxRate\\.create\\(",
+      "node": "taxRates\\.create\\(",
+      "php": "taxRates->create\\("
+    }
+  },
+  {
+    "url": "/tax_rates/retrieve",
+    "regexps": {
+      "ruby": "TaxRate\\.retrieve\\(",
+      "go": "taxrate\\.Get\\(",
+      "python": "TaxRate\\.retrieve\\(",
+      "java": "TaxRate\\.retrieve\\(",
+      "node": "taxRates\\.retrieve\\(",
+      "php": "taxRates->retrieve\\("
+    }
+  },
+  {
+    "url": "/tax_rates/update",
+    "regexps": {
+      "ruby": "TaxRate\\.update\\(",
+      "go": "taxrate\\.Update\\(",
+      "python": "TaxRate\\.modify\\(",
+      "node": "taxRates\\.update\\(",
+      "php": "taxRates->update\\("
     }
   },
   {
     "url": "/tax_rates/list",
     "regexps": {
-      "javascript": "taxRates\\.list"
+      "ruby": "TaxRate\\.list\\(",
+      "go": "taxrate\\.List\\(",
+      "python": "TaxRate\\.list\\(",
+      "java": "TaxRate\\.list\\(",
+      "node": "taxRates\\.list\\(",
+      "php": "taxRates->all\\("
     }
   },
   {
-    "url": "/accounts/retrieve",
+    "url": "/usage_records/create",
     "regexps": {
-      "javascript": "accounts\\.retrieve"
+      "ruby": "SubscriptionItem\\.create_usage_record\\(",
+      "go": "usagerecord\\.New\\(",
+      "python": "SubscriptionItem\\.create_usage_record\\(",
+      "node": "subscriptionItems\\.createUsageRecord\\(",
+      "php": "subscriptionItems->createUsageRecord\\("
     }
   },
   {
-    "url": "/accounts/update",
+    "url": "/usage_records/subscription_item_summary_list",
     "regexps": {
-      "javascript": "accounts\\.update"
+      "ruby": "SubscriptionItem\\.list_usage_record_summaries\\(",
+      "go": "usagerecordsummary\\.List\\(",
+      "python": "SubscriptionItem\\.list_usage_record_summaries\\(",
+      "node": "subscriptionItems\\.listUsageRecordSummaries\\(",
+      "php": "subscriptionItems->allUsageRecordSummaries\\("
     }
   },
   {
     "url": "/accounts/create",
     "regexps": {
-      "javascript": "accounts\\.create"
+      "ruby": "Account\\.create\\(",
+      "go": "account\\.New\\(",
+      "python": "Account\\.create\\(",
+      "java": "Account\\.create\\(",
+      "node": "accounts\\.create\\(",
+      "php": "accounts->create\\("
     }
   },
   {
-    "url": "/accounts/list",
+    "url": "/accounts/retrieve",
     "regexps": {
-      "javascript": "accounts\\.list"
+      "ruby": "Account\\.retrieve\\(",
+      "go": "account\\.GetByID\\(",
+      "python": "Account\\.retrieve\\(",
+      "java": "Account\\.retrieve\\(",
+      "node": "accounts\\.retrieve\\(",
+      "php": "accounts->retrieve\\("
     }
   },
   {
-    "url": "/accounts/reject",
+    "url": "/accounts/update",
     "regexps": {
-      "javascript": "accounts\\.reject"
+      "ruby": "Account\\.update\\(",
+      "go": "account\\.Update\\(",
+      "python": "Account\\.modify\\(",
+      "node": "accounts\\.update\\(",
+      "php": "accounts->update\\("
     }
   },
   {
     "url": "/accounts/delete",
     "regexps": {
-      "javascript": "accounts\\.del"
+      "ruby": "Account\\.delete\\(",
+      "go": "account\\.Del\\(",
+      "python": "Account\\.delete\\(",
+      "node": "accounts\\.del\\(",
+      "php": "accounts->delete\\("
     }
   },
   {
-    "url": "/accounts/login_link",
+    "url": "/account/reject",
     "regexps": {
-      "javascript": "accounts\\.createLoginLink"
+      "ruby": "Account\\.reject\\(",
+      "go": "account\\.Reject\\(",
+      "python": "Account\\.reject\\(",
+      "node": "accounts\\.reject\\(",
+      "php": "accounts->reject\\("
+    }
+  },
+  {
+    "url": "/accounts/list",
+    "regexps": {
+      "ruby": "Account\\.list\\(",
+      "go": "account\\.List\\(",
+      "python": "Account\\.list\\(",
+      "java": "Account\\.list\\(",
+      "node": "accounts\\.list\\(",
+      "php": "accounts->all\\("
+    }
+  },
+  {
+    "url": "/account/create_login_link",
+    "regexps": {
+      "ruby": "Account\\.create_login_link\\(",
+      "go": "loginlink\\.New\\(",
+      "python": "Account\\.create_login_link\\(",
+      "node": "accounts\\.createLoginLink\\(",
+      "php": "accounts->createLoginLink\\("
     }
   },
   {
     "url": "/account_links/create",
     "regexps": {
-      "javascript": "accountLinks\\.create"
+      "ruby": "AccountLink\\.create\\(",
+      "go": "accountlink\\.New\\(",
+      "python": "AccountLink\\.create\\(",
+      "java": "AccountLink\\.create\\(",
+      "node": "accountLinks\\.create\\(",
+      "php": "accountLinks->create\\("
     }
   },
   {
     "url": "/application_fees/retrieve",
     "regexps": {
-      "javascript": "applicationFees\\.retrieve"
-    }
-  },
-  {
-    "url": "/application_fees/create",
-    "regexps": {
-      "javascript": "applicationFees\\.create"
+      "ruby": "ApplicationFee\\.retrieve\\(",
+      "go": "fee\\.Get\\(",
+      "python": "ApplicationFee\\.retrieve\\(",
+      "java": "ApplicationFee\\.retrieve\\(",
+      "node": "applicationFees\\.retrieve\\(",
+      "php": "applicationFees->retrieve\\("
     }
   },
   {
     "url": "/application_fees/list",
     "regexps": {
-      "javascript": "applicationFees\\.list"
+      "ruby": "ApplicationFee\\.list\\(",
+      "go": "fee\\.List\\(",
+      "python": "ApplicationFee\\.list\\(",
+      "java": "ApplicationFee\\.list\\(",
+      "node": "applicationFees\\.list\\(",
+      "php": "applicationFees->all\\("
     }
   },
   {
-    "url": "fee_refunds/retrieve",
+    "url": "/fee_refunds/create",
     "regexps": {
-      "javascript": "applicationFees\\.retrieveRefund"
+      "ruby": "ApplicationFee\\.create_refund\\(",
+      "go": "feerefund\\.New\\(",
+      "python": "ApplicationFee\\.create_refund\\(",
+      "node": "applicationFees\\.createRefund\\(",
+      "php": "applicationFees->createRefund\\("
     }
   },
   {
-    "url": "fee_refunds/update",
+    "url": "/fee_refunds/retrieve",
     "regexps": {
-      "javascript": "applicationFees\\.updateRefund"
+      "ruby": "ApplicationFee\\.retrieve_refund\\(",
+      "go": "feerefund\\.Get\\(",
+      "python": "ApplicationFee\\.retrieve_refund\\(",
+      "node": "applicationFees\\.retrieveRefund\\(",
+      "php": "applicationFees->retrieveRefund\\("
     }
   },
   {
-    "url": "fee_refunds/create",
+    "url": "/fee_refunds/update",
     "regexps": {
-      "javascript": "applicationFees\\.createRefund"
+      "ruby": "ApplicationFee\\.update_refund\\(",
+      "go": "feerefund\\.Update\\(",
+      "python": "ApplicationFee\\.modify_refund\\(",
+      "node": "applicationFees\\.updateRefund\\(",
+      "php": "applicationFees->updateRefund\\("
     }
   },
   {
-    "url": "fee_refunds/list",
+    "url": "/fee_refunds/list",
     "regexps": {
-      "javascript": "applicationFees\\.listRefunds"
+      "ruby": "ApplicationFee\\.list_refunds\\(",
+      "go": "feerefund\\.List\\(",
+      "python": "ApplicationFee\\.list_refunds\\(",
+      "node": "applicationFees\\.listRefunds\\(",
+      "php": "applicationFees->allRefunds\\("
     }
   },
   {
     "url": "/capabilities/retrieve",
     "regexps": {
-      "javascript": "accounts\\.retrieveCapability"
+      "ruby": "Account\\.retrieve_capability\\(",
+      "go": "capability\\.Get\\(",
+      "python": "Account\\.retrieve_capability\\(",
+      "node": "accounts\\.retrieveCapability\\(",
+      "php": "accounts->retrieveCapability\\("
     }
   },
   {
     "url": "/capabilities/update",
     "regexps": {
-      "javascript": "accounts\\.updateCapability"
+      "ruby": "Account\\.update_capability\\(",
+      "go": "capability\\.Update\\(",
+      "python": "Account\\.modify_capability\\(",
+      "node": "accounts\\.updateCapability\\(",
+      "php": "accounts->updateCapability\\("
     }
   },
   {
     "url": "/capabilities/list",
     "regexps": {
-      "javascript": "accounts\\.listCapabilities"
-    }
-  },
-  {
-    "url": "/country_specs/retrieve",
-    "regexps": {
-      "javascript": "countrySpecs\\.retrieve"
+      "ruby": "Account\\.list_capabilities\\(",
+      "go": "capability\\.List\\(",
+      "python": "Account\\.list_capabilities\\(",
+      "node": "accounts\\.listCapabilities\\(",
+      "php": "accounts->allCapabilities\\("
     }
   },
   {
     "url": "/country_specs/list",
     "regexps": {
-      "javascript": "countrySpecs\\.list"
+      "ruby": "CountrySpec\\.list\\(",
+      "go": "countryspec\\.List\\(",
+      "python": "CountrySpec\\.list\\(",
+      "java": "CountrySpec\\.list\\(",
+      "node": "countrySpecs\\.list\\(",
+      "php": "countrySpecs->all\\("
     }
   },
   {
-    "url": "/external_bank_accounts",
+    "url": "/country_specs/retrieve",
     "regexps": {
-      "javascript": "accounts\\.retrieveExternalAccount"
+      "ruby": "CountrySpec\\.retrieve\\(",
+      "go": "countryspec\\.Get\\(",
+      "python": "CountrySpec\\.retrieve\\(",
+      "java": "CountrySpec\\.retrieve\\(",
+      "node": "countrySpecs\\.retrieve\\(",
+      "php": "countrySpecs->retrieve\\("
     }
   },
   {
-    "url": "/external_bank_accounts",
+    "url": "/external_account_bank_accounts/create",
     "regexps": {
-      "javascript": "accounts\\.updateExternalAccount"
+      "ruby": "Account\\.create_external_account\\(",
+      "go": "card\\.New\\(",
+      "python": "Account\\.create_external_account\\(",
+      "node": "accounts\\.createExternalAccount\\(",
+      "php": "accounts->createExternalAccount\\("
     }
   },
   {
-    "url": "/external_bank_accounts",
+    "url": "/external_account_bank_accounts/retrieve",
     "regexps": {
-      "javascript": "accounts\\.createExternalAccount"
+      "ruby": "Account\\.retrieve_external_account\\(",
+      "go": "card\\.Get\\(",
+      "python": "Account\\.retrieve_external_account\\(",
+      "node": "accounts\\.retrieveExternalAccount\\(",
+      "php": "accounts->retrieveExternalAccount\\("
     }
   },
   {
-    "url": "/external_bank_accounts",
+    "url": "/external_account_bank_accounts/update",
     "regexps": {
-      "javascript": "accounts\\.listExternalAccounts"
+      "ruby": "Account\\.update_external_account\\(",
+      "go": "card\\.Update\\(",
+      "python": "Account\\.modify_external_account\\(",
+      "node": "accounts\\.updateExternalAccount\\(",
+      "php": "accounts->updateExternalAccount\\("
     }
   },
   {
-    "url": "/person/retrieve",
+    "url": "/external_account_bank_accounts/delete",
     "regexps": {
-      "javascript": "accounts\\.retrievePerson"
+      "ruby": "Account\\.delete_external_account\\(",
+      "go": "card\\.Del\\(",
+      "python": "Account\\.delete_external_account\\(",
+      "node": "accounts\\.deleteExternalAccount\\(",
+      "php": "accounts->deleteExternalAccount\\("
     }
   },
   {
-    "url": "/person/update",
+    "url": "/external_account_bank_accounts/list",
     "regexps": {
-      "javascript": "accounts\\.updatePerson"
+      "ruby": "Account\\.list_external_accounts\\(",
+      "go": "bankaccount\\.List\\(",
+      "python": "Account\\.list_external_accounts\\(",
+      "node": "accounts\\.listExternalAccounts\\(",
+      "php": "accounts->allExternalAccounts\\("
     }
   },
   {
-    "url": "/person/create",
+    "url": "/external_account_cards/create",
     "regexps": {
-      "javascript": "accounts\\.createPerson"
+      "ruby": "Account\\.create_external_account\\(",
+      "go": "card\\.New\\(",
+      "python": "Account\\.create_external_account\\(",
+      "node": "accounts\\.createExternalAccount\\(",
+      "php": "accounts->createExternalAccount\\("
     }
   },
   {
-    "url": "/person/list",
+    "url": "/external_account_cards/retrieve",
     "regexps": {
-      "javascript": "accounts\\.listPersons"
+      "ruby": "Account\\.retrieve_external_account\\(",
+      "go": "card\\.Get\\(",
+      "python": "Account\\.retrieve_external_account\\(",
+      "node": "accounts\\.retrieveExternalAccount\\(",
+      "php": "accounts->retrieveExternalAccount\\("
     }
   },
   {
-    "url": "/topups/retrieve",
+    "url": "/external_account_cards/update",
     "regexps": {
-      "javascript": "topups\\.retrieve"
+      "ruby": "Account\\.update_external_account\\(",
+      "go": "card\\.Update\\(",
+      "python": "Account\\.modify_external_account\\(",
+      "node": "accounts\\.updateExternalAccount\\(",
+      "php": "accounts->updateExternalAccount\\("
     }
   },
   {
-    "url": "/topups/update",
+    "url": "/external_account_cards/delete",
     "regexps": {
-      "javascript": "topups\\.update"
+      "ruby": "Account\\.delete_external_account\\(",
+      "go": "card\\.Del\\(",
+      "python": "Account\\.delete_external_account\\(",
+      "node": "accounts\\.deleteExternalAccount\\(",
+      "php": "accounts->deleteExternalAccount\\("
+    }
+  },
+  {
+    "url": "/external_account_cards/list",
+    "regexps": {
+      "ruby": "Account\\.list_external_accounts\\(",
+      "go": "card\\.List\\(",
+      "python": "Account\\.list_external_accounts\\(",
+      "node": "accounts\\.listExternalAccounts\\(",
+      "php": "accounts->allExternalAccounts\\("
+    }
+  },
+  {
+    "url": "/persons/create",
+    "regexps": {
+      "ruby": "Account\\.create_person\\(",
+      "go": "person\\.New\\(",
+      "python": "Account\\.create_person\\(",
+      "node": "accounts\\.createPerson\\(",
+      "php": "accounts->createPerson\\("
+    }
+  },
+  {
+    "url": "/persons/retrieve",
+    "regexps": {
+      "ruby": "Account\\.retrieve_person\\(",
+      "go": "person\\.Get\\(",
+      "python": "Account\\.retrieve_person\\(",
+      "node": "accounts\\.retrievePerson\\(",
+      "php": "accounts->retrievePerson\\("
+    }
+  },
+  {
+    "url": "/persons/update",
+    "regexps": {
+      "ruby": "Account\\.update_person\\(",
+      "go": "person\\.Update\\(",
+      "python": "Account\\.modify_person\\(",
+      "node": "accounts\\.updatePerson\\(",
+      "php": "accounts->updatePerson\\("
+    }
+  },
+  {
+    "url": "/persons/delete",
+    "regexps": {
+      "ruby": "Account\\.delete_person\\(",
+      "go": "person\\.Del\\(",
+      "python": "Account\\.delete_person\\(",
+      "node": "accounts\\.deletePerson\\(",
+      "php": "accounts->deletePerson\\("
+    }
+  },
+  {
+    "url": "/persons/list",
+    "regexps": {
+      "ruby": "Account\\.list_persons\\(",
+      "go": "person\\.List\\(",
+      "python": "Account\\.list_persons\\(",
+      "node": "accounts\\.listPersons\\(",
+      "php": "accounts->allPersons\\("
     }
   },
   {
     "url": "/topups/create",
     "regexps": {
-      "javascript": "topups\\.create"
+      "ruby": "Topup\\.create\\(",
+      "go": "topup\\.New\\(",
+      "python": "Topup\\.create\\(",
+      "java": "Topup\\.create\\(",
+      "node": "topups\\.create\\(",
+      "php": "topups->create\\("
     }
   },
   {
-    "url": "/topups/cancel",
+    "url": "/topups/retrieve",
     "regexps": {
-      "javascript": "topups\\.cancel"
+      "ruby": "Topup\\.retrieve\\(",
+      "go": "topup\\.Get\\(",
+      "python": "Topup\\.retrieve\\(",
+      "java": "Topup\\.retrieve\\(",
+      "node": "topups\\.retrieve\\(",
+      "php": "topups->retrieve\\("
+    }
+  },
+  {
+    "url": "/topups/update",
+    "regexps": {
+      "ruby": "Topup\\.update\\(",
+      "go": "topup\\.Update\\(",
+      "python": "Topup\\.modify\\(",
+      "node": "topups\\.update\\(",
+      "php": "topups->update\\("
     }
   },
   {
     "url": "/topups/list",
     "regexps": {
-      "javascript": "topups\\.list"
+      "ruby": "Topup\\.list\\(",
+      "go": "topup\\.List\\(",
+      "python": "Topup\\.list\\(",
+      "java": "Topup\\.list\\(",
+      "node": "topups\\.list\\(",
+      "php": "topups->all\\("
     }
   },
   {
-    "url": "/transfers/retrieve",
+    "url": "/topups/cancel",
     "regexps": {
-      "javascript": "transfers\\.retrieve"
-    }
-  },
-  {
-    "url": "/transfers/update",
-    "regexps": {
-      "javascript": "transfers\\.update"
+      "ruby": "Topup\\.cancel\\(",
+      "go": "topup\\.Cancel\\(",
+      "python": "Topup\\.cancel\\(",
+      "node": "topups\\.cancel\\(",
+      "php": "topups->cancel\\("
     }
   },
   {
     "url": "/transfers/create",
     "regexps": {
-      "javascript": "transfers\\.create"
+      "ruby": "Transfer\\.create\\(",
+      "go": "transfer\\.New\\(",
+      "python": "Transfer\\.create\\(",
+      "java": "Transfer\\.create\\(",
+      "node": "transfers\\.create\\(",
+      "php": "transfers->create\\("
     }
   },
   {
-    "url": "/transfers/cancel",
+    "url": "/transfers/retrieve",
     "regexps": {
-      "javascript": "transfers\\.cancel"
+      "ruby": "Transfer\\.retrieve\\(",
+      "go": "transfer\\.Get\\(",
+      "python": "Transfer\\.retrieve\\(",
+      "java": "Transfer\\.retrieve\\(",
+      "node": "transfers\\.retrieve\\(",
+      "php": "transfers->retrieve\\("
+    }
+  },
+  {
+    "url": "/transfers/update",
+    "regexps": {
+      "ruby": "Transfer\\.update\\(",
+      "go": "transfer\\.Update\\(",
+      "python": "Transfer\\.modify\\(",
+      "node": "transfers\\.update\\(",
+      "php": "transfers->update\\("
     }
   },
   {
     "url": "/transfers/list",
     "regexps": {
-      "javascript": "transfers\\.list"
-    }
-  },
-  {
-    "url": "/transfer_reversals/retrieve",
-    "regexps": {
-      "javascript": "transfers\\.retrieveReversal"
-    }
-  },
-  {
-    "url": "/transfer_reversals/update",
-    "regexps": {
-      "javascript": "transfers\\.updateReversal"
+      "ruby": "Transfer\\.list\\(",
+      "go": "transfer\\.List\\(",
+      "python": "Transfer\\.list\\(",
+      "java": "Transfer\\.list\\(",
+      "node": "transfers\\.list\\(",
+      "php": "transfers->all\\("
     }
   },
   {
     "url": "/transfer_reversals/create",
     "regexps": {
-      "javascript": "transfers\\.createReversal"
+      "ruby": "Transfer\\.create_reversal\\(",
+      "go": "reversal\\.New\\(",
+      "python": "Transfer\\.create_reversal\\(",
+      "node": "transfers\\.createReversal\\(",
+      "php": "transfers->createReversal\\("
+    }
+  },
+  {
+    "url": "/transfer_reversals/retrieve",
+    "regexps": {
+      "ruby": "Transfer\\.retrieve_reversal\\(",
+      "go": "reversal\\.Get\\(",
+      "python": "Transfer\\.retrieve_reversal\\(",
+      "node": "transfers\\.retrieveReversal\\(",
+      "php": "transfers->retrieveReversal\\("
+    }
+  },
+  {
+    "url": "/transfer_reversals/update",
+    "regexps": {
+      "ruby": "Transfer\\.update_reversal\\(",
+      "go": "reversal\\.Update\\(",
+      "python": "Transfer\\.modify_reversal\\(",
+      "node": "transfers\\.updateReversal\\(",
+      "php": "transfers->updateReversal\\("
     }
   },
   {
     "url": "/transfer_reversals/list",
     "regexps": {
-      "javascript": "transfers\\.listReversals"
+      "ruby": "Transfer\\.list_reversals\\(",
+      "go": "reversal\\.List\\(",
+      "python": "Transfer\\.list_reversals\\(",
+      "node": "transfers\\.listReversals\\(",
+      "php": "transfers->allReversals\\("
     }
   },
   {
     "url": "/radar/early_fraud_warnings/retrieve",
     "regexps": {
-      "javascript": "radar\\.earlyFraudWarnings\\.retrieve"
+      "ruby": "Radar::EarlyFraudWarning\\.retrieve\\(",
+      "go": "earlyfraudwarning\\.Get\\(",
+      "python": "radar\\.EarlyFraudWarning\\.retrieve\\(",
+      "java": "EarlyFraudWarning\\.retrieve\\(",
+      "node": "radar\\.earlyFraudWarnings\\.retrieve\\(",
+      "php": "radar->earlyFraudWarnings->retrieve\\("
     }
   },
   {
     "url": "/radar/early_fraud_warnings/list",
     "regexps": {
-      "javascript": "radar\\.earlyFraudWarnings\\.list"
-    }
-  },
-  {
-    "url": "/radar/reviews/retrieve",
-    "regexps": {
-      "javascript": "reviews\\.retrieve"
-    }
-  },
-  {
-    "url": "/radar/reviews/list",
-    "regexps": {
-      "javascript": "reviews\\.list"
+      "ruby": "Radar::EarlyFraudWarning\\.list\\(",
+      "go": "earlyfraudwarning\\.List\\(",
+      "python": "radar\\.EarlyFraudWarning\\.list\\(",
+      "java": "EarlyFraudWarning\\.list\\(",
+      "node": "radar\\.earlyFraudWarnings\\.list\\(",
+      "php": "radar->earlyFraudWarnings->all\\("
     }
   },
   {
     "url": "/radar/reviews/approve",
     "regexps": {
-      "javascript": "reviews\\.approve"
+      "ruby": "Review\\.approve\\(",
+      "go": "review\\.Approve\\(",
+      "python": "Review\\.approve\\(",
+      "node": "reviews\\.approve\\(",
+      "php": "reviews->approve\\("
     }
   },
   {
-    "url": "/radar/value_lists/retrieve",
+    "url": "/radar/reviews/retrieve",
     "regexps": {
-      "javascript": "radar\\.valuesLists\\.retrieve"
+      "ruby": "Review\\.retrieve\\(",
+      "go": "review\\.Get\\(",
+      "python": "Review\\.retrieve\\(",
+      "java": "Review\\.retrieve\\(",
+      "node": "reviews\\.retrieve\\(",
+      "php": "reviews->retrieve\\("
+    }
+  },
+  {
+    "url": "/radar/reviews/list",
+    "regexps": {
+      "ruby": "Review\\.list\\(",
+      "go": "review\\.List\\(",
+      "python": "Review\\.list\\(",
+      "java": "Review\\.list\\(",
+      "node": "reviews\\.list\\(",
+      "php": "reviews->all\\("
     }
   },
   {
     "url": "/radar/value_lists/create",
     "regexps": {
-      "javascript": "radar\\.valuesLists\\.create"
+      "ruby": "Radar::ValueList\\.create\\(",
+      "go": "valuelist\\.New\\(",
+      "python": "radar\\.ValueList\\.create\\(",
+      "java": "ValueList\\.create\\(",
+      "node": "radar\\.valueLists\\.create\\(",
+      "php": "radar->valueLists->create\\("
+    }
+  },
+  {
+    "url": "/radar/value_lists/retrieve",
+    "regexps": {
+      "ruby": "Radar::ValueList\\.retrieve\\(",
+      "go": "valuelist\\.Get\\(",
+      "python": "radar\\.ValueList\\.retrieve\\(",
+      "java": "ValueList\\.retrieve\\(",
+      "node": "radar\\.valueLists\\.retrieve\\(",
+      "php": "radar->valueLists->retrieve\\("
     }
   },
   {
     "url": "/radar/value_lists/update",
     "regexps": {
-      "javascript": "radar\\.valuesLists\\.update"
+      "ruby": "Radar::ValueList\\.update\\(",
+      "go": "valuelist\\.Update\\(",
+      "python": "radar\\.ValueList\\.modify\\(",
+      "node": "radar\\.valueLists\\.update\\(",
+      "php": "radar->valueLists->update\\("
     }
   },
   {
     "url": "/radar/value_lists/delete",
     "regexps": {
-      "javascript": "radar\\.valuesLists\\.del"
+      "ruby": "Radar::ValueList\\.delete\\(",
+      "go": "valuelist\\.Del\\(",
+      "python": "radar\\.ValueList\\.delete\\(",
+      "node": "radar\\.valueLists\\.del\\(",
+      "php": "radar->valueLists->delete\\("
     }
   },
   {
     "url": "/radar/value_lists/list",
     "regexps": {
-      "javascript": "radar\\.valuesLists\\.list"
+      "ruby": "Radar::ValueList\\.list\\(",
+      "go": "valuelist\\.List\\(",
+      "python": "radar\\.ValueList\\.list\\(",
+      "java": "ValueList\\.list\\(",
+      "node": "radar\\.valueLists\\.list\\(",
+      "php": "radar->valueLists->all\\("
+    }
+  },
+  {
+    "url": "/radar/value_list_items/create",
+    "regexps": {
+      "ruby": "Radar::ValueListItem\\.create\\(",
+      "go": "valuelistitem\\.New\\(",
+      "python": "radar\\.ValueListItem\\.create\\(",
+      "java": "ValueListItem\\.create\\(",
+      "node": "radar\\.valueListItems\\.create\\(",
+      "php": "radar->valueListItems->create\\("
+    }
+  },
+  {
+    "url": "/radar/value_list_items/retrieve",
+    "regexps": {
+      "ruby": "Radar::ValueListItem\\.retrieve\\(",
+      "go": "valuelistitem\\.Get\\(",
+      "python": "radar\\.ValueListItem\\.retrieve\\(",
+      "java": "ValueListItem\\.retrieve\\(",
+      "node": "radar\\.valueListItems\\.retrieve\\(",
+      "php": "radar->valueListItems->retrieve\\("
+    }
+  },
+  {
+    "url": "/radar/value_list_items/delete",
+    "regexps": {
+      "ruby": "Radar::ValueListItem\\.delete\\(",
+      "go": "valuelistitem\\.Del\\(",
+      "python": "radar\\.ValueListItem\\.delete\\(",
+      "node": "radar\\.valueListItems\\.del\\(",
+      "php": "radar->valueListItems->delete\\("
+    }
+  },
+  {
+    "url": "/radar/value_list_items/list",
+    "regexps": {
+      "ruby": "Radar::ValueListItem\\.list\\(",
+      "go": "valuelistitem\\.List\\(",
+      "python": "radar\\.ValueListItem\\.list\\(",
+      "java": "ValueListItem\\.list\\(",
+      "node": "radar\\.valueListItems\\.list\\(",
+      "php": "radar->valueListItems->all\\("
     }
   },
   {
     "url": "/issuing/authorizations/retrieve",
     "regexps": {
-      "javascript": "issuing\\.authorizations\\.retrieve"
-    }
-  },
-  {
-    "url": "/issuing/authorizations/approve",
-    "regexps": {
-      "javascript": "issuing\\.authorizations\\.approve"
+      "ruby": "Issuing::Authorization\\.retrieve\\(",
+      "go": "authorization\\.Get\\(",
+      "python": "issuing\\.Authorization\\.retrieve\\(",
+      "java": "Authorization\\.retrieve\\(",
+      "node": "issuing\\.authorizations\\.retrieve\\(",
+      "php": "issuing->authorizations->retrieve\\("
     }
   },
   {
     "url": "/issuing/authorizations/update",
     "regexps": {
-      "javascript": "issuing\\.authorizations\\.update"
+      "ruby": "Issuing::Authorization\\.update\\(",
+      "go": "authorization\\.Update\\(",
+      "python": "issuing\\.Authorization\\.modify\\(",
+      "node": "issuing\\.authorizations\\.update\\(",
+      "php": "issuing->authorizations->update\\("
+    }
+  },
+  {
+    "url": "/issuing/authorizations/approve",
+    "regexps": {
+      "ruby": "Issuing::Authorization\\.approve\\(",
+      "go": "authorization\\.Approve\\(",
+      "python": "issuing\\.Authorization\\.approve\\(",
+      "node": "issuing\\.authorizations\\.approve\\(",
+      "php": "issuing->authorizations->approve\\("
     }
   },
   {
     "url": "/issuing/authorizations/decline",
     "regexps": {
-      "javascript": "issuing\\.authorizations\\.decline"
+      "ruby": "Issuing::Authorization\\.decline\\(",
+      "go": "authorization\\.Decline\\(",
+      "python": "issuing\\.Authorization\\.decline\\(",
+      "node": "issuing\\.authorizations\\.decline\\(",
+      "php": "issuing->authorizations->decline\\("
     }
   },
   {
     "url": "/issuing/authorizations/list",
     "regexps": {
-      "javascript": "issuing\\.authorizations\\.list"
-    }
-  },
-  {
-    "url": "/issuing/cardholders/retrieve",
-    "regexps": {
-      "javascript": "issuing\\.cardholders\\.retrieve"
+      "ruby": "Issuing::Authorization\\.list\\(",
+      "go": "authorization\\.List\\(",
+      "python": "issuing\\.Authorization\\.list\\(",
+      "java": "Authorization\\.list\\(",
+      "node": "issuing\\.authorizations\\.list\\(",
+      "php": "issuing->authorizations->all\\("
     }
   },
   {
     "url": "/issuing/cardholders/create",
     "regexps": {
-      "javascript": "issuing\\.cardholders\\.create"
+      "ruby": "Issuing::Cardholder\\.create\\(",
+      "go": "cardholder\\.New\\(",
+      "python": "issuing\\.Cardholder\\.create\\(",
+      "java": "Cardholder\\.create\\(",
+      "node": "issuing\\.cardholders\\.create\\(",
+      "php": "issuing->cardholders->create\\("
+    }
+  },
+  {
+    "url": "/issuing/cardholders/retrieve",
+    "regexps": {
+      "ruby": "Issuing::Cardholder\\.retrieve\\(",
+      "go": "cardholder\\.Get\\(",
+      "python": "issuing\\.Cardholder\\.retrieve\\(",
+      "java": "Cardholder\\.retrieve\\(",
+      "node": "issuing\\.cardholders\\.retrieve\\(",
+      "php": "issuing->cardholders->retrieve\\("
     }
   },
   {
     "url": "/issuing/cardholders/update",
     "regexps": {
-      "javascript": "issuing\\.cardholders\\.update"
+      "ruby": "Issuing::Cardholder\\.update\\(",
+      "go": "cardholder\\.Update\\(",
+      "python": "issuing\\.Cardholder\\.modify\\(",
+      "node": "issuing\\.cardholders\\.update\\(",
+      "php": "issuing->cardholders->update\\("
     }
   },
   {
     "url": "/issuing/cardholders/list",
     "regexps": {
-      "javascript": "issuing\\.cardholders\\.list"
-    }
-  },
-  {
-    "url": "/issuing/cards/retrieve",
-    "regexps": {
-      "javascript": "issuing\\.cards\\.retrieve"
+      "ruby": "Issuing::Cardholder\\.list\\(",
+      "go": "cardholder\\.List\\(",
+      "python": "issuing\\.Cardholder\\.list\\(",
+      "java": "Cardholder\\.list\\(",
+      "node": "issuing\\.cardholders\\.list\\(",
+      "php": "issuing->cardholders->all\\("
     }
   },
   {
     "url": "/issuing/cards/create",
     "regexps": {
-      "javascript": "issuing\\.cards\\.create"
+      "ruby": "Issuing::Card\\.create\\(",
+      "go": "card\\.New\\(",
+      "python": "issuing\\.Card\\.create\\(",
+      "java": "Card\\.create\\(",
+      "node": "issuing\\.cards\\.create\\(",
+      "php": "issuing->cards->create\\("
+    }
+  },
+  {
+    "url": "/issuing/cards/retrieve",
+    "regexps": {
+      "ruby": "Issuing::Card\\.retrieve\\(",
+      "go": "card\\.Get\\(",
+      "python": "issuing\\.Card\\.retrieve\\(",
+      "java": "Card\\.retrieve\\(",
+      "node": "issuing\\.cards\\.retrieve\\(",
+      "php": "issuing->cards->retrieve\\("
     }
   },
   {
     "url": "/issuing/cards/update",
     "regexps": {
-      "javascript": "issuing\\.cards\\.update"
+      "ruby": "Issuing::Card\\.update\\(",
+      "go": "card\\.Update\\(",
+      "python": "issuing\\.Card\\.modify\\(",
+      "node": "issuing\\.cards\\.update\\(",
+      "php": "issuing->cards->update\\("
     }
   },
   {
     "url": "/issuing/cards/list",
     "regexps": {
-      "javascript": "issuing\\.cards\\.list"
+      "ruby": "Issuing::Card\\.list\\(",
+      "go": "card\\.List\\(",
+      "python": "issuing\\.Card\\.list\\(",
+      "java": "Card\\.list\\(",
+      "node": "issuing\\.cards\\.list\\(",
+      "php": "issuing->cards->all\\("
+    }
+  },
+  {
+    "url": "/issuing/disputes/create",
+    "regexps": {
+      "ruby": "Issuing::Dispute\\.create\\(",
+      "go": "dispute\\.New\\(",
+      "python": "issuing\\.Dispute\\.create\\(",
+      "java": "Dispute\\.create\\(",
+      "node": "issuing\\.disputes\\.create\\(",
+      "php": "issuing->disputes->create\\("
+    }
+  },
+  {
+    "url": "/issuing/dispute/submit",
+    "regexps": {
+      "ruby": "Issuing::Dispute\\.submit\\(",
+      "go": "dispute\\.Submit\\(",
+      "python": "issuing\\.Dispute\\.submit\\(",
+      "node": "issuing\\.disputes\\.submit\\(",
+      "php": "issuing->disputes->submit\\("
+    }
+  },
+  {
+    "url": "/issuing/disputes/retrieve",
+    "regexps": {
+      "ruby": "Issuing::Dispute\\.retrieve\\(",
+      "go": "dispute\\.Get\\(",
+      "python": "issuing\\.Dispute\\.retrieve\\(",
+      "java": "Dispute\\.retrieve\\(",
+      "node": "issuing\\.disputes\\.retrieve\\(",
+      "php": "issuing->disputes->retrieve\\("
+    }
+  },
+  {
+    "url": "/issuing/disputes/update",
+    "regexps": {
+      "ruby": "Issuing::Dispute\\.update\\(",
+      "go": "dispute\\.Update\\(",
+      "python": "issuing\\.Dispute\\.modify\\(",
+      "node": "issuing\\.disputes\\.update\\(",
+      "php": "issuing->disputes->update\\("
+    }
+  },
+  {
+    "url": "/issuing/disputes/list",
+    "regexps": {
+      "ruby": "Issuing::Dispute\\.list\\(",
+      "go": "dispute\\.List\\(",
+      "python": "issuing\\.Dispute\\.list\\(",
+      "java": "Dispute\\.list\\(",
+      "node": "issuing\\.disputes\\.list\\(",
+      "php": "issuing->disputes->all\\("
     }
   },
   {
     "url": "/issuing/transactions/retrieve",
     "regexps": {
-      "javascript": "issuing\\.transactions\\.retrieve"
+      "ruby": "Issuing::Transaction\\.retrieve\\(",
+      "go": "transaction\\.Get\\(",
+      "python": "issuing\\.Transaction\\.retrieve\\(",
+      "java": "Transaction\\.retrieve\\(",
+      "node": "issuing\\.transactions\\.retrieve\\(",
+      "php": "issuing->transactions->retrieve\\("
     }
   },
   {
     "url": "/issuing/transactions/update",
     "regexps": {
-      "javascript": "issuing\\.transactions\\.update"
+      "ruby": "Issuing::Transaction\\.update\\(",
+      "go": "transaction\\.Update\\(",
+      "python": "issuing\\.Transaction\\.modify\\(",
+      "node": "issuing\\.transactions\\.update\\(",
+      "php": "issuing->transactions->update\\("
     }
   },
   {
     "url": "/issuing/transactions/list",
     "regexps": {
-      "javascript": "issuing\\.transactions\\.list"
-    }
-  },
-  {
-    "url": "/terminal/locations/create",
-    "regexps": {
-      "javascript": "terminal\\.locations\\.create"
-    }
-  },
-  {
-    "url": "/terminal/locations/retrieve",
-    "regexps": {
-      "javascript": "terminal\\.locations\\.retrieve"
-    }
-  },
-  {
-    "url": "/terminal/locations/update",
-    "regexps": {
-      "javascript": "terminal\\.locations\\.update"
-    }
-  },
-  {
-    "url": "/terminal/locations/delete",
-    "regexps": {
-      "javascript": "terminal\\.locations\\.del"
-    }
-  },
-  {
-    "url": "/terminal/locations/list",
-    "regexps": {
-      "javascript": "terminal\\.locations\\.list"
+      "ruby": "Issuing::Transaction\\.list\\(",
+      "go": "transaction\\.List\\(",
+      "python": "issuing\\.Transaction\\.list\\(",
+      "java": "Transaction\\.list\\(",
+      "node": "issuing\\.transactions\\.list\\(",
+      "php": "issuing->transactions->all\\("
     }
   },
   {
     "url": "/terminal/connection_tokens/create",
     "regexps": {
-      "javascript": "terminal\\.connectionTokens\\.create"
+      "ruby": "Terminal::ConnectionToken\\.create\\(",
+      "go": "connectiontoken\\.New\\(",
+      "python": "terminal\\.ConnectionToken\\.create\\(",
+      "java": "ConnectionToken\\.create\\(",
+      "node": "terminal\\.connectionTokens\\.create\\(",
+      "php": "terminal->connectionTokens->create\\("
+    }
+  },
+  {
+    "url": "/terminal/locations/create",
+    "regexps": {
+      "ruby": "Terminal::Location\\.create\\(",
+      "go": "location\\.New\\(",
+      "python": "terminal\\.Location\\.create\\(",
+      "java": "Location\\.create\\(",
+      "node": "terminal\\.locations\\.create\\(",
+      "php": "terminal->locations->create\\("
+    }
+  },
+  {
+    "url": "/terminal/locations/retrieve",
+    "regexps": {
+      "ruby": "Terminal::Location\\.retrieve\\(",
+      "go": "location\\.Get\\(",
+      "python": "terminal\\.Location\\.retrieve\\(",
+      "java": "Location\\.retrieve\\(",
+      "node": "terminal\\.locations\\.retrieve\\(",
+      "php": "terminal->locations->retrieve\\("
+    }
+  },
+  {
+    "url": "/terminal/locations/update",
+    "regexps": {
+      "ruby": "Terminal::Location\\.update\\(",
+      "go": "location\\.Update\\(",
+      "python": "terminal\\.Location\\.modify\\(",
+      "node": "terminal\\.locations\\.update\\(",
+      "php": "terminal->locations->update\\("
+    }
+  },
+  {
+    "url": "/terminal/locations/delete",
+    "regexps": {
+      "ruby": "Terminal::Location\\.delete\\(",
+      "go": "location\\.Del\\(",
+      "python": "terminal\\.Location\\.delete\\(",
+      "node": "terminal\\.locations\\.del\\(",
+      "php": "terminal->locations->delete\\("
+    }
+  },
+  {
+    "url": "/terminal/locations/list",
+    "regexps": {
+      "ruby": "Terminal::Location\\.list\\(",
+      "go": "location\\.List\\(",
+      "python": "terminal\\.Location\\.list\\(",
+      "java": "Location\\.list\\(",
+      "node": "terminal\\.locations\\.list\\(",
+      "php": "terminal->locations->all\\("
     }
   },
   {
     "url": "/terminal/readers/create",
     "regexps": {
-      "javascript": "terminal\\.readers\\.create"
+      "ruby": "Terminal::Reader\\.create\\(",
+      "go": "reader\\.New\\(",
+      "python": "terminal\\.Reader\\.create\\(",
+      "java": "Reader\\.create\\(",
+      "node": "terminal\\.readers\\.create\\(",
+      "php": "terminal->readers->create\\("
     }
   },
   {
     "url": "/terminal/readers/retrieve",
     "regexps": {
-      "javascript": "terminal\\.readers\\.retrieve"
+      "ruby": "Terminal::Reader\\.retrieve\\(",
+      "go": "reader\\.Get\\(",
+      "python": "terminal\\.Reader\\.retrieve\\(",
+      "java": "Reader\\.retrieve\\(",
+      "node": "terminal\\.readers\\.retrieve\\(",
+      "php": "terminal->readers->retrieve\\("
     }
   },
   {
     "url": "/terminal/readers/update",
     "regexps": {
-      "javascript": "terminal\\.readers\\.update"
+      "ruby": "Terminal::Reader\\.update\\(",
+      "go": "reader\\.Update\\(",
+      "python": "terminal\\.Reader\\.modify\\(",
+      "node": "terminal\\.readers\\.update\\(",
+      "php": "terminal->readers->update\\("
     }
   },
   {
     "url": "/terminal/readers/delete",
     "regexps": {
-      "javascript": "terminal\\.readers\\.del"
+      "ruby": "Terminal::Reader\\.delete\\(",
+      "go": "reader\\.Del\\(",
+      "python": "terminal\\.Reader\\.delete\\(",
+      "node": "terminal\\.readers\\.del\\(",
+      "php": "terminal->readers->delete\\("
     }
   },
   {
     "url": "/terminal/readers/list",
     "regexps": {
-      "javascript": "terminal\\.readers\\.list"
-    }
-  },
-  {
-    "url": "/orders/retrieve",
-    "regexps": {
-      "javascript": "orders\\.retrieve"
-    }
-  },
-  {
-    "url": "/orders/update",
-    "regexps": {
-      "javascript": "orders\\.update"
+      "ruby": "Terminal::Reader\\.list\\(",
+      "go": "reader\\.List\\(",
+      "python": "terminal\\.Reader\\.list\\(",
+      "java": "Reader\\.list\\(",
+      "node": "terminal\\.readers\\.list\\(",
+      "php": "terminal->readers->all\\("
     }
   },
   {
     "url": "/orders/create",
     "regexps": {
-      "javascript": "orders\\.create"
+      "ruby": "Order\\.create\\(",
+      "go": "order\\.New\\(",
+      "python": "Order\\.create\\(",
+      "java": "Order\\.create\\(",
+      "node": "orders\\.create\\(",
+      "php": "orders->create\\("
     }
   },
   {
-    "url": "/orders/return",
+    "url": "/orders/retrieve",
     "regexps": {
-      "javascript": "orders\\.return"
+      "ruby": "Order\\.retrieve\\(",
+      "go": "order\\.Get\\(",
+      "python": "Order\\.retrieve\\(",
+      "java": "Order\\.retrieve\\(",
+      "node": "orders\\.retrieve\\(",
+      "php": "orders->retrieve\\("
+    }
+  },
+  {
+    "url": "/orders/update",
+    "regexps": {
+      "ruby": "Order\\.update\\(",
+      "go": "order\\.Update\\(",
+      "python": "Order\\.modify\\(",
+      "node": "orders\\.update\\(",
+      "php": "orders->update\\("
     }
   },
   {
     "url": "/orders/pay",
     "regexps": {
-      "javascript": "orders\\.pay"
+      "ruby": "Order\\.pay\\(",
+      "go": "order\\.Pay\\(",
+      "python": "Order\\.pay\\(",
+      "node": "orders\\.pay\\(",
+      "php": "orders->pay\\("
     }
   },
   {
     "url": "/orders/list",
     "regexps": {
-      "javascript": "orders\\.list"
+      "ruby": "Order\\.list\\(",
+      "go": "order\\.List\\(",
+      "python": "Order\\.list\\(",
+      "java": "Order\\.list\\(",
+      "node": "orders\\.list\\(",
+      "php": "orders->all\\("
+    }
+  },
+  {
+    "url": "/orders/return",
+    "regexps": {
+      "ruby": "Order\\.custom\\(",
+      "go": "order\\.Custom\\(",
+      "python": "Order\\.custom\\(",
+      "java": "Order\\.custom\\(",
+      "node": "orders\\.custom\\(",
+      "php": "orders->custom\\("
     }
   },
   {
     "url": "/order_returns/retrieve",
     "regexps": {
-      "javascript": "ordersReturns\\.retrieve"
+      "ruby": "OrderReturn\\.retrieve\\(",
+      "go": "orderreturn\\.Get\\(",
+      "python": "OrderReturn\\.retrieve\\(",
+      "java": "OrderReturn\\.retrieve\\(",
+      "node": "orderReturns\\.retrieve\\(",
+      "php": "orderReturns->retrieve\\("
     }
   },
   {
     "url": "/order_returns/list",
     "regexps": {
-      "javascript": "ordersReturns\\.list"
-    }
-  },
-  {
-    "url": "/skus/retrieve",
-    "regexps": {
-      "javascript": "skus\\.retrieve"
-    }
-  },
-  {
-    "url": "/skus/update",
-    "regexps": {
-      "javascript": "skus\\.update"
+      "ruby": "OrderReturn\\.list\\(",
+      "go": "orderreturn\\.List\\(",
+      "python": "OrderReturn\\.list\\(",
+      "java": "OrderReturn\\.list\\(",
+      "node": "orderReturns\\.list\\(",
+      "php": "orderReturns->all\\("
     }
   },
   {
     "url": "/skus/create",
     "regexps": {
-      "javascript": "skus\\.create"
+      "ruby": "SKU\\.create\\(",
+      "go": "sku\\.New\\(",
+      "python": "SKU\\.create\\(",
+      "java": "Sku\\.create\\(",
+      "node": "skus\\.create\\(",
+      "php": "skus->create\\("
     }
   },
   {
-    "url": "/skus/delete",
+    "url": "/skus/retrieve",
     "regexps": {
-      "javascript": "skus\\.del"
+      "ruby": "SKU\\.retrieve\\(",
+      "go": "sku\\.Get\\(",
+      "python": "SKU\\.retrieve\\(",
+      "java": "Sku\\.retrieve\\(",
+      "node": "skus\\.retrieve\\(",
+      "php": "skus->retrieve\\("
+    }
+  },
+  {
+    "url": "/skus/update",
+    "regexps": {
+      "ruby": "SKU\\.update\\(",
+      "go": "sku\\.Update\\(",
+      "python": "SKU\\.modify\\(",
+      "node": "skus\\.update\\(",
+      "php": "skus->update\\("
     }
   },
   {
     "url": "/skus/list",
     "regexps": {
-      "javascript": "skus\\.list"
+      "ruby": "SKU\\.list\\(",
+      "go": "sku\\.List\\(",
+      "python": "SKU\\.list\\(",
+      "java": "Sku\\.list\\(",
+      "node": "skus\\.list\\(",
+      "php": "skus->all\\("
+    }
+  },
+  {
+    "url": "/skus/delete",
+    "regexps": {
+      "ruby": "SKU\\.delete\\(",
+      "go": "sku\\.Del\\(",
+      "python": "SKU\\.delete\\(",
+      "node": "skus\\.del\\(",
+      "php": "skus->delete\\("
     }
   },
   {
     "url": "/sigma/scheduled_queries/retrieve",
     "regexps": {
-      "javascript": "sigma\\.scheduledQueryRuns\\.retrieve"
+      "ruby": "Sigma::ScheduledQueryRun\\.retrieve\\(",
+      "go": "scheduledqueryrun\\.Get\\(",
+      "python": "sigma\\.ScheduledQueryRun\\.retrieve\\(",
+      "java": "ScheduledQueryRun\\.retrieve\\(",
+      "node": "sigma\\.scheduledQueryRuns\\.retrieve\\(",
+      "php": "sigma->scheduledQueryRuns->retrieve\\("
     }
   },
   {
     "url": "/sigma/scheduled_queries/list",
     "regexps": {
-      "javascript": "sigma\\.scheduledQueryRuns\\.list"
+      "ruby": "Sigma::ScheduledQueryRun\\.list\\(",
+      "go": "scheduledqueryrun\\.List\\(",
+      "python": "sigma\\.ScheduledQueryRun\\.list\\(",
+      "java": "ScheduledQueryRun\\.list\\(",
+      "node": "sigma\\.scheduledQueryRuns\\.list\\(",
+      "php": "sigma->scheduledQueryRuns->all\\("
     }
   },
   {
     "url": "/reporting/report_run/create",
     "regexps": {
-      "javascript": "reporting\\.reportRuns\\.create"
+      "ruby": "Reporting::ReportRun\\.create\\(",
+      "go": "reportrun\\.New\\(",
+      "python": "reporting\\.ReportRun\\.create\\(",
+      "java": "ReportRun\\.create\\(",
+      "node": "reporting\\.reportRuns\\.create\\(",
+      "php": "reporting->reportRuns->create\\("
     }
   },
   {
     "url": "/reporting/report_run/retrieve",
     "regexps": {
-      "javascript": "reporting\\.reportRuns\\.retrieve"
+      "ruby": "Reporting::ReportRun\\.retrieve\\(",
+      "go": "reportrun\\.Get\\(",
+      "python": "reporting\\.ReportRun\\.retrieve\\(",
+      "java": "ReportRun\\.retrieve\\(",
+      "node": "reporting\\.reportRuns\\.retrieve\\(",
+      "php": "reporting->reportRuns->retrieve\\("
     }
   },
   {
     "url": "/reporting/report_run/list",
     "regexps": {
-      "javascript": "reporting\\.reportRuns\\.list"
+      "ruby": "Reporting::ReportRun\\.list\\(",
+      "go": "reportrun\\.List\\(",
+      "python": "reporting\\.ReportRun\\.list\\(",
+      "java": "ReportRun\\.list\\(",
+      "node": "reporting\\.reportRuns\\.list\\(",
+      "php": "reporting->reportRuns->all\\("
     }
   },
   {
     "url": "/reporting/report_type/retrieve",
     "regexps": {
-      "javascript": "reporting\\.reportType\\.retrieve"
+      "ruby": "Reporting::ReportType\\.retrieve\\(",
+      "go": "reporttype\\.Get\\(",
+      "python": "reporting\\.ReportType\\.retrieve\\(",
+      "java": "ReportType\\.retrieve\\(",
+      "node": "reporting\\.reportTypes\\.retrieve\\(",
+      "php": "reporting->reportTypes->retrieve\\("
     }
   },
   {
     "url": "/reporting/report_type/list",
     "regexps": {
-      "javascript": "reporting\\.reportType\\.list"
+      "ruby": "Reporting::ReportType\\.list\\(",
+      "go": "reporttype\\.List\\(",
+      "python": "reporting\\.ReportType\\.list\\(",
+      "java": "ReportType\\.list\\(",
+      "node": "reporting\\.reportTypes\\.list\\(",
+      "php": "reporting->reportTypes->all\\("
+    }
+  },
+  {
+    "url": "/webhook_endpoints/create",
+    "regexps": {
+      "ruby": "WebhookEndpoint\\.create\\(",
+      "go": "webhookendpoint\\.New\\(",
+      "python": "WebhookEndpoint\\.create\\(",
+      "java": "WebhookEndpoint\\.create\\(",
+      "node": "webhookEndpoints\\.create\\(",
+      "php": "webhookEndpoints->create\\("
+    }
+  },
+  {
+    "url": "/webhook_endpoints/retrieve",
+    "regexps": {
+      "ruby": "WebhookEndpoint\\.retrieve\\(",
+      "go": "webhookendpoint\\.Get\\(",
+      "python": "WebhookEndpoint\\.retrieve\\(",
+      "java": "WebhookEndpoint\\.retrieve\\(",
+      "node": "webhookEndpoints\\.retrieve\\(",
+      "php": "webhookEndpoints->retrieve\\("
+    }
+  },
+  {
+    "url": "/webhook_endpoints/update",
+    "regexps": {
+      "ruby": "WebhookEndpoint\\.update\\(",
+      "go": "webhookendpoint\\.Update\\(",
+      "python": "WebhookEndpoint\\.modify\\(",
+      "node": "webhookEndpoints\\.update\\(",
+      "php": "webhookEndpoints->update\\("
+    }
+  },
+  {
+    "url": "/webhook_endpoints/list",
+    "regexps": {
+      "ruby": "WebhookEndpoint\\.list\\(",
+      "go": "webhookendpoint\\.List\\(",
+      "python": "WebhookEndpoint\\.list\\(",
+      "java": "WebhookEndpoint\\.list\\(",
+      "node": "webhookEndpoints\\.list\\(",
+      "php": "webhookEndpoints->all\\("
+    }
+  },
+  {
+    "url": "/webhook_endpoints/delete",
+    "regexps": {
+      "ruby": "WebhookEndpoint\\.delete\\(",
+      "go": "webhookendpoint\\.Del\\(",
+      "python": "WebhookEndpoint\\.delete\\(",
+      "node": "webhookEndpoints\\.del\\(",
+      "php": "webhookEndpoints->delete\\("
     }
   }
 ]

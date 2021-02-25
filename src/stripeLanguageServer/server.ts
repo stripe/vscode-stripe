@@ -7,8 +7,8 @@ import {
   TextDocuments,
   createConnection,
 } from 'vscode-languageserver';
+import {getLangUrlParamFromLanguageId, getStripeApiReferenceUrl} from './utils';
 import {TextDocument} from 'vscode-languageserver-textdocument';
-import {getStripeApiReferenceUrl} from './utils';
 import {stripeMethodList} from './patterns';
 
 const connection = createConnection(ProposedFeatures.all);
@@ -65,7 +65,12 @@ function findHoverMatches(params: HoverParams): string[] {
     let match;
     const stripeMethod = stripeMethodList[i];
 
-    const language = document.languageId === 'typescript' ? 'javascript' : document.languageId;
+    const language = getLangUrlParamFromLanguageId(document.languageId);
+
+    if (!language) {
+      // unsupported language
+      return [];
+    }
 
     const pattern = stripeMethod.regexps[language];
     if (!pattern) {
@@ -84,7 +89,7 @@ function findHoverMatches(params: HoverParams): string[] {
       // check for where the stripe method call is and see if the hover position is within that character range
       if (hoverPosition >= methodPositionStart && hoverPosition <= methodPositionEnd) {
         hoverMatches.push(
-          `See ${methodMatch} in the [Stripe API Reference](${getStripeApiReferenceUrl(
+          `See this method in the [Stripe API Reference](${getStripeApiReferenceUrl(
             stripeMethod,
             document.languageId,
           )})`,

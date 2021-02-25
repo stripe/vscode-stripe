@@ -7,10 +7,15 @@ import {Telemetry} from '../telemetry';
 export class StripeLanguageClient {
   static activate(context: ExtensionContext, serverOptions: ServerOptions, telemetry: Telemetry) {
     const clientOptions: LanguageClientOptions = {
-      // Register the server for javascript (more languages to come)
+      // Register the server for stripe-supported languages. dotnet is not yet supported.
       documentSelector: [
         {scheme: 'file', language: 'javascript'},
         {scheme: 'file', language: 'typescript'},
+        {scheme: 'file', language: 'go'},
+        {scheme: 'file', language: 'java'},
+        {scheme: 'file', language: 'php'},
+        {scheme: 'file', language: 'python'},
+        {scheme: 'file', language: 'ruby'},
       ],
       synchronize: {
         fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
