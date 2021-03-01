@@ -41,7 +41,6 @@
     "onCommand:stripe.login",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
-    "onCommand:stripe.openLogsStreaming",
     "onCommand:stripe.openDashboardApikeys",
     "onCommand:stripe.openDashboardLogs",
     "onCommand:stripe.openDashboardEvents",
@@ -52,6 +51,8 @@
     "onCommand:stripe.openDocs",
     "onCommand:stripe.openSurvey",
     "onCommand:stripe.refreshEventsList",
+    "onCommand:stripe.startLogsStreaming",
+    "onCommand:stripe.stopLogsStreaming",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
@@ -96,8 +97,13 @@
       },
       {
         "category": "Stripe",
-        "command": "stripe.openLogsStreaming",
-        "title": "Start API logs streaming with CLI"
+        "command": "stripe.startLogsStreaming",
+        "title": "Start API logs streaming"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.stopLogsStreaming",
+        "title": "Stop API logs streaming"
       },
       {
         "category": "Stripe",
