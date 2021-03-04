@@ -2,6 +2,7 @@ import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import {unixToLocaleStringTZ} from './utils';
 
 export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
   stripeClient: StripeClient;
@@ -24,7 +25,7 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
           const eventItem = new StripeTreeItem(title, {
             commandString: 'openEventDetails',
             contextValue: 'eventItem',
-            tooltip: new Date(event.created * 1000).toString(),
+            tooltip: unixToLocaleStringTZ(event.created),
           });
           eventItem.metadata = {
             type: event.type,

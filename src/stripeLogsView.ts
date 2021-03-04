@@ -1,9 +1,9 @@
 import {CLICommand, StripeClient} from './stripeClient';
 import {ThemeIcon, window} from 'vscode';
+import {debounce, unixToLocaleStringTZ} from './utils';
 import {LineStream} from 'byline';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
-import {debounce} from './utils';
 import stream from 'stream';
 
 enum ViewState {
@@ -18,6 +18,8 @@ type LogObject = {
   url: string;
   // eslint-disable-next-line camelcase
   request_id: string;
+  // eslint-disable-next-line camelcase
+  created_at: number;
 };
 
 export const isLogObject = (object: any): object is LogObject => {
@@ -168,7 +170,9 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
             const object = JSON.parse(chunk);
             if (isLogObject(object)) {
               const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
-              const logTreeItem = new StripeTreeItem(label);
+              const logTreeItem = new StripeTreeItem(label, {
+                tooltip: unixToLocaleStringTZ(object.created_at),
+              });
               this.insertLog(logTreeItem);
             }
           } catch {}
