@@ -132,4 +132,20 @@ suite('Utils', () => {
       assert.deepStrictEqual(item, []);
     });
   });
+
+  suite('unixToLocaleStringTZ', () => {
+    const timestamp = 1614896075; // March 4, 2021, 2:14:35 PM PST
+
+    [
+      ['en', '3/4/2021, 2:14:35 PM PST'],
+      ['en-gb', '04/03/2021, 14:14:35 GMT-8'],
+      ['ja-jp', '2021/3/4 14:14:35 GMT-8'],
+    ].forEach(([lang, expectedLocaleString]) => {
+      test(`works in ${lang}`, () => {
+        sandbox.stub(vscode.env, 'language').value(lang);
+        const actualLocaleString = utils.unixToLocaleStringTZ(timestamp);
+        assert.strictEqual(actualLocaleString, expectedLocaleString);
+      });
+    });
+  });
 });

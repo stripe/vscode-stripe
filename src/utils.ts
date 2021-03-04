@@ -85,3 +85,17 @@ export function debounce(func: (...args: any[]) => any, wait: number): (...args:
     }, wait);
   };
 }
+
+/**
+ * Convert a Unix timestamp to a string formatted to the user's VS Code locale, with a timezone suffix.
+ *
+ * Example formats:
+ * - `en-gb`: 04/03/2021, 14:14:35 GMT-8
+ * - `ja-jp`: 2021/3/4 14:14:35 GMT-8
+ *
+ * @param unix Unix timestamp in seconds
+ * @returns Locale string of the timestamp, with short timezone suffix
+ */
+export function unixToLocaleStringTZ(unix: number): string {
+  return new Date(unix * 1000).toLocaleString(vscode.env.language, {timeZoneName: 'short'});
+}
