@@ -6,31 +6,32 @@ export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
-    const docsItem = new StripeTreeItem('Read documentation', 'openDocs');
+    const docsItem = new StripeTreeItem('Read documentation', {commandString: 'openDocs'});
     docsItem.setIcon({
       dark: Resource.ICONS.dark.book,
       light: Resource.ICONS.light.book,
     });
     items.push(docsItem);
 
-    const reportItem = new StripeTreeItem('Report issue', 'openReportIssue');
+    const reportItem = new StripeTreeItem('Report issue', {commandString: 'openReportIssue'});
     reportItem.setIcon({
       dark: Resource.ICONS.dark.report,
       light: Resource.ICONS.light.report,
     });
     items.push(reportItem);
 
-    const feedbackItem = new StripeTreeItem('Rate and provide feedback', 'openSurvey');
+    const feedbackItem = new StripeTreeItem('Rate and provide feedback', {
+      commandString: 'openSurvey',
+    });
     feedbackItem.setIcon({
       dark: Resource.ICONS.dark.feedback,
       light: Resource.ICONS.light.feedback,
     });
     items.push(feedbackItem);
 
-    const webhooksDebugItem = new StripeTreeItem(
-      'Configure debugging',
-      'openWebhooksDebugConfigure',
-    );
+    const webhooksDebugItem = new StripeTreeItem('Configure debugging', {
+      commandString: 'openWebhooksDebugConfigure',
+    });
     webhooksDebugItem.setIcon({
       dark: Resource.ICONS.dark.settings,
       light: Resource.ICONS.light.settings,

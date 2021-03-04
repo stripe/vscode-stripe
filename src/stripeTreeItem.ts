@@ -1,18 +1,25 @@
 import {TreeItem, TreeItemCollapsibleState} from 'vscode';
 
+type StripeTreeItemOptions = Pick<TreeItem, 'contextValue' | 'tooltip'> & {
+  /**
+   * The command that should be executed when the tree item is selected.
+   * Automatically prefixed with `'stripe.'`.
+   */
+  commandString?: string;
+};
+
 export class StripeTreeItem extends TreeItem {
   parent: StripeTreeItem | undefined;
   children: StripeTreeItem[] = [];
   private _metadata: object | undefined;
   private commandString: string | undefined;
 
-  constructor(label: string, commandString?: string, tooltip?: string, contextValue?: string) {
+  constructor(label: string, options: StripeTreeItemOptions = {}) {
     super(label, TreeItemCollapsibleState.None);
-    this.contextValue = 'stripe';
-    this.commandString = commandString;
+    this.contextValue = options.contextValue || 'stripe';
+    this.commandString = options.commandString;
+    this.tooltip = options.tooltip;
     this.metadata = {};
-    this.tooltip = tooltip;
-    this.contextValue = contextValue;
   }
 
   get metadata() {
