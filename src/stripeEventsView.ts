@@ -21,12 +21,11 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
       if (events.data) {
         events.data.forEach((event: any) => {
           const title = event.type;
-          const eventItem = new StripeTreeItem(
-            title,
-            'openEventDetails',
-            new Date(event.created * 1000).toString(),
-            'eventItem',
-          );
+          const eventItem = new StripeTreeItem(title, {
+            commandString: 'openEventDetails',
+            contextValue: 'eventItem',
+            tooltip: new Date(event.created * 1000).toString(),
+          });
           eventItem.metadata = {
             type: event.type,
             id: event.id,
@@ -36,13 +35,17 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
       }
     } catch (e) {}
 
-    const triggerEventItem = new StripeTreeItem('Trigger new event', 'openTriggerEvent');
+    const triggerEventItem = new StripeTreeItem('Trigger new event', {
+      commandString: 'openTriggerEvent',
+    });
     triggerEventItem.setIcon({
       dark: Resource.ICONS.dark.add,
       light: Resource.ICONS.light.add,
     });
 
-    const webhooksListenItem = new StripeTreeItem('Start webhooks listening', 'openWebhooksListen');
+    const webhooksListenItem = new StripeTreeItem('Start webhooks listening', {
+      commandString: 'openWebhooksListen',
+    });
     webhooksListenItem.setIcon({
       dark: Resource.ICONS.dark.terminal,
       light: Resource.ICONS.light.terminal,
