@@ -1,7 +1,7 @@
-import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import {ThemeIcon} from 'vscode';
 import {unixToLocaleStringTZ} from './utils';
 
 export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
@@ -38,18 +38,12 @@ export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
 
     const triggerEventItem = new StripeTreeItem('Trigger new event', {
       commandString: 'openTriggerEvent',
-    });
-    triggerEventItem.setIcon({
-      dark: Resource.ICONS.dark.add,
-      light: Resource.ICONS.light.add,
+      iconPath: new ThemeIcon('add'),
     });
 
     const webhooksListenItem = new StripeTreeItem('Start webhooks listening', {
       commandString: 'openWebhooksListen',
-    });
-    webhooksListenItem.setIcon({
-      dark: Resource.ICONS.dark.terminal,
-      light: Resource.ICONS.light.terminal,
+      iconPath: new ThemeIcon('terminal'),
     });
 
     var items = [triggerEventItem, webhooksListenItem];

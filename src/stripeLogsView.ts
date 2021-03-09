@@ -117,10 +117,10 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
     command?: string;
     iconId?: string;
   }) {
-    const item = new StripeTreeItem(label, {commandString: command});
-    if (iconId) {
-      item.iconPath = new ThemeIcon(iconId);
-    }
+    const item = new StripeTreeItem(label, {
+      commandString: command,
+      iconPath: iconId ? new ThemeIcon(iconId) : undefined,
+    });
     return item;
   }
 

@@ -149,10 +149,7 @@
         "category": "Stripe",
         "command": "stripe.refreshEventsList",
         "title": "Refresh events list",
-        "icon": {
-          "dark": "resources/icons/dark/refresh.svg",
-          "light": "resources/icons/light/refresh.svg"
-        }
+        "icon": "$(refresh)"
       },
       {
         "category": "Stripe",

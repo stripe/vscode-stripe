@@ -1,6 +1,6 @@
-import {Resource} from './resources';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import {ThemeIcon} from 'vscode';
 
 export class StripeDashboardViewDataProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
@@ -8,39 +8,28 @@ export class StripeDashboardViewDataProvider extends StripeTreeViewDataProvider 
 
     const apiKeysItem = new StripeTreeItem('Open API keys page', {
       commandString: 'openDashboardApikeys',
-    });
-    apiKeysItem.setIcon({
-      dark: Resource.ICONS.dark.linkExternal,
-      light: Resource.ICONS.light.linkExternal,
+      iconPath: new ThemeIcon('link-external'),
     });
 
     items.push(apiKeysItem);
 
     const eventsItem = new StripeTreeItem('Open events page', {
       commandString: 'openDashboardEvents',
-    });
-    eventsItem.setIcon({
-      dark: Resource.ICONS.dark.linkExternal,
-      light: Resource.ICONS.light.linkExternal,
+      iconPath: new ThemeIcon('link-external'),
     });
 
     items.push(eventsItem);
 
-    const logItem = new StripeTreeItem('Open API logs page', {commandString: 'openDashboardLogs'});
-    logItem.setIcon({
-      dark: Resource.ICONS.dark.linkExternal,
-      light: Resource.ICONS.light.linkExternal,
+    const logItem = new StripeTreeItem('Open API logs page', {
+      commandString: 'openDashboardLogs',
+      iconPath: new ThemeIcon('link-external'),
     });
 
     items.push(logItem);
 
     const webhooksItem = new StripeTreeItem('Open webhooks page', {
       commandString: 'openDashboardWebhooks',
-    });
-
-    webhooksItem.setIcon({
-      dark: Resource.ICONS.dark.linkExternal,
-      light: Resource.ICONS.light.linkExternal,
+      iconPath: new ThemeIcon('link-external'),
     });
 
     items.push(webhooksItem);
