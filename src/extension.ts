@@ -3,7 +3,6 @@ import {GATelemetry, LocalTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
-import {Resource} from './resources';
 import {StripeClient} from './stripeClient';
 import {StripeDashboardViewDataProvider} from './stripeDashboardView';
 import {StripeDebugProvider} from './stripeDebugProvider';
@@ -31,8 +30,6 @@ export function activate(this: any, context: ExtensionContext) {
 
   // CSAT survey prompt
   new SurveyPrompt(context).activate();
-
-  Resource.initialize(context);
 
   const stripeTerminal = new StripeTerminal(stripeClient);
 

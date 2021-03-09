@@ -1,40 +1,32 @@
-import {Resource} from './resources';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
+import {ThemeIcon} from 'vscode';
 
 export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
-    const docsItem = new StripeTreeItem('Read documentation', {commandString: 'openDocs'});
-    docsItem.setIcon({
-      dark: Resource.ICONS.dark.book,
-      light: Resource.ICONS.light.book,
+    const docsItem = new StripeTreeItem('Read documentation', {
+      commandString: 'openDocs',
+      iconPath: new ThemeIcon('book'),
     });
     items.push(docsItem);
 
-    const reportItem = new StripeTreeItem('Report issue', {commandString: 'openReportIssue'});
-    reportItem.setIcon({
-      dark: Resource.ICONS.dark.report,
-      light: Resource.ICONS.light.report,
+    const reportItem = new StripeTreeItem('Report issue', {
+      commandString: 'openReportIssue',
+      iconPath: new ThemeIcon('report'),
     });
     items.push(reportItem);
 
     const feedbackItem = new StripeTreeItem('Rate and provide feedback', {
       commandString: 'openSurvey',
-    });
-    feedbackItem.setIcon({
-      dark: Resource.ICONS.dark.feedback,
-      light: Resource.ICONS.light.feedback,
+      iconPath: new ThemeIcon('feedback'),
     });
     items.push(feedbackItem);
 
     const webhooksDebugItem = new StripeTreeItem('Configure debugging', {
       commandString: 'openWebhooksDebugConfigure',
-    });
-    webhooksDebugItem.setIcon({
-      dark: Resource.ICONS.dark.settings,
-      light: Resource.ICONS.light.settings,
+      iconPath: new ThemeIcon('settings-gear'),
     });
 
     items.push(webhooksDebugItem);

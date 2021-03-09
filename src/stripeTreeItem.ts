@@ -1,6 +1,6 @@
 import {TreeItem, TreeItemCollapsibleState} from 'vscode';
 
-type StripeTreeItemOptions = Pick<TreeItem, 'contextValue' | 'tooltip'> & {
+type StripeTreeItemOptions = Pick<TreeItem, 'contextValue' | 'tooltip' | 'iconPath'> & {
   /**
    * The command that should be executed when the tree item is selected.
    * Automatically prefixed with `'stripe.'`.
@@ -18,6 +18,7 @@ export class StripeTreeItem extends TreeItem {
     super(label, TreeItemCollapsibleState.None);
     this.contextValue = options.contextValue || 'stripe';
     this.commandString = options.commandString;
+    this.iconPath = options.iconPath;
     this.tooltip = options.tooltip;
     this.metadata = {};
   }
@@ -39,12 +40,9 @@ export class StripeTreeItem extends TreeItem {
   makeCollapsible() {
     this.collapsibleState = TreeItemCollapsibleState.Collapsed;
   }
+
   expand() {
     this.collapsibleState = TreeItemCollapsibleState.Expanded;
-  }
-
-  setIcon(icons: {light: string; dark: string}) {
-    this.iconPath = icons;
   }
 
   addChild(item: StripeTreeItem) {
