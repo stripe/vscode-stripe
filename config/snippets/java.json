@@ -306,7 +306,7 @@
   },
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
-    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:3});\ncard.put(\"exp_year\", ${4:2022});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);",
+    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:11});\ncard.put(\"exp_year\", ${4:2021});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);",
     "description": "Create Payment Method"
   },
   "Retrieve Payment Method": {
@@ -504,26 +504,6 @@
     "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\n  \"return_url\",\n  \"https://example.com/account\"\n);\n\nSession session = Session.create(params);",
     "description": "Create Billing Portal Session"
   },
-  "Create Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationCreate",
-    "body": "List<Object> allowedUpdates = new ArrayList<>();\nallowedUpdates.add(\"email\");\nallowedUpdates.add(\"tax_id\");\nMap<String, Object> customerUpdate =\n  new HashMap<>();\ncustomerUpdate.put(\n  \"allowed_updates\",\n  allowedUpdates\n);\ncustomerUpdate.put(\"enabled\", ${3:${4:true}});\nMap<String, Object> invoiceHistory =\n  new HashMap<>();\ninvoiceHistory.put(\"enabled\", true);\nMap<String, Object> features = new HashMap<>();\nfeatures.put(\"customer_update\", customerUpdate);\nfeatures.put(\"invoice_history\", invoiceHistory);\nMap<String, Object> businessProfile =\n  new HashMap<>();\nbusinessProfile.put(\n  \"privacy_policy_url\",\n  \"https://example.com/privacy\"\n);\nbusinessProfile.put(\n  \"terms_of_service_url\",\n  \"https://example.com/terms\"\n);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"features\", features);\nparams.put(\"business_profile\", businessProfile);\n\nConfiguration configuration =\n  Configuration.create(params);",
-    "description": "Create Billing Portal Configuration"
-  },
-  "Update Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationUpdate",
-    "body": "Configuration configuration =\n  Configuration.retrieve(\"${1:bpc_xxxxxxxxxxxxx}\");\n\nMap<String, Object> businessProfile =\n  new HashMap<>();\nbusinessProfile.put(\n  \"privacy_policy_url\",\n  \"https://example.com/privacy\"\n);\nbusinessProfile.put(\n  \"terms_of_service_url\",\n  \"https://example.com/terms\"\n);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"business_profile\", businessProfile);\n\nConfiguration updatedConfiguration =\n  configuration.update(params);",
-    "description": "Update Billing Portal Configuration"
-  },
-  "Retrieve Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationRetrieve",
-    "body": "Configuration configuration =\n  Configuration.retrieve(\"${1:bpc_xxxxxxxxxxxxx}\");",
-    "description": "Retrieve Billing Portal Configuration"
-  },
-  "List Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationList",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nConfigurationCollection configurations =\n  Configuration.list(params);",
-    "description": "List Billing Portal Configuration"
-  },
   "Create Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdCreate",
     "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"tax_ids\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${2:eu_vat}\");\nparams.put(\"value\", \"${3:DE123456789}\");\n\nTaxId taxId = customer.getTaxIds().create(params);",
@@ -716,7 +696,7 @@
   },
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
-    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1616001623});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);",
+    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1605558431});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);",
     "description": "Create Subscription Schedule"
   },
   "Retrieve Subscription Schedule": {

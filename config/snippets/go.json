@@ -1,7 +1,7 @@
 {
   "List Customer": {
     "prefix": "StripeCustomerList",
-    "body": "params := &stripe.CustomerListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := customer.List(params)\nfor i.Next() {\n  c := i.Customer()\n}",
+    "body": "params := &stripe.CustomerListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := customer.List(params)\nfor i.Next() {\n  c := i.Customer()\n}",
     "description": "List Customer"
   },
   "Retrieve Balance Transaction": {
@@ -11,12 +11,12 @@
   },
   "List Balance Transaction": {
     "prefix": "StripeBalanceTransactionList",
-    "body": "params := &stripe.BalanceTransactionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := balancetransaction.List(params)\nfor i.Next() {\n  bt := i.BalanceTransaction()\n}",
+    "body": "params := &stripe.BalanceTransactionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := balancetransaction.List(params)\nfor i.Next() {\n  bt := i.BalanceTransaction()\n}",
     "description": "List Balance Transaction"
   },
   "Create Charge": {
     "prefix": "StripeChargeCreate",
-    "body": "// `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nparams := &stripe.ChargeParams{\n  Amount: stripe.Int64(2000),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Description: stripe.String(\"My First Test Charge (created for API docs)\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"tok_xxxx\")},\n}\nc, _ := charge.New(params)",
+    "body": "// `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nparams := &stripe.ChargeParams{\n  Amount: stripe.Int64(${1:2000}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Description: stripe.String(\"${4:My First Test Charge (created for API docs)}\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"${3:tok_xxxx}\")},\n}\nc, _ := charge.New(params)",
     "description": "Create Charge"
   },
   "Retrieve Charge": {
@@ -36,12 +36,12 @@
   },
   "List Charge": {
     "prefix": "StripeChargeList",
-    "body": "params := &stripe.ChargeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := charge.List(params)\nfor i.Next() {\n  c := i.Charge()\n}",
+    "body": "params := &stripe.ChargeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := charge.List(params)\nfor i.Next() {\n  c := i.Charge()\n}",
     "description": "List Charge"
   },
   "Create Customer": {
     "prefix": "StripeCustomerCreate",
-    "body": "params := &stripe.CustomerParams{\n  Description: stripe.String(\"My First Test Customer (created for API docs)\"),\n}\nc, _ := customer.New(params)",
+    "body": "params := &stripe.CustomerParams{\n  Description: stripe.String(\"${1:My First Test Customer (created for API docs)}\"),\n}\nc, _ := customer.New(params)",
     "description": "Create Customer"
   },
   "Retrieve Customer": {
@@ -76,7 +76,7 @@
   },
   "List Dispute": {
     "prefix": "StripeDisputeList",
-    "body": "params := &stripe.DisputeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := dispute.List(params)\nfor i.Next() {\n  d := i.Dispute()\n}",
+    "body": "params := &stripe.DisputeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := dispute.List(params)\nfor i.Next() {\n  d := i.Dispute()\n}",
     "description": "List Dispute"
   },
   "Retrieve Event": {
@@ -86,12 +86,12 @@
   },
   "List Event": {
     "prefix": "StripeEventList",
-    "body": "params := &stripe.EventListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := event.List(params)\nfor i.Next() {\n  e := i.Event()\n}",
+    "body": "params := &stripe.EventListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := event.List(params)\nfor i.Next() {\n  e := i.Event()\n}",
     "description": "List Event"
   },
   "Create File": {
     "prefix": "StripeFileCreate",
-    "body": "params := &stripe.FileParams{\n  File: stripe.String(\"{a file descriptor}\"),\n  Purpose: stripe.String(\"dispute_xxxxxxxxxxxxx\"),\n}\nf, _ := file.New(params)",
+    "body": "params := &stripe.FileParams{\n  File: stripe.String(\"${2:{a file descriptor}}\"),\n  Purpose: stripe.String(\"${1:dispute_xxxxxxxxxxxxx}\"),\n}\nf, _ := file.New(params)",
     "description": "Create File"
   },
   "Retrieve File": {
@@ -101,12 +101,12 @@
   },
   "List File": {
     "prefix": "StripeFileList",
-    "body": "params := &stripe.FileListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := file.List(params)\nfor i.Next() {\n  f := i.File()\n}",
+    "body": "params := &stripe.FileListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := file.List(params)\nfor i.Next() {\n  f := i.File()\n}",
     "description": "List File"
   },
   "Create File Link": {
     "prefix": "StripeFileLinkCreate",
-    "body": "params := &stripe.FileLinkParams{\n  File: stripe.String(\"file_xxxxxxxxxxxxx\"),\n}\nfl, _ := filelink.New(params)",
+    "body": "params := &stripe.FileLinkParams{\n  File: stripe.String(\"${1:file_xxxxxxxxxxxxx}\"),\n}\nfl, _ := filelink.New(params)",
     "description": "Create File Link"
   },
   "Retrieve File Link": {
@@ -121,7 +121,7 @@
   },
   "List File Link": {
     "prefix": "StripeFileLinkList",
-    "body": "params := &stripe.FileLinkListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := filelink.List(params)\nfor i.Next() {\n  fl := i.FileLink()\n}",
+    "body": "params := &stripe.FileLinkListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := filelink.List(params)\nfor i.Next() {\n  fl := i.FileLink()\n}",
     "description": "List File Link"
   },
   "Retrieve Mandate": {
@@ -131,7 +131,7 @@
   },
   "Create Payment Intent": {
     "prefix": "StripePaymentIntentCreate",
-    "body": "params := &stripe.PaymentIntentParams{\n  Amount: stripe.Int64(2000),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  PaymentMethodTypes: []*string{\n    stripe.String(\"card\"),\n  },\n}\npi, _ := paymentintent.New(params)",
+    "body": "params := &stripe.PaymentIntentParams{\n  Amount: stripe.Int64(${1:2000}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  PaymentMethodTypes: []*string{\n    stripe.String(\"card\"),\n  },\n}\npi, _ := paymentintent.New(params)",
     "description": "Create Payment Intent"
   },
   "Retrieve Payment Intent": {
@@ -146,7 +146,7 @@
   },
   "Confirm Payment Intent": {
     "prefix": "StripePaymentIntentConfirm",
-    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nparams := &stripe.PaymentIntentConfirmParams{\n  PaymentMethod: stripe.String(\"pm_card_visa\"),\n}\npi, _ := paymentintent.Confirm(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nparams := &stripe.PaymentIntentConfirmParams{\n  PaymentMethod: stripe.String(\"${2:pm_card_visa}\"),\n}\npi, _ := paymentintent.Confirm(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Confirm Payment Intent"
   },
   "Capture Payment Intent": {
@@ -161,7 +161,7 @@
   },
   "List Payment Intent": {
     "prefix": "StripePaymentIntentList",
-    "body": "params := &stripe.PaymentIntentListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := paymentintent.List(params)\nfor i.Next() {\n  pi := i.PaymentIntent()\n}",
+    "body": "params := &stripe.PaymentIntentListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := paymentintent.List(params)\nfor i.Next() {\n  pi := i.PaymentIntent()\n}",
     "description": "List Payment Intent"
   },
   "Create Setup Intent": {
@@ -181,7 +181,7 @@
   },
   "Confirm Setup Intent": {
     "prefix": "StripeSetupIntentConfirm",
-    "body": "params := &stripe.SetupIntentConfirmParams{\n  PaymentMethod: stripe.String(\"pm_card_visa\"),\n}\nsi, _ := setupintent.Confirm(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.SetupIntentConfirmParams{\n  PaymentMethod: stripe.String(\"${2:pm_card_visa}\"),\n}\nsi, _ := setupintent.Confirm(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Confirm Setup Intent"
   },
   "Cancel Setup Intent": {
@@ -191,17 +191,17 @@
   },
   "List Setup Intent": {
     "prefix": "StripeSetupIntentList",
-    "body": "params := &stripe.SetupIntentListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := setupintent.List(params)\nfor i.Next() {\n  si := i.SetupIntent()\n}",
+    "body": "params := &stripe.SetupIntentListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := setupintent.List(params)\nfor i.Next() {\n  si := i.SetupIntent()\n}",
     "description": "List Setup Intent"
   },
   "List Setup Attempt": {
     "prefix": "StripeSetupAttemptList",
-    "body": "params := &stripe.SetupAttemptListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := setupattempt.List(params)\nfor i.Next() {\n  sa := i.SetupAttempt()\n}",
+    "body": "params := &stripe.SetupAttemptListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := setupattempt.List(params)\nfor i.Next() {\n  sa := i.SetupAttempt()\n}",
     "description": "List Setup Attempt"
   },
   "Create Payout": {
     "prefix": "StripePayoutCreate",
-    "body": "params := &stripe.PayoutParams{\n  Amount: stripe.Int64(1100),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n}\np, _ := payout.New(params)",
+    "body": "params := &stripe.PayoutParams{\n  Amount: stripe.Int64(${1:1100}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n}\np, _ := payout.New(params)",
     "description": "Create Payout"
   },
   "Retrieve Payout": {
@@ -216,7 +216,7 @@
   },
   "List Payout": {
     "prefix": "StripePayoutList",
-    "body": "params := &stripe.PayoutListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := payout.List(params)\nfor i.Next() {\n  p := i.Payout()\n}",
+    "body": "params := &stripe.PayoutListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := payout.List(params)\nfor i.Next() {\n  p := i.Payout()\n}",
     "description": "List Payout"
   },
   "Cancel Payout": {
@@ -231,7 +231,7 @@
   },
   "Create Product": {
     "prefix": "StripeProductCreate",
-    "body": "params := &stripe.ProductParams{\n  Name: stripe.String(\"Gold Special\"),\n}\np, _ := product.New(params)",
+    "body": "params := &stripe.ProductParams{\n  Name: stripe.String(\"${1:Gold Special}\"),\n}\np, _ := product.New(params)",
     "description": "Create Product"
   },
   "Retrieve Product": {
@@ -246,7 +246,7 @@
   },
   "List Product": {
     "prefix": "StripeProductList",
-    "body": "params := &stripe.ProductListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := product.List(params)\nfor i.Next() {\n  p := i.Product()\n}",
+    "body": "params := &stripe.ProductListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := product.List(params)\nfor i.Next() {\n  p := i.Product()\n}",
     "description": "List Product"
   },
   "Delete Product": {
@@ -256,7 +256,7 @@
   },
   "Create Price": {
     "prefix": "StripePriceCreate",
-    "body": "params := &stripe.PriceParams{\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Product: stripe.String(\"prod_xxxxxxxxxxxxx\"),\n  Recurring: &stripe.PriceRecurringParams{\n    Interval: stripe.String(\"month\"),\n  },\n  UnitAmount: stripe.Int64(2000),\n}\np, _ := price.New(params)",
+    "body": "params := &stripe.PriceParams{\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Product: stripe.String(\"${4:prod_xxxxxxxxxxxxx}\"),\n  Recurring: &stripe.PriceRecurringParams{\n    Interval: stripe.String(\"${3:month}\"),\n  },\n  UnitAmount: stripe.Int64(${1:2000}),\n}\np, _ := price.New(params)",
     "description": "Create Price"
   },
   "Retrieve Price": {
@@ -271,12 +271,12 @@
   },
   "List Price": {
     "prefix": "StripePriceList",
-    "body": "params := &stripe.PriceListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := price.List(params)\nfor i.Next() {\n  p := i.Price()\n}",
+    "body": "params := &stripe.PriceListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := price.List(params)\nfor i.Next() {\n  p := i.Price()\n}",
     "description": "List Price"
   },
   "Create Refund": {
     "prefix": "StripeRefundCreate",
-    "body": "params := &stripe.RefundParams{\n  Charge: stripe.String(\"ch_xxxxxxxxxxxxx\"),\n}\nr, _ := refund.New(params)",
+    "body": "params := &stripe.RefundParams{\n  Charge: stripe.String(\"${1:ch_xxxxxxxxxxxxx}\"),\n}\nr, _ := refund.New(params)",
     "description": "Create Refund"
   },
   "Retrieve Refund": {
@@ -291,12 +291,12 @@
   },
   "List Refund": {
     "prefix": "StripeRefundList",
-    "body": "params := &stripe.RefundListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := refund.List(params)\nfor i.Next() {\n  r := i.Refund()\n}",
+    "body": "params := &stripe.RefundListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := refund.List(params)\nfor i.Next() {\n  r := i.Refund()\n}",
     "description": "List Refund"
   },
   "Create Token": {
     "prefix": "StripeTokenCreate",
-    "body": "params := &stripe.TokenParams{\n  CVCUpdate: &stripe.TokenCVCUpdateParams{\n    CVC: stripe.String(\"123\"),\n  },\n}\nt, _ := token.New(params)",
+    "body": "params := &stripe.TokenParams{\n  CVCUpdate: &stripe.TokenCVCUpdateParams{\n    CVC: stripe.String(\"${1:123}\"),\n  },\n}\nt, _ := token.New(params)",
     "description": "Create Token"
   },
   "Retrieve Token": {
@@ -306,7 +306,7 @@
   },
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
-    "body": "params := &stripe.PaymentMethodParams{\n  Card: &stripe.PaymentMethodCardParams{\n    Number: stripe.String(\"4242424242424242\"),\n    ExpMonth: stripe.String(\"3\"),\n    ExpYear: stripe.String(\"2022\"),\n    CVC: stripe.String(\"314\"),\n  },\n  Type: stripe.String(\"card\"),\n}\npm, _ := paymentmethod.New(params)",
+    "body": "params := &stripe.PaymentMethodParams{\n  Card: &stripe.PaymentMethodCardParams{\n    Number: stripe.String(\"${2:4242424242424242}\"),\n    ExpMonth: stripe.String(\"${3:11}\"),\n    ExpYear: stripe.String(\"${4:2021}\"),\n    CVC: stripe.String(\"${5:314}\"),\n  },\n  Type: stripe.String(\"${1:card}\"),\n}\npm, _ := paymentmethod.New(params)",
     "description": "Create Payment Method"
   },
   "Retrieve Payment Method": {
@@ -321,12 +321,12 @@
   },
   "List Payment Method": {
     "prefix": "StripePaymentMethodList",
-    "body": "params := &stripe.PaymentMethodListParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n  Type: stripe.String(\"card\"),\n}\ni := paymentmethod.List(params)\nfor i.Next() {\n  pm := i.PaymentMethod()\n}",
+    "body": "params := &stripe.PaymentMethodListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Type: stripe.String(\"${2:card}\"),\n}\ni := paymentmethod.List(params)\nfor i.Next() {\n  pm := i.PaymentMethod()\n}",
     "description": "List Payment Method"
   },
   "Attach Payment Method": {
     "prefix": "StripePaymentMethodAttach",
-    "body": "params := &stripe.PaymentMethodAttachParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n}\npm, _ := paymentmethod.Attach(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.PaymentMethodAttachParams{\n  Customer: stripe.String(\"${2:cus_xxxxxxxxxxxxx}\"),\n}\npm, _ := paymentmethod.Attach(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Attach Payment Method"
   },
   "Detach Payment Method": {
@@ -336,7 +336,7 @@
   },
   "Create Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountCreate",
-    "body": "params := &stripe.BankAccountParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"btok_xxxxxxxxxxxxx\")},\n}\nba, _ := bankaccount.New(params)",
+    "body": "params := &stripe.BankAccountParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"${2:btok_xxxxxxxxxxxxx}\")},\n}\nba, _ := bankaccount.New(params)",
     "description": "Create Customer Bank Account"
   },
   "Retrieve Customer Bank Account": {
@@ -361,12 +361,12 @@
   },
   "List Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountList",
-    "body": "params := &stripe.BankAccountListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"bank_account\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${3:3}\")\ni := bankaccount.List(params)\nfor i.Next() {\n  ba := i.BankAccount()\n}",
+    "body": "params := &stripe.BankAccountListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"${2:bank_account}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := bankaccount.List(params)\nfor i.Next() {\n  ba := i.BankAccount()\n}",
     "description": "List Customer Bank Account"
   },
   "Create Customer Card": {
     "prefix": "StripeCustomerCardCreate",
-    "body": "params := &stripe.CardParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"tok_xxxx\")},\n}\nc, _ := card.New(params)",
+    "body": "params := &stripe.CardParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Source: &stripe.SourceParams{Token: stripe.String(\"${2:tok_xxxx}\")},\n}\nc, _ := card.New(params)",
     "description": "Create Customer Card"
   },
   "Retrieve Customer Card": {
@@ -376,7 +376,7 @@
   },
   "Update Customer Card": {
     "prefix": "StripeCustomerCardUpdate",
-    "body": "params := &stripe.CardParams{\n  Customer: stripe.String(\"${2:cus_xxxxxxxxxxxxx}\"),\n  Name: stripe.String(\"Jenny Rosen\"),\n}\nc, _ := card.Update(\"${1:card_xxxxxxxxxxxxx}\", params)",
+    "body": "params := &stripe.CardParams{\n  Customer: stripe.String(\"${2:cus_xxxxxxxxxxxxx}\"),\n  Name: stripe.String(\"${3:Jenny Rosen}\"),\n}\nc, _ := card.Update(\"${1:card_xxxxxxxxxxxxx}\", params)",
     "description": "Update Customer Card"
   },
   "Delete Customer Card": {
@@ -386,7 +386,7 @@
   },
   "List Customer Card": {
     "prefix": "StripeCustomerCardList",
-    "body": "params := &stripe.CardListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"card\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${3:3}\")\ni := card.List(params)\nfor i.Next() {\n  c := i.Card()\n}",
+    "body": "params := &stripe.CardListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"${2:card}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := card.List(params)\nfor i.Next() {\n  c := i.Card()\n}",
     "description": "List Customer Card"
   },
   "Retrieve Source": {
@@ -401,7 +401,7 @@
   },
   "Create Checkout Session": {
     "prefix": "StripeCheckoutSessionCreate",
-    "body": "params := &stripe.CheckoutSessionParams{\n  CancelURL: stripe.String(\"https://example.com/cancel\"),\n  LineItems: []*stripe.CheckoutSessionLineItemParams{\n    {\n      Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(2),\n    },\n  },\n  Mode: stripe.String(\"payment\"),\n  PaymentMethodTypes: []*string{\n    stripe.String(\"card\"),\n  },\n  SuccessURL: stripe.String(\"https://example.com/success\"),\n}\ns, _ := session.New(params)",
+    "body": "params := &stripe.CheckoutSessionParams{\n  CancelURL: stripe.String(\"${2:https://example.com/cancel}\"),\n  LineItems: []*stripe.CheckoutSessionLineItemParams{\n    {\n      Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(2),\n    },\n  },\n  Mode: stripe.String(\"${6:payment}\"),\n  PaymentMethodTypes: []*string{\n    stripe.String(\"card\"),\n  },\n  SuccessURL: stripe.String(\"${1:https://example.com/success}\"),\n}\ns, _ := session.New(params)",
     "description": "Create Checkout Session"
   },
   "Retrieve Checkout Session": {
@@ -411,12 +411,12 @@
   },
   "List Checkout Session": {
     "prefix": "StripeCheckoutSessionList",
-    "body": "params := &stripe.CheckoutSessionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := session.List(params)\nfor i.Next() {\n  s := i.CheckoutSession()\n}",
+    "body": "params := &stripe.CheckoutSessionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := session.List(params)\nfor i.Next() {\n  s := i.CheckoutSession()\n}",
     "description": "List Checkout Session"
   },
   "Create Coupon": {
     "prefix": "StripeCouponCreate",
-    "body": "params := &stripe.CouponParams{\n  Duration: stripe.String(\"repeating\"),\n  DurationInMonths: stripe.Int64(3),\n  PercentOff: stripe.Float64(25),\n}\nc, _ := coupon.New(params)",
+    "body": "params := &stripe.CouponParams{\n  Duration: stripe.String(\"${2:repeating}\"),\n  DurationInMonths: stripe.Int64(${3:3}),\n  PercentOff: stripe.Float64(${1:25}),\n}\nc, _ := coupon.New(params)",
     "description": "Create Coupon"
   },
   "Retrieve Coupon": {
@@ -436,17 +436,17 @@
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
-    "body": "params := &stripe.CouponListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := coupon.List(params)\nfor i.Next() {\n  c := i.Coupon()\n}",
+    "body": "params := &stripe.CouponListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := coupon.List(params)\nfor i.Next() {\n  c := i.Coupon()\n}",
     "description": "List Coupon"
   },
   "Preview Credit Note": {
     "prefix": "StripeCreditNotePreview",
-    "body": "params := &stripe.CreditNotePreviewParams{\n  Invoice: stripe.String(\"in_xxxxxxxxxxxxx\"),\n  Lines: []*stripe.CreditNoteLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ncn, _ := creditnote.Preview(params)",
+    "body": "params := &stripe.CreditNotePreviewParams{\n  Invoice: stripe.String(\"${1:in_xxxxxxxxxxxxx}\"),\n  Lines: []*stripe.CreditNoteLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ncn, _ := creditnote.Preview(params)",
     "description": "Preview Credit Note"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
-    "body": "params := &stripe.CreditNoteParams{\n  Invoice: stripe.String(\"in_xxxxxxxxxxxxx\"),\n  Lines: []*stripe.CreditNoteLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ncn, _ := creditnote.New(params)",
+    "body": "params := &stripe.CreditNoteParams{\n  Invoice: stripe.String(\"${1:in_xxxxxxxxxxxxx}\"),\n  Lines: []*stripe.CreditNoteLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ncn, _ := creditnote.New(params)",
     "description": "Create Credit Note"
   },
   "Retrieve Credit Note": {
@@ -461,12 +461,12 @@
   },
   "List Credit Note Line Item": {
     "prefix": "StripeCreditNoteLineItemList",
-    "body": "params := &stripe.LineItemListParams{\n  CreditNote: stripe.String(\"${1:cn_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := lineitem.List(params)\nfor i.Next() {\n  li := i.LineItem()\n}",
+    "body": "params := &stripe.LineItemListParams{\n  CreditNote: stripe.String(\"${1:cn_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := lineitem.List(params)\nfor i.Next() {\n  li := i.LineItem()\n}",
     "description": "List Credit Note Line Item"
   },
   "List Credit Note Credit Note Line Item": {
     "prefix": "StripeCreditNoteCreditNoteLineItemList",
-    "body": "params := &stripe.CreditNoteLineItemListParams{\n  Invoice: stripe.String(\"in_xxxxxxxxxxxxx\"),\n  Lines: []*stripe.CreditNoteCreditNoteLineItemLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ni := creditnotelineitem.List(params)\nfor i.Next() {\n  cnli := i.CreditNoteLineItem()\n}",
+    "body": "params := &stripe.CreditNoteLineItemListParams{\n  Invoice: stripe.String(\"${1:in_xxxxxxxxxxxxx}\"),\n  Lines: []*stripe.CreditNoteCreditNoteLineItemLineParams{\n    {\n      Type: stripe.String(\"invoice_line_item\"),\n      InvoiceLineItem: stripe.String(\"il_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(1),\n    },\n  },\n}\ni := creditnotelineitem.List(params)\nfor i.Next() {\n  cnli := i.CreditNoteLineItem()\n}",
     "description": "List Credit Note Credit Note Line Item"
   },
   "Void Credit Note Credit Note": {
@@ -476,12 +476,12 @@
   },
   "List Credit Note": {
     "prefix": "StripeCreditNoteList",
-    "body": "params := &stripe.CreditNoteListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := creditnote.List(params)\nfor i.Next() {\n  cn := i.CreditNote()\n}",
+    "body": "params := &stripe.CreditNoteListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := creditnote.List(params)\nfor i.Next() {\n  cn := i.CreditNote()\n}",
     "description": "List Credit Note"
   },
   "Create Customer Balance Transaction": {
     "prefix": "StripeCustomerBalanceTransactionCreate",
-    "body": "params := &stripe.\n  CustomerBalanceTransactionParams{\n  Amount: stripe.Int64(-500),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nbt, _ := customerbalancetransaction.New(params)",
+    "body": "params := &stripe.\n  CustomerBalanceTransactionParams{\n  Amount: stripe.Int64(${2:-500}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nbt, _ := customerbalancetransaction.New(params)",
     "description": "Create Customer Balance Transaction"
   },
   "Retrieve Customer Balance Transaction": {
@@ -496,37 +496,17 @@
   },
   "List Customer Balance Transaction": {
     "prefix": "StripeCustomerBalanceTransactionList",
-    "body": "params := &stripe.\n  CustomerBalanceTransactionListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := customerbalancetransaction.List(params)\nfor i.Next() {\n  bt := i.BalanceTransaction()\n}",
+    "body": "params := &stripe.\n  CustomerBalanceTransactionListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := customerbalancetransaction.List(params)\nfor i.Next() {\n  bt := i.BalanceTransaction()\n}",
     "description": "List Customer Balance Transaction"
   },
   "Create Billing Portal Session": {
     "prefix": "StripeBillingPortalSessionCreate",
-    "body": "params := &stripe.BillingPortalSessionParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n  ReturnURL: stripe.String(\"https://example.com/account\"),\n}\ns, _ := session.New(params)",
+    "body": "params := &stripe.BillingPortalSessionParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  ReturnURL: stripe.String(\"${2:https://example.com/account}\"),\n}\ns, _ := session.New(params)",
     "description": "Create Billing Portal Session"
-  },
-  "Create Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationCreate",
-    "body": "params := &stripe.\n  BillingPortalConfigurationParams{\n  BusinessProfile: &stripe.BillingPortalConfigurationBusinessProfileParams{\n    PrivacyPolicyURL: stripe.String(\"https://example.com/privacy\"),\n    TermsOfServiceURL: stripe.String(\"https://example.com/terms\"),\n  },\n  Features: &stripe.BillingPortalConfigurationFeaturesParams{\n    CustomerUpdate: &stripe.BillingPortalConfigurationFeaturesCustomerUpdateParams{\n      AllowedUpdates: []*string{\n        stripe.String(\"email\"),\n        stripe.String(\"tax_id\"),\n      },\n      Enabled: stripe.Bool(true),\n    },\n    InvoiceHistory: &stripe.BillingPortalConfigurationFeaturesInvoiceHistoryParams{\n      Enabled: stripe.Bool(true),\n    },\n  },\n}\nc, _ := configuration.New(params)",
-    "description": "Create Billing Portal Configuration"
-  },
-  "Update Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationUpdate",
-    "body": "params := &stripe.\n  BillingPortalConfigurationParams{\n  BusinessProfile: &stripe.BillingPortalConfigurationBusinessProfileParams{\n    PrivacyPolicyURL: stripe.String(\"https://example.com/privacy\"),\n    TermsOfServiceURL: stripe.String(\"https://example.com/terms\"),\n  },\n}\nc, _ := configuration.Update(\n  \"${1:bpc_xxxxxxxxxxxxx}\",\n  params,\n)",
-    "description": "Update Billing Portal Configuration"
-  },
-  "Retrieve Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationRetrieve",
-    "body": "c, _ := configuration.Get(\n  \"${1:bpc_xxxxxxxxxxxxx}\",\n  nil,\n)",
-    "description": "Retrieve Billing Portal Configuration"
-  },
-  "List Billing Portal Configuration": {
-    "prefix": "StripeBillingPortalConfigurationList",
-    "body": "params := &stripe.\n  BillingPortalConfigurationListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := configuration.List(params)\nfor i.Next() {\n  c := i.BillingPortalConfiguration()\n}",
-    "description": "List Billing Portal Configuration"
   },
   "Create Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdCreate",
-    "body": "params := &stripe.TaxIDParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Type: stripe.String(\"eu_vat\"),\n  Value: stripe.String(\"DE123456789\"),\n}\nti, _ := taxid.New(params)",
+    "body": "params := &stripe.TaxIDParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Type: stripe.String(\"${2:eu_vat}\"),\n  Value: stripe.String(\"${3:DE123456789}\"),\n}\nti, _ := taxid.New(params)",
     "description": "Create Customer Tax Id"
   },
   "Retrieve Customer Tax Id": {
@@ -541,12 +521,12 @@
   },
   "List Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdList",
-    "body": "params := &stripe.TaxIDListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := taxid.List(params)\nfor i.Next() {\n  ti := i.TaxID()\n}",
+    "body": "params := &stripe.TaxIDListParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := taxid.List(params)\nfor i.Next() {\n  ti := i.TaxID()\n}",
     "description": "List Customer Tax Id"
   },
   "Create Invoice": {
     "prefix": "StripeInvoiceCreate",
-    "body": "params := &stripe.InvoiceParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n}\nin, _ := invoice.New(params)",
+    "body": "params := &stripe.InvoiceParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n}\nin, _ := invoice.New(params)",
     "description": "Create Invoice"
   },
   "Retrieve Invoice": {
@@ -591,12 +571,12 @@
   },
   "List Invoice": {
     "prefix": "StripeInvoiceList",
-    "body": "params := &stripe.InvoiceListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := invoice.List(params)\nfor i.Next() {\n  in := i.Invoice()\n}",
+    "body": "params := &stripe.InvoiceListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := invoice.List(params)\nfor i.Next() {\n  in := i.Invoice()\n}",
     "description": "List Invoice"
   },
   "Create Invoice Item": {
     "prefix": "StripeInvoiceItemCreate",
-    "body": "params := &stripe.InvoiceItemParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n  Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n}\nii, _ := invoiceitem.New(params)",
+    "body": "params := &stripe.InvoiceItemParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Price: stripe.String(\"${2:price_xxxxxxxxxxxxx}\"),\n}\nii, _ := invoiceitem.New(params)",
     "description": "Create Invoice Item"
   },
   "Retrieve Invoice Item": {
@@ -616,12 +596,12 @@
   },
   "List Invoice Item": {
     "prefix": "StripeInvoiceItemList",
-    "body": "params := &stripe.InvoiceItemListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := invoiceitem.List(params)\nfor i.Next() {\n  ii := i.InvoiceItem()\n}",
+    "body": "params := &stripe.InvoiceItemListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := invoiceitem.List(params)\nfor i.Next() {\n  ii := i.InvoiceItem()\n}",
     "description": "List Invoice Item"
   },
   "Create Plan": {
     "prefix": "StripePlanCreate",
-    "body": "params := &stripe.PlanParams{\n  Amount: stripe.Int64(2000),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Interval: stripe.String(\"month\"),\n  Product: stripe.String(\"prod_xxxxxxxxxxxxx\"),\n}\np, _ := plan.New(params)",
+    "body": "params := &stripe.PlanParams{\n  Amount: stripe.Int64(${1:2000}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Interval: stripe.String(\"${3:month}\"),\n  Product: stripe.String(\"${4:prod_xxxxxxxxxxxxx}\"),\n}\np, _ := plan.New(params)",
     "description": "Create Plan"
   },
   "Retrieve Plan": {
@@ -641,12 +621,12 @@
   },
   "List Plan": {
     "prefix": "StripePlanList",
-    "body": "params := &stripe.PlanListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := plan.List(params)\nfor i.Next() {\n  p := i.Plan()\n}",
+    "body": "params := &stripe.PlanListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := plan.List(params)\nfor i.Next() {\n  p := i.Plan()\n}",
     "description": "List Plan"
   },
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
-    "body": "params := &stripe.PromotionCodeParams{\n  Coupon: stripe.String(\"25_5OFF\"),\n}\npc, _ := promotioncode.New(params)",
+    "body": "params := &stripe.PromotionCodeParams{\n  Coupon: stripe.String(\"${1:25_5OFF}\"),\n}\npc, _ := promotioncode.New(params)",
     "description": "Create Promotion Code"
   },
   "Update Promotion Code": {
@@ -661,12 +641,12 @@
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
-    "body": "params := &stripe.PromotionCodeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := promotioncode.List(params)\nfor i.Next() {\n  pc := i.PromotionCode()\n}",
+    "body": "params := &stripe.PromotionCodeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := promotioncode.List(params)\nfor i.Next() {\n  pc := i.PromotionCode()\n}",
     "description": "List Promotion Code"
   },
   "Create Subscription": {
     "prefix": "StripeSubscriptionCreate",
-    "body": "params := &stripe.SubscriptionParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n  Items: []*stripe.SubscriptionItemParams{\n    {Price: stripe.String(\"price_xxxxxxxxxxxxx\")},\n  },\n}\ns, _ := sub.New(params)",
+    "body": "params := &stripe.SubscriptionParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  Items: []*stripe.SubscriptionItemParams{\n    {Price: stripe.String(\"price_xxxxxxxxxxxxx\")},\n  },\n}\ns, _ := sub.New(params)",
     "description": "Create Subscription"
   },
   "Retrieve Subscription": {
@@ -686,12 +666,12 @@
   },
   "List Subscription": {
     "prefix": "StripeSubscriptionList",
-    "body": "params := &stripe.SubscriptionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := sub.List(params)\nfor i.Next() {\n  s := i.Subscription()\n}",
+    "body": "params := &stripe.SubscriptionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := sub.List(params)\nfor i.Next() {\n  s := i.Subscription()\n}",
     "description": "List Subscription"
   },
   "Create Subscription Item": {
     "prefix": "StripeSubscriptionItemCreate",
-    "body": "params := &stripe.SubscriptionItemParams{\n  Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n  Quantity: stripe.Int64(2),\n  Subscription: stripe.String(\"sub_xxxxxxxxxxxxx\"),\n}\nsi, _ := subitem.New(params)",
+    "body": "params := &stripe.SubscriptionItemParams{\n  Price: stripe.String(\"${2:price_xxxxxxxxxxxxx}\"),\n  Quantity: stripe.Int64(${3:2}),\n  Subscription: stripe.String(\"${1:sub_xxxxxxxxxxxxx}\"),\n}\nsi, _ := subitem.New(params)",
     "description": "Create Subscription Item"
   },
   "Retrieve Subscription Item": {
@@ -711,12 +691,12 @@
   },
   "List Subscription Item": {
     "prefix": "StripeSubscriptionItemList",
-    "body": "params := &stripe.SubscriptionItemListParams{\n  Subscription: stripe.String(\"sub_xxxxxxxxxxxxx\"),\n}\ni := subitem.List(params)\nfor i.Next() {\n  si := i.SubscriptionItem()\n}",
+    "body": "params := &stripe.SubscriptionItemListParams{\n  Subscription: stripe.String(\"${1:sub_xxxxxxxxxxxxx}\"),\n}\ni := subitem.List(params)\nfor i.Next() {\n  si := i.SubscriptionItem()\n}",
     "description": "List Subscription Item"
   },
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
-    "body": "params := &stripe.SubscriptionScheduleParams{\n  Customer: stripe.String(\"cus_xxxxxxxxxxxxx\"),\n  EndBehavior: stripe.String(\"release\"),\n  Phases: []*stripe.SubscriptionSchedulePhaseParams{\n    {\n      Items: []*stripe.SubscriptionSchedulePhaseItemParams{\n        {\n          Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n          Quantity: stripe.Int64(1),\n        },\n      },\n      Iterations: stripe.Int64(12),\n    },\n  },\n  StartDate: stripe.Int64(1616001623),\n}\nss, _ := subschedule.New(params)",
+    "body": "params := &stripe.SubscriptionScheduleParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  EndBehavior: stripe.String(\"${3:release}\"),\n  Phases: []*stripe.SubscriptionSchedulePhaseParams{\n    {\n      Items: []*stripe.SubscriptionSchedulePhaseItemParams{\n        {\n          Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n          Quantity: stripe.Int64(1),\n        },\n      },\n      Iterations: stripe.Int64(12),\n    },\n  },\n  StartDate: stripe.Int64(${2:1605558431}),\n}\nss, _ := subschedule.New(params)",
     "description": "Create Subscription Schedule"
   },
   "Retrieve Subscription Schedule": {
@@ -726,7 +706,7 @@
   },
   "Update Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleUpdate",
-    "body": "params := &stripe.SubscriptionScheduleParams{\n  EndBehavior: stripe.String(\"release\"),\n}\nss, _ := subschedule.Update(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.SubscriptionScheduleParams{\n  EndBehavior: stripe.String(\"${2:release}\"),\n}\nss, _ := subschedule.Update(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Subscription Schedule"
   },
   "Cancel Subscription Schedule": {
@@ -741,12 +721,12 @@
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
-    "body": "params := &stripe.SubscriptionScheduleListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := subschedule.List(params)\nfor i.Next() {\n  ss := i.SubscriptionSchedule()\n}",
+    "body": "params := &stripe.SubscriptionScheduleListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := subschedule.List(params)\nfor i.Next() {\n  ss := i.SubscriptionSchedule()\n}",
     "description": "List Subscription Schedule"
   },
   "Create Tax Rate": {
     "prefix": "StripeTaxRateCreate",
-    "body": "params := &stripe.TaxRateParams{\n  Description: stripe.String(\"VAT Germany\"),\n  DisplayName: stripe.String(\"VAT\"),\n  Inclusive: stripe.Bool(false),\n  Jurisdiction: stripe.String(\"DE\"),\n  Percentage: stripe.Int64(16),\n}\ntr, _ := taxrate.New(params)",
+    "body": "params := &stripe.TaxRateParams{\n  Description: stripe.String(\"${2:VAT Germany}\"),\n  DisplayName: stripe.String(\"${1:VAT}\"),\n  Inclusive: stripe.Bool(${5:false}),\n  Jurisdiction: stripe.String(\"${3:DE}\"),\n  Percentage: stripe.Int64(${4:16}),\n}\ntr, _ := taxrate.New(params)",
     "description": "Create Tax Rate"
   },
   "Retrieve Tax Rate": {
@@ -756,27 +736,27 @@
   },
   "Update Tax Rate": {
     "prefix": "StripeTaxRateUpdate",
-    "body": "params := &stripe.TaxRateParams{\n  Active: stripe.Bool(false),\n}\ntr, _ := taxrate.Update(\n  \"${1:txr_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.TaxRateParams{\n  Active: stripe.Bool(${2:false}),\n}\ntr, _ := taxrate.Update(\n  \"${1:txr_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Tax Rate"
   },
   "List Tax Rate": {
     "prefix": "StripeTaxRateList",
-    "body": "params := &stripe.TaxRateListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := taxrate.List(params)\nfor i.Next() {\n  tr := i.TaxRate()\n}",
+    "body": "params := &stripe.TaxRateListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := taxrate.List(params)\nfor i.Next() {\n  tr := i.TaxRate()\n}",
     "description": "List Tax Rate"
   },
   "Create Subscription Item Usage Record": {
     "prefix": "StripeSubscriptionItemUsageRecordCreate",
-    "body": "params := &stripe.UsageRecordParams{\n  Quantity: stripe.Int64(100),\n  SubscriptionItem: stripe.String(\"${1:si_xxxxxxxxxxxxx}\"),\n  Timestamp: stripe.Int64(1571252444),\n}\nur, _ := usagerecord.New(params)",
+    "body": "params := &stripe.UsageRecordParams{\n  Quantity: stripe.Int64(${2:100}),\n  SubscriptionItem: stripe.String(\"${1:si_xxxxxxxxxxxxx}\"),\n  Timestamp: stripe.Int64(${3:1571252444}),\n}\nur, _ := usagerecord.New(params)",
     "description": "Create Subscription Item Usage Record"
   },
   "List Subscription Item Usage Record Summary": {
     "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
-    "body": "params := &stripe.UsageRecordSummaryListParams{\n  SubscriptionItem: stripe.String(\"${1:si_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := usagerecordsummary.List(params)\nfor i.Next() {\n  urs := i.UsageRecordSummary()\n}",
+    "body": "params := &stripe.UsageRecordSummaryListParams{\n  SubscriptionItem: stripe.String(\"${1:si_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := usagerecordsummary.List(params)\nfor i.Next() {\n  urs := i.UsageRecordSummary()\n}",
     "description": "List Subscription Item Usage Record Summary"
   },
   "Create Account": {
     "prefix": "StripeAccountCreate",
-    "body": "params := &stripe.AccountParams{\n  Capabilities: &stripe.AccountCapabilitiesParams{\n    CardPayments: &stripe.AccountCapabilitiesCardPaymentsParams{\n      Requested: stripe.Bool(true),\n    },\n    Transfers: &stripe.AccountCapabilitiesTransfersParams{\n      Requested: stripe.Bool(true),\n    },\n  },\n  Country: stripe.String(\"US\"),\n  Email: stripe.String(\"jenny.rosen@example.com\"),\n  Type: stripe.String(\"custom\"),\n}\na, _ := account.New(params)",
+    "body": "params := &stripe.AccountParams{\n  Capabilities: &stripe.AccountCapabilitiesParams{\n    CardPayments: &stripe.AccountCapabilitiesCardPaymentsParams{\n      Requested: stripe.Bool(${4:${5:true}}),\n    },\n    Transfers: &stripe.AccountCapabilitiesTransfersParams{\n      Requested: stripe.Bool(true),\n    },\n  },\n  Country: stripe.String(\"${2:US}\"),\n  Email: stripe.String(\"${3:jenny.rosen@example.com}\"),\n  Type: stripe.String(\"${1:custom}\"),\n}\na, _ := account.New(params)",
     "description": "Create Account"
   },
   "Retrieve Account": {
@@ -796,12 +776,12 @@
   },
   "Reject Account": {
     "prefix": "StripeAccountReject",
-    "body": "params := &stripe.AccountRejectParams{\n  Reason: stripe.String(\"fraud\"),\n}\na, _ := account.Reject(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.AccountRejectParams{\n  Reason: stripe.String(\"${2:fraud}\"),\n}\na, _ := account.Reject(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Reject Account"
   },
   "List Account": {
     "prefix": "StripeAccountList",
-    "body": "params := &stripe.AccountListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := account.List(params)\nfor i.Next() {\n  a := i.Account()\n}",
+    "body": "params := &stripe.AccountListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := account.List(params)\nfor i.Next() {\n  a := i.Account()\n}",
     "description": "List Account"
   },
   "Create Account Login Link": {
@@ -811,7 +791,7 @@
   },
   "Create Account Link": {
     "prefix": "StripeAccountLinkCreate",
-    "body": "params := &stripe.AccountLinkParams{\n  Account: stripe.String(\"acct_xxxxxxxxxxxxx\"),\n  RefreshURL: stripe.String(\"https://example.com/reauth\"),\n  ReturnURL: stripe.String(\"https://example.com/return\"),\n  Type: stripe.String(\"account_onboarding\"),\n}\nal, _ := accountlink.New(params)",
+    "body": "params := &stripe.AccountLinkParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  RefreshURL: stripe.String(\"${2:https://example.com/reauth}\"),\n  ReturnURL: stripe.String(\"${3:https://example.com/return}\"),\n  Type: stripe.String(\"${4:account_onboarding}\"),\n}\nal, _ := accountlink.New(params)",
     "description": "Create Account Link"
   },
   "Retrieve Application Fee": {
@@ -821,7 +801,7 @@
   },
   "List Application Fee": {
     "prefix": "StripeApplicationFeeList",
-    "body": "params := &stripe.ApplicationFeeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := fee.List(params)\nfor i.Next() {\n  f := i.ApplicationFee()\n}",
+    "body": "params := &stripe.ApplicationFeeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := fee.List(params)\nfor i.Next() {\n  f := i.ApplicationFee()\n}",
     "description": "List Application Fee"
   },
   "Create Application Fee Fee Refund": {
@@ -841,7 +821,7 @@
   },
   "List Application Fee Fee Refund": {
     "prefix": "StripeApplicationFeeFeeRefundList",
-    "body": "params := &stripe.FeeRefundListParams{\n  ApplicationFee: stripe.String(\"${1:fee_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := feerefund.List(params)\nfor i.Next() {\n  fr := i.FeeRefund()\n}",
+    "body": "params := &stripe.FeeRefundListParams{\n  ApplicationFee: stripe.String(\"${1:fee_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := feerefund.List(params)\nfor i.Next() {\n  fr := i.FeeRefund()\n}",
     "description": "List Application Fee Fee Refund"
   },
   "Retrieve Account Capability": {
@@ -851,7 +831,7 @@
   },
   "Update Account Capability": {
     "prefix": "StripeAccountCapabilityUpdate",
-    "body": "params := &stripe.CapabilityParams{\n  Account: stripe.String(\"${2:acct_xxxxxxxxxxxxx}\"),\n  Requested: stripe.Bool(true),\n}\nc, _ := capability.Update(\"${1:card_payments}\", params)",
+    "body": "params := &stripe.CapabilityParams{\n  Account: stripe.String(\"${2:acct_xxxxxxxxxxxxx}\"),\n  Requested: stripe.Bool(${3:true}),\n}\nc, _ := capability.Update(\"${1:card_payments}\", params)",
     "description": "Update Account Capability"
   },
   "List Account Capability": {
@@ -861,7 +841,7 @@
   },
   "List Country Spec": {
     "prefix": "StripeCountrySpecList",
-    "body": "params := &stripe.CountrySpecListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := countryspec.List(params)\nfor i.Next() {\n  cs := i.CountrySpec()\n}",
+    "body": "params := &stripe.CountrySpecListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := countryspec.List(params)\nfor i.Next() {\n  cs := i.CountrySpec()\n}",
     "description": "List Country Spec"
   },
   "Retrieve Country Spec": {
@@ -891,7 +871,7 @@
   },
   "List Account Account Bank Account": {
     "prefix": "StripeAccountAccountBankAccountList",
-    "body": "params := &stripe.BankAccountListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"bank_account\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${3:3}\")\ni := bankaccount.List(params)\nfor i.Next() {\n  ba := i.BankAccount()\n}",
+    "body": "params := &stripe.BankAccountListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"${2:bank_account}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := bankaccount.List(params)\nfor i.Next() {\n  ba := i.BankAccount()\n}",
     "description": "List Account Account Bank Account"
   },
   "Create Account Account Card": {
@@ -916,12 +896,12 @@
   },
   "List Account Account Card": {
     "prefix": "StripeAccountAccountCardList",
-    "body": "params := &stripe.CardListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"card\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${3:3}\")\ni := card.List(params)\nfor i.Next() {\n  c := i.Card()\n}",
+    "body": "params := &stripe.CardListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  Object: stripe.String(\"${2:card}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := card.List(params)\nfor i.Next() {\n  c := i.Card()\n}",
     "description": "List Account Account Card"
   },
   "Create Account Person": {
     "prefix": "StripeAccountPersonCreate",
-    "body": "params := &stripe.PersonParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  FirstName: stripe.String(\"Jane\"),\n  LastName: stripe.String(\"Diaz\"),\n}\np, _ := person.New(params)",
+    "body": "params := &stripe.PersonParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n  FirstName: stripe.String(\"${2:Jane}\"),\n  LastName: stripe.String(\"${3:Diaz}\"),\n}\np, _ := person.New(params)",
     "description": "Create Account Person"
   },
   "Retrieve Account Person": {
@@ -941,12 +921,12 @@
   },
   "List Account Person": {
     "prefix": "StripeAccountPersonList",
-    "body": "params := &stripe.PersonListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := person.List(params)\nfor i.Next() {\n  p := i.Person()\n}",
+    "body": "params := &stripe.PersonListParams{\n  Account: stripe.String(\"${1:acct_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := person.List(params)\nfor i.Next() {\n  p := i.Person()\n}",
     "description": "List Account Person"
   },
   "Create Topup": {
     "prefix": "StripeTopupCreate",
-    "body": "params := &stripe.TopupParams{\n  Amount: stripe.Int64(2000),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Description: stripe.String(\"Top-up for Jenny Rosen\"),\n  StatementDescriptor: stripe.String(\"Top-up\"),\n}\nt, _ := topup.New(params)",
+    "body": "params := &stripe.TopupParams{\n  Amount: stripe.Int64(${1:2000}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Description: stripe.String(\"${3:Top-up for Jenny Rosen}\"),\n  StatementDescriptor: stripe.String(\"${4:Top-up}\"),\n}\nt, _ := topup.New(params)",
     "description": "Create Topup"
   },
   "Retrieve Topup": {
@@ -961,7 +941,7 @@
   },
   "List Topup": {
     "prefix": "StripeTopupList",
-    "body": "params := &stripe.TopupListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := topup.List(params)\nfor i.Next() {\n  t := i.Topup()\n}",
+    "body": "params := &stripe.TopupListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := topup.List(params)\nfor i.Next() {\n  t := i.Topup()\n}",
     "description": "List Topup"
   },
   "Cancel Topup": {
@@ -971,7 +951,7 @@
   },
   "Create Transfer": {
     "prefix": "StripeTransferCreate",
-    "body": "params := &stripe.TransferParams{\n  Amount: stripe.Int64(400),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Destination: stripe.String(\"acct_xxxxxxxxxxxxx\"),\n  TransferGroup: stripe.String(\"ORDER_95\"),\n}\nt, _ := transfer.New(params)",
+    "body": "params := &stripe.TransferParams{\n  Amount: stripe.Int64(${1:400}),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Destination: stripe.String(\"${3:acct_xxxxxxxxxxxxx}\"),\n  TransferGroup: stripe.String(\"${4:ORDER_95}\"),\n}\nt, _ := transfer.New(params)",
     "description": "Create Transfer"
   },
   "Retrieve Transfer": {
@@ -986,12 +966,12 @@
   },
   "List Transfer": {
     "prefix": "StripeTransferList",
-    "body": "params := &stripe.TransferListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := transfer.List(params)\nfor i.Next() {\n  t := i.Transfer()\n}",
+    "body": "params := &stripe.TransferListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := transfer.List(params)\nfor i.Next() {\n  t := i.Transfer()\n}",
     "description": "List Transfer"
   },
   "Create Transfer Reversal": {
     "prefix": "StripeTransferReversalCreate",
-    "body": "params := &stripe.ReversalParams{\n  Amount: stripe.Int64(100),\n  Transfer: stripe.String(\"${1:tr_xxxxxxxxxxxxx}\"),\n}\nr, _ := reversal.New(params)",
+    "body": "params := &stripe.ReversalParams{\n  Amount: stripe.Int64(${2:100}),\n  Transfer: stripe.String(\"${1:tr_xxxxxxxxxxxxx}\"),\n}\nr, _ := reversal.New(params)",
     "description": "Create Transfer Reversal"
   },
   "Retrieve Transfer Reversal": {
@@ -1006,7 +986,7 @@
   },
   "List Transfer Reversal": {
     "prefix": "StripeTransferReversalList",
-    "body": "params := &stripe.ReversalListParams{\n  Transfer: stripe.String(\"${1:tr_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${2:3}\")\ni := reversal.List(params)\nfor i.Next() {\n  r := i.Reversal()\n}",
+    "body": "params := &stripe.ReversalListParams{\n  Transfer: stripe.String(\"${1:tr_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := reversal.List(params)\nfor i.Next() {\n  r := i.Reversal()\n}",
     "description": "List Transfer Reversal"
   },
   "Retrieve Radar Early Fraud Warning": {
@@ -1016,7 +996,7 @@
   },
   "List Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningList",
-    "body": "params := &stripe.\n  RadarEarlyFraudWarningListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := earlyfraudwarning.List(params)\nfor i.Next() {\n  efw := i.RadarEarlyFraudWarning()\n}",
+    "body": "params := &stripe.\n  RadarEarlyFraudWarningListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := earlyfraudwarning.List(params)\nfor i.Next() {\n  efw := i.RadarEarlyFraudWarning()\n}",
     "description": "List Radar Early Fraud Warning"
   },
   "Approve Review": {
@@ -1031,12 +1011,12 @@
   },
   "List Review": {
     "prefix": "StripeReviewList",
-    "body": "params := &stripe.ReviewListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := review.List(params)\nfor i.Next() {\n  r := i.Review()\n}",
+    "body": "params := &stripe.ReviewListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := review.List(params)\nfor i.Next() {\n  r := i.Review()\n}",
     "description": "List Review"
   },
   "Create Radar Value List": {
     "prefix": "StripeRadarValueListCreate",
-    "body": "params := &stripe.RadarValueListParams{\n  Alias: stripe.String(\"custom_ip_xxxxxxxxxxxxx\"),\n  ItemType: stripe.String(\"ip_address\"),\n  Name: stripe.String(\"Custom IP Blocklist\"),\n}\nvl, _ := valuelist.New(params)",
+    "body": "params := &stripe.RadarValueListParams{\n  Alias: stripe.String(\"${1:custom_ip_xxxxxxxxxxxxx}\"),\n  ItemType: stripe.String(\"${3:ip_address}\"),\n  Name: stripe.String(\"${2:Custom IP Blocklist}\"),\n}\nvl, _ := valuelist.New(params)",
     "description": "Create Radar Value List"
   },
   "Retrieve Radar Value List": {
@@ -1046,7 +1026,7 @@
   },
   "Update Radar Value List": {
     "prefix": "StripeRadarValueListUpdate",
-    "body": "params := &stripe.RadarValueListParams{\n  Name: stripe.String(\"Updated IP Block List\"),\n}\nvl, _ := valuelist.Update(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.RadarValueListParams{\n  Name: stripe.String(\"${2:Updated IP Block List}\"),\n}\nvl, _ := valuelist.Update(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Radar Value List"
   },
   "Delete Radar Value List": {
@@ -1056,12 +1036,12 @@
   },
   "List Radar Value List": {
     "prefix": "StripeRadarValueListList",
-    "body": "params := &stripe.RadarValueListListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := valuelist.List(params)\nfor i.Next() {\n  vl := i.RadarValueList()\n}",
+    "body": "params := &stripe.RadarValueListListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := valuelist.List(params)\nfor i.Next() {\n  vl := i.RadarValueList()\n}",
     "description": "List Radar Value List"
   },
   "Create Radar Value List Item": {
     "prefix": "StripeRadarValueListItemCreate",
-    "body": "params := &stripe.RadarValueListItemParams{\n  Value: stripe.String(\"1.2.3.4\"),\n  RadarValueList: stripe.String(\"rsl_xxxxxxxxxxxxx\"),\n}\nvli, _ := valuelistitem.New(params)",
+    "body": "params := &stripe.RadarValueListItemParams{\n  Value: stripe.String(\"${2:1.2.3.4}\"),\n  RadarValueList: stripe.String(\"${1:rsl_xxxxxxxxxxxxx}\"),\n}\nvli, _ := valuelistitem.New(params)",
     "description": "Create Radar Value List Item"
   },
   "Retrieve Radar Value List Item": {
@@ -1076,7 +1056,7 @@
   },
   "List Radar Value List Item": {
     "prefix": "StripeRadarValueListItemList",
-    "body": "params := &stripe.RadarValueListItemListParams{\n  RadarValueList: stripe.String(\"rsl_xxxxxxxxxxxxx\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := valuelistitem.List(params)\nfor i.Next() {\n  vli := i.RadarValueListItem()\n}",
+    "body": "params := &stripe.RadarValueListItemListParams{\n  RadarValueList: stripe.String(\"${2:rsl_xxxxxxxxxxxxx}\"),\n}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := valuelistitem.List(params)\nfor i.Next() {\n  vli := i.RadarValueListItem()\n}",
     "description": "List Radar Value List Item"
   },
   "Retrieve Issuing Authorization": {
@@ -1101,12 +1081,12 @@
   },
   "List Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationList",
-    "body": "params := &stripe.IssuingAuthorizationListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := authorization.List(params)\nfor i.Next() {\n  a := i.IssuingAuthorization()\n}",
+    "body": "params := &stripe.IssuingAuthorizationListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := authorization.List(params)\nfor i.Next() {\n  a := i.IssuingAuthorization()\n}",
     "description": "List Issuing Authorization"
   },
   "Create Issuing Cardholder": {
     "prefix": "StripeIssuingCardholderCreate",
-    "body": "params := &stripe.IssuingCardholderParams{\n  Billing: &stripe.IssuingBillingParams{\n    Address: &stripe.AddressParams{\n      Line1: stripe.String(\"1234 Main Street\"),\n      City: stripe.String(\"San Francisco\"),\n      State: stripe.String(\"CA\"),\n      Country: stripe.String(\"US\"),\n      PostalCode: stripe.String(\"94111\"),\n    },\n  },\n  Email: stripe.String(\"jenny.rosen@example.com\"),\n  Name: stripe.String(\"Jenny Rosen\"),\n  PhoneNumber: stripe.String(\"+18888675309\"),\n  Type: stripe.String(\"individual\"),\n}\nc, _ := cardholder.New(params)",
+    "body": "params := &stripe.IssuingCardholderParams{\n  Billing: &stripe.IssuingBillingParams{\n    Address: &stripe.AddressParams{\n      Line1: stripe.String(\"${5:1234 Main Street}\"),\n      City: stripe.String(\"${6:San Francisco}\"),\n      State: stripe.String(\"${7:CA}\"),\n      Country: stripe.String(\"${8:US}\"),\n      PostalCode: stripe.String(\"${9:94111}\"),\n    },\n  },\n  Email: stripe.String(\"${3:jenny.rosen@example.com}\"),\n  Name: stripe.String(\"${2:Jenny Rosen}\"),\n  PhoneNumber: stripe.String(\"${4:+18888675309}\"),\n  Type: stripe.String(\"${1:individual}\"),\n}\nc, _ := cardholder.New(params)",
     "description": "Create Issuing Cardholder"
   },
   "Retrieve Issuing Cardholder": {
@@ -1121,12 +1101,12 @@
   },
   "List Issuing Cardholder": {
     "prefix": "StripeIssuingCardholderList",
-    "body": "params := &stripe.IssuingCardholderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := cardholder.List(params)\nfor i.Next() {\n  c := i.IssuingCardholder()\n}",
+    "body": "params := &stripe.IssuingCardholderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := cardholder.List(params)\nfor i.Next() {\n  c := i.IssuingCardholder()\n}",
     "description": "List Issuing Cardholder"
   },
   "Create Issuing Card": {
     "prefix": "StripeIssuingCardCreate",
-    "body": "params := &stripe.IssuingCardParams{\n  Cardholder: stripe.String(\"ich_xxxxxxxxxxxxx\"),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Type: stripe.String(\"virtual\"),\n}\nc, _ := card.New(params)",
+    "body": "params := &stripe.IssuingCardParams{\n  Cardholder: stripe.String(\"${1:ich_xxxxxxxxxxxxx}\"),\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Type: stripe.String(\"${3:virtual}\"),\n}\nc, _ := card.New(params)",
     "description": "Create Issuing Card"
   },
   "Retrieve Issuing Card": {
@@ -1141,12 +1121,12 @@
   },
   "List Issuing Card": {
     "prefix": "StripeIssuingCardList",
-    "body": "params := &stripe.IssuingCardListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := card.List(params)\nfor i.Next() {\n  c := i.IssuingCard()\n}",
+    "body": "params := &stripe.IssuingCardListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := card.List(params)\nfor i.Next() {\n  c := i.IssuingCard()\n}",
     "description": "List Issuing Card"
   },
   "Create Issuing Dispute": {
     "prefix": "StripeIssuingDisputeCreate",
-    "body": "params := &stripe.IssuingDisputeParams{\n  Evidence: &stripe.IssuingDisputeEvidenceParams{\n    Reason: stripe.String(\"fraudulent\"),\n    Fraudulent: &stripe.IssuingDisputeEvidenceFraudulentParams{\n      Explanation: stripe.String(\"Purchase was unrecognized.\"),\n    },\n  },\n  Transaction: stripe.String(\"ipi_xxxxxxxxxxxxx\"),\n}\nd, _ := dispute.New(params)",
+    "body": "params := &stripe.IssuingDisputeParams{\n  Evidence: &stripe.IssuingDisputeEvidenceParams{\n    Reason: stripe.String(\"${2:fraudulent}\"),\n    Fraudulent: &stripe.IssuingDisputeEvidenceFraudulentParams{\n      Explanation: stripe.String(\"${3:Purchase was unrecognized.}\"),\n    },\n  },\n  Transaction: stripe.String(\"${1:ipi_xxxxxxxxxxxxx}\"),\n}\nd, _ := dispute.New(params)",
     "description": "Create Issuing Dispute"
   },
   "Submit Issuing Dispute": {
@@ -1161,12 +1141,12 @@
   },
   "Update Issuing Dispute": {
     "prefix": "StripeIssuingDisputeUpdate",
-    "body": "params := &stripe.IssuingDisputeParams{\n  Evidence: &stripe.IssuingDisputeEvidenceParams{\n    Reason: stripe.String(\"not_xxxxxxxxxxxxx\"),\n    NotReceived: &stripe.IssuingDisputeEvidenceNotReceivedParams{\n      ExpectedAt: stripe.Int64(1590000000),\n      Explanation: stripe.String(\"\"),\n      ProductDescription: stripe.String(\"Baseball cap\"),\n      ProductType: stripe.String(\"merchandise\"),\n    },\n  },\n}\nd, _ := dispute.Update(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.IssuingDisputeParams{\n  Evidence: &stripe.IssuingDisputeEvidenceParams{\n    Reason: stripe.String(\"${2:not_xxxxxxxxxxxxx}\"),\n    NotReceived: &stripe.IssuingDisputeEvidenceNotReceivedParams{\n      ExpectedAt: stripe.Int64(${3:1590000000}),\n      Explanation${4:}: stripe.String(\"\"),\n      ProductDescription: stripe.String(\"${5:Baseball cap}\"),\n      ProductType: stripe.String(\"${6:merchandise}\"),\n    },\n  },\n}\nd, _ := dispute.Update(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Issuing Dispute"
   },
   "List Issuing Dispute": {
     "prefix": "StripeIssuingDisputeList",
-    "body": "params := &stripe.IssuingDisputeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := dispute.List(params)\nfor i.Next() {\n  d := i.IssuingDispute()\n}",
+    "body": "params := &stripe.IssuingDisputeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := dispute.List(params)\nfor i.Next() {\n  d := i.IssuingDispute()\n}",
     "description": "List Issuing Dispute"
   },
   "Retrieve Issuing Transaction": {
@@ -1181,7 +1161,7 @@
   },
   "List Issuing Transaction": {
     "prefix": "StripeIssuingTransactionList",
-    "body": "params := &stripe.IssuingTransactionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := transaction.List(params)\nfor i.Next() {\n  t := i.IssuingTransaction()\n}",
+    "body": "params := &stripe.IssuingTransactionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := transaction.List(params)\nfor i.Next() {\n  t := i.IssuingTransaction()\n}",
     "description": "List Issuing Transaction"
   },
   "Create Terminal Connection Token": {
@@ -1191,7 +1171,7 @@
   },
   "Create Terminal Location": {
     "prefix": "StripeTerminalLocationCreate",
-    "body": "params := &stripe.TerminalLocationParams{\n  Address: &stripe.AccountAddressParams{\n    Line1: stripe.String(\"1234 Main Street\"),\n    City: stripe.String(\"San Francisco\"),\n    Country: stripe.String(\"US\"),\n    PostalCode: stripe.String(\"94111\"),\n  },\n  DisplayName: stripe.String(\"My First Store\"),\n}\nl, _ := location.New(params)",
+    "body": "params := &stripe.TerminalLocationParams{\n  Address: &stripe.AccountAddressParams{\n    Line1: stripe.String(\"${2:1234 Main Street}\"),\n    City: stripe.String(\"${3:San Francisco}\"),\n    Country: stripe.String(\"${4:US}\"),\n    PostalCode: stripe.String(\"${5:94111}\"),\n  },\n  DisplayName: stripe.String(\"${1:My First Store}\"),\n}\nl, _ := location.New(params)",
     "description": "Create Terminal Location"
   },
   "Retrieve Terminal Location": {
@@ -1201,7 +1181,7 @@
   },
   "Update Terminal Location": {
     "prefix": "StripeTerminalLocationUpdate",
-    "body": "params := &stripe.TerminalLocationParams{\n  DisplayName: stripe.String(\"My First Store\"),\n}\nl, _ := location.Update(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.TerminalLocationParams{\n  DisplayName: stripe.String(\"${2:My First Store}\"),\n}\nl, _ := location.Update(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Terminal Location"
   },
   "Delete Terminal Location": {
@@ -1211,12 +1191,12 @@
   },
   "List Terminal Location": {
     "prefix": "StripeTerminalLocationList",
-    "body": "params := &stripe.TerminalLocationListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := location.List(params)\nfor i.Next() {\n  l := i.TerminalLocation()\n}",
+    "body": "params := &stripe.TerminalLocationListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := location.List(params)\nfor i.Next() {\n  l := i.TerminalLocation()\n}",
     "description": "List Terminal Location"
   },
   "Create Terminal Reader": {
     "prefix": "StripeTerminalReaderCreate",
-    "body": "params := &stripe.TerminalReaderParams{\n  Label: stripe.String(\"Blue Rabbit\"),\n  Location: stripe.String(\"tml_1234\"),\n  RegistrationCode: stripe.String(\"puppies-plug-could\"),\n}\nr, _ := reader.New(params)",
+    "body": "params := &stripe.TerminalReaderParams{\n  Label: stripe.String(\"${2:Blue Rabbit}\"),\n  Location: stripe.String(\"${3:tml_1234}\"),\n  RegistrationCode: stripe.String(\"${1:puppies-plug-could}\"),\n}\nr, _ := reader.New(params)",
     "description": "Create Terminal Reader"
   },
   "Retrieve Terminal Reader": {
@@ -1226,7 +1206,7 @@
   },
   "Update Terminal Reader": {
     "prefix": "StripeTerminalReaderUpdate",
-    "body": "params := &stripe.TerminalReaderParams{\n  Label: stripe.String(\"Blue Rabbit\"),\n}\nr, _ := reader.Update(\n  \"${1:tmr_P400-123-456-789}\",\n  params,\n)",
+    "body": "params := &stripe.TerminalReaderParams{\n  Label: stripe.String(\"${2:Blue Rabbit}\"),\n}\nr, _ := reader.Update(\n  \"${1:tmr_P400-123-456-789}\",\n  params,\n)",
     "description": "Update Terminal Reader"
   },
   "Delete Terminal Reader": {
@@ -1236,12 +1216,12 @@
   },
   "List Terminal Reader": {
     "prefix": "StripeTerminalReaderList",
-    "body": "params := &stripe.TerminalReaderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := reader.List(params)\nfor i.Next() {\n  r := i.TerminalReader()\n}",
+    "body": "params := &stripe.TerminalReaderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := reader.List(params)\nfor i.Next() {\n  r := i.TerminalReader()\n}",
     "description": "List Terminal Reader"
   },
   "Create Order": {
     "prefix": "StripeOrderCreate",
-    "body": "params := &stripe.OrderParams{\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Email: stripe.String(\"jenny.rosen@example.com\"),\n  Items: []*stripe.OrderItemParams{\n    {\n      Type: stripe.String(\"sku\"),\n      Parent: stripe.String(\"sku_xxxxxxxxxxxxx\"),\n    },\n  },\n  Shipping: &stripe.OrderShippingParams{\n    Name: stripe.String(\"Jenny Rosen\"),\n    Address: &stripe.AddressParams{\n      Line1: stripe.String(\"1234 Main Street\"),\n      City: stripe.String(\"San Francisco\"),\n      State: stripe.String(\"CA\"),\n      Country: stripe.String(\"US\"),\n      PostalCode: stripe.String(\"94111\"),\n    },\n  },\n}\no, _ := order.New(params)",
+    "body": "params := &stripe.OrderParams{\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Email: stripe.String(\"${2:jenny.rosen@example.com}\"),\n  Items: []*stripe.OrderItemParams{\n    {\n      Type: stripe.String(\"sku\"),\n      Parent: stripe.String(\"sku_xxxxxxxxxxxxx\"),\n    },\n  },\n  Shipping: &stripe.OrderShippingParams{\n    Name: stripe.String(\"${5:Jenny Rosen}\"),\n    Address: &stripe.AddressParams{\n      Line1: stripe.String(\"${6:1234 Main Street}\"),\n      City: stripe.String(\"${7:San Francisco}\"),\n      State: stripe.String(\"${8:CA}\"),\n      Country: stripe.String(\"${9:US}\"),\n      PostalCode: stripe.String(\"${10:94111}\"),\n    },\n  },\n}\no, _ := order.New(params)",
     "description": "Create Order"
   },
   "Retrieve Order": {
@@ -1256,12 +1236,12 @@
   },
   "Pay Order": {
     "prefix": "StripeOrderPay",
-    "body": "params := &stripe.OrderPayParams{\n  Source: &stripe.SourceParams{Token: stripe.String(\"tok_xxxx\")},\n}\no, _ := order.Pay(\"${1:or_xxxxxxxxxxxxx}\", params)",
+    "body": "params := &stripe.OrderPayParams{\n  Source: &stripe.SourceParams{Token: stripe.String(\"${2:tok_xxxx}\")},\n}\no, _ := order.Pay(\"${1:or_xxxxxxxxxxxxx}\", params)",
     "description": "Pay Order"
   },
   "List Order": {
     "prefix": "StripeOrderList",
-    "body": "params := &stripe.OrderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := order.List(params)\nfor i.Next() {\n  o := i.Order()\n}",
+    "body": "params := &stripe.OrderListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := order.List(params)\nfor i.Next() {\n  o := i.Order()\n}",
     "description": "List Order"
   },
   "Retrieve Order Return": {
@@ -1271,12 +1251,12 @@
   },
   "List Order Return": {
     "prefix": "StripeOrderReturnList",
-    "body": "params := &stripe.OrderReturnListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := orderreturn.List(params)\nfor i.Next() {\n  or := i.OrderReturn()\n}",
+    "body": "params := &stripe.OrderReturnListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := orderreturn.List(params)\nfor i.Next() {\n  or := i.OrderReturn()\n}",
     "description": "List Order Return"
   },
   "Create Sku": {
     "prefix": "StripeSkuCreate",
-    "body": "params := &stripe.SKUParams{\n  Attributes: &stripe.SKUAttributesParams{\n    Size: stripe.String(\"Medium\"),\n    Gender: stripe.String(\"Unisex\"),\n  },\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Inventory: &stripe.SKUInventoryParams{\n    Type: stripe.String(\"finite\"),\n    Quantity: stripe.Int64(500),\n  },\n  Price: stripe.Int64(1500),\n  Product: stripe.String(\"prod_xxxxxxxxxxxxx\"),\n}\ns, _ := sku.New(params)",
+    "body": "params := &stripe.SKUParams{\n  Attributes: &stripe.SKUAttributesParams{\n    Size: stripe.String(\"${1:Medium}\"),\n    Gender: stripe.String(\"${2:Unisex}\"),\n  },\n  Currency: stripe.String(string(stripe.CurrencyUSD)),\n  Inventory: &stripe.SKUInventoryParams{\n    Type: stripe.String(\"${5:finite}\"),\n    Quantity: stripe.Int64(${6:500}),\n  },\n  Price: stripe.Int64(${3:1500}),\n  Product: stripe.String(\"${7:prod_xxxxxxxxxxxxx}\"),\n}\ns, _ := sku.New(params)",
     "description": "Create Sku"
   },
   "Retrieve Sku": {
@@ -1291,7 +1271,7 @@
   },
   "List Sku": {
     "prefix": "StripeSkuList",
-    "body": "params := &stripe.SKUListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := sku.List(params)\nfor i.Next() {\n  s := i.SKU()\n}",
+    "body": "params := &stripe.SKUListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := sku.List(params)\nfor i.Next() {\n  s := i.SKU()\n}",
     "description": "List Sku"
   },
   "Delete Sku": {
@@ -1306,12 +1286,12 @@
   },
   "List Sigma Scheduled Query Run": {
     "prefix": "StripeSigmaScheduledQueryRunList",
-    "body": "params := &stripe.\n  SigmaScheduledQueryRunListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := scheduledqueryrun.List(params)\nfor i.Next() {\n  sqr := i.SigmaScheduledQueryRun()\n}",
+    "body": "params := &stripe.\n  SigmaScheduledQueryRunListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := scheduledqueryrun.List(params)\nfor i.Next() {\n  sqr := i.SigmaScheduledQueryRun()\n}",
     "description": "List Sigma Scheduled Query Run"
   },
   "Create Reporting Report Run": {
     "prefix": "StripeReportingReportRunCreate",
-    "body": "params := &stripe.ReportingReportRunParams{\n  Parameters: &stripe.ReportingReportRunParametersParams{\n    IntervalStart: stripe.Int64(1522540800),\n    IntervalEnd: stripe.Int64(1525132800),\n  },\n  ReportType: stripe.String(\"balance.summary.1\"),\n}\nrr, _ := reportrun.New(params)",
+    "body": "params := &stripe.ReportingReportRunParams{\n  Parameters: &stripe.ReportingReportRunParametersParams{\n    IntervalStart: stripe.Int64(${2:1522540800}),\n    IntervalEnd: stripe.Int64(${3:1525132800}),\n  },\n  ReportType: stripe.String(\"${1:balance.summary.1}\"),\n}\nrr, _ := reportrun.New(params)",
     "description": "Create Reporting Report Run"
   },
   "Retrieve Reporting Report Run": {
@@ -1321,7 +1301,7 @@
   },
   "List Reporting Report Run": {
     "prefix": "StripeReportingReportRunList",
-    "body": "params := &stripe.ReportingReportRunListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := reportrun.List(params)\nfor i.Next() {\n  rr := i.ReportingReportRun()\n}",
+    "body": "params := &stripe.ReportingReportRunListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := reportrun.List(params)\nfor i.Next() {\n  rr := i.ReportingReportRun()\n}",
     "description": "List Reporting Report Run"
   },
   "Retrieve Reporting Report Type": {
@@ -1336,7 +1316,7 @@
   },
   "Create Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointCreate",
-    "body": "params := &stripe.WebhookEndpointParams{\n  EnabledEvents: []*string{\n    stripe.String(\"charge.failed\"),\n    stripe.String(\"charge.succeeded\"),\n  },\n  URL: stripe.String(\"https://example.com/my/webhook/endpoint\"),\n}\nwe, _ := webhookendpoint.New(params)",
+    "body": "params := &stripe.WebhookEndpointParams{\n  EnabledEvents: []*string{\n    stripe.String(\"charge.failed\"),\n    stripe.String(\"charge.succeeded\"),\n  },\n  URL: stripe.String(\"${1:https://example.com/my/webhook/endpoint}\"),\n}\nwe, _ := webhookendpoint.New(params)",
     "description": "Create Webhook Endpoint"
   },
   "Retrieve Webhook Endpoint": {
@@ -1346,12 +1326,12 @@
   },
   "Update Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointUpdate",
-    "body": "params := &stripe.WebhookEndpointParams{\n  URL: stripe.String(\"https://example.com/new_endpoint\"),\n}\nwe, _ := webhookendpoint.Update(\n  \"${1:we_xxxxxxxxxxxxx}\",\n  params,\n)",
+    "body": "params := &stripe.WebhookEndpointParams{\n  URL: stripe.String(\"${2:https://example.com/new_endpoint}\"),\n}\nwe, _ := webhookendpoint.Update(\n  \"${1:we_xxxxxxxxxxxxx}\",\n  params,\n)",
     "description": "Update Webhook Endpoint"
   },
   "List Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointList",
-    "body": "params := &stripe.WebhookEndpointListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"${1:3}\")\ni := webhookendpoint.List(params)\nfor i.Next() {\n  we := i.WebhookEndpoint()\n}",
+    "body": "params := &stripe.WebhookEndpointListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := webhookendpoint.List(params)\nfor i.Next() {\n  we := i.WebhookEndpoint()\n}",
     "description": "List Webhook Endpoint"
   },
   "Delete Webhook Endpoint": {
