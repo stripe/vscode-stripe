@@ -311,7 +311,8 @@
       {
         "language": "javascript",
         "path": "./config/snippets/node.json"
-      },      {
+      },
+      {
         "language": "php",
         "path": "./config/snippets/php.json"
       },
