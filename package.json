@@ -285,8 +285,44 @@
     },
     "snippets": [
       {
+        "language": "csharp",
+        "path": "./config/snippets/dotnet.json"
+      },
+      {
+        "language": "go",
+        "path": "./config/snippets/go.json"
+      },
+      {
+        "language": "java",
+        "path": "./config/snippets/java.json"
+      },
+      {
+        "language": "jsx",
+        "path": "./config/snippets/node.json"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./config/snippets/node.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./config/snippets/node.json"
+      },
+      {
         "language": "javascript",
-        "path": "./config/snippets/javascript.json"
+        "path": "./config/snippets/node.json"
+      },
+      {
+        "language": "php",
+        "path": "./config/snippets/php.json"
+      },
+      {
+        "language": "python",
+        "path": "./config/snippets/python.json"
+      },
+      {
+        "language": "ruby",
+        "path": "./config/snippets/ruby.json"
       }
     ]
   },

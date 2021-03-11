@@ -1,0 +1,1342 @@
+{
+  "List Customer": {
+    "prefix": "StripeCustomerList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCustomerCollection customers =\n  Customer.list(params);",
+    "description": "List Customer"
+  },
+  "Retrieve Balance Transaction": {
+    "prefix": "StripeBalanceTransactionRetrieve",
+    "body": "BalanceTransaction balanceTransaction =\n  BalanceTransaction.retrieve(\n    \"${1:txn_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Balance Transaction"
+  },
+  "List Balance Transaction": {
+    "prefix": "StripeBalanceTransactionList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nBalanceTransactionCollection balanceTransactions =\n  BalanceTransaction.list(params);",
+    "description": "List Balance Transaction"
+  },
+  "Create Charge": {
+    "prefix": "StripeChargeCreate",
+    "body": "// `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nMap<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"source\", \"${3:tok_xxxx}\");\nparams.put(\n  \"description\",\n  \"My First Test Charge (created for API docs)\"\n);\n\nCharge charge = Charge.create(params);",
+    "description": "Create Charge"
+  },
+  "Retrieve Charge": {
+    "prefix": "StripeChargeRetrieve",
+    "body": "Charge charge =\n  Charge.retrieve(\"${1:ch_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Charge"
+  },
+  "Update Charge": {
+    "prefix": "StripeChargeUpdate",
+    "body": "Charge charge =\n  Charge.retrieve(\"${1:ch_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCharge updatedCharge = charge.update(params);",
+    "description": "Update Charge"
+  },
+  "Capture Charge": {
+    "prefix": "StripeChargeCapture",
+    "body": "Charge charge =\n  Charge.retrieve(\"${1:ch_xxxxxxxxxxxxx}\");\n\nCharge updatedCharge = charge.capture();",
+    "description": "Capture Charge"
+  },
+  "List Charge": {
+    "prefix": "StripeChargeList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nChargeCollection charges = Charge.list(params);",
+    "description": "List Charge"
+  },
+  "Create Customer": {
+    "prefix": "StripeCustomerCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\n  \"description\",\n  \"My First Test Customer (created for API docs)\"\n);\n\nCustomer customer = Customer.create(params);",
+    "description": "Create Customer"
+  },
+  "Retrieve Customer": {
+    "prefix": "StripeCustomerRetrieve",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Customer"
+  },
+  "Update Customer": {
+    "prefix": "StripeCustomerUpdate",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCustomer updatedCustomer =\n  customer.update(params);",
+    "description": "Update Customer"
+  },
+  "Delete Customer": {
+    "prefix": "StripeCustomerDelete",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");\n\nCustomer deletedCustomer = customer.delete();",
+    "description": "Delete Customer"
+  },
+  "Retrieve Dispute": {
+    "prefix": "StripeDisputeRetrieve",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:dp_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Dispute"
+  },
+  "Update Dispute": {
+    "prefix": "StripeDisputeUpdate",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:dp_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nDispute updatedDispute = dispute.update(params);",
+    "description": "Update Dispute"
+  },
+  "Close Dispute": {
+    "prefix": "StripeDisputeClose",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:dp_xxxxxxxxxxxxx}\");\n\nDispute updatedDispute = dispute.close();",
+    "description": "Close Dispute"
+  },
+  "List Dispute": {
+    "prefix": "StripeDisputeList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nDisputeCollection disputes = Dispute.list(params);",
+    "description": "List Dispute"
+  },
+  "Retrieve Event": {
+    "prefix": "StripeEventRetrieve",
+    "body": "Event event = Event.retrieve(\"${1:evt_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Event"
+  },
+  "List Event": {
+    "prefix": "StripeEventList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nEventCollection events = Event.list(params);",
+    "description": "List Event"
+  },
+  "Create File": {
+    "prefix": "StripeFileCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"purpose\", \"${1:dispute_xxxxxxxxxxxxx}\");\nparams.put(\"file\", \"${2:{a file descriptor}}\");\n\nFile file = File.create(params);",
+    "description": "Create File"
+  },
+  "Retrieve File": {
+    "prefix": "StripeFileRetrieve",
+    "body": "File file = File.retrieve(\"${1:file_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve File"
+  },
+  "List File": {
+    "prefix": "StripeFileList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nFileCollection files = File.list(params);",
+    "description": "List File"
+  },
+  "Create File Link": {
+    "prefix": "StripeFileLinkCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"file\", \"${1:file_xxxxxxxxxxxxx}\");\n\nFileLink fileLink = FileLink.create(params);",
+    "description": "Create File Link"
+  },
+  "Retrieve File Link": {
+    "prefix": "StripeFileLinkRetrieve",
+    "body": "FileLink fileLink =\n  FileLink.retrieve(\"${1:link_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve File Link"
+  },
+  "Update File Link": {
+    "prefix": "StripeFileLinkUpdate",
+    "body": "FileLink fileLink =\n  FileLink.retrieve(\"${1:link_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nFileLink updatedFileLink =\n  fileLink.update(params);",
+    "description": "Update File Link"
+  },
+  "List File Link": {
+    "prefix": "StripeFileLinkList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nFileLinkCollection fileLinks =\n  FileLink.list(params);",
+    "description": "List File Link"
+  },
+  "Retrieve Mandate": {
+    "prefix": "StripeMandateRetrieve",
+    "body": "Mandate mandate =\n  Mandate.retrieve(\"${1:mandate_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Mandate"
+  },
+  "Create Payment Intent": {
+    "prefix": "StripePaymentIntentCreate",
+    "body": "List<Object> paymentMethodTypes =\n  new ArrayList<>();\npaymentMethodTypes.add(\"card\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\n  \"payment_method_types\",\n  paymentMethodTypes\n);\n\nPaymentIntent paymentIntent =\n  PaymentIntent.create(params);",
+    "description": "Create Payment Intent"
+  },
+  "Retrieve Payment Intent": {
+    "prefix": "StripePaymentIntentRetrieve",
+    "body": "PaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Payment Intent"
+  },
+  "Update Payment Intent": {
+    "prefix": "StripePaymentIntentUpdate",
+    "body": "PaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.update(params);",
+    "description": "Update Payment Intent"
+  },
+  "Confirm Payment Intent": {
+    "prefix": "StripePaymentIntentConfirm",
+    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"payment_method\", \"${2:pm_card_visa}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.confirm(params);",
+    "description": "Confirm Payment Intent"
+  },
+  "Capture Payment Intent": {
+    "prefix": "StripePaymentIntentCapture",
+    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.capture();",
+    "description": "Capture Payment Intent"
+  },
+  "Cancel Payment Intent": {
+    "prefix": "StripePaymentIntentCancel",
+    "body": "// To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.cancel();",
+    "description": "Cancel Payment Intent"
+  },
+  "List Payment Intent": {
+    "prefix": "StripePaymentIntentList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPaymentIntentCollection paymentIntents =\n  PaymentIntent.list(params);",
+    "description": "List Payment Intent"
+  },
+  "Create Setup Intent": {
+    "prefix": "StripeSetupIntentCreate",
+    "body": "List<Object> paymentMethodTypes =\n  new ArrayList<>();\npaymentMethodTypes.add(\"card\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"payment_method_types\",\n  paymentMethodTypes\n);\n\nSetupIntent setupIntent =\n  SetupIntent.create(params);",
+    "description": "Create Setup Intent"
+  },
+  "Retrieve Setup Intent": {
+    "prefix": "StripeSetupIntentRetrieve",
+    "body": "SetupIntent setupIntent =\n  SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Setup Intent"
+  },
+  "Update Setup Intent": {
+    "prefix": "StripeSetupIntentUpdate",
+    "body": "SetupIntent setupIntent =\n  SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"user_id\", \"${2:3435453}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSetupIntent updatedSetupIntent =\n  setupIntent.update(params);",
+    "description": "Update Setup Intent"
+  },
+  "Confirm Setup Intent": {
+    "prefix": "StripeSetupIntentConfirm",
+    "body": "SetupIntent setupIntent =\n  SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"payment_method\", \"${2:pm_card_visa}\");\n\nSetupIntent updatedSetupIntent =\n  setupIntent.confirm(params);",
+    "description": "Confirm Setup Intent"
+  },
+  "Cancel Setup Intent": {
+    "prefix": "StripeSetupIntentCancel",
+    "body": "SetupIntent setupIntent =\n  SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\");\n\nSetupIntent updatedSetupIntent =\n  setupIntent.cancel();",
+    "description": "Cancel Setup Intent"
+  },
+  "List Setup Intent": {
+    "prefix": "StripeSetupIntentList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSetupIntentCollection setupIntents =\n  SetupIntent.list(params);",
+    "description": "List Setup Intent"
+  },
+  "List Setup Attempt": {
+    "prefix": "StripeSetupAttemptList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSetupAttemptCollection setupAttempts =\n  SetupAttempt.list(params);",
+    "description": "List Setup Attempt"
+  },
+  "Create Payout": {
+    "prefix": "StripePayoutCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:1100});\nparams.put(\"currency\", \"${2:usd}\");\n\nPayout payout = Payout.create(params);",
+    "description": "Create Payout"
+  },
+  "Retrieve Payout": {
+    "prefix": "StripePayoutRetrieve",
+    "body": "Payout payout =\n  Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Payout"
+  },
+  "Update Payout": {
+    "prefix": "StripePayoutUpdate",
+    "body": "Payout payout =\n  Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPayout updatedPayout = payout.update(params);",
+    "description": "Update Payout"
+  },
+  "List Payout": {
+    "prefix": "StripePayoutList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPayoutCollection payouts = Payout.list(params);",
+    "description": "List Payout"
+  },
+  "Cancel Payout": {
+    "prefix": "StripePayoutCancel",
+    "body": "Payout payout =\n  Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\");\n\nPayout updatedPayout = payout.cancel();",
+    "description": "Cancel Payout"
+  },
+  "Reverse Payout": {
+    "prefix": "StripePayoutReverse",
+    "body": "Payout payout =\n  Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\");\n\nPayout updatedPayout = payout.reverse();",
+    "description": "Reverse Payout"
+  },
+  "Create Product": {
+    "prefix": "StripeProductCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"name\", \"${1:Gold Special}\");\n\nProduct product = Product.create(params);",
+    "description": "Create Product"
+  },
+  "Retrieve Product": {
+    "prefix": "StripeProductRetrieve",
+    "body": "Product product =\n  Product.retrieve(\"${1:prod_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Product"
+  },
+  "Update Product": {
+    "prefix": "StripeProductUpdate",
+    "body": "Product product =\n  Product.retrieve(\"${1:prod_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nProduct updatedProduct = product.update(params);",
+    "description": "Update Product"
+  },
+  "List Product": {
+    "prefix": "StripeProductList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nProductCollection products = Product.list(params);",
+    "description": "List Product"
+  },
+  "Delete Product": {
+    "prefix": "StripeProductDelete",
+    "body": "Product product =\n  Product.retrieve(\"${1:prod_xxxxxxxxxxxxx}\");\n\nProduct deletedProduct = product.delete();",
+    "description": "Delete Product"
+  },
+  "Create Price": {
+    "prefix": "StripePriceCreate",
+    "body": "Map<String, Object> recurring = new HashMap<>();\nrecurring.put(\"interval\", \"${3:month}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"unit_amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"recurring\", recurring);\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPrice price = Price.create(params);",
+    "description": "Create Price"
+  },
+  "Retrieve Price": {
+    "prefix": "StripePriceRetrieve",
+    "body": "Price price =\n  Price.retrieve(\"${1:price_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Price"
+  },
+  "Update Price": {
+    "prefix": "StripePriceUpdate",
+    "body": "Price price =\n  Price.retrieve(\"${1:price_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPrice updatedPrice = price.update(params);",
+    "description": "Update Price"
+  },
+  "List Price": {
+    "prefix": "StripePriceList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPriceCollection prices = Price.list(params);",
+    "description": "List Price"
+  },
+  "Create Refund": {
+    "prefix": "StripeRefundCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"charge\", \"${1:ch_xxxxxxxxxxxxx}\");\n\nRefund refund = Refund.create(params);",
+    "description": "Create Refund"
+  },
+  "Retrieve Refund": {
+    "prefix": "StripeRefundRetrieve",
+    "body": "Refund refund =\n  Refund.retrieve(\"${1:re_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Refund"
+  },
+  "Update Refund": {
+    "prefix": "StripeRefundUpdate",
+    "body": "Refund refund =\n  Refund.retrieve(\"${1:re_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nRefund updatedRefund = refund.update(params);",
+    "description": "Update Refund"
+  },
+  "List Refund": {
+    "prefix": "StripeRefundList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nRefundCollection refunds = Refund.list(params);",
+    "description": "List Refund"
+  },
+  "Create Token": {
+    "prefix": "StripeTokenCreate",
+    "body": "Map<String, Object> cvcUpdate = new HashMap<>();\ncvcUpdate.put(\"cvc\", \"${1:123}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"cvc_update\", cvcUpdate);\n\nToken token = Token.create(params);",
+    "description": "Create Token"
+  },
+  "Retrieve Token": {
+    "prefix": "StripeTokenRetrieve",
+    "body": "Token token = Token.retrieve(\"${1:tok_xxxx}\");",
+    "description": "Retrieve Token"
+  },
+  "Create Payment Method": {
+    "prefix": "StripePaymentMethodCreate",
+    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:11});\ncard.put(\"exp_year\", ${4:2021});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);",
+    "description": "Create Payment Method"
+  },
+  "Retrieve Payment Method": {
+    "prefix": "StripePaymentMethodRetrieve",
+    "body": "PaymentMethod paymentMethod =\n  PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Payment Method"
+  },
+  "Update Payment Method": {
+    "prefix": "StripePaymentMethodUpdate",
+    "body": "PaymentMethod paymentMethod =\n  PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPaymentMethod updatedPaymentMethod =\n  paymentMethod.update(params);",
+    "description": "Update Payment Method"
+  },
+  "List Payment Method": {
+    "prefix": "StripePaymentMethodList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"type\", \"${2:card}\");\n\nPaymentMethodCollection paymentMethods =\n  PaymentMethod.list(params);",
+    "description": "List Payment Method"
+  },
+  "Attach Payment Method": {
+    "prefix": "StripePaymentMethodAttach",
+    "body": "PaymentMethod paymentMethod =\n  PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${2:cus_xxxxxxxxxxxxx}\");\n\nPaymentMethod updatedPaymentMethod =\n  paymentMethod.attach(params);",
+    "description": "Attach Payment Method"
+  },
+  "Detach Payment Method": {
+    "prefix": "StripePaymentMethodDetach",
+    "body": "PaymentMethod paymentMethod =\n  PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\");\n\nPaymentMethod updatedPaymentMethod =\n  paymentMethod.detach();",
+    "description": "Detach Payment Method"
+  },
+  "Create Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountCreate",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"source\", \"${2:btok_xxxxxxxxxxxxx}\");\n\nBankAccount bankAccount =\n  (BankAccount) customer.getSources().create(\n    params\n  );",
+    "description": "Create Customer Bank Account"
+  },
+  "Retrieve Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountRetrieve",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nBankAccount bankAccount =\n  (BankAccount) customer.getSources().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Customer Bank Account"
+  },
+  "Update Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountUpdate",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nBankAccount bankAccount =\n  customer.getSources().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nBankAccount updatedBankAccount =\n  (BankAccount) bankAccount.update(params);",
+    "description": "Update Customer Bank Account"
+  },
+  "Verify Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountVerify",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nBankAccount bankAccount =\n  customer.getSources().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );\n\nList<Object> amounts = new ArrayList<>();\namounts.add(${3:32});\namounts.add(${4:45});\nMap<String, Object> params = new HashMap<>();\nparams.put(\"amounts\", amounts);\n\nBankAccount updatedBankAccount =\n  (BankAccount) bankAccount.verify(params);",
+    "description": "Verify Customer Bank Account"
+  },
+  "Delete Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountDelete",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nBankAccount bankAccount =\n  customer.getSources().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );\n\nBankAccount deletedBankAccount =\n  (BankAccount) bankAccount.delete();",
+    "description": "Delete Customer Bank Account"
+  },
+  "List Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountList",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"object\", \"${2:bank_account}\");\nparams.put(\"limit\", ${3:3});\n\nPaymentSourceCollection bankAccounts =\n  customer.getSources().list(params);",
+    "description": "List Customer Bank Account"
+  },
+  "Create Customer Card": {
+    "prefix": "StripeCustomerCardCreate",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"source\", \"${2:tok_xxxx}\");\n\nCard card =\n  (Card) customer.getSources().create(params);",
+    "description": "Create Customer Card"
+  },
+  "Retrieve Customer Card": {
+    "prefix": "StripeCustomerCardRetrieve",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nCard card =\n  (Card) customer.getSources().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Customer Card"
+  },
+  "Update Customer Card": {
+    "prefix": "StripeCustomerCardUpdate",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nCard card =\n  customer.getSources().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"name\", \"${3:Jenny Rosen}\");\n\nCard updatedCard = (Card) card.update(params);",
+    "description": "Update Customer Card"
+  },
+  "Delete Customer Card": {
+    "prefix": "StripeCustomerCardDelete",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nCard card =\n  customer.getSources().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );\n\nCard deletedCard = (Card) card.delete();",
+    "description": "Delete Customer Card"
+  },
+  "List Customer Card": {
+    "prefix": "StripeCustomerCardList",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"sources\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"object\", \"${2:card}\");\nparams.put(\"limit\", ${3:3});\n\nPaymentSourceCollection cards =\n  customer.getSources().list(params);",
+    "description": "List Customer Card"
+  },
+  "Retrieve Source": {
+    "prefix": "StripeSourceRetrieve",
+    "body": "Source source =\n  Source.retrieve(\"${1:src_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Source"
+  },
+  "Update Source": {
+    "prefix": "StripeSourceUpdate",
+    "body": "Source source =\n  Source.retrieve(\"${1:src_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSource updatedSource = source.update(params);",
+    "description": "Update Source"
+  },
+  "Create Checkout Session": {
+    "prefix": "StripeCheckoutSessionCreate",
+    "body": "List<Object> paymentMethodTypes =\n  new ArrayList<>();\npaymentMethodTypes.add(\"card\");\nList<Object> lineItems = new ArrayList<>();\nMap<String, Object> lineItem1 = new HashMap<>();\nlineItem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nlineItem1.put(\"quantity\", ${5:2});\nlineItems.add(line_item1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"success_url\",\n  \"https://example.com/success\"\n);\nparams.put(\n  \"cancel_url\",\n  \"https://example.com/cancel\"\n);\nparams.put(\n  \"payment_method_types\",\n  paymentMethodTypes\n);\nparams.put(\"line_items\", lineItems);\nparams.put(\"mode\", \"${6:payment}\");\n\nSession session = Session.create(params);",
+    "description": "Create Checkout Session"
+  },
+  "Retrieve Checkout Session": {
+    "prefix": "StripeCheckoutSessionRetrieve",
+    "body": "Session session =\n  Session.retrieve(\"${1:cs_test_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Checkout Session"
+  },
+  "List Checkout Session": {
+    "prefix": "StripeCheckoutSessionList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSessionCollection sessions = Session.list(params);",
+    "description": "List Checkout Session"
+  },
+  "Create Coupon": {
+    "prefix": "StripeCouponCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"percent_off\", ${1:25});\nparams.put(\"duration\", \"${2:repeating}\");\nparams.put(\"duration_in_months\", ${3:3});\n\nCoupon coupon = Coupon.create(params);",
+    "description": "Create Coupon"
+  },
+  "Retrieve Coupon": {
+    "prefix": "StripeCouponRetrieve",
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:25_5OFF}\");",
+    "description": "Retrieve Coupon"
+  },
+  "Update Coupon": {
+    "prefix": "StripeCouponUpdate",
+    "body": "Coupon coupon =\n  Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCoupon updatedCoupon = coupon.update(params);",
+    "description": "Update Coupon"
+  },
+  "Delete Coupon": {
+    "prefix": "StripeCouponDelete",
+    "body": "Coupon coupon =\n  Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nCoupon deletedCoupon = coupon.delete();",
+    "description": "Delete Coupon"
+  },
+  "List Coupon": {
+    "prefix": "StripeCouponList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCouponCollection coupons = Coupon.list(params);",
+    "description": "List Coupon"
+  },
+  "Preview Credit Note": {
+    "prefix": "StripeCreditNotePreview",
+    "body": "List<Object> lines = new ArrayList<>();\nMap<String, Object> line1 = new HashMap<>();\nline1.put(\"type\", \"${2:invoice_line_item}\");\nline1.put(\n  \"invoice_line_item\",\n  \"il_xxxxxxxxxxxxx\"\n);\nline1.put(\"quantity\", ${4:1});\nlines.add(line1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"invoice\", \"${1:in_xxxxxxxxxxxxx}\");\nparams.put(\"lines\", lines);\n\nCreditNote updatedCreditNote =\n  CreditNote.preview(params);",
+    "description": "Preview Credit Note"
+  },
+  "Create Credit Note": {
+    "prefix": "StripeCreditNoteCreate",
+    "body": "List<Object> lines = new ArrayList<>();\nMap<String, Object> line1 = new HashMap<>();\nline1.put(\"type\", \"${2:invoice_line_item}\");\nline1.put(\n  \"invoice_line_item\",\n  \"il_xxxxxxxxxxxxx\"\n);\nline1.put(\"quantity\", ${4:1});\nlines.add(line1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"invoice\", \"${1:in_xxxxxxxxxxxxx}\");\nparams.put(\"lines\", lines);\n\nCreditNote creditNote = CreditNote.create(params);",
+    "description": "Create Credit Note"
+  },
+  "Retrieve Credit Note": {
+    "prefix": "StripeCreditNoteRetrieve",
+    "body": "CreditNote creditNote =\n  CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Credit Note"
+  },
+  "Update Credit Note": {
+    "prefix": "StripeCreditNoteUpdate",
+    "body": "CreditNote creditNote =\n  CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCreditNote updatedCreditNote =\n  creditNote.update(params);",
+    "description": "Update Credit Note"
+  },
+  "List Credit Note Line Item": {
+    "prefix": "StripeCreditNoteLineItemList",
+    "body": "CreditNote creditNote =\n  CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nLineItemCollection lineItems =\n  creditNote.getLineItems().list(params);",
+    "description": "List Credit Note Line Item"
+  },
+  "List Credit Note Credit Note Line Item": {
+    "prefix": "StripeCreditNoteCreditNoteLineItemList",
+    "body": "CreditNote creditNote = CreditNote.retrieve(null);\n\nList<Object> lines = new ArrayList<>();\nMap<String, Object> line1 = new HashMap<>();\nline1.put(\"type\", \"${2:invoice_line_item}\");\nline1.put(\n  \"invoice_line_item\",\n  \"il_xxxxxxxxxxxxx\"\n);\nline1.put(\"quantity\", ${4:1});\nlines.add(line1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"invoice\", \"${1:in_xxxxxxxxxxxxx}\");\nparams.put(\"lines\", lines);\n\nCreditNoteLineItemCollection creditNoteLineItems =\n  creditNote.getCreditNoteLineItems().list(\n    params\n  );",
+    "description": "List Credit Note Credit Note Line Item"
+  },
+  "Void Credit Note Credit Note": {
+    "prefix": "StripeCreditNoteVoidCreditNote",
+    "body": "CreditNote creditNote =\n  CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\");\n\nCreditNote updatedCreditNote =\n  creditNote.voidCreditNote();",
+    "description": "Void Credit Note Credit Note"
+  },
+  "List Credit Note": {
+    "prefix": "StripeCreditNoteList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCreditNoteCollection creditNotes =\n  CreditNote.list(params);",
+    "description": "List Credit Note"
+  },
+  "Create Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionCreate",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${2:-500});\nparams.put(\"currency\", \"${3:usd}\");\n\nBalanceTransaction balanceTransaction =\n  customer.balanceTransactions().create(params);",
+    "description": "Create Customer Balance Transaction"
+  },
+  "Retrieve Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionRetrieve",
+    "body": "Customer customer =\n  Customer.retrieve(\"${2:cus_xxxxxxxxxxxxx}\");\n\nBalanceTransaction balanceTransaction =\n  customer.balanceTransactions().retrieve(\n    \"${1:cbtxn_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Customer Balance Transaction"
+  },
+  "Update Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionUpdate",
+    "body": "Customer customer =\n  Customer.retrieve(\"${2:cus_xxxxxxxxxxxxx}\");\n\nBalanceTransaction balanceTransaction =\n  customer.balanceTransactions().retrieve(\n    \"${1:cbtxn_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nBalanceTransaction updatedBalanceTransaction =\n  balanceTransaction.update(params);",
+    "description": "Update Customer Balance Transaction"
+  },
+  "List Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionList",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nBalanceTransactionCollection balanceTransactions =\n  customer.balanceTransactions().list(params);",
+    "description": "List Customer Balance Transaction"
+  },
+  "Create Billing Portal Session": {
+    "prefix": "StripeBillingPortalSessionCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\n  \"return_url\",\n  \"https://example.com/account\"\n);\n\nSession session = Session.create(params);",
+    "description": "Create Billing Portal Session"
+  },
+  "Create Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdCreate",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"tax_ids\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${2:eu_vat}\");\nparams.put(\"value\", \"${3:DE123456789}\");\n\nTaxId taxId = customer.getTaxIds().create(params);",
+    "description": "Create Customer Tax Id"
+  },
+  "Retrieve Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdRetrieve",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"tax_ids\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nTaxId taxId =\n  customer.getTaxIds().retrieve(\n    \"${1:txi_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Customer Tax Id"
+  },
+  "Delete Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdDelete",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"tax_ids\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${2:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nTaxId taxId =\n  customer.getTaxIds().retrieve(\n    \"${1:txi_xxxxxxxxxxxxx}\"\n  );\n\nTaxId deletedTaxId = taxId.delete();",
+    "description": "Delete Customer Tax Id"
+  },
+  "List Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdList",
+    "body": "Map<String, Object> retrieveParams =\n  new HashMap<>();\nList<String> expandList = new ArrayList<>();\nexpandList.add(\"tax_ids\");\nretrieveParams.put(\"expand\", expandList);\nCustomer customer =\n  Customer.retrieve(\n    \"${1:cus_xxxxxxxxxxxxx}\",\n    retrieveParams,\n    null\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nTaxIdCollection taxIds =\n  customer.getTaxIds().list(params);",
+    "description": "List Customer Tax Id"
+  },
+  "Create Invoice": {
+    "prefix": "StripeInvoiceCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\n\nInvoice invoice = Invoice.create(params);",
+    "description": "Create Invoice"
+  },
+  "Retrieve Invoice": {
+    "prefix": "StripeInvoiceRetrieve",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Invoice"
+  },
+  "Update Invoice": {
+    "prefix": "StripeInvoiceUpdate",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nInvoice updatedInvoice = invoice.update(params);",
+    "description": "Update Invoice"
+  },
+  "Delete Invoice": {
+    "prefix": "StripeInvoiceDelete",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice deletedInvoice = invoice.delete();",
+    "description": "Delete Invoice"
+  },
+  "Finalize Invoice Invoice": {
+    "prefix": "StripeInvoiceFinalizeInvoice",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice updatedInvoice =\n  invoice.finalizeInvoice();",
+    "description": "Finalize Invoice Invoice"
+  },
+  "Pay Invoice": {
+    "prefix": "StripeInvoicePay",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice updatedInvoice = invoice.pay();",
+    "description": "Pay Invoice"
+  },
+  "Send Invoice Invoice": {
+    "prefix": "StripeInvoiceSendInvoice",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice updatedInvoice = invoice.sendInvoice();",
+    "description": "Send Invoice Invoice"
+  },
+  "Void Invoice Invoice": {
+    "prefix": "StripeInvoiceVoidInvoice",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice updatedInvoice = invoice.voidInvoice();",
+    "description": "Void Invoice Invoice"
+  },
+  "Mark Uncollectible Invoice": {
+    "prefix": "StripeInvoiceMarkUncollectible",
+    "body": "Invoice invoice =\n  Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\");\n\nInvoice updatedInvoice =\n  invoice.markUncollectible();",
+    "description": "Mark Uncollectible Invoice"
+  },
+  "List Invoice": {
+    "prefix": "StripeInvoiceList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nInvoiceCollection invoices = Invoice.list(params);",
+    "description": "List Invoice"
+  },
+  "Create Invoice Item": {
+    "prefix": "StripeInvoiceItemCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"price\", \"${2:price_xxxxxxxxxxxxx}\");\n\nInvoiceItem invoiceItem =\n  InvoiceItem.create(params);",
+    "description": "Create Invoice Item"
+  },
+  "Retrieve Invoice Item": {
+    "prefix": "StripeInvoiceItemRetrieve",
+    "body": "InvoiceItem invoiceItem =\n  InvoiceItem.retrieve(\"${1:ii_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Invoice Item"
+  },
+  "Update Invoice Item": {
+    "prefix": "StripeInvoiceItemUpdate",
+    "body": "InvoiceItem invoiceItem =\n  InvoiceItem.retrieve(\"${1:ii_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nInvoiceItem updatedInvoiceItem =\n  invoiceItem.update(params);",
+    "description": "Update Invoice Item"
+  },
+  "Delete Invoice Item": {
+    "prefix": "StripeInvoiceItemDelete",
+    "body": "InvoiceItem invoiceItem =\n  InvoiceItem.retrieve(\"${1:ii_xxxxxxxxxxxxx}\");\n\nInvoiceItem deletedInvoiceItem =\n  invoiceItem.delete();",
+    "description": "Delete Invoice Item"
+  },
+  "List Invoice Item": {
+    "prefix": "StripeInvoiceItemList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nInvoiceItemCollection invoiceItems =\n  InvoiceItem.list(params);",
+    "description": "List Invoice Item"
+  },
+  "Create Plan": {
+    "prefix": "StripePlanCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"interval\", \"${3:month}\");\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPlan plan = Plan.create(params);",
+    "description": "Create Plan"
+  },
+  "Retrieve Plan": {
+    "prefix": "StripePlanRetrieve",
+    "body": "Plan plan = Plan.retrieve(\"${1:price_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Plan"
+  },
+  "Update Plan": {
+    "prefix": "StripePlanUpdate",
+    "body": "Plan plan = Plan.retrieve(\"${1:price_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPlan updatedPlan = plan.update(params);",
+    "description": "Update Plan"
+  },
+  "Delete Plan": {
+    "prefix": "StripePlanDelete",
+    "body": "Plan plan = Plan.retrieve(\"${1:price_xxxxxxxxxxxxx}\");\n\nPlan deletedPlan = plan.delete();",
+    "description": "Delete Plan"
+  },
+  "List Plan": {
+    "prefix": "StripePlanList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPlanCollection plans = Plan.list(params);",
+    "description": "List Plan"
+  },
+  "Create Promotion Code": {
+    "prefix": "StripePromotionCodeCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:25_5OFF}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);",
+    "description": "Create Promotion Code"
+  },
+  "Update Promotion Code": {
+    "prefix": "StripePromotionCodeUpdate",
+    "body": "PromotionCode promotionCode =\n  PromotionCode.retrieve(\"${1:promo_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPromotionCode updatedPromotionCode =\n  promotionCode.update(params);",
+    "description": "Update Promotion Code"
+  },
+  "Retrieve Promotion Code": {
+    "prefix": "StripePromotionCodeRetrieve",
+    "body": "PromotionCode promotionCode =\n  PromotionCode.retrieve(\"${1:promo_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Promotion Code"
+  },
+  "List Promotion Code": {
+    "prefix": "StripePromotionCodeList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPromotionCodeCollection promotionCodes =\n  PromotionCode.list(params);",
+    "description": "List Promotion Code"
+  },
+  "Create Subscription": {
+    "prefix": "StripeSubscriptionCreate",
+    "body": "List<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${2:price_xxxxxxxxxxxxx}\");\nitems.add(item1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"items\", items);\n\nSubscription subscription =\n  Subscription.create(params);",
+    "description": "Create Subscription"
+  },
+  "Retrieve Subscription": {
+    "prefix": "StripeSubscriptionRetrieve",
+    "body": "Subscription subscription =\n  Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Subscription"
+  },
+  "Update Subscription": {
+    "prefix": "StripeSubscriptionUpdate",
+    "body": "Subscription subscription =\n  Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSubscription updatedSubscription =\n  subscription.update(params);",
+    "description": "Update Subscription"
+  },
+  "Delete Subscription": {
+    "prefix": "StripeSubscriptionDelete",
+    "body": "Subscription subscription =\n  Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\");\n\nSubscription deletedSubscription =\n  subscription.cancel();",
+    "description": "Delete Subscription"
+  },
+  "List Subscription": {
+    "prefix": "StripeSubscriptionList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSubscriptionCollection subscriptions =\n  Subscription.list(params);",
+    "description": "List Subscription"
+  },
+  "Create Subscription Item": {
+    "prefix": "StripeSubscriptionItemCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"subscription\", \"${1:sub_xxxxxxxxxxxxx}\");\nparams.put(\"price\", \"${2:price_xxxxxxxxxxxxx}\");\nparams.put(\"quantity\", ${3:2});\n\nSubscriptionItem subscriptionItem =\n  SubscriptionItem.create(params);",
+    "description": "Create Subscription Item"
+  },
+  "Retrieve Subscription Item": {
+    "prefix": "StripeSubscriptionItemRetrieve",
+    "body": "SubscriptionItem subscriptionItem =\n  SubscriptionItem.retrieve(\"${1:si_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Subscription Item"
+  },
+  "Update Subscription Item": {
+    "prefix": "StripeSubscriptionItemUpdate",
+    "body": "SubscriptionItem subscriptionItem =\n  SubscriptionItem.retrieve(\"${1:si_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSubscriptionItem updatedSubscriptionItem =\n  subscriptionItem.update(params);",
+    "description": "Update Subscription Item"
+  },
+  "Delete Subscription Item": {
+    "prefix": "StripeSubscriptionItemDelete",
+    "body": "SubscriptionItem subscriptionItem =\n  SubscriptionItem.retrieve(\"${1:si_xxxxxxxxxxxxx}\");\n\nSubscriptionItem deletedSubscriptionItem =\n  subscriptionItem.delete();",
+    "description": "Delete Subscription Item"
+  },
+  "List Subscription Item": {
+    "prefix": "StripeSubscriptionItemList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"subscription\", \"${1:sub_xxxxxxxxxxxxx}\");\n\nSubscriptionItemCollection subscriptionItems =\n  SubscriptionItem.list(params);",
+    "description": "List Subscription Item"
+  },
+  "Create Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCreate",
+    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1605558431});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);",
+    "description": "Create Subscription Schedule"
+  },
+  "Retrieve Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRetrieve",
+    "body": "SubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.retrieve(\n    \"${1:sub_sched_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Subscription Schedule"
+  },
+  "Update Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleUpdate",
+    "body": "SubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.retrieve(\n    \"${1:sub_sched_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"end_behavior\", \"${2:release}\");\n\nSubscriptionSchedule updatedSubscriptionSchedule =\n  subscriptionSchedule.update(params);",
+    "description": "Update Subscription Schedule"
+  },
+  "Cancel Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCancel",
+    "body": "SubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.retrieve(\n    \"${1:sub_sched_xxxxxxxxxxxxx}\"\n  );\n\nSubscriptionSchedule updatedSubscriptionSchedule =\n  subscriptionSchedule.cancel();",
+    "description": "Cancel Subscription Schedule"
+  },
+  "Release Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRelease",
+    "body": "SubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.retrieve(\n    \"${1:sub_sched_xxxxxxxxxxxxx}\"\n  );\n\nSubscriptionSchedule updatedSubscriptionSchedule =\n  subscriptionSchedule.release();",
+    "description": "Release Subscription Schedule"
+  },
+  "List Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSubscriptionScheduleCollection subscriptionSchedules =\n  SubscriptionSchedule.list(params);",
+    "description": "List Subscription Schedule"
+  },
+  "Create Tax Rate": {
+    "prefix": "StripeTaxRateCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"display_name\", \"${1:VAT}\");\nparams.put(\"description\", \"${2:VAT Germany}\");\nparams.put(\"jurisdiction\", \"${3:DE}\");\nparams.put(\"percentage\", ${4:16});\nparams.put(\"inclusive\", ${5:false});\n\nTaxRate taxRate = TaxRate.create(params);",
+    "description": "Create Tax Rate"
+  },
+  "Retrieve Tax Rate": {
+    "prefix": "StripeTaxRateRetrieve",
+    "body": "TaxRate taxRate =\n  TaxRate.retrieve(\"${1:txr_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Tax Rate"
+  },
+  "Update Tax Rate": {
+    "prefix": "StripeTaxRateUpdate",
+    "body": "TaxRate taxRate =\n  TaxRate.retrieve(\"${1:txr_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"active\", ${2:false});\n\nTaxRate updatedTaxRate = taxRate.update(params);",
+    "description": "Update Tax Rate"
+  },
+  "List Tax Rate": {
+    "prefix": "StripeTaxRateList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nTaxRateCollection taxRates = TaxRate.list(params);",
+    "description": "List Tax Rate"
+  },
+  "Create Subscription Item Usage Record": {
+    "prefix": "StripeSubscriptionItemUsageRecordCreate",
+    "body": "SubscriptionItem subscriptionItem =\n  SubscriptionItem.retrieve(\"${1:si_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"quantity\", ${2:100});\nparams.put(\"timestamp\", ${3:1571252444});\n\nUsageRecord usageRecord =\n  subscriptionItem.getUsageRecords().create(\n    params\n  );",
+    "description": "Create Subscription Item Usage Record"
+  },
+  "List Subscription Item Usage Record Summary": {
+    "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
+    "body": "SubscriptionItem subscriptionItem =\n  SubscriptionItem.retrieve(\"${1:si_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nUsageRecordSummaryCollection usageRecordSummaries =\n  subscriptionItem.usageRecordSummaries(params);",
+    "description": "List Subscription Item Usage Record Summary"
+  },
+  "Create Account": {
+    "prefix": "StripeAccountCreate",
+    "body": "Map<String, Object> cardPayments =\n  new HashMap<>();\ncardPayments.put(\"requested\", ${4:${5:true}});\nMap<String, Object> transfers = new HashMap<>();\ntransfers.put(\"requested\", true);\nMap<String, Object> capabilities =\n  new HashMap<>();\ncapabilities.put(\"card_payments\", cardPayments);\ncapabilities.put(\"transfers\", transfers);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:custom}\");\nparams.put(\"country\", \"${2:US}\");\nparams.put(\"email\", \"${3:jenny.rosen@example.com}\");\nparams.put(\"capabilities\", capabilities);\n\nAccount account = Account.create(params);",
+    "description": "Create Account"
+  },
+  "Retrieve Account": {
+    "prefix": "StripeAccountRetrieve",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Account"
+  },
+  "Update Account": {
+    "prefix": "StripeAccountUpdate",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nAccount updatedAccount = account.update(params);",
+    "description": "Update Account"
+  },
+  "Delete Account": {
+    "prefix": "StripeAccountDelete",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nAccount deletedAccount = account.delete();",
+    "description": "Delete Account"
+  },
+  "Reject Account": {
+    "prefix": "StripeAccountReject",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"reason\", \"${2:fraud}\");\n\nAccount updatedAccount = account.reject(params);",
+    "description": "Reject Account"
+  },
+  "List Account": {
+    "prefix": "StripeAccountList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nAccountCollection accounts = Account.list(params);",
+    "description": "List Account"
+  },
+  "Create Account Login Link": {
+    "prefix": "StripeAccountLoginLinkCreate",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nLoginLink loginLink =\n  account.getLoginLinks().create();",
+    "description": "Create Account Login Link"
+  },
+  "Create Account Link": {
+    "prefix": "StripeAccountLinkCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"account\", \"${1:acct_xxxxxxxxxxxxx}\");\nparams.put(\n  \"refresh_url\",\n  \"https://example.com/reauth\"\n);\nparams.put(\n  \"return_url\",\n  \"https://example.com/return\"\n);\nparams.put(\"type\", \"${4:account_onboarding}\");\n\nAccountLink accountLink =\n  AccountLink.create(params);",
+    "description": "Create Account Link"
+  },
+  "Retrieve Application Fee": {
+    "prefix": "StripeApplicationFeeRetrieve",
+    "body": "ApplicationFee applicationFee =\n  ApplicationFee.retrieve(\"${1:fee_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Application Fee"
+  },
+  "List Application Fee": {
+    "prefix": "StripeApplicationFeeList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nApplicationFeeCollection applicationFees =\n  ApplicationFee.list(params);",
+    "description": "List Application Fee"
+  },
+  "Create Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundCreate",
+    "body": "ApplicationFee applicationFee =\n  ApplicationFee.retrieve(\"${1:fee_xxxxxxxxxxxxx}\");\n\nFeeRefund feeRefund =\n  applicationFee.getRefunds().create();",
+    "description": "Create Application Fee Fee Refund"
+  },
+  "Retrieve Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundRetrieve",
+    "body": "ApplicationFee applicationFee =\n  ApplicationFee.retrieve(\"${2:fee_xxxxxxxxxxxxx}\");\n\nFeeRefund feeRefund =\n  applicationFee.getRefunds().retrieve(\n    \"${1:fr_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Application Fee Fee Refund"
+  },
+  "Update Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundUpdate",
+    "body": "ApplicationFee applicationFee =\n  ApplicationFee.retrieve(\"${2:fee_xxxxxxxxxxxxx}\");\n\nFeeRefund feeRefund =\n  applicationFee.getRefunds().retrieve(\n    \"${1:fr_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nFeeRefund updatedFeeRefund =\n  feeRefund.update(params);",
+    "description": "Update Application Fee Fee Refund"
+  },
+  "List Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundList",
+    "body": "ApplicationFee applicationFee =\n  ApplicationFee.retrieve(\"${1:fee_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nFeeRefundCollection feeRefunds =\n  applicationFee.getRefunds().list(params);",
+    "description": "List Application Fee Fee Refund"
+  },
+  "Retrieve Account Capability": {
+    "prefix": "StripeAccountCapabilityRetrieve",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nCapability capability =\n  account.capabilities().retrieve(\n    \"${1:card_payments}\"\n  );",
+    "description": "Retrieve Account Capability"
+  },
+  "Update Account Capability": {
+    "prefix": "StripeAccountCapabilityUpdate",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nCapability capability =\n  account.capabilities().retrieve(\n    \"${1:card_payments}\"\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"requested\", ${3:true});\n\nCapability updatedCapability =\n  capability.update(params);",
+    "description": "Update Account Capability"
+  },
+  "List Account Capability": {
+    "prefix": "StripeAccountCapabilityList",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nCapabilityCollection capabilities =\n  account.capabilities().list();",
+    "description": "List Account Capability"
+  },
+  "List Country Spec": {
+    "prefix": "StripeCountrySpecList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCountrySpecCollection countrySpecs =\n  CountrySpec.list(params);",
+    "description": "List Country Spec"
+  },
+  "Retrieve Country Spec": {
+    "prefix": "StripeCountrySpecRetrieve",
+    "body": "CountrySpec countrySpec =\n  CountrySpec.retrieve(\"${1:US}\");",
+    "description": "Retrieve Country Spec"
+  },
+  "Create Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountCreate",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"external_account\",\n  \"btok_xxxxxxxxxxxxx\"\n);\n\nBankAccount bankAccount =\n  (BankAccount) account\n    .getExternalAccounts()\n    .create(params);",
+    "description": "Create Account Account Bank Account"
+  },
+  "Retrieve Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountRetrieve",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nBankAccount bankAccount =\n  (BankAccount) account\n    .getExternalAccounts()\n    .retrieve(\"${1:ba_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Account Account Bank Account"
+  },
+  "Update Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountUpdate",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nBankAccount bankAccount =\n  account.getExternalAccounts().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nBankAccount updatedAccountBankAccount =\n  (BankAccount) bankAccount.update(params);",
+    "description": "Update Account Account Bank Account"
+  },
+  "Delete Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountDelete",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nBankAccount bankAccount =\n  account.getExternalAccounts().retrieve(\n    \"${1:ba_xxxxxxxxxxxxx}\"\n  );\n\nBankAccount deletedBankAccount =\n  (BankAccount) bankAccount.delete();",
+    "description": "Delete Account Account Bank Account"
+  },
+  "List Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountList",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"object\", \"${2:bank_account}\");\nparams.put(\"limit\", ${3:3});\n\nExternalAccountCollection bankAccounts =\n  account.getExternalAccounts().list(params);",
+    "description": "List Account Account Bank Account"
+  },
+  "Create Account Account Card": {
+    "prefix": "StripeAccountAccountCardCreate",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"external_account\", \"${2:tok_xxxx_debit}\");\n\nCard card =\n  (Card) account.getExternalAccounts().create(\n    params\n  );",
+    "description": "Create Account Account Card"
+  },
+  "Retrieve Account Account Card": {
+    "prefix": "StripeAccountAccountCardRetrieve",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nCard card =\n  (Card) account.getExternalAccounts().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Account Account Card"
+  },
+  "Update Account Account Card": {
+    "prefix": "StripeAccountAccountCardUpdate",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nCard card =\n  account.getExternalAccounts().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCard updatedAccountCard =\n  (Card) card.update(params);",
+    "description": "Update Account Account Card"
+  },
+  "Delete Account Account Card": {
+    "prefix": "StripeAccountAccountCardDelete",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nCard card =\n  account.getExternalAccounts().retrieve(\n    \"${1:card_xxxxxxxxxxxxx}\"\n  );\n\nCard deletedCard = (Card) card.delete();",
+    "description": "Delete Account Account Card"
+  },
+  "List Account Account Card": {
+    "prefix": "StripeAccountAccountCardList",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"object\", \"${2:card}\");\nparams.put(\"limit\", ${3:3});\n\nExternalAccountCollection cards =\n  account.getExternalAccounts().list(params);",
+    "description": "List Account Account Card"
+  },
+  "Create Account Person": {
+    "prefix": "StripeAccountPersonCreate",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"first_name\", \"${2:Jane}\");\nparams.put(\"last_name\", \"${3:Diaz}\");\n\nPerson person = account.persons().create(params);",
+    "description": "Create Account Person"
+  },
+  "Retrieve Account Person": {
+    "prefix": "StripeAccountPersonRetrieve",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nPerson person =\n  account.persons().retrieve(\n    \"${1:person_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Account Person"
+  },
+  "Update Account Person": {
+    "prefix": "StripeAccountPersonUpdate",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nPerson person =\n  account.persons().retrieve(\n    \"${1:person_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPerson updatedPerson = person.update(params);",
+    "description": "Update Account Person"
+  },
+  "Delete Account Person": {
+    "prefix": "StripeAccountPersonDelete",
+    "body": "Account account =\n  Account.retrieve(\"${2:acct_xxxxxxxxxxxxx}\");\n\nPerson person =\n  account.persons().retrieve(\n    \"${1:person_xxxxxxxxxxxxx}\"\n  );\n\nPerson deletedPerson = person.delete();",
+    "description": "Delete Account Person"
+  },
+  "List Account Person": {
+    "prefix": "StripeAccountPersonList",
+    "body": "Account account =\n  Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nPersonCollection persons =\n  account.persons().list(params);",
+    "description": "List Account Person"
+  },
+  "Create Topup": {
+    "prefix": "StripeTopupCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\n  \"description\",\n  \"Top-up for Jenny Rosen\"\n);\nparams.put(\"statement_descriptor\", \"${4:Top-up}\");\n\nTopup topup = Topup.create(params);",
+    "description": "Create Topup"
+  },
+  "Retrieve Topup": {
+    "prefix": "StripeTopupRetrieve",
+    "body": "Topup topup = Topup.retrieve(\"${1:tu_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Topup"
+  },
+  "Update Topup": {
+    "prefix": "StripeTopupUpdate",
+    "body": "Topup topup = Topup.retrieve(\"${1:tu_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nTopup updatedTopup = topup.update(params);",
+    "description": "Update Topup"
+  },
+  "List Topup": {
+    "prefix": "StripeTopupList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nTopupCollection topups = Topup.list(params);",
+    "description": "List Topup"
+  },
+  "Cancel Topup": {
+    "prefix": "StripeTopupCancel",
+    "body": "Topup topup = Topup.retrieve(\"${1:tu_xxxxxxxxxxxxx}\");\n\nTopup updatedTopup = topup.cancel();",
+    "description": "Cancel Topup"
+  },
+  "Create Transfer": {
+    "prefix": "StripeTransferCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:400});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"destination\", \"${3:acct_xxxxxxxxxxxxx}\");\nparams.put(\"transfer_group\", \"${4:ORDER_95}\");\n\nTransfer transfer = Transfer.create(params);",
+    "description": "Create Transfer"
+  },
+  "Retrieve Transfer": {
+    "prefix": "StripeTransferRetrieve",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Transfer"
+  },
+  "Update Transfer": {
+    "prefix": "StripeTransferUpdate",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nTransfer updatedTransfer =\n  transfer.update(params);",
+    "description": "Update Transfer"
+  },
+  "List Transfer": {
+    "prefix": "StripeTransferList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nTransferCollection transfers =\n  Transfer.list(params);",
+    "description": "List Transfer"
+  },
+  "Create Transfer Reversal": {
+    "prefix": "StripeTransferReversalCreate",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${2:100});\n\nTransferReversal transferReversal =\n  transfer.getReversals().create(params);",
+    "description": "Create Transfer Reversal"
+  },
+  "Retrieve Transfer Reversal": {
+    "prefix": "StripeTransferReversalRetrieve",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${2:tr_xxxxxxxxxxxxx}\");\n\nTransferReversal transferReversal =\n  transfer.getReversals().retrieve(\n    \"${1:trr_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Transfer Reversal"
+  },
+  "Update Transfer Reversal": {
+    "prefix": "StripeTransferReversalUpdate",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${2:tr_xxxxxxxxxxxxx}\");\n\nTransferReversal transferReversal =\n  transfer.getReversals().retrieve(\n    \"${1:trr_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${3:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nTransferReversal updatedReversal =\n  transferReversal.update(params);",
+    "description": "Update Transfer Reversal"
+  },
+  "List Transfer Reversal": {
+    "prefix": "StripeTransferReversalList",
+    "body": "Transfer transfer =\n  Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${2:3});\n\nTransferReversalCollection transferReversals =\n  transfer.getReversals().list(params);",
+    "description": "List Transfer Reversal"
+  },
+  "Retrieve Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningRetrieve",
+    "body": "EarlyFraudWarning earlyFraudWarning =\n  EarlyFraudWarning.retrieve(\n    \"${1:issfr_xxxxxxxxxxxxx}\"\n  );",
+    "description": "Retrieve Radar Early Fraud Warning"
+  },
+  "List Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nEarlyFraudWarningCollection earlyFraudWarnings =\n  EarlyFraudWarning.list(params);",
+    "description": "List Radar Early Fraud Warning"
+  },
+  "Approve Review": {
+    "prefix": "StripeReviewApprove",
+    "body": "Review review =\n  Review.retrieve(\"${1:prv_xxxxxxxxxxxxx}\");\n\nReview updatedReview = review.approve();",
+    "description": "Approve Review"
+  },
+  "Retrieve Review": {
+    "prefix": "StripeReviewRetrieve",
+    "body": "Review review =\n  Review.retrieve(\"${1:prv_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Review"
+  },
+  "List Review": {
+    "prefix": "StripeReviewList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nReviewCollection reviews = Review.list(params);",
+    "description": "List Review"
+  },
+  "Create Radar Value List": {
+    "prefix": "StripeRadarValueListCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"alias\", \"${1:custom_ip_xxxxxxxxxxxxx}\");\nparams.put(\"name\", \"${2:Custom IP Blocklist}\");\nparams.put(\"item_type\", \"${3:ip_address}\");\n\nValueList valueList = ValueList.create(params);",
+    "description": "Create Radar Value List"
+  },
+  "Retrieve Radar Value List": {
+    "prefix": "StripeRadarValueListRetrieve",
+    "body": "ValueList valueList =\n  ValueList.retrieve(\"${1:rsl_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Radar Value List"
+  },
+  "Update Radar Value List": {
+    "prefix": "StripeRadarValueListUpdate",
+    "body": "ValueList valueList =\n  ValueList.retrieve(\"${1:rsl_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"name\", \"${2:Updated IP Block List}\");\n\nValueList updatedValueList =\n  valueList.update(params);",
+    "description": "Update Radar Value List"
+  },
+  "Delete Radar Value List": {
+    "prefix": "StripeRadarValueListDelete",
+    "body": "ValueList valueList =\n  ValueList.retrieve(\"${1:rsl_xxxxxxxxxxxxx}\");\n\nValueList deletedValueList = valueList.delete();",
+    "description": "Delete Radar Value List"
+  },
+  "List Radar Value List": {
+    "prefix": "StripeRadarValueListList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nValueListCollection valueLists =\n  ValueList.list(params);",
+    "description": "List Radar Value List"
+  },
+  "Create Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"value_list\", \"${1:rsl_xxxxxxxxxxxxx}\");\nparams.put(\"value\", \"${2:1.2.3.4}\");\n\nValueListItem valueListItem =\n  ValueListItem.create(params);",
+    "description": "Create Radar Value List Item"
+  },
+  "Retrieve Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemRetrieve",
+    "body": "ValueListItem valueListItem =\n  ValueListItem.retrieve(\"${1:rsli_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Radar Value List Item"
+  },
+  "Delete Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemDelete",
+    "body": "ValueListItem valueListItem =\n  ValueListItem.retrieve(\"${1:rsli_xxxxxxxxxxxxx}\");\n\nValueListItem deletedValueListItem =\n  valueListItem.delete();",
+    "description": "Delete Radar Value List Item"
+  },
+  "List Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\nparams.put(\"value_list\", \"${2:rsl_xxxxxxxxxxxxx}\");\n\nValueListItemCollection valueListItems =\n  ValueListItem.list(params);",
+    "description": "List Radar Value List Item"
+  },
+  "Retrieve Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationRetrieve",
+    "body": "Authorization authorization =\n  Authorization.retrieve(\"${1:iauth_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Issuing Authorization"
+  },
+  "Update Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationUpdate",
+    "body": "Authorization authorization =\n  Authorization.retrieve(\"${1:iauth_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nAuthorization updatedAuthorization =\n  authorization.update(params);",
+    "description": "Update Issuing Authorization"
+  },
+  "Approve Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationApprove",
+    "body": "Authorization authorization =\n  Authorization.retrieve(\"${1:iauth_xxxxxxxxxxxxx}\");\n\nAuthorization updatedAuthorization =\n  authorization.approve();",
+    "description": "Approve Issuing Authorization"
+  },
+  "Decline Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationDecline",
+    "body": "Authorization authorization =\n  Authorization.retrieve(\"${1:iauth_xxxxxxxxxxxxx}\");\n\nAuthorization updatedAuthorization =\n  authorization.decline();",
+    "description": "Decline Issuing Authorization"
+  },
+  "List Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nAuthorizationCollection authorizations =\n  Authorization.list(params);",
+    "description": "List Issuing Authorization"
+  },
+  "Create Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderCreate",
+    "body": "Map<String, Object> address = new HashMap<>();\naddress.put(\"line1\", \"${5:1234 Main Street}\");\naddress.put(\"city\", \"${6:San Francisco}\");\naddress.put(\"state\", \"${7:CA}\");\naddress.put(\"country\", \"${8:US}\");\naddress.put(\"postal_code\", \"${9:94111}\");\nMap<String, Object> billing = new HashMap<>();\nbilling.put(\"address\", address);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:individual}\");\nparams.put(\"name\", \"${2:Jenny Rosen}\");\nparams.put(\"email\", \"${3:jenny.rosen@example.com}\");\nparams.put(\"phone_number\", \"${4:+18888675309}\");\nparams.put(\"billing\", billing);\n\nCardholder cardholder = Cardholder.create(params);",
+    "description": "Create Issuing Cardholder"
+  },
+  "Retrieve Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderRetrieve",
+    "body": "Cardholder cardholder =\n  Cardholder.retrieve(\"${1:ich_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Issuing Cardholder"
+  },
+  "Update Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderUpdate",
+    "body": "Cardholder cardholder =\n  Cardholder.retrieve(\"${1:ich_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCardholder updatedCardholder =\n  cardholder.update(params);",
+    "description": "Update Issuing Cardholder"
+  },
+  "List Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCardholderCollection cardholders =\n  Cardholder.list(params);",
+    "description": "List Issuing Cardholder"
+  },
+  "Create Issuing Card": {
+    "prefix": "StripeIssuingCardCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"cardholder\", \"${1:ich_xxxxxxxxxxxxx}\");\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"type\", \"${3:virtual}\");\n\nCard card = (Card) Card.create(params);",
+    "description": "Create Issuing Card"
+  },
+  "Retrieve Issuing Card": {
+    "prefix": "StripeIssuingCardRetrieve",
+    "body": "Card card =\n  (Card) Card.retrieve(\"${1:ic_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Issuing Card"
+  },
+  "Update Issuing Card": {
+    "prefix": "StripeIssuingCardUpdate",
+    "body": "Card card = Card.retrieve(\"${1:ic_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCard updatedCard = (Card) card.update(params);",
+    "description": "Update Issuing Card"
+  },
+  "List Issuing Card": {
+    "prefix": "StripeIssuingCardList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nPaymentSourceCollection cards = Card.list(params);",
+    "description": "List Issuing Card"
+  },
+  "Create Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeCreate",
+    "body": "Map<String, Object> fraudulent = new HashMap<>();\nfraudulent.put(\n  \"explanation\",\n  \"Purchase was unrecognized.\"\n);\nMap<String, Object> evidence = new HashMap<>();\nevidence.put(\"reason\", \"${2:fraudulent}\");\nevidence.put(\"fraudulent\", fraudulent);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"transaction\", \"${1:ipi_xxxxxxxxxxxxx}\");\nparams.put(\"evidence\", evidence);\n\nDispute dispute = Dispute.create(params);",
+    "description": "Create Issuing Dispute"
+  },
+  "Submit Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeSubmit",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:idp_xxxxxxxxxxxxx}\");\n\nDispute updatedDispute = dispute.submit();",
+    "description": "Submit Issuing Dispute"
+  },
+  "Retrieve Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeRetrieve",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:idp_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Issuing Dispute"
+  },
+  "Update Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeUpdate",
+    "body": "Dispute dispute =\n  Dispute.retrieve(\"${1:idp_xxxxxxxxxxxxx}\");\n\nMap<String, Object> notReceived = new HashMap<>();\nnotReceived.put(\"expected_at\", ${3:1590000000});\nnotReceived.put(\"explanation${4:}\", \"\");\nnotReceived.put(\n  \"product_description\",\n  \"Baseball cap\"\n);\nnotReceived.put(\"product_type\", \"${6:merchandise}\");\nMap<String, Object> evidence = new HashMap<>();\nevidence.put(\"reason\", \"${2:not_xxxxxxxxxxxxx}\");\nevidence.put(\"not_received\", notReceived);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"evidence\", evidence);\n\nDispute updatedDispute = dispute.update(params);",
+    "description": "Update Issuing Dispute"
+  },
+  "List Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nDisputeCollection disputes = Dispute.list(params);",
+    "description": "List Issuing Dispute"
+  },
+  "Retrieve Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionRetrieve",
+    "body": "Transaction transaction =\n  Transaction.retrieve(\"${1:ipi_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Issuing Transaction"
+  },
+  "Update Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionUpdate",
+    "body": "Transaction transaction =\n  Transaction.retrieve(\"${1:ipi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nTransaction updatedTransaction =\n  transaction.update(params);",
+    "description": "Update Issuing Transaction"
+  },
+  "List Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nTransactionCollection transactions =\n  Transaction.list(params);",
+    "description": "List Issuing Transaction"
+  },
+  "Create Terminal Connection Token": {
+    "prefix": "StripeTerminalConnectionTokenCreate",
+    "body": "ConnectionToken connectionToken =\n  ConnectionToken.create();",
+    "description": "Create Terminal Connection Token"
+  },
+  "Create Terminal Location": {
+    "prefix": "StripeTerminalLocationCreate",
+    "body": "Map<String, Object> address = new HashMap<>();\naddress.put(\"line1\", \"${2:1234 Main Street}\");\naddress.put(\"city\", \"${3:San Francisco}\");\naddress.put(\"country\", \"${4:US}\");\naddress.put(\"postal_code\", \"${5:94111}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"display_name\", \"${1:My First Store}\");\nparams.put(\"address\", address);\n\nLocation location = Location.create(params);",
+    "description": "Create Terminal Location"
+  },
+  "Retrieve Terminal Location": {
+    "prefix": "StripeTerminalLocationRetrieve",
+    "body": "Location location =\n  Location.retrieve(\"${1:tml_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Terminal Location"
+  },
+  "Update Terminal Location": {
+    "prefix": "StripeTerminalLocationUpdate",
+    "body": "Location location =\n  Location.retrieve(\"${1:tml_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"display_name\", \"${2:My First Store}\");\n\nLocation updatedLocation =\n  location.update(params);",
+    "description": "Update Terminal Location"
+  },
+  "Delete Terminal Location": {
+    "prefix": "StripeTerminalLocationDelete",
+    "body": "Location location =\n  Location.retrieve(\"${1:tml_xxxxxxxxxxxxx}\");\n\nLocation deletedLocation = location.delete();",
+    "description": "Delete Terminal Location"
+  },
+  "List Terminal Location": {
+    "prefix": "StripeTerminalLocationList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nLocationCollection locations =\n  Location.list(params);",
+    "description": "List Terminal Location"
+  },
+  "Create Terminal Reader": {
+    "prefix": "StripeTerminalReaderCreate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\n  \"registration_code\",\n  \"puppies-plug-could\"\n);\nparams.put(\"label\", \"${2:Blue Rabbit}\");\nparams.put(\"location\", \"${3:tml_1234}\");\n\nReader reader = Reader.create(params);",
+    "description": "Create Terminal Reader"
+  },
+  "Retrieve Terminal Reader": {
+    "prefix": "StripeTerminalReaderRetrieve",
+    "body": "Reader reader =\n  Reader.retrieve(\"${1:tmr_P400-123-456-789}\");",
+    "description": "Retrieve Terminal Reader"
+  },
+  "Update Terminal Reader": {
+    "prefix": "StripeTerminalReaderUpdate",
+    "body": "Reader reader =\n  Reader.retrieve(\"${1:tmr_P400-123-456-789}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"label\", \"${2:Blue Rabbit}\");\n\nReader updatedReader = reader.update(params);",
+    "description": "Update Terminal Reader"
+  },
+  "Delete Terminal Reader": {
+    "prefix": "StripeTerminalReaderDelete",
+    "body": "Reader reader =\n  Reader.retrieve(\"${1:tmr_P400-123-456-789}\");\n\nReader deletedReader = reader.delete();",
+    "description": "Delete Terminal Reader"
+  },
+  "List Terminal Reader": {
+    "prefix": "StripeTerminalReaderList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nReaderCollection readers = Reader.list(params);",
+    "description": "List Terminal Reader"
+  },
+  "Create Order": {
+    "prefix": "StripeOrderCreate",
+    "body": "List<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"type\", \"${3:sku}\");\nitem1.put(\"parent\", \"${4:sku_xxxxxxxxxxxxx}\");\nitems.add(item1);\nMap<String, Object> address = new HashMap<>();\naddress.put(\"line1\", \"${6:1234 Main Street}\");\naddress.put(\"city\", \"${7:San Francisco}\");\naddress.put(\"state\", \"${8:CA}\");\naddress.put(\"country\", \"${9:US}\");\naddress.put(\"postal_code\", \"${10:94111}\");\nMap<String, Object> shipping = new HashMap<>();\nshipping.put(\"name\", \"${5:Jenny Rosen}\");\nshipping.put(\"address\", address);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"currency\", \"${1:usd}\");\nparams.put(\"email\", \"${2:jenny.rosen@example.com}\");\nparams.put(\"items\", items);\nparams.put(\"shipping\", shipping);\n\nOrder order = Order.create(params);",
+    "description": "Create Order"
+  },
+  "Retrieve Order": {
+    "prefix": "StripeOrderRetrieve",
+    "body": "Order order = Order.retrieve(\"${1:or_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Order"
+  },
+  "Update Order": {
+    "prefix": "StripeOrderUpdate",
+    "body": "Order order = Order.retrieve(\"${1:or_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nOrder updatedOrder = order.update(params);",
+    "description": "Update Order"
+  },
+  "Pay Order": {
+    "prefix": "StripeOrderPay",
+    "body": "Order order = Order.retrieve(\"${1:or_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"source\", \"${2:tok_xxxx}\");\n\nOrder updatedOrder = order.pay(params);",
+    "description": "Pay Order"
+  },
+  "List Order": {
+    "prefix": "StripeOrderList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nOrderCollection orders = Order.list(params);",
+    "description": "List Order"
+  },
+  "Retrieve Order Return": {
+    "prefix": "StripeOrderReturnRetrieve",
+    "body": "OrderReturn orderReturn =\n  OrderReturn.retrieve(\"${1:orret_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Order Return"
+  },
+  "List Order Return": {
+    "prefix": "StripeOrderReturnList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nOrderReturnCollection orderReturns =\n  OrderReturn.list(params);",
+    "description": "List Order Return"
+  },
+  "Create Sku": {
+    "prefix": "StripeSkuCreate",
+    "body": "Map<String, Object> attributes = new HashMap<>();\nattributes.put(\"size\", \"${1:Medium}\");\nattributes.put(\"gender\", \"${2:Unisex}\");\nMap<String, Object> inventory = new HashMap<>();\ninventory.put(\"type\", \"${5:finite}\");\ninventory.put(\"quantity\", ${6:500});\nMap<String, Object> params = new HashMap<>();\nparams.put(\"attributes\", attributes);\nparams.put(\"price\", ${3:1500});\nparams.put(\"currency\", \"${4:usd}\");\nparams.put(\"inventory\", inventory);\nparams.put(\"product\", \"${7:prod_xxxxxxxxxxxxx}\");\n\nSku sku = Sku.create(params);",
+    "description": "Create Sku"
+  },
+  "Retrieve Sku": {
+    "prefix": "StripeSkuRetrieve",
+    "body": "Sku sku = Sku.retrieve(\"${1:sku_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Sku"
+  },
+  "Update Sku": {
+    "prefix": "StripeSkuUpdate",
+    "body": "Sku sku = Sku.retrieve(\"${1:sku_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSku updatedSku = sku.update(params);",
+    "description": "Update Sku"
+  },
+  "List Sku": {
+    "prefix": "StripeSkuList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nSkuCollection skus = Sku.list(params);",
+    "description": "List Sku"
+  },
+  "Delete Sku": {
+    "prefix": "StripeSkuDelete",
+    "body": "Sku sku = Sku.retrieve(\"${1:sku_xxxxxxxxxxxxx}\");\n\nSku deletedSku = sku.delete();",
+    "description": "Delete Sku"
+  },
+  "Retrieve Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunRetrieve",
+    "body": "ScheduledQueryRun scheduledQueryRun =\n  ScheduledQueryRun.retrieve(\"${1:sqr_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Sigma Scheduled Query Run"
+  },
+  "List Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nScheduledQueryRunCollection scheduledQueryRuns =\n  ScheduledQueryRun.list(params);",
+    "description": "List Sigma Scheduled Query Run"
+  },
+  "Create Reporting Report Run": {
+    "prefix": "StripeReportingReportRunCreate",
+    "body": "Map<String, Object> parameters = new HashMap<>();\nparameters.put(\"interval_start\", ${2:1522540800});\nparameters.put(\"interval_end\", ${3:1525132800});\nMap<String, Object> params = new HashMap<>();\nparams.put(\"report_type\", \"${1:balance.summary.1}\");\nparams.put(\"parameters\", parameters);\n\nReportRun reportRun = ReportRun.create(params);",
+    "description": "Create Reporting Report Run"
+  },
+  "Retrieve Reporting Report Run": {
+    "prefix": "StripeReportingReportRunRetrieve",
+    "body": "ReportRun reportRun =\n  ReportRun.retrieve(\"${1:frr_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Reporting Report Run"
+  },
+  "List Reporting Report Run": {
+    "prefix": "StripeReportingReportRunList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nReportRunCollection reportRuns =\n  ReportRun.list(params);",
+    "description": "List Reporting Report Run"
+  },
+  "Retrieve Reporting Report Type": {
+    "prefix": "StripeReportingReportTypeRetrieve",
+    "body": "ReportType reportType =\n  ReportType.retrieve(\"${1:balance.summary.1}\");",
+    "description": "Retrieve Reporting Report Type"
+  },
+  "List Reporting Report Type": {
+    "prefix": "StripeReportingReportTypeList",
+    "body": "ReportTypeCollection reportTypes =\n  ReportType.list();",
+    "description": "List Reporting Report Type"
+  },
+  "Create Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointCreate",
+    "body": "List<Object> enabledEvents = new ArrayList<>();\nenabledEvents.add(\"charge.failed\");\nenabledEvents.add(\"charge.succeeded\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"url\",\n  \"https://example.com/my/webhook/endpoint\"\n);\nparams.put(\"enabled_events\", enabledEvents);\n\nWebhookEndpoint webhookEndpoint =\n  WebhookEndpoint.create(params);",
+    "description": "Create Webhook Endpoint"
+  },
+  "Retrieve Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointRetrieve",
+    "body": "WebhookEndpoint webhookEndpoint =\n  WebhookEndpoint.retrieve(\"${1:we_xxxxxxxxxxxxx}\");",
+    "description": "Retrieve Webhook Endpoint"
+  },
+  "Update Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointUpdate",
+    "body": "WebhookEndpoint webhookEndpoint =\n  WebhookEndpoint.retrieve(\"${1:we_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"url\",\n  \"https://example.com/new_endpoint\"\n);\n\nWebhookEndpoint updatedWebhookEndpoint =\n  webhookEndpoint.update(params);",
+    "description": "Update Webhook Endpoint"
+  },
+  "List Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointList",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nWebhookEndpointCollection webhookEndpoints =\n  WebhookEndpoint.list(params);",
+    "description": "List Webhook Endpoint"
+  },
+  "Delete Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointDelete",
+    "body": "WebhookEndpoint webhookEndpoint =\n  WebhookEndpoint.retrieve(\"${1:we_xxxxxxxxxxxxx}\");\n\nWebhookEndpoint deletedWebhookEndpoint =\n  webhookEndpoint.delete();",
+    "description": "Delete Webhook Endpoint"
+  }
+}

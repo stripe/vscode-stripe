@@ -1,0 +1,1342 @@
+{
+  "List Customer": {
+    "prefix": "StripeCustomerList",
+    "body": "const customers = await stripe.customers.list({\n  limit: ${1:3},\n})",
+    "description": "List Customer"
+  },
+  "Retrieve Balance Transaction": {
+    "prefix": "StripeBalanceTransactionRetrieve",
+    "body": "const balanceTransaction = await stripe.balanceTransactions.retrieve(\n  '${1:txn_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Balance Transaction"
+  },
+  "List Balance Transaction": {
+    "prefix": "StripeBalanceTransactionList",
+    "body": "const balanceTransactions = await stripe.balanceTransactions.list({\n  limit: ${1:3},\n})",
+    "description": "List Balance Transaction"
+  },
+  "Create Charge": {
+    "prefix": "StripeChargeCreate",
+    "body": "// `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nconst charge = await stripe.charges.create({\n  amount: ${1:2000},\n  currency: '${2:usd}',\n  source: '${3:tok_xxxx}',\n  description: '${4:My First Test Charge (created for API docs)}',\n})",
+    "description": "Create Charge"
+  },
+  "Retrieve Charge": {
+    "prefix": "StripeChargeRetrieve",
+    "body": "const charge = await stripe.charges.retrieve(\n  '${1:ch_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Charge"
+  },
+  "Update Charge": {
+    "prefix": "StripeChargeUpdate",
+    "body": "const charge = await stripe.charges.update(\n  '${1:ch_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Charge"
+  },
+  "Capture Charge": {
+    "prefix": "StripeChargeCapture",
+    "body": "const charge = await stripe.charges.capture(\n  '${1:ch_xxxxxxxxxxxxx}'\n)",
+    "description": "Capture Charge"
+  },
+  "List Charge": {
+    "prefix": "StripeChargeList",
+    "body": "const charges = await stripe.charges.list({\n  limit: ${1:3},\n})",
+    "description": "List Charge"
+  },
+  "Create Customer": {
+    "prefix": "StripeCustomerCreate",
+    "body": "const customer = await stripe.customers.create({\n  description: '${1:My First Test Customer (created for API docs)}',\n})",
+    "description": "Create Customer"
+  },
+  "Retrieve Customer": {
+    "prefix": "StripeCustomerRetrieve",
+    "body": "const customer = await stripe.customers.retrieve(\n  '${1:cus_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Customer"
+  },
+  "Update Customer": {
+    "prefix": "StripeCustomerUpdate",
+    "body": "const customer = await stripe.customers.update(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Customer"
+  },
+  "Delete Customer": {
+    "prefix": "StripeCustomerDelete",
+    "body": "const deleted = await stripe.customers.del(\n  '${1:cus_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Customer"
+  },
+  "Retrieve Dispute": {
+    "prefix": "StripeDisputeRetrieve",
+    "body": "const dispute = await stripe.disputes.retrieve(\n  '${1:dp_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Dispute"
+  },
+  "Update Dispute": {
+    "prefix": "StripeDisputeUpdate",
+    "body": "const dispute = await stripe.disputes.update(\n  '${1:dp_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Dispute"
+  },
+  "Close Dispute": {
+    "prefix": "StripeDisputeClose",
+    "body": "const dispute = await stripe.disputes.close(\n  '${1:dp_xxxxxxxxxxxxx}'\n)",
+    "description": "Close Dispute"
+  },
+  "List Dispute": {
+    "prefix": "StripeDisputeList",
+    "body": "const disputes = await stripe.disputes.list({\n  limit: ${1:3},\n})",
+    "description": "List Dispute"
+  },
+  "Retrieve Event": {
+    "prefix": "StripeEventRetrieve",
+    "body": "const event = await stripe.events.retrieve(\n  '${1:evt_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Event"
+  },
+  "List Event": {
+    "prefix": "StripeEventList",
+    "body": "const events = await stripe.events.list({\n  limit: ${1:3},\n})",
+    "description": "List Event"
+  },
+  "Create File": {
+    "prefix": "StripeFileCreate",
+    "body": "const file = await stripe.files.create({\n  purpose: '${1:dispute_xxxxxxxxxxxxx}',\n  file: '${2:{a file descriptor}}',\n})",
+    "description": "Create File"
+  },
+  "Retrieve File": {
+    "prefix": "StripeFileRetrieve",
+    "body": "const file = await stripe.files.retrieve(\n  '${1:file_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve File"
+  },
+  "List File": {
+    "prefix": "StripeFileList",
+    "body": "const files = await stripe.files.list({limit: ${1:3}})",
+    "description": "List File"
+  },
+  "Create File Link": {
+    "prefix": "StripeFileLinkCreate",
+    "body": "const fileLink = await stripe.fileLinks.create({\n  file: '${1:file_xxxxxxxxxxxxx}',\n})",
+    "description": "Create File Link"
+  },
+  "Retrieve File Link": {
+    "prefix": "StripeFileLinkRetrieve",
+    "body": "const fileLink = await stripe.fileLinks.retrieve(\n  '${1:link_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve File Link"
+  },
+  "Update File Link": {
+    "prefix": "StripeFileLinkUpdate",
+    "body": "const fileLink = await stripe.fileLinks.update(\n  '${1:link_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update File Link"
+  },
+  "List File Link": {
+    "prefix": "StripeFileLinkList",
+    "body": "const fileLinks = await stripe.fileLinks.list({\n  limit: ${1:3},\n})",
+    "description": "List File Link"
+  },
+  "Retrieve Mandate": {
+    "prefix": "StripeMandateRetrieve",
+    "body": "const mandate = await stripe.mandates.retrieve(\n  '${1:mandate_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Mandate"
+  },
+  "Create Payment Intent": {
+    "prefix": "StripePaymentIntentCreate",
+    "body": "const paymentIntent = await stripe.paymentIntents.create({\n  amount: ${1:2000},\n  currency: '${2:usd}',\n  payment_method_types: ['${3:card}'],\n})",
+    "description": "Create Payment Intent"
+  },
+  "Retrieve Payment Intent": {
+    "prefix": "StripePaymentIntentRetrieve",
+    "body": "const paymentIntent = await stripe.paymentIntents.retrieve(\n  '${1:pi_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Payment Intent"
+  },
+  "Update Payment Intent": {
+    "prefix": "StripePaymentIntentUpdate",
+    "body": "const paymentIntent = await stripe.paymentIntents.update(\n  '${1:pi_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Payment Intent"
+  },
+  "Confirm Payment Intent": {
+    "prefix": "StripePaymentIntentConfirm",
+    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nconst paymentIntent = await stripe.paymentIntents.confirm(\n  '${1:pi_xxxxxxxxxxxxx}',\n  {payment_method: '${2:pm_card_visa}'}\n)",
+    "description": "Confirm Payment Intent"
+  },
+  "Capture Payment Intent": {
+    "prefix": "StripePaymentIntentCapture",
+    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nconst paymentIntent = await stripe.paymentIntents.capture(\n  '${1:pi_xxxxxxxxxxxxx}'\n)",
+    "description": "Capture Payment Intent"
+  },
+  "Cancel Payment Intent": {
+    "prefix": "StripePaymentIntentCancel",
+    "body": "// To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nconst paymentIntent = await stripe.paymentIntents.cancel(\n  '${1:pi_xxxxxxxxxxxxx}'\n)",
+    "description": "Cancel Payment Intent"
+  },
+  "List Payment Intent": {
+    "prefix": "StripePaymentIntentList",
+    "body": "const paymentIntents = await stripe.paymentIntents.list({\n  limit: ${1:3},\n})",
+    "description": "List Payment Intent"
+  },
+  "Create Setup Intent": {
+    "prefix": "StripeSetupIntentCreate",
+    "body": "const setupIntent = await stripe.setupIntents.create({\n  payment_method_types: ['${1:card}'],\n})",
+    "description": "Create Setup Intent"
+  },
+  "Retrieve Setup Intent": {
+    "prefix": "StripeSetupIntentRetrieve",
+    "body": "const setupIntent = await stripe.setupIntents.retrieve(\n  '${1:seti_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Setup Intent"
+  },
+  "Update Setup Intent": {
+    "prefix": "StripeSetupIntentUpdate",
+    "body": "const setupIntent = await stripe.setupIntents.update(\n  '${1:seti_xxxxxxxxxxxxx}',\n  {metadata: {user_id: '${2:3435453}'}}\n)",
+    "description": "Update Setup Intent"
+  },
+  "Confirm Setup Intent": {
+    "prefix": "StripeSetupIntentConfirm",
+    "body": "const setupIntent = await stripe.setupIntents.confirm(\n  '${1:seti_xxxxxxxxxxxxx}',\n  {payment_method: '${2:pm_card_visa}'}\n)",
+    "description": "Confirm Setup Intent"
+  },
+  "Cancel Setup Intent": {
+    "prefix": "StripeSetupIntentCancel",
+    "body": "const setupIntent = await stripe.setupIntents.cancel(\n  '${1:seti_xxxxxxxxxxxxx}'\n)",
+    "description": "Cancel Setup Intent"
+  },
+  "List Setup Intent": {
+    "prefix": "StripeSetupIntentList",
+    "body": "const setupIntents = await stripe.setupIntents.list({\n  limit: ${1:3},\n})",
+    "description": "List Setup Intent"
+  },
+  "List Setup Attempt": {
+    "prefix": "StripeSetupAttemptList",
+    "body": "const setupAttempts = await stripe.setupAttempts.list({\n  limit: ${1:3},\n})",
+    "description": "List Setup Attempt"
+  },
+  "Create Payout": {
+    "prefix": "StripePayoutCreate",
+    "body": "const payout = await stripe.payouts.create({\n  amount: ${1:1100},\n  currency: '${2:usd}',\n})",
+    "description": "Create Payout"
+  },
+  "Retrieve Payout": {
+    "prefix": "StripePayoutRetrieve",
+    "body": "const payout = await stripe.payouts.retrieve(\n  '${1:po_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Payout"
+  },
+  "Update Payout": {
+    "prefix": "StripePayoutUpdate",
+    "body": "const payout = await stripe.payouts.update(\n  '${1:po_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Payout"
+  },
+  "List Payout": {
+    "prefix": "StripePayoutList",
+    "body": "const payouts = await stripe.payouts.list({\n  limit: ${1:3},\n})",
+    "description": "List Payout"
+  },
+  "Cancel Payout": {
+    "prefix": "StripePayoutCancel",
+    "body": "const payout = await stripe.payouts.cancel(\n  '${1:po_xxxxxxxxxxxxx}'\n)",
+    "description": "Cancel Payout"
+  },
+  "Reverse Payout": {
+    "prefix": "StripePayoutReverse",
+    "body": "const payout = await stripe.payouts.reverse(\n  '${1:po_xxxxxxxxxxxxx}'\n)",
+    "description": "Reverse Payout"
+  },
+  "Create Product": {
+    "prefix": "StripeProductCreate",
+    "body": "const product = await stripe.products.create({\n  name: '${1:Gold Special}',\n})",
+    "description": "Create Product"
+  },
+  "Retrieve Product": {
+    "prefix": "StripeProductRetrieve",
+    "body": "const product = await stripe.products.retrieve(\n  '${1:prod_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Product"
+  },
+  "Update Product": {
+    "prefix": "StripeProductUpdate",
+    "body": "const product = await stripe.products.update(\n  '${1:prod_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Product"
+  },
+  "List Product": {
+    "prefix": "StripeProductList",
+    "body": "const products = await stripe.products.list({\n  limit: ${1:3},\n})",
+    "description": "List Product"
+  },
+  "Delete Product": {
+    "prefix": "StripeProductDelete",
+    "body": "const deleted = await stripe.products.del(\n  '${1:prod_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Product"
+  },
+  "Create Price": {
+    "prefix": "StripePriceCreate",
+    "body": "const price = await stripe.prices.create({\n  unit_amount: ${1:2000},\n  currency: '${2:usd}',\n  recurring: {interval: '${3:month}'},\n  product: '${4:prod_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Price"
+  },
+  "Retrieve Price": {
+    "prefix": "StripePriceRetrieve",
+    "body": "const price = await stripe.prices.retrieve(\n  '${1:price_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Price"
+  },
+  "Update Price": {
+    "prefix": "StripePriceUpdate",
+    "body": "const price = await stripe.prices.update(\n  '${1:price_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Price"
+  },
+  "List Price": {
+    "prefix": "StripePriceList",
+    "body": "const prices = await stripe.prices.list({\n  limit: ${1:3},\n})",
+    "description": "List Price"
+  },
+  "Create Refund": {
+    "prefix": "StripeRefundCreate",
+    "body": "const refund = await stripe.refunds.create({\n  charge: '${1:ch_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Refund"
+  },
+  "Retrieve Refund": {
+    "prefix": "StripeRefundRetrieve",
+    "body": "const refund = await stripe.refunds.retrieve(\n  '${1:re_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Refund"
+  },
+  "Update Refund": {
+    "prefix": "StripeRefundUpdate",
+    "body": "const refund = await stripe.refunds.update(\n  '${1:re_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Refund"
+  },
+  "List Refund": {
+    "prefix": "StripeRefundList",
+    "body": "const refunds = await stripe.refunds.list({\n  limit: ${1:3},\n})",
+    "description": "List Refund"
+  },
+  "Create Token": {
+    "prefix": "StripeTokenCreate",
+    "body": "const token = await stripe.tokens.create({\n  cvc_update: {cvc: '${1:123}'},\n})",
+    "description": "Create Token"
+  },
+  "Retrieve Token": {
+    "prefix": "StripeTokenRetrieve",
+    "body": "const token = await stripe.tokens.retrieve(\n  '${1:tok_xxxx}'\n)",
+    "description": "Retrieve Token"
+  },
+  "Create Payment Method": {
+    "prefix": "StripePaymentMethodCreate",
+    "body": "const paymentMethod = await stripe.paymentMethods.create({\n  type: '${1:card}',\n  card: {\n    number: '${2:4242424242424242}',\n    exp_month: ${3:11},\n    exp_year: ${4:2021},\n    cvc: '${5:314}',\n  },\n})",
+    "description": "Create Payment Method"
+  },
+  "Retrieve Payment Method": {
+    "prefix": "StripePaymentMethodRetrieve",
+    "body": "const paymentMethod = await stripe.paymentMethods.retrieve(\n  '${1:pm_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Payment Method"
+  },
+  "Update Payment Method": {
+    "prefix": "StripePaymentMethodUpdate",
+    "body": "const paymentMethod = await stripe.paymentMethods.update(\n  '${1:pm_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Payment Method"
+  },
+  "List Payment Method": {
+    "prefix": "StripePaymentMethodList",
+    "body": "const paymentMethods = await stripe.paymentMethods.list({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n  type: '${2:card}',\n})",
+    "description": "List Payment Method"
+  },
+  "Attach Payment Method": {
+    "prefix": "StripePaymentMethodAttach",
+    "body": "const paymentMethod = await stripe.paymentMethods.attach(\n  '${1:pm_xxxxxxxxxxxxx}',\n  {customer: '${2:cus_xxxxxxxxxxxxx}'}\n)",
+    "description": "Attach Payment Method"
+  },
+  "Detach Payment Method": {
+    "prefix": "StripePaymentMethodDetach",
+    "body": "const paymentMethod = await stripe.paymentMethods.detach(\n  '${1:pm_xxxxxxxxxxxxx}'\n)",
+    "description": "Detach Payment Method"
+  },
+  "Create Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountCreate",
+    "body": "const bankAccount = await stripe.customers.createSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {source: '${2:btok_xxxxxxxxxxxxx}'}\n)",
+    "description": "Create Customer Bank Account"
+  },
+  "Retrieve Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountRetrieve",
+    "body": "const bankAccount = await stripe.customers.retrieveSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Customer Bank Account"
+  },
+  "Update Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountUpdate",
+    "body": "const bankAccount = await stripe.customers.updateSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Customer Bank Account"
+  },
+  "Verify Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountVerify",
+    "body": "const bankAccount = await stripe.customers.verifySource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}',\n  {amounts: [${3:32}, ${4:45}]}\n)",
+    "description": "Verify Customer Bank Account"
+  },
+  "Delete Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountDelete",
+    "body": "const deleted = await stripe.customers.deleteSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Customer Bank Account"
+  },
+  "List Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountList",
+    "body": "const bankAccounts = await stripe.customers.listSources(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {object: '${2:bank_account}', limit: ${3:3}}\n)",
+    "description": "List Customer Bank Account"
+  },
+  "Create Customer Card": {
+    "prefix": "StripeCustomerCardCreate",
+    "body": "const card = await stripe.customers.createSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {source: '${2:tok_xxxx}'}\n)",
+    "description": "Create Customer Card"
+  },
+  "Retrieve Customer Card": {
+    "prefix": "StripeCustomerCardRetrieve",
+    "body": "const card = await stripe.customers.retrieveSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Customer Card"
+  },
+  "Update Customer Card": {
+    "prefix": "StripeCustomerCardUpdate",
+    "body": "const card = await stripe.customers.updateSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}',\n  {name: '${3:Jenny Rosen}'}\n)",
+    "description": "Update Customer Card"
+  },
+  "Delete Customer Card": {
+    "prefix": "StripeCustomerCardDelete",
+    "body": "const deleted = await stripe.customers.deleteSource(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Customer Card"
+  },
+  "List Customer Card": {
+    "prefix": "StripeCustomerCardList",
+    "body": "const cards = await stripe.customers.listSources(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {object: '${2:card}', limit: ${3:3}}\n)",
+    "description": "List Customer Card"
+  },
+  "Retrieve Source": {
+    "prefix": "StripeSourceRetrieve",
+    "body": "const source = await stripe.sources.retrieve(\n  '${1:src_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Source"
+  },
+  "Update Source": {
+    "prefix": "StripeSourceUpdate",
+    "body": "const source = await stripe.sources.update(\n  '${1:src_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Source"
+  },
+  "Create Checkout Session": {
+    "prefix": "StripeCheckoutSessionCreate",
+    "body": "const session = await stripe.checkout.sessions.create({\n  success_url: '${1:https://example.com/success}',\n  cancel_url: '${2:https://example.com/cancel}',\n  payment_method_types: ['${3:card}'],\n  line_items: [\n    {price: '${4:price_xxxxxxxxxxxxx}', quantity: ${5:2}},\n  ],\n  mode: '${6:payment}',\n})",
+    "description": "Create Checkout Session"
+  },
+  "Retrieve Checkout Session": {
+    "prefix": "StripeCheckoutSessionRetrieve",
+    "body": "const session = await stripe.checkout.sessions.retrieve(\n  '${1:cs_test_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Checkout Session"
+  },
+  "List Checkout Session": {
+    "prefix": "StripeCheckoutSessionList",
+    "body": "const sessions = await stripe.checkout.sessions.list({\n  limit: ${1:3},\n})",
+    "description": "List Checkout Session"
+  },
+  "Create Coupon": {
+    "prefix": "StripeCouponCreate",
+    "body": "const coupon = await stripe.coupons.create({\n  percent_off: ${1:25},\n  duration: '${2:repeating}',\n  duration_in_months: ${3:3},\n})",
+    "description": "Create Coupon"
+  },
+  "Retrieve Coupon": {
+    "prefix": "StripeCouponRetrieve",
+    "body": "const coupon = await stripe.coupons.retrieve(\n  '${1:25_5OFF}'\n)",
+    "description": "Retrieve Coupon"
+  },
+  "Update Coupon": {
+    "prefix": "StripeCouponUpdate",
+    "body": "const coupon = await stripe.coupons.update(\n  '${1:co_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Coupon"
+  },
+  "Delete Coupon": {
+    "prefix": "StripeCouponDelete",
+    "body": "const deleted = await stripe.coupons.del(\n  '${1:co_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Coupon"
+  },
+  "List Coupon": {
+    "prefix": "StripeCouponList",
+    "body": "const coupons = await stripe.coupons.list({\n  limit: ${1:3},\n})",
+    "description": "List Coupon"
+  },
+  "Preview Credit Note": {
+    "prefix": "StripeCreditNotePreview",
+    "body": "const creditNote = await stripe.creditNotes.preview({\n  invoice: '${1:in_xxxxxxxxxxxxx}',\n  lines: [\n    {\n      type: '${2:invoice_line_item}',\n      invoice_line_item: '${3:il_xxxxxxxxxxxxx}',\n      quantity: ${4:1},\n    },\n  ],\n})",
+    "description": "Preview Credit Note"
+  },
+  "Create Credit Note": {
+    "prefix": "StripeCreditNoteCreate",
+    "body": "const creditNote = await stripe.creditNotes.create({\n  invoice: '${1:in_xxxxxxxxxxxxx}',\n  lines: [\n    {\n      type: '${2:invoice_line_item}',\n      invoice_line_item: '${3:il_xxxxxxxxxxxxx}',\n      quantity: ${4:1},\n    },\n  ],\n})",
+    "description": "Create Credit Note"
+  },
+  "Retrieve Credit Note": {
+    "prefix": "StripeCreditNoteRetrieve",
+    "body": "const creditNote = await stripe.creditNotes.retrieve(\n  '${1:cn_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Credit Note"
+  },
+  "Update Credit Note": {
+    "prefix": "StripeCreditNoteUpdate",
+    "body": "const creditNote = await stripe.creditNotes.update(\n  '${1:cn_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Credit Note"
+  },
+  "List Credit Note Line Item": {
+    "prefix": "StripeCreditNoteLineItemList",
+    "body": "const lineItems = await stripe.creditNotes.listLineItems(\n  '${1:cn_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Credit Note Line Item"
+  },
+  "List Credit Note Credit Note Line Item": {
+    "prefix": "StripeCreditNoteCreditNoteLineItemList",
+    "body": "const creditNoteLineItems = await stripe.creditNotes.listCreditNoteLineItems({\n  invoice: '${1:in_xxxxxxxxxxxxx}',\n  lines: [\n    {\n      type: '${2:invoice_line_item}',\n      invoice_line_item: '${3:il_xxxxxxxxxxxxx}',\n      quantity: ${4:1},\n    },\n  ],\n})",
+    "description": "List Credit Note Credit Note Line Item"
+  },
+  "Void Credit Note Credit Note": {
+    "prefix": "StripeCreditNoteVoidCreditNote",
+    "body": "const creditNote = await stripe.creditNotes.voidCreditNote(\n  '${1:cn_xxxxxxxxxxxxx}'\n)",
+    "description": "Void Credit Note Credit Note"
+  },
+  "List Credit Note": {
+    "prefix": "StripeCreditNoteList",
+    "body": "const creditNotes = await stripe.creditNotes.list({\n  limit: ${1:3},\n})",
+    "description": "List Credit Note"
+  },
+  "Create Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionCreate",
+    "body": "const balanceTransaction = await stripe.customers.createBalanceTransaction(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {amount: ${2:-500}, currency: '${3:usd}'}\n)",
+    "description": "Create Customer Balance Transaction"
+  },
+  "Retrieve Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionRetrieve",
+    "body": "const balanceTransaction = await stripe.customers.retrieveBalanceTransaction(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:cbtxn_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Customer Balance Transaction"
+  },
+  "Update Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionUpdate",
+    "body": "const balanceTransaction = await stripe.customers.updateBalanceTransaction(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:cbtxn_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Customer Balance Transaction"
+  },
+  "List Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionList",
+    "body": "const balanceTransactions = await stripe.customers.listBalanceTransactions(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Customer Balance Transaction"
+  },
+  "Create Billing Portal Session": {
+    "prefix": "StripeBillingPortalSessionCreate",
+    "body": "const session = await stripe.billingPortal.sessions.create({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n  return_url: '${2:https://example.com/account}',\n})",
+    "description": "Create Billing Portal Session"
+  },
+  "Create Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdCreate",
+    "body": "const taxId = await stripe.customers.createTaxId(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {type: '${2:eu_vat}', value: '${3:DE123456789}'}\n)",
+    "description": "Create Customer Tax Id"
+  },
+  "Retrieve Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdRetrieve",
+    "body": "const taxId = await stripe.customers.retrieveTaxId(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:txi_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Customer Tax Id"
+  },
+  "Delete Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdDelete",
+    "body": "const deleted = await stripe.customers.deleteTaxId(\n  '${2:cus_xxxxxxxxxxxxx}',\n  '${1:txi_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Customer Tax Id"
+  },
+  "List Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdList",
+    "body": "const taxIds = await stripe.customers.listTaxIds(\n  '${1:cus_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Customer Tax Id"
+  },
+  "Create Invoice": {
+    "prefix": "StripeInvoiceCreate",
+    "body": "const invoice = await stripe.invoices.create({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Invoice"
+  },
+  "Retrieve Invoice": {
+    "prefix": "StripeInvoiceRetrieve",
+    "body": "const invoice = await stripe.invoices.retrieve(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Invoice"
+  },
+  "Update Invoice": {
+    "prefix": "StripeInvoiceUpdate",
+    "body": "const invoice = await stripe.invoices.update(\n  '${1:in_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Invoice"
+  },
+  "Delete Invoice": {
+    "prefix": "StripeInvoiceDelete",
+    "body": "const deleted = await stripe.invoices.del(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Invoice"
+  },
+  "Finalize Invoice Invoice": {
+    "prefix": "StripeInvoiceFinalizeInvoice",
+    "body": "const invoice = await stripe.invoices.finalizeInvoice(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Finalize Invoice Invoice"
+  },
+  "Pay Invoice": {
+    "prefix": "StripeInvoicePay",
+    "body": "const invoice = await stripe.invoices.pay(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Pay Invoice"
+  },
+  "Send Invoice Invoice": {
+    "prefix": "StripeInvoiceSendInvoice",
+    "body": "const invoice = await stripe.invoices.sendInvoice(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Send Invoice Invoice"
+  },
+  "Void Invoice Invoice": {
+    "prefix": "StripeInvoiceVoidInvoice",
+    "body": "const invoice = await stripe.invoices.voidInvoice(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Void Invoice Invoice"
+  },
+  "Mark Uncollectible Invoice": {
+    "prefix": "StripeInvoiceMarkUncollectible",
+    "body": "const invoice = await stripe.invoices.markUncollectible(\n  '${1:in_xxxxxxxxxxxxx}'\n)",
+    "description": "Mark Uncollectible Invoice"
+  },
+  "List Invoice": {
+    "prefix": "StripeInvoiceList",
+    "body": "const invoices = await stripe.invoices.list({\n  limit: ${1:3},\n})",
+    "description": "List Invoice"
+  },
+  "Create Invoice Item": {
+    "prefix": "StripeInvoiceItemCreate",
+    "body": "const invoiceItem = await stripe.invoiceItems.create({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n  price: '${2:price_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Invoice Item"
+  },
+  "Retrieve Invoice Item": {
+    "prefix": "StripeInvoiceItemRetrieve",
+    "body": "const invoiceItem = await stripe.invoiceItems.retrieve(\n  '${1:ii_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Invoice Item"
+  },
+  "Update Invoice Item": {
+    "prefix": "StripeInvoiceItemUpdate",
+    "body": "const invoiceItem = await stripe.invoiceItems.update(\n  '${1:ii_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Invoice Item"
+  },
+  "Delete Invoice Item": {
+    "prefix": "StripeInvoiceItemDelete",
+    "body": "const deleted = await stripe.invoiceItems.del(\n  '${1:ii_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Invoice Item"
+  },
+  "List Invoice Item": {
+    "prefix": "StripeInvoiceItemList",
+    "body": "const invoiceItems = await stripe.invoiceItems.list({\n  limit: ${1:3},\n})",
+    "description": "List Invoice Item"
+  },
+  "Create Plan": {
+    "prefix": "StripePlanCreate",
+    "body": "const plan = await stripe.plans.create({\n  amount: ${1:2000},\n  currency: '${2:usd}',\n  interval: '${3:month}',\n  product: '${4:prod_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Plan"
+  },
+  "Retrieve Plan": {
+    "prefix": "StripePlanRetrieve",
+    "body": "const plan = await stripe.plans.retrieve(\n  '${1:price_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Plan"
+  },
+  "Update Plan": {
+    "prefix": "StripePlanUpdate",
+    "body": "const plan = await stripe.plans.update(\n  '${1:price_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Plan"
+  },
+  "Delete Plan": {
+    "prefix": "StripePlanDelete",
+    "body": "const deleted = await stripe.plans.del(\n  '${1:price_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Plan"
+  },
+  "List Plan": {
+    "prefix": "StripePlanList",
+    "body": "const plans = await stripe.plans.list({limit: ${1:3}})",
+    "description": "List Plan"
+  },
+  "Create Promotion Code": {
+    "prefix": "StripePromotionCodeCreate",
+    "body": "const promotionCode = await stripe.promotionCodes.create({\n  coupon: '${1:25_5OFF}',\n})",
+    "description": "Create Promotion Code"
+  },
+  "Update Promotion Code": {
+    "prefix": "StripePromotionCodeUpdate",
+    "body": "const promotionCode = await stripe.promotionCodes.update(\n  '${1:promo_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Promotion Code"
+  },
+  "Retrieve Promotion Code": {
+    "prefix": "StripePromotionCodeRetrieve",
+    "body": "const promotionCode = await stripe.promotionCodes.retrieve(\n  '${1:promo_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Promotion Code"
+  },
+  "List Promotion Code": {
+    "prefix": "StripePromotionCodeList",
+    "body": "const promotionCodes = await stripe.promotionCodes.list({\n  limit: ${1:3},\n})",
+    "description": "List Promotion Code"
+  },
+  "Create Subscription": {
+    "prefix": "StripeSubscriptionCreate",
+    "body": "const subscription = await stripe.subscriptions.create({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n  items: [{price: '${2:price_xxxxxxxxxxxxx}'}],\n})",
+    "description": "Create Subscription"
+  },
+  "Retrieve Subscription": {
+    "prefix": "StripeSubscriptionRetrieve",
+    "body": "const subscription = await stripe.subscriptions.retrieve(\n  '${1:sub_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Subscription"
+  },
+  "Update Subscription": {
+    "prefix": "StripeSubscriptionUpdate",
+    "body": "const subscription = await stripe.subscriptions.update(\n  '${1:sub_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Subscription"
+  },
+  "Delete Subscription": {
+    "prefix": "StripeSubscriptionDelete",
+    "body": "const deleted = await stripe.subscriptions.del(\n  '${1:sub_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Subscription"
+  },
+  "List Subscription": {
+    "prefix": "StripeSubscriptionList",
+    "body": "const subscriptions = await stripe.subscriptions.list({\n  limit: ${1:3},\n})",
+    "description": "List Subscription"
+  },
+  "Create Subscription Item": {
+    "prefix": "StripeSubscriptionItemCreate",
+    "body": "const subscriptionItem = await stripe.subscriptionItems.create({\n  subscription: '${1:sub_xxxxxxxxxxxxx}',\n  price: '${2:price_xxxxxxxxxxxxx}',\n  quantity: ${3:2},\n})",
+    "description": "Create Subscription Item"
+  },
+  "Retrieve Subscription Item": {
+    "prefix": "StripeSubscriptionItemRetrieve",
+    "body": "const subscriptionItem = await stripe.subscriptionItems.retrieve(\n  '${1:si_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Subscription Item"
+  },
+  "Update Subscription Item": {
+    "prefix": "StripeSubscriptionItemUpdate",
+    "body": "const subscriptionItem = await stripe.subscriptionItems.update(\n  '${1:si_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Subscription Item"
+  },
+  "Delete Subscription Item": {
+    "prefix": "StripeSubscriptionItemDelete",
+    "body": "const deleted = await stripe.subscriptionItems.del(\n  '${1:si_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Subscription Item"
+  },
+  "List Subscription Item": {
+    "prefix": "StripeSubscriptionItemList",
+    "body": "const subscriptionItems = await stripe.subscriptionItems.list({\n  subscription: '${1:sub_xxxxxxxxxxxxx}',\n})",
+    "description": "List Subscription Item"
+  },
+  "Create Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCreate",
+    "body": "const subscriptionSchedule = await stripe.subscriptionSchedules.create({\n  customer: '${1:cus_xxxxxxxxxxxxx}',\n  start_date: ${2:1605558431},\n  end_behavior: '${3:release}',\n  phases: [\n    {\n      items: [\n        {\n          price: '${4:price_xxxxxxxxxxxxx}',\n          quantity: ${5:1},\n        },\n      ],\n      iterations: ${6:12},\n    },\n  ],\n})",
+    "description": "Create Subscription Schedule"
+  },
+  "Retrieve Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRetrieve",
+    "body": "const subscriptionSchedule = await stripe.subscriptionSchedules.retrieve(\n  '${1:sub_sched_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Subscription Schedule"
+  },
+  "Update Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleUpdate",
+    "body": "const subscriptionSchedule = await stripe.subscriptionSchedules.update(\n  '${1:sub_sched_xxxxxxxxxxxxx}',\n  {end_behavior: '${2:release}'}\n)",
+    "description": "Update Subscription Schedule"
+  },
+  "Cancel Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCancel",
+    "body": "const subscriptionSchedule = await stripe.subscriptionSchedules.cancel(\n  '${1:sub_sched_xxxxxxxxxxxxx}'\n)",
+    "description": "Cancel Subscription Schedule"
+  },
+  "Release Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRelease",
+    "body": "const subscriptionSchedule = await stripe.subscriptionSchedules.release(\n  '${1:sub_sched_xxxxxxxxxxxxx}'\n)",
+    "description": "Release Subscription Schedule"
+  },
+  "List Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleList",
+    "body": "const subscriptionSchedules = await stripe.subscriptionSchedules.list({\n  limit: ${1:3},\n})",
+    "description": "List Subscription Schedule"
+  },
+  "Create Tax Rate": {
+    "prefix": "StripeTaxRateCreate",
+    "body": "const taxRate = await stripe.taxRates.create({\n  display_name: '${1:VAT}',\n  description: '${2:VAT Germany}',\n  jurisdiction: '${3:DE}',\n  percentage: ${4:16},\n  inclusive: ${5:false},\n})",
+    "description": "Create Tax Rate"
+  },
+  "Retrieve Tax Rate": {
+    "prefix": "StripeTaxRateRetrieve",
+    "body": "const taxRate = await stripe.taxRates.retrieve(\n  '${1:txr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Tax Rate"
+  },
+  "Update Tax Rate": {
+    "prefix": "StripeTaxRateUpdate",
+    "body": "const taxRate = await stripe.taxRates.update(\n  '${1:txr_xxxxxxxxxxxxx}',\n  {active: ${2:false}}\n)",
+    "description": "Update Tax Rate"
+  },
+  "List Tax Rate": {
+    "prefix": "StripeTaxRateList",
+    "body": "const taxRates = await stripe.taxRates.list({\n  limit: ${1:3},\n})",
+    "description": "List Tax Rate"
+  },
+  "Create Subscription Item Usage Record": {
+    "prefix": "StripeSubscriptionItemUsageRecordCreate",
+    "body": "const usageRecord = await stripe.subscriptionItems.createUsageRecord(\n  '${1:si_xxxxxxxxxxxxx}',\n  {quantity: ${2:100}, timestamp: ${3:1571252444}}\n)",
+    "description": "Create Subscription Item Usage Record"
+  },
+  "List Subscription Item Usage Record Summary": {
+    "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
+    "body": "const usageRecordSummaries = await stripe.subscriptionItems.listUsageRecordSummaries(\n  '${1:si_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Subscription Item Usage Record Summary"
+  },
+  "Create Account": {
+    "prefix": "StripeAccountCreate",
+    "body": "const account = await stripe.accounts.create({\n  type: '${1:custom}',\n  country: '${2:US}',\n  email: '${3:jenny.rosen@example.com}',\n  capabilities: {\n    card_payments: {requested: ${4:${5:true}}},\n    transfers: {requested: true},\n  },\n})",
+    "description": "Create Account"
+  },
+  "Retrieve Account": {
+    "prefix": "StripeAccountRetrieve",
+    "body": "const account = await stripe.accounts.retrieve(\n  '${1:acct_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Account"
+  },
+  "Update Account": {
+    "prefix": "StripeAccountUpdate",
+    "body": "const account = await stripe.accounts.update(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Account"
+  },
+  "Delete Account": {
+    "prefix": "StripeAccountDelete",
+    "body": "const deleted = await stripe.accounts.del(\n  '${1:acct_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Account"
+  },
+  "Reject Account": {
+    "prefix": "StripeAccountReject",
+    "body": "const account = await stripe.accounts.reject(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {reason: '${2:fraud}'}\n)",
+    "description": "Reject Account"
+  },
+  "List Account": {
+    "prefix": "StripeAccountList",
+    "body": "const accounts = await stripe.accounts.list({\n  limit: ${1:3},\n})",
+    "description": "List Account"
+  },
+  "Create Account Login Link": {
+    "prefix": "StripeAccountLoginLinkCreate",
+    "body": "const loginLink = await stripe.accounts.createLoginLink(\n  '${1:acct_xxxxxxxxxxxxx}'\n)",
+    "description": "Create Account Login Link"
+  },
+  "Create Account Link": {
+    "prefix": "StripeAccountLinkCreate",
+    "body": "const accountLink = await stripe.accountLinks.create({\n  account: '${1:acct_xxxxxxxxxxxxx}',\n  refresh_url: '${2:https://example.com/reauth}',\n  return_url: '${3:https://example.com/return}',\n  type: '${4:account_onboarding}',\n})",
+    "description": "Create Account Link"
+  },
+  "Retrieve Application Fee": {
+    "prefix": "StripeApplicationFeeRetrieve",
+    "body": "const applicationFee = await stripe.applicationFees.retrieve(\n  '${1:fee_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Application Fee"
+  },
+  "List Application Fee": {
+    "prefix": "StripeApplicationFeeList",
+    "body": "const applicationFees = await stripe.applicationFees.list({\n  limit: ${1:3},\n})",
+    "description": "List Application Fee"
+  },
+  "Create Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundCreate",
+    "body": "const feeRefund = await stripe.applicationFees.createRefund(\n  '${1:fee_xxxxxxxxxxxxx}'\n)",
+    "description": "Create Application Fee Fee Refund"
+  },
+  "Retrieve Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundRetrieve",
+    "body": "const feeRefund = await stripe.applicationFees.retrieveRefund(\n  '${2:fee_xxxxxxxxxxxxx}',\n  '${1:fr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Application Fee Fee Refund"
+  },
+  "Update Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundUpdate",
+    "body": "const feeRefund = await stripe.applicationFees.updateRefund(\n  '${2:fee_xxxxxxxxxxxxx}',\n  '${1:fr_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Application Fee Fee Refund"
+  },
+  "List Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundList",
+    "body": "const feeRefunds = await stripe.applicationFees.listRefunds(\n  '${1:fee_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Application Fee Fee Refund"
+  },
+  "Retrieve Account Capability": {
+    "prefix": "StripeAccountCapabilityRetrieve",
+    "body": "const capability = await stripe.accounts.retrieveCapability(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:card_payments}'\n)",
+    "description": "Retrieve Account Capability"
+  },
+  "Update Account Capability": {
+    "prefix": "StripeAccountCapabilityUpdate",
+    "body": "const capability = await stripe.accounts.updateCapability(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:card_payments}',\n  {requested: ${3:true}}\n)",
+    "description": "Update Account Capability"
+  },
+  "List Account Capability": {
+    "prefix": "StripeAccountCapabilityList",
+    "body": "const capabilities = await stripe.accounts.listCapabilities(\n  '${1:acct_xxxxxxxxxxxxx}'\n)",
+    "description": "List Account Capability"
+  },
+  "List Country Spec": {
+    "prefix": "StripeCountrySpecList",
+    "body": "const countrySpecs = await stripe.countrySpecs.list({\n  limit: ${1:3},\n})",
+    "description": "List Country Spec"
+  },
+  "Retrieve Country Spec": {
+    "prefix": "StripeCountrySpecRetrieve",
+    "body": "const countrySpec = await stripe.countrySpecs.retrieve(\n  '${1:US}'\n)",
+    "description": "Retrieve Country Spec"
+  },
+  "Create Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountCreate",
+    "body": "const bankAccount = await stripe.accounts.createExternalAccount(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {external_account: '${2:btok_xxxxxxxxxxxxx}'}\n)",
+    "description": "Create Account Account Bank Account"
+  },
+  "Retrieve Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountRetrieve",
+    "body": "const bankAccount = await stripe.accounts.retrieveExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Account Account Bank Account"
+  },
+  "Update Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountUpdate",
+    "body": "const bankAccount = await stripe.accounts.updateExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Account Account Bank Account"
+  },
+  "Delete Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountDelete",
+    "body": "const deleted = await stripe.accounts.deleteExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:ba_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Account Account Bank Account"
+  },
+  "List Account Account Bank Account": {
+    "prefix": "StripeAccountAccountBankAccountList",
+    "body": "const accountBankAccounts = await stripe.accounts.listExternalAccounts(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {object: '${2:bank_account}', limit: ${3:3}}\n)",
+    "description": "List Account Account Bank Account"
+  },
+  "Create Account Account Card": {
+    "prefix": "StripeAccountAccountCardCreate",
+    "body": "const card = await stripe.accounts.createExternalAccount(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {external_account: '${2:tok_xxxx_debit}'}\n)",
+    "description": "Create Account Account Card"
+  },
+  "Retrieve Account Account Card": {
+    "prefix": "StripeAccountAccountCardRetrieve",
+    "body": "const card = await stripe.accounts.retrieveExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Account Account Card"
+  },
+  "Update Account Account Card": {
+    "prefix": "StripeAccountAccountCardUpdate",
+    "body": "const card = await stripe.accounts.updateExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Account Account Card"
+  },
+  "Delete Account Account Card": {
+    "prefix": "StripeAccountAccountCardDelete",
+    "body": "const deleted = await stripe.accounts.deleteExternalAccount(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:card_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Account Account Card"
+  },
+  "List Account Account Card": {
+    "prefix": "StripeAccountAccountCardList",
+    "body": "const accountCards = await stripe.accounts.listExternalAccounts(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {object: '${2:card}', limit: ${3:3}}\n)",
+    "description": "List Account Account Card"
+  },
+  "Create Account Person": {
+    "prefix": "StripeAccountPersonCreate",
+    "body": "const person = await stripe.accounts.createPerson(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {first_name: '${2:Jane}', last_name: '${3:Diaz}'}\n)",
+    "description": "Create Account Person"
+  },
+  "Retrieve Account Person": {
+    "prefix": "StripeAccountPersonRetrieve",
+    "body": "const person = await stripe.accounts.retrievePerson(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:person_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Account Person"
+  },
+  "Update Account Person": {
+    "prefix": "StripeAccountPersonUpdate",
+    "body": "const person = await stripe.accounts.updatePerson(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:person_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Account Person"
+  },
+  "Delete Account Person": {
+    "prefix": "StripeAccountPersonDelete",
+    "body": "const deleted = await stripe.accounts.deletePerson(\n  '${2:acct_xxxxxxxxxxxxx}',\n  '${1:person_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Account Person"
+  },
+  "List Account Person": {
+    "prefix": "StripeAccountPersonList",
+    "body": "const persons = await stripe.accounts.listPersons(\n  '${1:acct_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Account Person"
+  },
+  "Create Topup": {
+    "prefix": "StripeTopupCreate",
+    "body": "const topup = await stripe.topups.create({\n  amount: ${1:2000},\n  currency: '${2:usd}',\n  description: '${3:Top-up for Jenny Rosen}',\n  statement_descriptor: '${4:Top-up}',\n})",
+    "description": "Create Topup"
+  },
+  "Retrieve Topup": {
+    "prefix": "StripeTopupRetrieve",
+    "body": "const topup = await stripe.topups.retrieve(\n  '${1:tu_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Topup"
+  },
+  "Update Topup": {
+    "prefix": "StripeTopupUpdate",
+    "body": "const topup = await stripe.topups.update(\n  '${1:tu_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Topup"
+  },
+  "List Topup": {
+    "prefix": "StripeTopupList",
+    "body": "const topups = await stripe.topups.list({\n  limit: ${1:3},\n})",
+    "description": "List Topup"
+  },
+  "Cancel Topup": {
+    "prefix": "StripeTopupCancel",
+    "body": "const topup = await stripe.topups.cancel(\n  '${1:tu_xxxxxxxxxxxxx}'\n)",
+    "description": "Cancel Topup"
+  },
+  "Create Transfer": {
+    "prefix": "StripeTransferCreate",
+    "body": "const transfer = await stripe.transfers.create({\n  amount: ${1:400},\n  currency: '${2:usd}',\n  destination: '${3:acct_xxxxxxxxxxxxx}',\n  transfer_group: '${4:ORDER_95}',\n})",
+    "description": "Create Transfer"
+  },
+  "Retrieve Transfer": {
+    "prefix": "StripeTransferRetrieve",
+    "body": "const transfer = await stripe.transfers.retrieve(\n  '${1:tr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Transfer"
+  },
+  "Update Transfer": {
+    "prefix": "StripeTransferUpdate",
+    "body": "const transfer = await stripe.transfers.update(\n  '${1:tr_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Transfer"
+  },
+  "List Transfer": {
+    "prefix": "StripeTransferList",
+    "body": "const transfers = await stripe.transfers.list({\n  limit: ${1:3},\n})",
+    "description": "List Transfer"
+  },
+  "Create Transfer Reversal": {
+    "prefix": "StripeTransferReversalCreate",
+    "body": "const reversal = await stripe.transfers.createReversal(\n  '${1:tr_xxxxxxxxxxxxx}',\n  {amount: ${2:100}}\n)",
+    "description": "Create Transfer Reversal"
+  },
+  "Retrieve Transfer Reversal": {
+    "prefix": "StripeTransferReversalRetrieve",
+    "body": "const reversal = await stripe.transfers.retrieveReversal(\n  '${2:tr_xxxxxxxxxxxxx}',\n  '${1:trr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Transfer Reversal"
+  },
+  "Update Transfer Reversal": {
+    "prefix": "StripeTransferReversalUpdate",
+    "body": "const reversal = await stripe.transfers.updateReversal(\n  '${2:tr_xxxxxxxxxxxxx}',\n  '${1:trr_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${3:6735}'}}\n)",
+    "description": "Update Transfer Reversal"
+  },
+  "List Transfer Reversal": {
+    "prefix": "StripeTransferReversalList",
+    "body": "const reversals = await stripe.transfers.listReversals(\n  '${1:tr_xxxxxxxxxxxxx}',\n  {limit: ${2:3}}\n)",
+    "description": "List Transfer Reversal"
+  },
+  "Retrieve Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningRetrieve",
+    "body": "const earlyFraudWarning = await stripe.radar.earlyFraudWarnings.retrieve(\n  '${1:issfr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Radar Early Fraud Warning"
+  },
+  "List Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningList",
+    "body": "const earlyFraudWarnings = await stripe.radar.earlyFraudWarnings.list({\n  limit: ${1:3},\n})",
+    "description": "List Radar Early Fraud Warning"
+  },
+  "Approve Review": {
+    "prefix": "StripeReviewApprove",
+    "body": "const review = await stripe.reviews.approve(\n  '${1:prv_xxxxxxxxxxxxx}'\n)",
+    "description": "Approve Review"
+  },
+  "Retrieve Review": {
+    "prefix": "StripeReviewRetrieve",
+    "body": "const review = await stripe.reviews.retrieve(\n  '${1:prv_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Review"
+  },
+  "List Review": {
+    "prefix": "StripeReviewList",
+    "body": "const reviews = await stripe.reviews.list({\n  limit: ${1:3},\n})",
+    "description": "List Review"
+  },
+  "Create Radar Value List": {
+    "prefix": "StripeRadarValueListCreate",
+    "body": "const valueList = await stripe.radar.valueLists.create({\n  alias: '${1:custom_ip_xxxxxxxxxxxxx}',\n  name: '${2:Custom IP Blocklist}',\n  item_type: '${3:ip_address}',\n})",
+    "description": "Create Radar Value List"
+  },
+  "Retrieve Radar Value List": {
+    "prefix": "StripeRadarValueListRetrieve",
+    "body": "const valueList = await stripe.radar.valueLists.retrieve(\n  '${1:rsl_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Radar Value List"
+  },
+  "Update Radar Value List": {
+    "prefix": "StripeRadarValueListUpdate",
+    "body": "const valueList = await stripe.radar.valueLists.update(\n  '${1:rsl_xxxxxxxxxxxxx}',\n  {name: '${2:Updated IP Block List}'}\n)",
+    "description": "Update Radar Value List"
+  },
+  "Delete Radar Value List": {
+    "prefix": "StripeRadarValueListDelete",
+    "body": "const deleted = await stripe.radar.valueLists.del(\n  '${1:rsl_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Radar Value List"
+  },
+  "List Radar Value List": {
+    "prefix": "StripeRadarValueListList",
+    "body": "const valueLists = await stripe.radar.valueLists.list({\n  limit: ${1:3},\n})",
+    "description": "List Radar Value List"
+  },
+  "Create Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemCreate",
+    "body": "const valueListItem = await stripe.radar.valueListItems.create({\n  value_list: '${1:rsl_xxxxxxxxxxxxx}',\n  value: '${2:1.2.3.4}',\n})",
+    "description": "Create Radar Value List Item"
+  },
+  "Retrieve Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemRetrieve",
+    "body": "const valueListItem = await stripe.radar.valueListItems.retrieve(\n  '${1:rsli_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Radar Value List Item"
+  },
+  "Delete Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemDelete",
+    "body": "const deleted = await stripe.radar.valueListItems.del(\n  '${1:rsli_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Radar Value List Item"
+  },
+  "List Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemList",
+    "body": "const valueListItems = await stripe.radar.valueListItems.list({\n  limit: ${1:3},\n  value_list: '${2:rsl_xxxxxxxxxxxxx}',\n})",
+    "description": "List Radar Value List Item"
+  },
+  "Retrieve Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationRetrieve",
+    "body": "const authorization = await stripe.issuing.authorizations.retrieve(\n  '${1:iauth_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Issuing Authorization"
+  },
+  "Update Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationUpdate",
+    "body": "const authorization = await stripe.issuing.authorizations.update(\n  '${1:iauth_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Issuing Authorization"
+  },
+  "Approve Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationApprove",
+    "body": "const authorization = await stripe.issuing.authorizations.approve(\n  '${1:iauth_xxxxxxxxxxxxx}'\n)",
+    "description": "Approve Issuing Authorization"
+  },
+  "Decline Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationDecline",
+    "body": "const authorization = await stripe.issuing.authorizations.decline(\n  '${1:iauth_xxxxxxxxxxxxx}'\n)",
+    "description": "Decline Issuing Authorization"
+  },
+  "List Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationList",
+    "body": "const authorizations = await stripe.issuing.authorizations.list({\n  limit: ${1:3},\n})",
+    "description": "List Issuing Authorization"
+  },
+  "Create Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderCreate",
+    "body": "const cardholder = await stripe.issuing.cardholders.create({\n  type: '${1:individual}',\n  name: '${2:Jenny Rosen}',\n  email: '${3:jenny.rosen@example.com}',\n  phone_number: '${4:+18888675309}',\n  billing: {\n    address: {\n      line1: '${5:1234 Main Street}',\n      city: '${6:San Francisco}',\n      state: '${7:CA}',\n      country: '${8:US}',\n      postal_code: '${9:94111}',\n    },\n  },\n})",
+    "description": "Create Issuing Cardholder"
+  },
+  "Retrieve Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderRetrieve",
+    "body": "const cardholder = await stripe.issuing.cardholders.retrieve(\n  '${1:ich_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Issuing Cardholder"
+  },
+  "Update Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderUpdate",
+    "body": "const cardholder = await stripe.issuing.cardholders.update(\n  '${1:ich_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Issuing Cardholder"
+  },
+  "List Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderList",
+    "body": "const cardholders = await stripe.issuing.cardholders.list({\n  limit: ${1:3},\n})",
+    "description": "List Issuing Cardholder"
+  },
+  "Create Issuing Card": {
+    "prefix": "StripeIssuingCardCreate",
+    "body": "const card = await stripe.issuing.cards.create({\n  cardholder: '${1:ich_xxxxxxxxxxxxx}',\n  currency: '${2:usd}',\n  type: '${3:virtual}',\n})",
+    "description": "Create Issuing Card"
+  },
+  "Retrieve Issuing Card": {
+    "prefix": "StripeIssuingCardRetrieve",
+    "body": "const card = await stripe.issuing.cards.retrieve(\n  '${1:ic_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Issuing Card"
+  },
+  "Update Issuing Card": {
+    "prefix": "StripeIssuingCardUpdate",
+    "body": "const card = await stripe.issuing.cards.update(\n  '${1:ic_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Issuing Card"
+  },
+  "List Issuing Card": {
+    "prefix": "StripeIssuingCardList",
+    "body": "const cards = await stripe.issuing.cards.list({\n  limit: ${1:3},\n})",
+    "description": "List Issuing Card"
+  },
+  "Create Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeCreate",
+    "body": "const dispute = await stripe.issuing.disputes.create({\n  transaction: '${1:ipi_xxxxxxxxxxxxx}',\n  evidence: {\n    reason: '${2:fraudulent}',\n    fraudulent: {\n      explanation: '${3:Purchase was unrecognized.}',\n    },\n  },\n})",
+    "description": "Create Issuing Dispute"
+  },
+  "Submit Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeSubmit",
+    "body": "const dispute = await stripe.issuing.disputes.submit(\n  '${1:idp_xxxxxxxxxxxxx}'\n)",
+    "description": "Submit Issuing Dispute"
+  },
+  "Retrieve Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeRetrieve",
+    "body": "const dispute = await stripe.issuing.disputes.retrieve(\n  '${1:idp_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Issuing Dispute"
+  },
+  "Update Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeUpdate",
+    "body": "const dispute = await stripe.issuing.disputes.update(\n  '${1:idp_xxxxxxxxxxxxx}',\n  {\n    evidence: {\n      reason: '${2:not_xxxxxxxxxxxxx}',\n      not_received: {\n        expected_at: ${3:1590000000},\n        explanation${4:}: '',\n        product_description: '${5:Baseball cap}',\n        product_type: '${6:merchandise}',\n      },\n    },\n  }\n)",
+    "description": "Update Issuing Dispute"
+  },
+  "List Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeList",
+    "body": "const disputes = await stripe.issuing.disputes.list({\n  limit: ${1:3},\n})",
+    "description": "List Issuing Dispute"
+  },
+  "Retrieve Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionRetrieve",
+    "body": "const transaction = await stripe.issuing.transactions.retrieve(\n  '${1:ipi_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Issuing Transaction"
+  },
+  "Update Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionUpdate",
+    "body": "const transaction = await stripe.issuing.transactions.update(\n  '${1:ipi_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Issuing Transaction"
+  },
+  "List Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionList",
+    "body": "const transactions = await stripe.issuing.transactions.list({\n  limit: ${1:3},\n})",
+    "description": "List Issuing Transaction"
+  },
+  "Create Terminal Connection Token": {
+    "prefix": "StripeTerminalConnectionTokenCreate",
+    "body": "const connectionToken = await stripe.terminal.connectionTokens.create()",
+    "description": "Create Terminal Connection Token"
+  },
+  "Create Terminal Location": {
+    "prefix": "StripeTerminalLocationCreate",
+    "body": "const location = await stripe.terminal.locations.create({\n  display_name: '${1:My First Store}',\n  address: {\n    line1: '${2:1234 Main Street}',\n    city: '${3:San Francisco}',\n    country: '${4:US}',\n    postal_code: '${5:94111}',\n  },\n})",
+    "description": "Create Terminal Location"
+  },
+  "Retrieve Terminal Location": {
+    "prefix": "StripeTerminalLocationRetrieve",
+    "body": "const location = await stripe.terminal.locations.retrieve(\n  '${1:tml_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Terminal Location"
+  },
+  "Update Terminal Location": {
+    "prefix": "StripeTerminalLocationUpdate",
+    "body": "const location = await stripe.terminal.locations.update(\n  '${1:tml_xxxxxxxxxxxxx}',\n  {display_name: '${2:My First Store}'}\n)",
+    "description": "Update Terminal Location"
+  },
+  "Delete Terminal Location": {
+    "prefix": "StripeTerminalLocationDelete",
+    "body": "const deleted = await stripe.terminal.locations.del(\n  '${1:tml_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Terminal Location"
+  },
+  "List Terminal Location": {
+    "prefix": "StripeTerminalLocationList",
+    "body": "const locations = await stripe.terminal.locations.list({\n  limit: ${1:3},\n})",
+    "description": "List Terminal Location"
+  },
+  "Create Terminal Reader": {
+    "prefix": "StripeTerminalReaderCreate",
+    "body": "const reader = await stripe.terminal.readers.create({\n  registration_code: '${1:puppies-plug-could}',\n  label: '${2:Blue Rabbit}',\n  location: '${3:tml_1234}',\n})",
+    "description": "Create Terminal Reader"
+  },
+  "Retrieve Terminal Reader": {
+    "prefix": "StripeTerminalReaderRetrieve",
+    "body": "const reader = await stripe.terminal.readers.retrieve(\n  '${1:tmr_P400-123-456-789}'\n)",
+    "description": "Retrieve Terminal Reader"
+  },
+  "Update Terminal Reader": {
+    "prefix": "StripeTerminalReaderUpdate",
+    "body": "const reader = await stripe.terminal.readers.update(\n  '${1:tmr_P400-123-456-789}',\n  {label: '${2:Blue Rabbit}'}\n)",
+    "description": "Update Terminal Reader"
+  },
+  "Delete Terminal Reader": {
+    "prefix": "StripeTerminalReaderDelete",
+    "body": "const deleted = await stripe.terminal.readers.del(\n  '${1:tmr_P400-123-456-789}'\n)",
+    "description": "Delete Terminal Reader"
+  },
+  "List Terminal Reader": {
+    "prefix": "StripeTerminalReaderList",
+    "body": "const readers = await stripe.terminal.readers.list({\n  limit: ${1:3},\n})",
+    "description": "List Terminal Reader"
+  },
+  "Create Order": {
+    "prefix": "StripeOrderCreate",
+    "body": "const order = await stripe.orders.create({\n  currency: '${1:usd}',\n  email: '${2:jenny.rosen@example.com}',\n  items: [\n    {type: '${3:sku}', parent: '${4:sku_xxxxxxxxxxxxx}'},\n  ],\n  shipping: {\n    name: '${5:Jenny Rosen}',\n    address: {\n      line1: '${6:1234 Main Street}',\n      city: '${7:San Francisco}',\n      state: '${8:CA}',\n      country: '${9:US}',\n      postal_code: '${10:94111}',\n    },\n  },\n})",
+    "description": "Create Order"
+  },
+  "Retrieve Order": {
+    "prefix": "StripeOrderRetrieve",
+    "body": "const order = await stripe.orders.retrieve(\n  '${1:or_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Order"
+  },
+  "Update Order": {
+    "prefix": "StripeOrderUpdate",
+    "body": "const order = await stripe.orders.update(\n  '${1:or_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Order"
+  },
+  "Pay Order": {
+    "prefix": "StripeOrderPay",
+    "body": "const order = await stripe.orders.pay(\n  '${1:or_xxxxxxxxxxxxx}',\n  {source: '${2:tok_xxxx}'}\n)",
+    "description": "Pay Order"
+  },
+  "List Order": {
+    "prefix": "StripeOrderList",
+    "body": "const orders = await stripe.orders.list({\n  limit: ${1:3},\n})",
+    "description": "List Order"
+  },
+  "Retrieve Order Return": {
+    "prefix": "StripeOrderReturnRetrieve",
+    "body": "const orderReturn = await stripe.orderReturns.retrieve(\n  '${1:orret_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Order Return"
+  },
+  "List Order Return": {
+    "prefix": "StripeOrderReturnList",
+    "body": "const orderReturns = await stripe.orderReturns.list({\n  limit: ${1:3},\n})",
+    "description": "List Order Return"
+  },
+  "Create Sku": {
+    "prefix": "StripeSkuCreate",
+    "body": "const sku = await stripe.skus.create({\n  attributes: {size: '${1:Medium}', gender: '${2:Unisex}'},\n  price: ${3:1500},\n  currency: '${4:usd}',\n  inventory: {type: '${5:finite}', quantity: ${6:500}},\n  product: '${7:prod_xxxxxxxxxxxxx}',\n})",
+    "description": "Create Sku"
+  },
+  "Retrieve Sku": {
+    "prefix": "StripeSkuRetrieve",
+    "body": "const sku = await stripe.skus.retrieve(\n  '${1:sku_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Sku"
+  },
+  "Update Sku": {
+    "prefix": "StripeSkuUpdate",
+    "body": "const sku = await stripe.skus.update(\n  '${1:sku_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}}\n)",
+    "description": "Update Sku"
+  },
+  "List Sku": {
+    "prefix": "StripeSkuList",
+    "body": "const skus = await stripe.skus.list({limit: ${1:3}})",
+    "description": "List Sku"
+  },
+  "Delete Sku": {
+    "prefix": "StripeSkuDelete",
+    "body": "const deleted = await stripe.skus.del(\n  '${1:sku_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Sku"
+  },
+  "Retrieve Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunRetrieve",
+    "body": "const scheduledQueryRun = await stripe.sigma.scheduledQueryRuns.retrieve(\n  '${1:sqr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Sigma Scheduled Query Run"
+  },
+  "List Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunList",
+    "body": "const scheduledQueryRuns = await stripe.sigma.scheduledQueryRuns.list({\n  limit: ${1:3},\n})",
+    "description": "List Sigma Scheduled Query Run"
+  },
+  "Create Reporting Report Run": {
+    "prefix": "StripeReportingReportRunCreate",
+    "body": "const reportRun = await stripe.reporting.reportRuns.create({\n  report_type: '${1:balance.summary.1}',\n  parameters: {\n    interval_start: ${2:1522540800},\n    interval_end: ${3:1525132800},\n  },\n})",
+    "description": "Create Reporting Report Run"
+  },
+  "Retrieve Reporting Report Run": {
+    "prefix": "StripeReportingReportRunRetrieve",
+    "body": "const reportRun = await stripe.reporting.reportRuns.retrieve(\n  '${1:frr_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Reporting Report Run"
+  },
+  "List Reporting Report Run": {
+    "prefix": "StripeReportingReportRunList",
+    "body": "const reportRuns = await stripe.reporting.reportRuns.list({\n  limit: ${1:3},\n})",
+    "description": "List Reporting Report Run"
+  },
+  "Retrieve Reporting Report Type": {
+    "prefix": "StripeReportingReportTypeRetrieve",
+    "body": "const reportType = await stripe.reporting.reportTypes.retrieve(\n  '${1:balance.summary.1}'\n)",
+    "description": "Retrieve Reporting Report Type"
+  },
+  "List Reporting Report Type": {
+    "prefix": "StripeReportingReportTypeList",
+    "body": "const reportTypes = await stripe.reporting.reportTypes.list()",
+    "description": "List Reporting Report Type"
+  },
+  "Create Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointCreate",
+    "body": "const webhookEndpoint = await stripe.webhookEndpoints.create({\n  url: '${1:https://example.com/my/webhook/endpoint}',\n  enabled_events: [\n    'charge.failed',\n    'charge.succeeded',\n  ],\n})",
+    "description": "Create Webhook Endpoint"
+  },
+  "Retrieve Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointRetrieve",
+    "body": "const webhookEndpoint = await stripe.webhookEndpoints.retrieve(\n  '${1:we_xxxxxxxxxxxxx}'\n)",
+    "description": "Retrieve Webhook Endpoint"
+  },
+  "Update Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointUpdate",
+    "body": "const webhookEndpoint = await stripe.webhookEndpoints.update(\n  '${1:we_xxxxxxxxxxxxx}',\n  {url: '${2:https://example.com/new_endpoint}'}\n)",
+    "description": "Update Webhook Endpoint"
+  },
+  "List Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointList",
+    "body": "const webhookEndpoints = await stripe.webhookEndpoints.list({\n  limit: ${1:3},\n})",
+    "description": "List Webhook Endpoint"
+  },
+  "Delete Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointDelete",
+    "body": "const deleted = await stripe.webhookEndpoints.del(\n  '${1:we_xxxxxxxxxxxxx}'\n)",
+    "description": "Delete Webhook Endpoint"
+  }
+}
