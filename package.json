@@ -122,6 +122,11 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.openDashboardLogFromTreeItemContextMenu",
+        "title": "Open log in Dashboard"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.openDashboardLogs",
         "title": "Open Dashboard to see recent logs"
       },
@@ -213,11 +218,19 @@
         {
           "command": "stripe.resendEvent",
           "when": "viewItem == eventItem"
+        },
+        {
+          "command": "stripe.openDashboardLogFromTreeItemContextMenu",
+          "when": "viewItem == logItem"
         }
       ],
       "commandPalette": [
         {
           "command": "stripe.openDashboardEvent",
+          "when": "false"
+        },
+        {
+          "command": "stripe.openDashboardLogFromTreeItemContextMenu",
           "when": "false"
         },
         {

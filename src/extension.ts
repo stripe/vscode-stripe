@@ -174,6 +174,20 @@ export function activate(this: any, context: ExtensionContext) {
   subscriptions.push(
     commands.registerCommand('stripe.openDashboardEvent', stripeCommands.openDashboardEvent),
   );
+
+  subscriptions.push(
+    commands.registerCommand(
+      'stripe.openDashboardLogFromTreeItem',
+      stripeCommands.openDashboardLogFromTreeItem,
+    ),
+  );
+
+  subscriptions.push(
+    commands.registerCommand(
+      'stripe.openDashboardLogFromTreeItemContextMenu',
+      stripeCommands.openDashboardLogFromTreeItemContextMenu,
+    ),
+  );
 }
 
 export function deactivate() {}
