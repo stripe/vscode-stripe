@@ -171,8 +171,13 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
             if (isLogObject(object)) {
               const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
               const logTreeItem = new StripeTreeItem(label, {
+                commandString: 'openDashboardLogFromTreeItem',
+                contextValue: 'logItem',
                 tooltip: unixToLocaleStringTZ(object.created_at),
               });
+              logTreeItem.metadata = {
+                id: object.request_id,
+              };
               this.insertLog(logTreeItem);
             }
           } catch {}

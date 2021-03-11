@@ -161,6 +161,29 @@ export class Commands {
     vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/events'));
   };
 
+  /**
+   * Why are there multiple functions for opening an API log in the Stripe Dashboard?
+   * It's because this functionality is used in two places, each of which passes different arguments:
+   *
+   * If a command is in a tree item (via left-click):
+   * - Only certain arguments are passed to the function; we define what to pass.
+   *
+   * If a command is in a tree item's context menu (via right-click):
+   * - The entire tree item is passed to the function; vscode defines this behavior.
+   */
+  openDashboardLogById = (id: string) => {
+    this.telemetry.sendEvent('openDashboardLog');
+    vscode.env.openExternal(vscode.Uri.parse(`https://dashboard.stripe.com/test/logs/${id}`));
+  };
+
+  openDashboardLogFromTreeItem = (data: {id: string}) => {
+    this.openDashboardLogById(data.id);
+  };
+
+  openDashboardLogFromTreeItemContextMenu = (stripeTreeItem: StripeTreeItem) => {
+    this.openDashboardLogById(stripeTreeItem.metadata.id);
+  };
+
   openDashboardLogs = () => {
     this.telemetry.sendEvent('openDashboardLogs');
     vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/logs'));
