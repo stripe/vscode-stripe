@@ -124,7 +124,7 @@ export class Commands {
 
   startLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('startLogsStreaming');
-    stripeLogsViewProvider.starStreaming();
+    stripeLogsViewProvider.startStreaming();
   };
 
   stopLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {

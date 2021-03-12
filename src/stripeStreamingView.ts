@@ -36,7 +36,7 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
     this.viewState = ViewState.Idle;
   }
 
-  starStreaming = async () => {
+  startStreaming = async () => {
     if (this.viewState === ViewState.Idle) {
       this.setViewState(ViewState.Loading);
       try {
@@ -54,7 +54,7 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
   };
 
   protected getStreamingControlItem(
-    name: string,
+    viewName: string,
     startCommand: string,
     stopCommand: string,
   ): StripeTreeItem {
@@ -62,19 +62,19 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
       switch (this.viewState) {
         case ViewState.Idle:
           return {
-            label: `Start streaming ${name}`,
+            label: `Start streaming ${viewName}`,
             command: startCommand,
             iconId: 'play-circle',
           };
         case ViewState.Loading:
           return {
-            label: `Starting streaming ${name} ...`,
+            label: `Starting streaming ${viewName} ...`,
             command: stopCommand,
             iconId: 'loading',
           };
         case ViewState.Streaming:
           return {
-            label: `Stop streaming ${name}`,
+            label: `Stop streaming ${viewName}`,
             command: stopCommand,
             iconId: 'stop-circle',
           };

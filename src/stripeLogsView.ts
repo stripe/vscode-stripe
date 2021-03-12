@@ -4,7 +4,6 @@ import {StreamingViewDataProvider} from './stripeStreamingView';
 import {StripeTreeItem} from './stripeTreeItem';
 import {unixToLocaleStringTZ} from './utils';
 
-// Log object should have an isObject and method for how to create a label.
 type LogObject = {
   status: number;
   method: string;
