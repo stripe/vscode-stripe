@@ -65,15 +65,14 @@ export class StripeClient {
   }
 
   private async promptInstall() {
-    const actionText = 'Read instructions on how to install Stripe CLI';
-    const returnValue = await vscode.window.showErrorMessage(
+    const openDocsOption = 'Read instructions on how to install Stripe CLI';
+    const selectedOption = await vscode.window.showErrorMessage(
       'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-      {},
-      ...[actionText],
+      {modal: true},
+      ...[openDocsOption],
     );
-
-    if (returnValue === actionText) {
-      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli'));
+    if (selectedOption === openDocsOption) {
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
     }
   }
 
