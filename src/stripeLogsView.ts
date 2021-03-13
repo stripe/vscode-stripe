@@ -66,7 +66,7 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider {
     return chunk.includes('Getting ready');
   }
 
-  createTreeItem(chunk: any): StripeTreeItem | null {
+  createStreamTreeItem(chunk: any): StripeTreeItem | null {
     const object = JSON.parse(chunk);
     if (isLogObject(object)) {
       const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;

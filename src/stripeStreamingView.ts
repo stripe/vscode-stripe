@@ -124,7 +124,7 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
       this.stdoutStream = new stream.Writable({
         write: (chunk, _, callback) => {
           try {
-            const object = this.createTreeItem(chunk);
+            const object = this.createStreamTreeItem(chunk);
             if (object) {
               this.insertItem(object);
             }
@@ -147,7 +147,7 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
   abstract streamLoading(chunk: any): boolean;
 
   // Tell us how to process the chunk into a tree item.
-  abstract createTreeItem(chunk: any): StripeTreeItem | null;
+  abstract createStreamTreeItem(chunk: any): StripeTreeItem | null;
 
   private cleanupStreams = () => {
     if (this.stdoutStream) {
