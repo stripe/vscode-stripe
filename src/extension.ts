@@ -1,193 +1,119 @@
-import {ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
+import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
 import {GATelemetry, LocalTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
-import {StripeDashboardViewDataProvider} from './stripeDashboardView';
+import {StripeDashboardViewProvider} from './stripeDashboardView';
 import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
-import {StripeEventsDataProvider} from './stripeEventsView';
-import {StripeHelpViewDataProvider} from './stripeHelpView';
+import {StripeEventsViewProvider} from './stripeEventsView';
+import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
-import {StripeLogsDataProvider} from './stripeLogsView';
+import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import path from 'path';
 
 export function activate(this: any, context: ExtensionContext) {
-  // disclosure of telemetry prompt
   new TelemetryPrompt(context).activate();
+  new SurveyPrompt(context).activate();
 
-  // Telemetry
   const telemetry = getTelemetry();
   telemetry.sendEvent('activate');
 
-  // Stripe CLi client
   const stripeClient = new StripeClient(telemetry);
 
-  // CSAT survey prompt
-  new SurveyPrompt(context).activate();
-
-  const stripeTerminal = new StripeTerminal(stripeClient);
-
-  const stripeCommands = new Commands(telemetry, stripeTerminal);
-
-  // Activity bar view
-  window.createTreeView('stripeDashboardView', {
-    treeDataProvider: new StripeDashboardViewDataProvider(),
-    showCollapseAll: false,
-  });
-
-  const stripeHelpView = window.createTreeView('stripeHelpView', {
-    treeDataProvider: new StripeHelpViewDataProvider(),
-    showCollapseAll: false,
-  });
-  stripeHelpView.message = 'This extension runs with your Stripe account in test mode.';
-
-  const stripeEventsViewProvider = new StripeEventsDataProvider(stripeClient);
+  const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient);
   window.createTreeView('stripeEventsView', {
     treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsDataProvider(stripeClient);
+  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
   });
 
-  // Debug provider
+  window.createTreeView('stripeDashboardView', {
+    treeDataProvider: new StripeDashboardViewProvider(),
+    showCollapseAll: false,
+  });
+
+  const stripeHelpView = window.createTreeView('stripeHelpView', {
+    treeDataProvider: new StripeHelpViewProvider(),
+    showCollapseAll: false,
+  });
+  stripeHelpView.message = 'This extension runs with your Stripe account in test mode.';
+
   debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry));
 
-  // Virtual document content provider for displaying event data
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
     new StripeEventTextDocumentContentProvider(stripeClient),
   );
 
   const git = new Git();
+  new StripeLinter(telemetry, git).activate();
 
-  // Stripe Linter
-  const stripeLinter = new StripeLinter(telemetry, git);
-  stripeLinter.activate();
-
-  // Language Server for hover matching of Stripe methods
+  // Start language Server for hover matching of Stripe methods
   const serverModule = context.asAbsolutePath(
     path.join('out', 'stripeLanguageServer', 'server.js'),
   );
 
-  const debugOptions = {execArgv: ['--nolazy', '--inspect=6009']};
-
   const serverOptions: ServerOptions = {
-    run: {module: serverModule, transport: TransportKind.ipc},
+    run: {
+      module: serverModule,
+      transport: TransportKind.ipc,
+    },
     debug: {
       module: serverModule,
       transport: TransportKind.ipc,
-      options: debugOptions,
+      options: {execArgv: ['--nolazy', '--inspect=6009']},
     },
   };
 
   StripeLanguageClient.activate(context, serverOptions, telemetry);
 
-  // Commands
-  const subscriptions = context.subscriptions;
-  const boundRefreshEventsList = stripeCommands.refreshEventsList.bind(
-    this,
-    stripeEventsViewProvider,
-  );
+  const stripeTerminal = new StripeTerminal(stripeClient);
 
-  const boundStartLogsStreaming = stripeCommands.startLogsStreaming.bind(
-    this,
-    stripeLogsViewProvider,
-  );
+  const stripeCommands = new Commands(telemetry, stripeTerminal);
 
-  const boundStopLogsStreaming = stripeCommands.stopLogsStreaming.bind(
-    this,
-    stripeLogsViewProvider,
-  );
-
-  context.subscriptions.push(commands.registerCommand('stripe.openCLI', stripeCommands.openCLI));
-
-  context.subscriptions.push(commands.registerCommand('stripe.login', stripeCommands.startLogin));
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openWebhooksListen', stripeCommands.openWebhooksListen),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.startLogsStreaming', boundStartLogsStreaming),
-  );
-
-  subscriptions.push(commands.registerCommand('stripe.stopLogsStreaming', boundStopLogsStreaming));
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvents', stripeCommands.openDashboardEvents),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openDashboardLogs', stripeCommands.openDashboardLogs),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openEventDetails', stripeCommands.openEventDetails),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks),
-  );
-
-  subscriptions.push(commands.registerCommand('stripe.refreshEventsList', boundRefreshEventsList));
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openTriggerEvent', () =>
-      stripeCommands.openTriggerEvent(context),
-    ),
-  );
-
-  subscriptions.push(commands.registerCommand('stripe.openSurvey', stripeCommands.openSurvey));
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo),
-  );
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openReportIssue', stripeCommands.openReportIssue),
-  );
-
-  subscriptions.push(commands.registerCommand('stripe.openDocs', stripeCommands.openDocs));
-  subscriptions.push(
-    commands.registerCommand(
-      'stripe.openWebhooksDebugConfigure',
-      stripeCommands.openWebhooksDebugConfigure,
-    ),
-  );
-
-  subscriptions.push(commands.registerCommand('stripe.resendEvent', stripeCommands.resendEvent));
-
-  subscriptions.push(
-    commands.registerCommand('stripe.openDashboardEvent', stripeCommands.openDashboardEvent),
-  );
-
-  subscriptions.push(
-    commands.registerCommand(
-      'stripe.openDashboardLogFromTreeItem',
-      stripeCommands.openDashboardLogFromTreeItem,
-    ),
-  );
-
-  subscriptions.push(
-    commands.registerCommand(
+  const commandCallbackPairs: [string, (...args: any[]) => any][] = [
+    ['stripe.login', stripeCommands.startLogin],
+    ['stripe.openCLI', stripeCommands.openCLI],
+    ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
+    ['stripe.openDashboardEvent', stripeCommands.openDashboardEvent],
+    ['stripe.openDashboardEvents', stripeCommands.openDashboardEvents],
+    ['stripe.openDashboardLogFromTreeItem', stripeCommands.openDashboardLogFromTreeItem],
+    [
       'stripe.openDashboardLogFromTreeItemContextMenu',
       stripeCommands.openDashboardLogFromTreeItemContextMenu,
-    ),
+    ],
+    ['stripe.openDashboardLogs', stripeCommands.openDashboardLogs],
+    ['stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks],
+    ['stripe.openDocs', stripeCommands.openDocs],
+    ['stripe.openEventDetails', stripeCommands.openEventDetails],
+    ['stripe.openReportIssue', stripeCommands.openReportIssue],
+    ['stripe.openSurvey', stripeCommands.openSurvey],
+    ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
+    ['stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context)],
+    ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
+    ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
+    ['stripe.refreshEventsList', () => stripeCommands.refreshEventsList(stripeEventsViewProvider)],
+    ['stripe.resendEvent', stripeCommands.resendEvent],
+    ['stripe.startLogsStreaming', () => stripeCommands.startLogsStreaming(stripeLogsViewProvider)],
+    ['stripe.stopLogsStreaming', () => stripeCommands.stopLogsStreaming(stripeLogsViewProvider)],
+  ];
+
+  const registeredCommands: Disposable[] = commandCallbackPairs.map(([command, callback]) =>
+    commands.registerCommand(command, callback),
   );
+
+  context.subscriptions.push(...registeredCommands);
 }
 
 export function deactivate() {}

@@ -35,7 +35,7 @@ export const isLogObject = (object: any): object is LogObject => {
   );
 };
 
-export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
+export class StripeLogsViewProvider extends StripeTreeViewDataProvider {
   private static readonly REFRESH_DEBOUNCE_MILLIS = 1000;
 
   private stripeClient: StripeClient;
@@ -206,7 +206,7 @@ export class StripeLogsDataProvider extends StripeTreeViewDataProvider {
 
   private debouncedRefresh = debounce(
     this.refresh.bind(this),
-    StripeLogsDataProvider.REFRESH_DEBOUNCE_MILLIS,
+    StripeLogsViewProvider.REFRESH_DEBOUNCE_MILLIS,
   );
 
   private insertLog = (logTreeItem: StripeTreeItem) => {

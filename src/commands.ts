@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
 import {getRecentEvents, recordEvent} from './stripeWorkspaceState';
 import osName = require('os-name');
-import {StripeEventsDataProvider} from './stripeEventsView';
-import {StripeLogsDataProvider} from './stripeLogsView';
+import {StripeEventsViewProvider} from './stripeEventsView';
+import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {Telemetry} from './telemetry';
@@ -122,14 +122,14 @@ export class Commands {
     this.terminal.execute('listen', [...forwardToFlag, ...forwardConnectToFlag, ...eventsFlag]);
   };
 
-  startLogsStreaming = (stripeLogsDataProvider: StripeLogsDataProvider) => {
+  startLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('startLogsStreaming');
-    stripeLogsDataProvider.startLogsStreaming();
+    stripeLogsViewProvider.startLogsStreaming();
   };
 
-  stopLogsStreaming = (stripeLogsDataProvider: StripeLogsDataProvider) => {
+  stopLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('stopLogsStreaming');
-    stripeLogsDataProvider.stopLogsStreaming();
+    stripeLogsViewProvider.stopLogsStreaming();
   };
 
   startLogin = () => {
@@ -212,7 +212,7 @@ export class Commands {
     );
   };
 
-  refreshEventsList = (stripeEventsViewProvider: StripeEventsDataProvider) => {
+  refreshEventsList = (stripeEventsViewProvider: StripeEventsViewProvider) => {
     this.telemetry.sendEvent('refreshEventsList');
     stripeEventsViewProvider.refresh();
   };
