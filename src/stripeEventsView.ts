@@ -4,7 +4,7 @@ import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import {ThemeIcon} from 'vscode';
 import {unixToLocaleStringTZ} from './utils';
 
-export class StripeEventsDataProvider extends StripeTreeViewDataProvider {
+export class StripeEventsViewProvider extends StripeTreeViewDataProvider {
   stripeClient: StripeClient;
 
   constructor(stripeClient: StripeClient) {

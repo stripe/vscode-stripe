@@ -2,7 +2,7 @@ import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import {ThemeIcon} from 'vscode';
 
-export class StripeHelpViewDataProvider extends StripeTreeViewDataProvider {
+export class StripeHelpViewProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
