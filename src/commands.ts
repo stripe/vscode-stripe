@@ -124,12 +124,12 @@ export class Commands {
 
   startLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('startLogsStreaming');
-    stripeLogsViewProvider.startLogsStreaming();
+    stripeLogsViewProvider.startStreaming();
   };
 
   stopLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('stopLogsStreaming');
-    stripeLogsViewProvider.stopLogsStreaming();
+    stripeLogsViewProvider.stopStreaming();
   };
 
   startLogin = () => {
