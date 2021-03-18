@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
 export enum OSType {
-  macOS = 'macOS',
+  macOSintel = 'macOSintel',
+  macOSarm = 'macOSarm',
   linux = 'linux',
   unknown = 'unknown',
   windows = 'windows',
@@ -18,11 +19,16 @@ export function getExtensionInfo() {
 
 export function getOSType(): OSType {
   const platform: string = process.platform;
+  const arch: string = process.arch;
 
   if (/^win/.test(platform)) {
     return OSType.windows;
   } else if (/^darwin/.test(platform)) {
-    return OSType.macOS;
+    if (arch === 'arm64') {
+      return OSType.macOSarm;
+    }
+
+    return OSType.macOSintel;
   } else if (/^linux/.test(platform)) {
     return OSType.linux;
   } else {
