@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import {GATelemetry} from '../../telemetry';
+import {GATelemetry} from '../../src/telemetry';
 
 suite('GATelemetry', function () {
   this.timeout(20000);

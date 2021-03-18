@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import {isLogObject} from '../../stripeLogsView';
+import {isLogObject} from '../../src/stripeLogsView';
 
 suite('stripeLogsView', () => {
   suite('isLogObject', () => {

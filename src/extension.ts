@@ -61,7 +61,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   // Start language Server for hover matching of Stripe methods
   const serverModule = context.asAbsolutePath(
-    path.join('out', 'stripeLanguageServer', 'server.js'),
+    path.join('dist', 'stripeLanguageServer', 'server.js'),
   );
 
   const serverOptions: ServerOptions = {

@@ -1,11 +1,11 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import * as utils from '../../utils';
+import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
-import {CLICommand, StripeClient} from '../../stripeClient';
+import {CLICommand, StripeClient} from '../../src/stripeClient';
 import {Readable, Writable} from 'stream';
 import {EventEmitter} from 'events';
-import {NoOpTelemetry} from '../../telemetry';
+import {NoOpTelemetry} from '../../src/telemetry';
 import childProcess from 'child_process';
 
 const fs = require('fs');

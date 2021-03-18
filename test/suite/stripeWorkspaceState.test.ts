@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 
 import {TestMemento, mocks} from '../mocks/vscode';
-import {getRecentEvents, recentEventsKey, recordEvent} from '../../stripeWorkspaceState';
+import {getRecentEvents, recentEventsKey, recordEvent} from '../../src/stripeWorkspaceState';
 
 suite('RecentEvents', () => {
   let sandbox: sinon.SinonSandbox;
