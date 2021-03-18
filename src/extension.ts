@@ -107,6 +107,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.resendEvent', stripeCommands.resendEvent],
     ['stripe.startLogsStreaming', () => stripeCommands.startLogsStreaming(stripeLogsViewProvider)],
     ['stripe.stopLogsStreaming', () => stripeCommands.stopLogsStreaming(stripeLogsViewProvider)],
+    ['stripe.clearRecentLogs', () => stripeCommands.clearRecentLogs(stripeLogsViewProvider)],
   ];
 
   const registeredCommands: Disposable[] = commandCallbackPairs.map(([command, callback]) =>

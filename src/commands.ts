@@ -132,6 +132,11 @@ export class Commands {
     stripeLogsViewProvider.stopStreaming();
   };
 
+  clearRecentLogs = (stripeLogsViewProvider: StripeLogsViewProvider) => {
+    this.telemetry.sendEvent('clearRecentLogs');
+    stripeLogsViewProvider.clearItems();
+  };
+
   startLogin = () => {
     this.telemetry.sendEvent('login');
     this.terminal.execute('login');
