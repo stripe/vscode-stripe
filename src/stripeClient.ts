@@ -15,10 +15,12 @@ const MIN_CLI_VERSION = 'v1.5.12';
 
 export enum CLICommand {
   LogsTail,
+  Listen,
 }
 
 const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([
   [CLICommand.LogsTail, ['logs', 'tail']],
+  [CLICommand.Listen, ['listen']],
 ]);
 
 export class StripeClient {
