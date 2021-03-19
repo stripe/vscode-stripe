@@ -356,13 +356,15 @@
     "compile": "tsc -p ./",
     "clean": "rm -rf out && rm -rf dist",
     "lint": "eslint --ext .ts .",
-    "pretest": "npm run compile",
+    "pretest": "npm run compile && npm run webpack-dev",
     "test": "node ./out/test/runTest.js",
-    "vscode:prepublish": "npm run clean && npm run webpack-prod:extension && npm run webpack-prod:language-server",
+    "vscode:prepublish": "npm run clean && npm run webpack-prod",
     "webpack-dev:extension": "webpack --mode development --config ./webpack.config.js",
     "webpack-dev:language-server": "webpack --mode development --config ./src/stripeLanguageServer/webpack.config.js",
+    "webpack-dev": "npm run webpack-dev:extension && npm run webpack-dev:language-server",
     "webpack-prod:extension": "webpack --mode production --config ./webpack.config.js && webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
-    "webpack-prod:language-server": "webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js"
+    "webpack-prod:language-server": "webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
+    "webpack-prod": "npm run webpack-prod:extension && npm run webpack-prod:language-server"
   },
   "devDependencies": {
     "@types/byline": "^4.2.32",
