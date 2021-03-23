@@ -25,7 +25,8 @@ suite('stripeClient', () => {
     suite('with default CLI install path', () => {
       const osPathPairs: [utils.OSType, string][] = [
         [utils.OSType.linux, '/usr/local/bin/stripe'],
-        [utils.OSType.macOS, '/usr/local/bin/stripe'],
+        [utils.OSType.macOSintel, '/usr/local/bin/stripe'],
+        [utils.OSType.macOSarm, '/opt/homebrew/bin/stripe'],
         [utils.OSType.windows, 'scoop/shims/stripe.exe'],
       ];
       const resolvedPath = '/resolved/path/to/stripe';
@@ -79,7 +80,7 @@ suite('stripeClient', () => {
     });
 
     suite('with custom CLI install path', () => {
-      const osTypes = [utils.OSType.linux, utils.OSType.macOS, utils.OSType.windows];
+      const osTypes = [utils.OSType.linux, utils.OSType.macOSintel, utils.OSType.macOSarm, utils.OSType.windows];
       const customPath = '/foo/bar/baz';
       const resolvedPath = '/resolved/path/to/stripe';
 
