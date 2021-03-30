@@ -9,6 +9,9 @@ import {NoOpTelemetry} from '../../src/telemetry';
 import childProcess from 'child_process';
 
 const fs = require('fs');
+const proxyquire = require('proxyquire');
+const modulePath = '../../stripeClient';
+const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('stripeClient', () => {
   let sandbox: sinon.SinonSandbox;
@@ -80,7 +83,12 @@ suite('stripeClient', () => {
     });
 
     suite('with custom CLI install path', () => {
-      const osTypes = [utils.OSType.linux, utils.OSType.macOSintel, utils.OSType.macOSarm, utils.OSType.windows];
+      const osTypes = [
+        utils.OSType.linux,
+        utils.OSType.macOSintel,
+        utils.OSType.macOSarm,
+        utils.OSType.windows,
+      ];
       const customPath = '/foo/bar/baz';
       const resolvedPath = '/resolved/path/to/stripe';
 
@@ -136,6 +144,46 @@ suite('stripeClient', () => {
           'Ok',
         ]);
       });
+    });
+  });
+
+  suite('Check CLI version', () => {
+    // Get an instance of a client with the mocked execa module
+    const getStripeClientWithExecaProxy = (stdout: string) => {
+      const execa = sinon.stub().resolves({stdout: stdout});
+      const module = setupProxies({execa});
+      return new module.StripeClient(new NoOpTelemetry());
+    };
+
+    test('prompts for update when current version is lower', async () => {
+      const stripeClient = getStripeClientWithExecaProxy(
+        'stripe version 1.5.12\nThere is a newer version available...',
+      );
+      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      await stripeClient.checkCLIVersion();
+
+      // Verify promptUpdate called
+      assert.strictEqual(promptSpy.callCount, 1);
+    });
+
+    test('does not prompt for update when current versions is higher', async () => {
+      const stripeClient = getStripeClientWithExecaProxy(
+        'stripe version 12.0.1\nThere is a newer version available...',
+      );
+      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      await stripeClient.checkCLIVersion();
+
+      // Verify promptUpdate not called
+      assert.strictEqual(promptSpy.callCount, 0);
+    });
+
+    test('does not prompt for update when using development bundle', async () => {
+      const stripeClient = getStripeClientWithExecaProxy('stripe version master');
+      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      await stripeClient.checkCLIVersion();
+
+      // Verify promptUpdate not called
+      assert.strictEqual(promptSpy.callCount, 0);
     });
   });
 

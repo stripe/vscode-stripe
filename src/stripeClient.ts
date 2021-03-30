@@ -8,6 +8,10 @@ import {Telemetry} from './telemetry';
 
 const execa = require('execa');
 const fs = require('fs');
+const compareVersions = require('compare-versions');
+
+// The recommended minimum version of the CLI needed to get the full features of this extension.
+const MIN_CLI_VERSION = 'v1.5.13';
 
 export enum CLICommand {
   LogsTail,
@@ -72,6 +76,18 @@ export class StripeClient {
       ...[openDocsOption],
     );
     if (selectedOption === openDocsOption) {
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
+    }
+  }
+
+  private async promptUpdate() {
+    const actionText = 'Read instructions on how to update Stripe CLI';
+    const returnValue = await vscode.window.showErrorMessage(
+      'We recommend being on at least ' + MIN_CLI_VERSION + ' of the CLI for the best experience.',
+      {},
+      ...[actionText],
+    );
+    if (returnValue === actionText) {
       vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
     }
   }
@@ -167,6 +183,31 @@ export class StripeClient {
     this.cliProcesses.delete(cliCommand);
   };
 
+  /**
+   * Prompts the user to update the version of the stripe CLI if it's lower than the min recommended version.
+   * Does not do anything if we cannot tell for certain that they are behind.
+   */
+  async checkCLIVersion() {
+    try {
+      const {stdout} = await execa(this.cliPath, ['version']);
+      // Expect the output to look something like `stripe version 1.x.x`
+      const version = stdout.split('\n')[0].replace('stripe version ', '');
+
+      // This will happen for versions that are built directly from the source. We can't tell in this case what version they're on.
+      if (version === 'master') {
+        return;
+      }
+
+      // the compare-versions module takes care of comparing the semantic versions (as well as ignoring the leading v)
+      if (compareVersions(version, MIN_CLI_VERSION) < 0) {
+        this.promptUpdate();
+      }
+    } catch (err) {
+      // If we fail to fetch the user's CLI version, don't prompt
+      console.log('Error fetching CLI version', err);
+    }
+  }
+
   private async detectInstalled() {
     const defaultInstallPath = (() => {
       const osType: OSType = getOSType();
@@ -176,7 +217,7 @@ export class StripeClient {
           return '/usr/local/bin/stripe';
         case OSType.macOSarm:
           // ARM installs go into a separate path
-          return '/opt/homebrew/bin/stripe'
+          return '/opt/homebrew/bin/stripe';
         case OSType.linux:
           // apt-get install path on ubuntu + yum install path on centOS
           return '/usr/local/bin/stripe';
@@ -196,6 +237,7 @@ export class StripeClient {
 
     if (installPath && (await isFile(installPath))) {
       this.cliPath = installPath;
+      this.checkCLIVersion();
       return true;
     }
 

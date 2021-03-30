@@ -391,9 +391,11 @@
   "dependencies": {
     "@types/universal-analytics": "^0.4.4",
     "byline": "^5.0.0",
+    "compare-versions": "^3.6.0",
     "execa": "^4.0.0",
     "moment": "^2.24.0",
     "os-name": "^3.1.0",
+    "proxyquire": "^2.1.3",
     "ps-list": "^7.1.0",
     "public-ip": "^4.0.1",
     "universal-analytics": "^0.4.20",
