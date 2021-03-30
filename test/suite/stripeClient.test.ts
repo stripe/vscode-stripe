@@ -157,7 +157,7 @@ suite('stripeClient', () => {
 
     test('prompts for update when current version is lower', async () => {
       const stripeClient = getStripeClientWithExecaProxy(
-        'stripe version 1.5.12\nThere is a newer version available...',
+        'stripe version 1.1.1\nThere is a newer version available...',
       );
       const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
