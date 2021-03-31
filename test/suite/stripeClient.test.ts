@@ -10,7 +10,7 @@ import childProcess from 'child_process';
 
 const fs = require('fs');
 const proxyquire = require('proxyquire');
-const modulePath = '../../stripeClient';
+const modulePath = '../../src/stripeClient';
 const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('stripeClient', () => {
