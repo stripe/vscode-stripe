@@ -65,14 +65,14 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
     return Promise.resolve(items);
   }
   async createStreamProcess(): Promise<ChildProcess> {
-    const stripeListenTailProcess = await this.stripeClient.getOrCreateCLIProcess(
-      CLICommand.Listen,
-      ['--format', 'JSON'],
-    );
-    if (!stripeListenTailProcess) {
+    const stripeListenProcess = await this.stripeClient.getOrCreateCLIProcess(CLICommand.Listen, [
+      '--format',
+      'JSON',
+    ]);
+    if (!stripeListenProcess) {
       throw new Error('Failed to start `stripe listen` process');
     }
-    return stripeListenTailProcess;
+    return stripeListenProcess;
   }
 
   streamReady(chunk: any): boolean {
