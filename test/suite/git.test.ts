@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import {Git} from '../../git';
+import {Git} from '../../src/git';
 
 suite('git', () => {
   let sandbox: sinon.SinonSandbox;

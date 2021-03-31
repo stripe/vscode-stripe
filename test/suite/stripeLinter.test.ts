@@ -1,9 +1,9 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import {Git} from '../../git';
-import {NoOpTelemetry} from '../../telemetry';
-import {StripeLinter} from '../../stripeLinter';
+import {Git} from '../../src/git';
+import {NoOpTelemetry} from '../../src/telemetry';
+import {StripeLinter} from '../../src/stripeLinter';
 
 suite('StripeLinter', () => {
   let sandbox: sinon.SinonSandbox;

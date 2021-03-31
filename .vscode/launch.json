@@ -3,37 +3,33 @@
 // Hover to view descriptions of existing attributes.
 // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
-	"version": "0.2.0",
-	"configurations": [
-	{
-		"type": "node",
-		"request": "attach",
-		"name": "Attach to Language Server",
-		"port": 6009,
-		"restart": true,
-		"outFiles": ["${workspaceRoot}/out/stripeLanguageServer/**/*.js"]
-	},
-	{
-			"name": "Run Extension",
-			"type": "extensionHost",
-			"request": "launch",
-			"runtimeExecutable": "${execPath}",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
-			],
-			"outFiles": [
-				"${workspaceFolder}/out/**/*.js"
-			],
-			"preLaunchTask": "npm: watch",
-			"env": {
-				"EXTENSION_MODE": "development"
-			}
-		}
-	],
-	"compounds": [
-		{
-			"name": "Client + Server",
-			"configurations": ["Run Extension", "Attach to Language Server"]
-		}
-	]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Language Server",
+      "port": 6009,
+      "restart": true,
+      "outFiles": ["${workspaceRoot}/dist/stripeLanguageServer/**/*.js"]
+    },
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "Build all",
+      "env": {
+        "EXTENSION_MODE": "development"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Client + Server",
+      "configurations": ["Run Extension", "Attach to Language Server"]
+    }
+  ]
 }

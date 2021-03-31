@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import * as utils from '../../utils';
+import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
 
 suite('Utils', () => {

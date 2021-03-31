@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import * as stripeState from '../../stripeWorkspaceState';
+import * as stripeState from '../../src/stripeWorkspaceState';
 import * as vscode from 'vscode';
 
-import {Commands} from '../../commands';
-import {NoOpTelemetry} from '../../telemetry';
+import {Commands} from '../../src/commands';
+import {NoOpTelemetry} from '../../src/telemetry';
 import {mocks} from '../mocks/vscode';
 
 suite('commands', () => {

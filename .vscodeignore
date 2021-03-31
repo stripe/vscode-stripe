@@ -1,1 +1,7 @@
-**/*.ts
+.vscode
+node_modules
+out/
+src/
+test/
+tsconfig.json
+webpack.config.js

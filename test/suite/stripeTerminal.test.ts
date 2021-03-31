@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import {StripeTerminal} from '../../stripeTerminal';
+import {StripeTerminal} from '../../src/stripeTerminal';
 
 suite('stripeTerminal', function () {
   this.timeout(20000);
