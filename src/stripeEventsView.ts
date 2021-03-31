@@ -1,41 +1,55 @@
-import {StripeClient} from './stripeClient';
+import {CLICommand, StripeClient} from './stripeClient';
+import {ChildProcess} from 'child_process';
+import {StreamingViewDataProvider} from './stripeStreamingView';
 import {StripeTreeItem} from './stripeTreeItem';
-import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import {ThemeIcon} from 'vscode';
 import {unixToLocaleStringTZ} from './utils';
 
-export class StripeEventsViewProvider extends StripeTreeViewDataProvider {
-  stripeClient: StripeClient;
+type EventObject = {
+  created: number;
+  type: string;
+  id: string;
+};
 
-  constructor(stripeClient: StripeClient) {
-    super();
-    this.stripeClient = stripeClient;
+export const isEventObject = (object: any): object is EventObject => {
+  if (!object || typeof object !== 'object') {
+    return false;
   }
 
-  async buildTree(): Promise<StripeTreeItem[]> {
-    const eventsItem = new StripeTreeItem('Recent events');
-    eventsItem.expand();
+  if (object.object !== 'event') {
+    return false;
+  }
 
-    try {
-      const events = await this.stripeClient.getEvents();
+  const possibleEventObject = object as EventObject;
+  return (
+    typeof possibleEventObject.created === 'number' &&
+    typeof possibleEventObject.type === 'string' &&
+    typeof possibleEventObject.id === 'string'
+  );
+};
 
-      if (events.data) {
-        events.data.forEach((event: any) => {
-          const title = event.type;
-          const eventItem = new StripeTreeItem(title, {
-            commandString: 'openEventDetails',
-            contextValue: 'eventItem',
-            tooltip: unixToLocaleStringTZ(event.created),
-          });
-          eventItem.metadata = {
-            type: event.type,
-            id: event.id,
-          };
-          eventsItem.addChild(eventItem);
-        });
-      }
-    } catch (e) {}
+export class StripeEventsViewProvider extends StreamingViewDataProvider {
+  constructor(stripeClient: StripeClient) {
+    super(stripeClient, CLICommand.Listen);
+  }
 
+  buildEventsTree(): StripeTreeItem[] {
+    const treeItems = [
+      this.getStreamingControlItem('Events', 'startEventsStreaming', 'stopEventsStreaming'),
+    ];
+
+    if (this.streamingTreeItems.length > 0) {
+      const eventsStreamRootItem = new StripeTreeItem('Recent events');
+      eventsStreamRootItem.children = this.streamingTreeItems;
+      eventsStreamRootItem.expand();
+      treeItems.push(eventsStreamRootItem);
+    }
+
+    return treeItems;
+  }
+
+  buildTree(): Promise<StripeTreeItem[]> {
+    const eventsItem = this.buildEventsTree();
     const triggerEventItem = new StripeTreeItem('Trigger new event', {
       commandString: 'openTriggerEvent',
       iconPath: new ThemeIcon('add'),
@@ -46,9 +60,46 @@ export class StripeEventsViewProvider extends StripeTreeViewDataProvider {
       iconPath: new ThemeIcon('terminal'),
     });
 
-    var items = [triggerEventItem, webhooksListenItem];
-    items.push(eventsItem);
+    const items = [triggerEventItem, webhooksListenItem, ...eventsItem];
 
-    return items;
+    return Promise.resolve(items);
+  }
+  async createStreamProcess(): Promise<ChildProcess> {
+    const stripeListenProcess = await this.stripeClient.getOrCreateCLIProcess(CLICommand.Listen, [
+      '--format',
+      'JSON',
+    ]);
+    if (!stripeListenProcess) {
+      throw new Error('Failed to start `stripe listen` process');
+    }
+    return stripeListenProcess;
+  }
+
+  streamReady(chunk: any): boolean {
+    return chunk.includes('Ready!');
+  }
+
+  streamLoading(chunk: any): boolean {
+    return chunk.includes('Getting ready');
+  }
+
+  createStreamTreeItem(chunk: any): StripeTreeItem | null {
+    const object = JSON.parse(chunk);
+    if (isEventObject(object)) {
+      const label = object.type;
+      const event = new StripeTreeItem(label, {
+        commandString: 'openEventDetails',
+        contextValue: 'eventItem',
+        tooltip: unixToLocaleStringTZ(object.created),
+      });
+
+      event.metadata = {
+        type: object.type,
+        id: object.id,
+      };
+
+      return event;
+    }
+    return null;
   }
 }

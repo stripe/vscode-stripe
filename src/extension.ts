@@ -103,8 +103,15 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context)],
     ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
-    ['stripe.refreshEventsList', () => stripeCommands.refreshEventsList(stripeEventsViewProvider)],
     ['stripe.resendEvent', stripeCommands.resendEvent],
+    [
+      'stripe.startEventsStreaming',
+      () => stripeCommands.startEventsStreaming(stripeEventsViewProvider),
+    ],
+    [
+      'stripe.stopEventsStreaming',
+      () => stripeCommands.stopEventsStreaming(stripeEventsViewProvider),
+    ],
     ['stripe.startLogsStreaming', () => stripeCommands.startLogsStreaming(stripeLogsViewProvider)],
     ['stripe.stopLogsStreaming', () => stripeCommands.stopLogsStreaming(stripeLogsViewProvider)],
     ['stripe.clearRecentLogs', () => stripeCommands.clearRecentLogs(stripeLogsViewProvider)],

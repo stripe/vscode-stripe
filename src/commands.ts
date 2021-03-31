@@ -122,6 +122,16 @@ export class Commands {
     this.terminal.execute('listen', [...forwardToFlag, ...forwardConnectToFlag, ...eventsFlag]);
   };
 
+  startEventsStreaming = (stripeEventsViewProvider: StripeEventsViewProvider) => {
+    this.telemetry.sendEvent('startEventsStreaming');
+    stripeEventsViewProvider.startStreaming();
+  };
+
+  stopEventsStreaming = (stripeEventsViewProvider: StripeEventsViewProvider) => {
+    this.telemetry.sendEvent('stopEventsStreaming');
+    stripeEventsViewProvider.stopStreaming();
+  };
+
   startLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('startLogsStreaming');
     stripeLogsViewProvider.startStreaming();
@@ -217,11 +227,6 @@ export class Commands {
     );
   };
 
-  refreshEventsList = (stripeEventsViewProvider: StripeEventsViewProvider) => {
-    this.telemetry.sendEvent('refreshEventsList');
-    stripeEventsViewProvider.refresh();
-  };
-
   openTriggerEvent = async (extensionContext: vscode.ExtensionContext) => {
     this.telemetry.sendEvent('openTriggerEvent');
     const events = this.buildTriggerEventsList(this.supportedEvents, extensionContext);
@@ -229,11 +234,6 @@ export class Commands {
     if (eventName) {
       this.terminal.execute('trigger', [eventName]);
       recordEvent(extensionContext, eventName);
-
-      // Trigger events refresh after 5s as we don't have a way to know when it has finished.
-      setTimeout(() => {
-        vscode.commands.executeCommand('stripe.refreshEventsList');
-      }, 5000);
     }
   };
 

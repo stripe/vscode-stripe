@@ -50,10 +50,11 @@
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
     "onCommand:stripe.openSurvey",
-    "onCommand:stripe.refreshEventsList",
     "onCommand:stripe.startLogsStreaming",
     "onCommand:stripe.stopLogsStreaming",
     "onCommand:stripe.clearRecentLogs",
+    "onCommand:stripe.startEventsStreaming",
+    "onCommand:stripe.stopEventsStreaming",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:csharp",
@@ -99,13 +100,23 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.startEventsStreaming",
+        "title": "Start streaming Events"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.stopEventsStreaming",
+        "title": "Stop streaming Events"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.startLogsStreaming",
-        "title": "Start API logs streaming"
+        "title": "Start streaming API logs "
       },
       {
         "category": "Stripe",
         "command": "stripe.stopLogsStreaming",
-        "title": "Stop API logs streaming"
+        "title": "Stop streaming API logs"
       },
       {
         "category": "Stripe",
@@ -151,12 +162,6 @@
         "category": "Stripe",
         "command": "stripe.openEventDetails",
         "title": "Open read-only document with a specific event"
-      },
-      {
-        "category": "Stripe",
-        "command": "stripe.refreshEventsList",
-        "title": "Refresh events list",
-        "icon": "$(refresh)"
       },
       {
         "category": "Stripe",
@@ -212,11 +217,6 @@
     },
     "menus": {
       "view/title": [
-        {
-          "command": "stripe.refreshEventsList",
-          "when": "view == stripeEventsView",
-          "group": "navigation"
-        },
         {
           "command": "stripe.clearRecentLogs",
           "when": "view == stripeLogsView",
