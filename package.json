@@ -2,7 +2,7 @@
   "name": "vscode-stripe",
   "displayName": "Stripe",
   "description": "Build, test, and use Stripe inside your editor.",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "publisher": "stripe",
   "author": "Stripe (https://www.stripe.com)",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -71,7 +71,8 @@
       "properties": {
         "stripe.cliInstallPath": {
           "description": "Install path for the Stripe CLI executable (include the complete filepath to the executable)",
-          "type": "string"
+          "type": "string",
+          "scope": "machine"
         },
         "stripe.projectName": {
           "type": "string",
