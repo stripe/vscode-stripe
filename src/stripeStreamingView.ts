@@ -53,10 +53,10 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
     this.setViewState(ViewState.Idle);
   };
 
-  clearItems = () => {
+  clearItems() {
     this.streamingTreeItems = [];
     this.refresh();
-  };
+  }
 
   protected getStreamingControlItem(
     viewName: string,
