@@ -15,9 +15,12 @@ import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
+import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
 
 export function activate(this: any, context: ExtensionContext) {
+  initializeStripeWorkspaceState(context);
+
   new TelemetryPrompt(context).activate();
   new SurveyPrompt(context).activate();
 
@@ -26,7 +29,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   const stripeClient = new StripeClient(telemetry);
 
-  const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient);
+  const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {
     treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true,
@@ -53,7 +56,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
-    new StripeEventTextDocumentContentProvider(stripeClient),
+    new StripeEventTextDocumentContentProvider(context),
   );
 
   const git = new Git();
@@ -112,6 +115,7 @@ export function activate(this: any, context: ExtensionContext) {
       'stripe.stopEventsStreaming',
       () => stripeCommands.stopEventsStreaming(stripeEventsViewProvider),
     ],
+    ['stripe.clearRecentEvents', () => stripeCommands.clearRecentEvents(stripeEventsViewProvider)],
     ['stripe.startLogsStreaming', () => stripeCommands.startLogsStreaming(stripeLogsViewProvider)],
     ['stripe.stopLogsStreaming', () => stripeCommands.stopLogsStreaming(stripeLogsViewProvider)],
     ['stripe.clearRecentLogs', () => stripeCommands.clearRecentLogs(stripeLogsViewProvider)],

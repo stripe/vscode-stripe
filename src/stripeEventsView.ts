@@ -1,8 +1,10 @@
+import * as vscode from 'vscode';
+
 import {CLICommand, StripeClient} from './stripeClient';
+import {addEventDetails, clearEventDetails} from './stripeWorkspaceState';
 import {ChildProcess} from 'child_process';
 import {StreamingViewDataProvider} from './stripeStreamingView';
 import {StripeTreeItem} from './stripeTreeItem';
-import {ThemeIcon} from 'vscode';
 import {unixToLocaleStringTZ} from './utils';
 
 type EventObject = {
@@ -29,8 +31,11 @@ export const isEventObject = (object: any): object is EventObject => {
 };
 
 export class StripeEventsViewProvider extends StreamingViewDataProvider {
-  constructor(stripeClient: StripeClient) {
+  private extensionContext: vscode.ExtensionContext;
+
+  constructor(stripeClient: StripeClient, extensionContext: vscode.ExtensionContext) {
     super(stripeClient, CLICommand.Listen);
+    this.extensionContext = extensionContext;
   }
 
   buildEventsTree(): StripeTreeItem[] {
@@ -52,12 +57,12 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
     const eventsItem = this.buildEventsTree();
     const triggerEventItem = new StripeTreeItem('Trigger new event', {
       commandString: 'openTriggerEvent',
-      iconPath: new ThemeIcon('add'),
+      iconPath: new vscode.ThemeIcon('add'),
     });
 
     const webhooksListenItem = new StripeTreeItem('Start webhooks listening', {
       commandString: 'openWebhooksListen',
-      iconPath: new ThemeIcon('terminal'),
+      iconPath: new vscode.ThemeIcon('terminal'),
     });
 
     const items = [triggerEventItem, webhooksListenItem, ...eventsItem];
@@ -98,8 +103,16 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
         id: object.id,
       };
 
+      // Save the event object in memento
+      addEventDetails(this.extensionContext, object.id, object);
       return event;
     }
     return null;
+  }
+
+  // override parent method.
+  clearItems() {
+    super.clearItems();
+    clearEventDetails(this.extensionContext);
   }
 }

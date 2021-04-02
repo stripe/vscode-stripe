@@ -53,6 +53,7 @@
     "onCommand:stripe.startLogsStreaming",
     "onCommand:stripe.stopLogsStreaming",
     "onCommand:stripe.clearRecentLogs",
+    "onCommand:stripe.clearRecentEvents",
     "onCommand:stripe.startEventsStreaming",
     "onCommand:stripe.stopEventsStreaming",
     "onLanguage:typescript",
@@ -171,6 +172,12 @@
       },
       {
         "category": "Stripe",
+        "command": "stripe.clearRecentEvents",
+        "title": "Clear recent events",
+        "icon": "$(clear-all)"
+      },
+      {
+        "category": "Stripe",
         "command": "stripe.openTriggerEvent",
         "title": "Trigger a new event"
       },
@@ -220,6 +227,11 @@
         {
           "command": "stripe.clearRecentLogs",
           "when": "view == stripeLogsView",
+          "group": "navigation"
+        },
+        {
+          "command": "stripe.clearRecentEvents",
+          "when": "view == stripeEventsView",
           "group": "navigation"
         }
       ],

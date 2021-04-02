@@ -132,6 +132,11 @@ export class Commands {
     stripeEventsViewProvider.stopStreaming();
   };
 
+  clearRecentEvents = (stripeEventsViewProvider: StripeEventsViewProvider) => {
+    this.telemetry.sendEvent('clearRecentEvents');
+    stripeEventsViewProvider.clearItems();
+  };
+
   startLogsStreaming = (stripeLogsViewProvider: StripeLogsViewProvider) => {
     this.telemetry.sendEvent('startLogsStreaming');
     stripeLogsViewProvider.startStreaming();
@@ -214,17 +219,10 @@ export class Commands {
     const {id, type} = data;
     const filename = `${type} (${id})`;
     const uri = vscode.Uri.parse(`stripeEvent:${filename}`);
-    vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'Fetching Stripe event details',
-      },
-      async () => {
-        const doc = await vscode.workspace.openTextDocument(uri);
-        vscode.languages.setTextDocumentLanguage(doc, 'json');
-        vscode.window.showTextDocument(doc, {preview: false});
-      },
-    );
+    vscode.workspace
+      .openTextDocument(uri)
+      .then((doc) => vscode.languages.setTextDocumentLanguage(doc, 'json'))
+      .then((doc) => vscode.window.showTextDocument(doc, {preview: false}));
   };
 
   openTriggerEvent = async (extensionContext: vscode.ExtensionContext) => {
