@@ -27,7 +27,7 @@ export function activate(this: any, context: ExtensionContext) {
   const telemetry = getTelemetry();
   telemetry.sendEvent('activate');
 
-  const stripeClient = new StripeClient(telemetry);
+  const stripeClient = new StripeClient(telemetry, context);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {

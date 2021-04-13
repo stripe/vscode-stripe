@@ -25,52 +25,19 @@ const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([
 
 export class StripeClient {
   telemetry: Telemetry;
-  private cliPath: string | null;
+  private cliPath: Promise<string | null>;
   cliProcesses: Map<CLICommand, ChildProcess>;
+  private extensionContext: vscode.ExtensionContext;
 
-  constructor(telemetry: Telemetry) {
+  constructor(telemetry: Telemetry, extensionContext: vscode.ExtensionContext) {
     this.telemetry = telemetry;
-    this.cliPath = null;
+    this.cliPath = StripeClient.initializeCLIPath(telemetry);
     this.cliProcesses = new Map<CLICommand, ChildProcess>();
+    this.extensionContext = extensionContext;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
-  private async execute(command: string) {
-    const isInstalled = await this.detectInstalled();
-
-    if (!isInstalled) {
-      return;
-    }
-
-    const isAuthenticated = await this.isAuthenticated();
-
-    if (!isAuthenticated) {
-      await this.promptLogin();
-      return;
-    }
-
-    const flags: object[] = [];
-    if (!this.telemetry.isTelemetryEnabled()) {
-      flags.push({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        STRIPE_CLI_TELEMETRY_OPTOUT: true,
-      });
-    }
-
-    try {
-      const args: string[] = command.split(' ');
-      const {stdout} = await execa(this.cliPath, args, {
-        env: flags,
-      });
-
-      const json = JSON.parse(stdout);
-      return json;
-    } catch (err) {
-      return err;
-    }
-  }
-
-  private async promptInstall() {
+  static async promptInstall() {
     const openDocsOption = 'Read instructions on how to install Stripe CLI';
     const selectedOption = await vscode.window.showErrorMessage(
       'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
@@ -80,6 +47,49 @@ export class StripeClient {
     if (selectedOption === openDocsOption) {
       vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
     }
+  }
+
+  static async initializeCLIPath(telemetry: Telemetry) {
+    const defaultInstallPath = (() => {
+      const osType: OSType = getOSType();
+      switch (osType) {
+        case OSType.macOSintel:
+          // HomeBrew install path on macOS Intel
+          return '/usr/local/bin/stripe';
+        case OSType.macOSarm:
+          // ARM installs go into a separate path
+          return '/opt/homebrew/bin/stripe';
+        case OSType.linux:
+          // apt-get install path on ubuntu + yum install path on centOS
+          return '/usr/local/bin/stripe';
+        case OSType.windows:
+          // scoop install path on Windows 10
+          const userProfile = process.env.USERPROFILE || '';
+          return path.join(userProfile, 'scoop', 'shims', 'stripe.exe');
+        default:
+          return null;
+      }
+    })();
+
+    const config = vscode.workspace.getConfiguration('stripe');
+    const customInstallPath = config.get('cliInstallPath', null);
+
+    const installPath = customInstallPath || defaultInstallPath;
+
+    if (installPath && (await isFile(installPath))) {
+      return Promise.resolve(installPath);
+    }
+
+    if (customInstallPath) {
+      vscode.window.showErrorMessage(
+        `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
+        ...['Ok'],
+      );
+    } else {
+      StripeClient.promptInstall();
+    }
+    telemetry.sendEvent('cli.notInstalled');
+    return Promise.resolve(null);
   }
 
   private async promptUpdate() {
@@ -106,10 +116,30 @@ export class StripeClient {
     }
   }
 
+  /**
+   * Wrapper around the CLIPath. We have multiple clients using the cliPath to execute commands
+   * both within this class and the stripeTerminal class. This function cosolidates all the things
+   * we need to do before venfing out the path.
+   */
+  async getCLIPath(): Promise<string | null> {
+    const cliPath = await this.cliPath;
+    if (cliPath) {
+      this.checkCLIVersion();
+
+      // isAuthenticated
+      const isAuthenticated = await this.isAuthenticated();
+      if (!isAuthenticated) {
+        await this.promptLogin();
+      }
+    }
+
+    return cliPath;
+  }
+
   async isAuthenticated(): Promise<Boolean> {
     const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
     try {
-      const {stdout} = await execa(this.cliPath, ['config', '--list']);
+      const {stdout} = await execa(await this.cliPath, ['config', '--list']);
       const hasConfigForProject = stdout
         .split('\n')
         .some((line: string) => line === `[${projectName || 'default'}]`);
@@ -119,27 +149,10 @@ export class StripeClient {
       this.telemetry.sendEvent('cli.notAuthenticated');
       return false;
     } catch (err) {
+      console.log('Error fetching stripe config file. ', err);
       this.telemetry.sendEvent('cli.notAuthenticated');
       return false;
     }
-  }
-
-  getEvents() {
-    const events = this.execute('events list');
-    return events;
-  }
-
-  getResourceById(id: string) {
-    const resource = this.execute(`get ${id}`);
-    return resource;
-  }
-
-  async getCLIPath(): Promise<string | null> {
-    const isInstalled = await this.detectInstalled();
-    if (!isInstalled) {
-      return null;
-    }
-    return this.cliPath;
   }
 
   async getOrCreateCLIProcess(
@@ -191,7 +204,7 @@ export class StripeClient {
    */
   async checkCLIVersion() {
     try {
-      const {stdout} = await execa(this.cliPath, ['version']);
+      const {stdout} = await execa(await this.cliPath, ['version']);
       // Expect the output to look something like `stripe version 1.x.x`
       const version = stdout.split('\n')[0].replace('stripe version ', '');
 
@@ -210,62 +223,13 @@ export class StripeClient {
     }
   }
 
-  private async detectInstalled() {
-    const defaultInstallPath = (() => {
-      const osType: OSType = getOSType();
-      switch (osType) {
-        case OSType.macOSintel:
-          // HomeBrew install path on macOS Intel
-          return '/usr/local/bin/stripe';
-        case OSType.macOSarm:
-          // ARM installs go into a separate path
-          return '/opt/homebrew/bin/stripe';
-        case OSType.linux:
-          // apt-get install path on ubuntu + yum install path on centOS
-          return '/usr/local/bin/stripe';
-        case OSType.windows:
-          // scoop install path on Windows 10
-          const userProfile = process.env.USERPROFILE || '';
-          return path.join(userProfile, 'scoop', 'shims', 'stripe.exe');
-        default:
-          return null;
-      }
-    })();
-
-    const config = vscode.workspace.getConfiguration('stripe');
-    const customInstallPath = config.get('cliInstallPath', null);
-
-    const installPath = customInstallPath || defaultInstallPath;
-
-    if (installPath && (await isFile(installPath))) {
-      this.cliPath = installPath;
-      this.checkCLIVersion();
-      return true;
-    }
-
-    if (customInstallPath) {
-      vscode.window.showErrorMessage(
-        `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
-        ...['Ok'],
-      );
-    } else {
-      this.promptInstall();
-    }
-    this.cliPath = null;
-    this.telemetry.sendEvent('cli.notInstalled');
-    return false;
-  }
-
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
     const shouldHandleConfigurationChange = e.affectsConfiguration('stripe');
     if (shouldHandleConfigurationChange) {
-      const isInstalled = await this.detectInstalled();
-      if (isInstalled) {
-        const isAuthenticated = await this.isAuthenticated();
-        if (!isAuthenticated) {
-          await this.promptLogin();
-        }
-      }
+      // update the path
+      this.cliPath = StripeClient.initializeCLIPath(this.telemetry);
+      // wait for version and authentication check.
+      await this.getCLIPath();
     }
   }
 }
