@@ -42,13 +42,10 @@ suite('stripeWorkspaceState', () => {
     assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
 
     // Verify WebhookEndpointKey is not set
-    assert.deepStrictEqual(extensionContext.workspaceState.get(webhookEndpointKey), undefined);
+    assert.strictEqual(extensionContext.workspaceState.get(webhookEndpointKey), undefined);
 
     // Verify ConnectWebhookEndpointKey is not set
-    assert.deepStrictEqual(
-      extensionContext.workspaceState.get(connectWebhookEndpointKey),
-      undefined,
-    );
+    assert.strictEqual(extensionContext.workspaceState.get(connectWebhookEndpointKey), undefined);
   });
 
   suite('RecentEvents', () => {

@@ -65,8 +65,8 @@ export function clearEventDetails(extensionContext: vscode.ExtensionContext) {
   extensionContext.workspaceState.update(eventDetailsKey, new Map<string, any>());
 }
 
-export function getWebhookEndpoint(extensionContext: vscode.ExtensionContext) {
-  return extensionContext.workspaceState.get(webhookEndpointKey, null);
+export function getWebhookEndpoint(extensionContext: vscode.ExtensionContext): string | undefined {
+  return extensionContext.workspaceState.get(webhookEndpointKey);
 }
 
 export function setWebhookEndpoint(
@@ -76,8 +76,10 @@ export function setWebhookEndpoint(
   extensionContext.workspaceState.update(webhookEndpointKey, webhookEndpoint);
 }
 
-export function getConnectWebhookEndpoint(extensionContext: vscode.ExtensionContext) {
-  return extensionContext.workspaceState.get(connectWebhookEndpointKey, null);
+export function getConnectWebhookEndpoint(
+  extensionContext: vscode.ExtensionContext,
+): string | undefined {
+  return extensionContext.workspaceState.get(connectWebhookEndpointKey);
 }
 
 export function setConnectWebhookEndpoint(
