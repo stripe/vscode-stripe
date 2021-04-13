@@ -181,7 +181,7 @@ suite('stripeClient', () => {
     let getCLIPathStub: sinon.SinonStub<any>;
 
     setup(() => {
-      getCLIPathStub = sinon.stub(StripeClient, 'initializeCLIPath').resolves('path/to/stripe');
+      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
     });
 
     teardown(() => {
@@ -234,7 +234,7 @@ suite('stripeClient', () => {
       cliProcessStub.stderr = <Readable>new EventEmitter();
       cliProcessStub.kill = () => {};
       spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
-      getCLIPathStub = sinon.stub(StripeClient, 'initializeCLIPath').resolves('path/to/stripe');
+      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
     });
 
     teardown(() => {

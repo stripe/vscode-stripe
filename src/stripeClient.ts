@@ -31,7 +31,7 @@ export class StripeClient {
 
   constructor(telemetry: Telemetry, extensionContext: vscode.ExtensionContext) {
     this.telemetry = telemetry;
-    this.cliPath = StripeClient.initializeCLIPath(telemetry);
+    this.cliPath = StripeClient.detectInstallation(telemetry);
     this.cliProcesses = new Map<CLICommand, ChildProcess>();
     this.extensionContext = extensionContext;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
@@ -49,7 +49,7 @@ export class StripeClient {
     }
   }
 
-  static async initializeCLIPath(telemetry: Telemetry) {
+  static async detectInstallation(telemetry: Telemetry) {
     const defaultInstallPath = (() => {
       const osType: OSType = getOSType();
       switch (osType) {
@@ -122,6 +122,8 @@ export class StripeClient {
    * we need to do before venfing out the path.
    */
   async getCLIPath(): Promise<string | null> {
+    // Check again in case the user removed the executable since we last checked.
+    this.cliPath = StripeClient.detectInstallation(this.telemetry);
     const cliPath = await this.cliPath;
     if (cliPath) {
       this.checkCLIVersion();
@@ -226,9 +228,7 @@ export class StripeClient {
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
     const shouldHandleConfigurationChange = e.affectsConfiguration('stripe');
     if (shouldHandleConfigurationChange) {
-      // update the path
-      this.cliPath = StripeClient.initializeCLIPath(this.telemetry);
-      // wait for version and authentication check.
+      // kick off cliPath check
       await this.getCLIPath();
     }
   }
