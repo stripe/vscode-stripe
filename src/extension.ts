@@ -83,7 +83,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   const stripeTerminal = new StripeTerminal(stripeClient);
 
-  const stripeCommands = new Commands(telemetry, stripeTerminal);
+  const stripeCommands = new Commands(telemetry, stripeTerminal, context);
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
     ['stripe.login', stripeCommands.startLogin],

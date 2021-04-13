@@ -5,12 +5,18 @@ import {TestMemento, mocks} from '../mocks/vscode';
 import {
   addEventDetails,
   clearEventDetails,
+  connectWebhookEndpointKey,
   eventDetailsKey,
+  getConnectWebhookEndpoint,
   getRecentEvents,
+  getWebhookEndpoint,
   initializeStripeWorkspaceState,
   recentEventsKey,
   recordEvent,
   retrieveEventDetails,
+  setConnectWebhookEndpoint,
+  setWebhookEndpoint,
+  webhookEndpointKey,
 } from '../../src/stripeWorkspaceState';
 
 suite('stripeWorkspaceState', () => {
@@ -34,6 +40,12 @@ suite('stripeWorkspaceState', () => {
 
     // Verify EventDetails is present with an empy Map
     assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
+
+    // Verify WebhookEndpointKey is not set
+    assert.strictEqual(extensionContext.workspaceState.get(webhookEndpointKey), undefined);
+
+    // Verify ConnectWebhookEndpointKey is not set
+    assert.strictEqual(extensionContext.workspaceState.get(connectWebhookEndpointKey), undefined);
   });
 
   suite('RecentEvents', () => {
@@ -100,6 +112,32 @@ suite('stripeWorkspaceState', () => {
       clearEventDetails(extensionContext);
 
       assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
+    });
+  });
+
+  suite('WebhookEndpoint', () => {
+    test('set and get webhook endpoint', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      const webhookEndpoint = 'http://localhost:4242/my-webhook-endpoint';
+
+      setWebhookEndpoint(extensionContext, webhookEndpoint);
+
+      assert.deepStrictEqual(getWebhookEndpoint(extensionContext), webhookEndpoint);
+    });
+  });
+
+  suite('ConnectWebhookEndpoint', () => {
+    test('set and get Connect webhook endpoint', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      const connectWebhookEndpoint = 'http://localhost:4242/my-connect-webhook-endpoint';
+
+      setConnectWebhookEndpoint(extensionContext, connectWebhookEndpoint);
+
+      assert.deepStrictEqual(getConnectWebhookEndpoint(extensionContext), connectWebhookEndpoint);
     });
   });
 });
