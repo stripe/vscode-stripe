@@ -214,6 +214,11 @@ export class Commands {
     vscode.env.openExternal(vscode.Uri.parse('https://dashboard.stripe.com/test/webhooks'));
   };
 
+  openSamples = () => {
+    this.telemetry.sendEvent('openSamples');
+    vscode.env.openExternal(vscode.Uri.parse('https://github.com/stripe-samples'));
+  };
+
   openEventDetails = (data: any) => {
     this.telemetry.sendEvent('openEventDetails');
     const {id, type} = data;

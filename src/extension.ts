@@ -101,6 +101,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openDocs', stripeCommands.openDocs],
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
+    ['stripe.openSamples', stripeCommands.openSamples],
     ['stripe.openSurvey', stripeCommands.openSurvey],
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
     ['stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context)],

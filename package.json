@@ -50,6 +50,7 @@
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
     "onCommand:stripe.openSurvey",
+    "onCommand:stripe.openSamples",
     "onCommand:stripe.startLogsStreaming",
     "onCommand:stripe.stopLogsStreaming",
     "onCommand:stripe.clearRecentLogs",
@@ -200,6 +201,11 @@
         "category": "Stripe",
         "command": "stripe.resendEvent",
         "title": "Resend event"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openSamples",
+        "title": "Find code samples"
       }
     ],
     "views": {
