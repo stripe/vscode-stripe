@@ -85,8 +85,8 @@ export class Commands {
     this.telemetry.sendEvent('openWebhooksListen');
 
     const shouldPromptForURL =
-      !options.forwardTo &&
-      !options.forwardConnectTo &&
+      !options?.forwardTo &&
+      !options?.forwardConnectTo &&
       (await showQuickPickWithValues(
         'Do you want to forward webhook events to your local server?',
         ['Yes', 'No'],
@@ -94,7 +94,7 @@ export class Commands {
 
     const [forwardTo, forwardConnectTo] = await (async () => {
       if (!shouldPromptForURL) {
-        return [options.forwardTo, options.forwardConnectTo];
+        return [options?.forwardTo, options?.forwardConnectTo];
       }
 
       const defaultForwardToURL = 'http://localhost:3000';
@@ -127,7 +127,7 @@ export class Commands {
       return;
     }
 
-    if (Array.isArray(options.events)) {
+    if (Array.isArray(options?.events)) {
       const invalidEventCharsRE = /[^a-z_.]/;
       const invalidEvent = options.events.find((e: string) => invalidEventCharsRE.test(e));
       if (invalidEvent) {
@@ -142,7 +142,7 @@ export class Commands {
     const forwardConnectToFlag = forwardConnectTo ? ['--forward-connect-to', forwardConnectTo] : [];
 
     const eventsFlag =
-      Array.isArray(options.events) && options.events.length > 0
+      Array.isArray(options?.events) && options.events.length > 0
         ? ['--events', options.events.join(',')]
         : [];
 
