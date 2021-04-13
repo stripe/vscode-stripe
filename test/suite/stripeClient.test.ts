@@ -7,14 +7,31 @@ import {Readable, Writable} from 'stream';
 import {EventEmitter} from 'events';
 import {NoOpTelemetry} from '../../src/telemetry';
 import childProcess from 'child_process';
+import {mocks} from '../mocks/vscode';
 
 const fs = require('fs');
 const proxyquire = require('proxyquire');
 const modulePath = '../../src/stripeClient';
+
+// Helper functions
 const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('stripeClient', () => {
   let sandbox: sinon.SinonSandbox;
+
+  // Get an instance of a client with the mocked execa module
+  const getStripeClientWithExecaProxy = (stdout: string) => {
+    const extensionContext = {...mocks.extensionContextMock};
+    const execa = sinon.stub().resolves({stdout: stdout});
+    const module = setupProxies({execa});
+    return new module.StripeClient(new NoOpTelemetry(), extensionContext);
+  };
+
+  // Get an instance of the stripeCLient
+  const getStripeClient = () => {
+    const extensionContext = {...mocks.extensionContextMock};
+    return new StripeClient(new NoOpTelemetry(), extensionContext);
+  };
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -50,8 +67,11 @@ suite('stripeClient', () => {
 
           test('detects installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
-            const stripeClient = new StripeClient(new NoOpTelemetry());
+            const stripeClient = getStripeClient();
+            sandbox.stub(stripeClient, 'checkCLIVersion');
+            sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
             const cliPath = await stripeClient.getCLIPath();
+
             assert.strictEqual(cliPath, path);
             assert.deepStrictEqual(realpathStub.args[0], [path]);
             assert.deepStrictEqual(statStub.args[0], [resolvedPath]);
@@ -59,7 +79,9 @@ suite('stripeClient', () => {
 
           test('detects not installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
-            const stripeClient = new StripeClient(new NoOpTelemetry());
+            const stripeClient = getStripeClient();
+            sandbox.stub(stripeClient, 'checkCLIVersion');
+            sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
             const cliPath = await stripeClient.getCLIPath();
             assert.strictEqual(cliPath, null);
             assert.deepStrictEqual(realpathStub.args[0], [path]);
@@ -71,7 +93,9 @@ suite('stripeClient', () => {
       test('prompts install when CLI is not installed', async () => {
         sandbox.stub(fs.promises, 'stat').returns(Promise.resolve({isFile: () => false}));
         const showErrorMessageSpy = sandbox.stub(vscode.window, 'showErrorMessage');
-        const stripeClient = new StripeClient(new NoOpTelemetry());
+        const stripeClient = getStripeClient();
+        sandbox.stub(stripeClient, 'checkCLIVersion');
+        sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
         const cliPath = await stripeClient.getCLIPath();
         assert.strictEqual(cliPath, null);
         assert.deepStrictEqual(showErrorMessageSpy.args[0], [
@@ -115,7 +139,9 @@ suite('stripeClient', () => {
 
           test('detects installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => true})); // the path is a file; CLI found
-            const stripeClient = new StripeClient(new NoOpTelemetry());
+            const stripeClient = getStripeClient();
+            sandbox.stub(stripeClient, 'checkCLIVersion');
+            sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
             const cliPath = await stripeClient.getCLIPath();
             assert.strictEqual(cliPath, customPath);
             assert.deepStrictEqual(realpathStub.args[0], [customPath]);
@@ -124,7 +150,9 @@ suite('stripeClient', () => {
 
           test('detects not installed', async () => {
             statStub.returns(Promise.resolve({isFile: () => false})); // the path is not a file; CLI not found
-            const stripeClient = new StripeClient(new NoOpTelemetry());
+            const stripeClient = getStripeClient();
+            sandbox.stub(stripeClient, 'checkCLIVersion');
+            sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
             const cliPath = await stripeClient.getCLIPath();
             assert.strictEqual(cliPath, null);
             assert.deepStrictEqual(realpathStub.args[0], [customPath]);
@@ -136,7 +164,9 @@ suite('stripeClient', () => {
       test('shows error when CLI is not at that path', async () => {
         statStub.returns(Promise.resolve({isFile: () => false}));
         const showErrorMessageSpy = sandbox.stub(vscode.window, 'showErrorMessage');
-        const stripeClient = new StripeClient(new NoOpTelemetry());
+        const stripeClient = getStripeClient();
+        sandbox.stub(stripeClient, 'checkCLIVersion');
+        sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
         const cliPath = await stripeClient.getCLIPath();
         assert.strictEqual(cliPath, null);
         assert.deepStrictEqual(showErrorMessageSpy.args[0], [
@@ -148,12 +178,15 @@ suite('stripeClient', () => {
   });
 
   suite('Check CLI version', () => {
-    // Get an instance of a client with the mocked execa module
-    const getStripeClientWithExecaProxy = (stdout: string) => {
-      const execa = sinon.stub().resolves({stdout: stdout});
-      const module = setupProxies({execa});
-      return new module.StripeClient(new NoOpTelemetry());
-    };
+    let getCLIPathStub: sinon.SinonStub<any>;
+
+    setup(() => {
+      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
+    });
+
+    teardown(() => {
+      getCLIPathStub.restore();
+    });
 
     test('prompts for update when current version is lower', async () => {
       const stripeClient = getStripeClientWithExecaProxy(
@@ -170,6 +203,7 @@ suite('stripeClient', () => {
       const stripeClient = getStripeClientWithExecaProxy(
         'stripe version 12.0.1\nThere is a newer version available...',
       );
+
       const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
 
@@ -179,6 +213,7 @@ suite('stripeClient', () => {
 
     test('does not prompt for update when using development bundle', async () => {
       const stripeClient = getStripeClientWithExecaProxy('stripe version master');
+
       const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
 
@@ -190,6 +225,7 @@ suite('stripeClient', () => {
   suite('CLI processes', () => {
     let spawnStub: sinon.SinonStub;
     let cliProcessStub: childProcess.ChildProcess;
+    let getCLIPathStub: sinon.SinonStub;
 
     setup(() => {
       cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
@@ -198,11 +234,18 @@ suite('stripeClient', () => {
       cliProcessStub.stderr = <Readable>new EventEmitter();
       cliProcessStub.kill = () => {};
       spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
+      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
+    });
+
+    teardown(() => {
+      spawnStub.restore();
+      getCLIPathStub.restore();
     });
 
     test('spawns a child process with stripe logs tail', async () => {
-      const stripeClient = new StripeClient(new NoOpTelemetry());
-      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeClient = getStripeClient();
+      sandbox.stub(stripeClient, 'checkCLIVersion');
+      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
       const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
       assert.strictEqual(spawnStub.callCount, 1);
       assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
@@ -210,8 +253,9 @@ suite('stripeClient', () => {
     });
 
     test('reuses existing stripe process if it already exists', async () => {
-      const stripeClient = new StripeClient(new NoOpTelemetry());
-      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeClient = getStripeClient();
+      sandbox.stub(stripeClient, 'checkCLIVersion');
+      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
       const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
       const stripeLogsTailProcess2 = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
       assert.strictEqual(spawnStub.callCount, 1);
@@ -221,8 +265,9 @@ suite('stripeClient', () => {
 
     test('passes flags to spawn', async () => {
       const flags = ['--format', 'JSON'];
-      const stripeClient = new StripeClient(new NoOpTelemetry());
-      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeClient = getStripeClient();
+      sandbox.stub(stripeClient, 'checkCLIVersion');
+      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
       const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
         CLICommand.LogsTail,
         flags,
@@ -236,8 +281,9 @@ suite('stripeClient', () => {
     });
 
     test('ends stripe process', async () => {
-      const stripeClient = new StripeClient(new NoOpTelemetry());
-      sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+      const stripeClient = getStripeClient();
+      sandbox.stub(stripeClient, 'checkCLIVersion');
+      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
       const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
       if (!stripeLogsTailProcess) {
         throw new assert.AssertionError();
@@ -251,8 +297,9 @@ suite('stripeClient', () => {
     suite('on child process events', () => {
       ['exit', 'error'].forEach((event) => {
         test(`on ${event}, removes child process`, async () => {
-          const stripeClient = new StripeClient(new NoOpTelemetry());
-          sandbox.stub(stripeClient, 'getCLIPath').resolves('path/to/stripe');
+          const stripeClient = getStripeClient();
+          sandbox.stub(stripeClient, 'checkCLIVersion');
+          sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
           const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
             CLICommand.LogsTail,
           );
