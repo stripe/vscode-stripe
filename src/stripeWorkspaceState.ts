@@ -9,6 +9,12 @@ export const recentEventsKey = 'RecentEvents';
 // Used to keep track of event details for event tree items while event streaming is active.
 export const eventDetailsKey = 'EventDetails';
 
+// Used to keep track of the last endpoint the user set to forward webhook events to.
+export const webhookEndpointKey = 'WebhookEndpoint';
+
+// Used to keep track of the last endpoint the user set to forward Connect webhook events to.
+export const connectWebhookEndpointKey = 'ConnectWebhookEndpoint';
+
 /**
  * Initialize the keys that we depend on
  * If the keys are already there and have data for whatever reason, clear it.
@@ -57,4 +63,26 @@ export function retrieveEventDetails(extensionContext: vscode.ExtensionContext, 
 
 export function clearEventDetails(extensionContext: vscode.ExtensionContext) {
   extensionContext.workspaceState.update(eventDetailsKey, new Map<string, any>());
+}
+
+export function getWebhookEndpoint(extensionContext: vscode.ExtensionContext) {
+  return extensionContext.workspaceState.get(webhookEndpointKey, null);
+}
+
+export function setWebhookEndpoint(
+  extensionContext: vscode.ExtensionContext,
+  webhookEndpoint: string,
+) {
+  extensionContext.workspaceState.update(webhookEndpointKey, webhookEndpoint);
+}
+
+export function getConnectWebhookEndpoint(extensionContext: vscode.ExtensionContext) {
+  return extensionContext.workspaceState.get(connectWebhookEndpointKey, null);
+}
+
+export function setConnectWebhookEndpoint(
+  extensionContext: vscode.ExtensionContext,
+  connectWebhookEndpoint: string,
+) {
+  extensionContext.workspaceState.update(connectWebhookEndpointKey, connectWebhookEndpoint);
 }

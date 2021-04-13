@@ -31,7 +31,7 @@ suite('commands', () => {
 
       const supportedEvents = ['a'];
 
-      const commands = new Commands(telemetry, terminal, supportedEvents);
+      const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
       commands.openTriggerEvent(extensionContext);
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
@@ -47,7 +47,7 @@ suite('commands', () => {
     test('returns all original events when no recent events', () => {
       const extensionContext = {...mocks.extensionContextMock};
       const getEventsStub = sandbox.stub(stripeState, 'getRecentEvents').returns([]);
-      const commands = new Commands(telemetry, terminal);
+      const commands = new Commands(telemetry, terminal, extensionContext);
       const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
       const events = commands.buildTriggerEventsList(supportedEvents, extensionContext);
 
@@ -59,7 +59,7 @@ suite('commands', () => {
     test('returns recent events on top', () => {
       const extensionContext = {...mocks.extensionContextMock};
       const getEventsStub = sandbox.stub(stripeState, 'getRecentEvents').returns(['c']);
-      const commands = new Commands(telemetry, terminal);
+      const commands = new Commands(telemetry, terminal, extensionContext);
 
       const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
       const events = commands.buildTriggerEventsList(supportedEvents, extensionContext);
@@ -75,7 +75,7 @@ suite('commands', () => {
       const getEventsStub = sandbox
         .stub(stripeState, 'getRecentEvents')
         .returns(['c', 'unsupported']);
-      const commands = new Commands(telemetry, terminal);
+      const commands = new Commands(telemetry, terminal, extensionContext);
 
       const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
       const events = commands.buildTriggerEventsList(supportedEvents, extensionContext);

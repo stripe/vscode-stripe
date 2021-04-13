@@ -1,7 +1,14 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
+import {
+  getConnectWebhookEndpoint,
+  getRecentEvents,
+  getWebhookEndpoint,
+  recordEvent,
+  setConnectWebhookEndpoint,
+  setWebhookEndpoint,
+} from './stripeWorkspaceState';
 import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
-import {getRecentEvents, recordEvent} from './stripeWorkspaceState';
 import osName = require('os-name');
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
@@ -12,6 +19,7 @@ import {Telemetry} from './telemetry';
 export class Commands {
   telemetry: Telemetry;
   terminal: StripeTerminal;
+  context: vscode.ExtensionContext;
 
   supportedEvents: string[] = [
     'balance.available',
@@ -59,9 +67,15 @@ export class Commands {
     'subscription_schedule.updated',
   ];
 
-  constructor(telemetry: Telemetry, terminal: StripeTerminal, supportedEvents?: string[]) {
+  constructor(
+    telemetry: Telemetry,
+    terminal: StripeTerminal,
+    context: vscode.ExtensionContext,
+    supportedEvents?: string[],
+  ) {
     this.telemetry = telemetry;
     this.terminal = terminal;
+    this.context = context;
     if (supportedEvents) {
       this.supportedEvents = supportedEvents;
     }
@@ -78,20 +92,42 @@ export class Commands {
         ['Yes', 'No'],
       )) === 'Yes';
 
-    const forwardTo = shouldPromptForURL
-      ? await vscode.window.showInputBox({
-          prompt: 'Enter local server URL to forward webhook events to',
-          value: 'http://localhost:3000',
-        })
-      : options.forwardTo;
+    const forwardTo = await (async () => {
+      if (!shouldPromptForURL) {
+        return options.forwardTo;
+      }
 
-    const forwardConnectTo = shouldPromptForURL
-      ? await vscode.window.showInputBox({
-          prompt:
-            'Enter local server URL to forward Connect webhook events to (default: same as normal events)',
-          value: forwardTo || 'http://localhost:3000',
-        })
-      : options.forwardConnectTo;
+      const defaultForwardToURL = 'http://localhost:3000';
+
+      const forwardToInput = await vscode.window.showInputBox({
+        prompt: 'Enter local server URL to forward webhook events to',
+        value: getWebhookEndpoint(this.context) || defaultForwardToURL,
+      });
+
+      if (forwardToInput) {
+        setWebhookEndpoint(this.context, forwardToInput); // save value for next invocation
+      }
+
+      return forwardToInput;
+    })();
+
+    const forwardConnectTo = await (async () => {
+      if (!shouldPromptForURL) {
+        return options.forwardConnectTo;
+      }
+
+      const forwardConnectToInput = await vscode.window.showInputBox({
+        prompt:
+          'Enter local server URL to forward Connect webhook events to (default: same as normal events)',
+        value: getConnectWebhookEndpoint(this.context) || forwardTo,
+      });
+
+      if (forwardConnectToInput) {
+        setConnectWebhookEndpoint(this.context, forwardConnectToInput); // save value for next invocation
+      }
+
+      return forwardConnectToInput;
+    })();
 
     const invalidURLCharsRE = /[^\w-.~:\/?#\[\]@!$&'()*+,;=]/;
     const invalidURL = [forwardTo, forwardConnectTo].find((url) => invalidURLCharsRE.test(url));
