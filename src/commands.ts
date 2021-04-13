@@ -92,9 +92,9 @@ export class Commands {
         ['Yes', 'No'],
       )) === 'Yes';
 
-    const forwardTo = await (async () => {
+    const [forwardTo, forwardConnectTo] = await (async () => {
       if (!shouldPromptForURL) {
-        return options.forwardTo;
+        return [options.forwardTo, options.forwardConnectTo];
       }
 
       const defaultForwardToURL = 'http://localhost:3000';
@@ -103,30 +103,21 @@ export class Commands {
         prompt: 'Enter local server URL to forward webhook events to',
         value: getWebhookEndpoint(this.context) || defaultForwardToURL,
       });
-
-      if (forwardToInput) {
-        setWebhookEndpoint(this.context, forwardToInput); // save value for next invocation
-      }
-
-      return forwardToInput;
-    })();
-
-    const forwardConnectTo = await (async () => {
-      if (!shouldPromptForURL) {
-        return options.forwardConnectTo;
-      }
-
       const forwardConnectToInput = await vscode.window.showInputBox({
         prompt:
           'Enter local server URL to forward Connect webhook events to (default: same as normal events)',
-        value: getConnectWebhookEndpoint(this.context) || forwardTo,
+        value: getConnectWebhookEndpoint(this.context) || forwardToInput,
       });
 
+      // save values for next invocation
+      if (forwardToInput) {
+        setWebhookEndpoint(this.context, forwardToInput);
+      }
       if (forwardConnectToInput) {
-        setConnectWebhookEndpoint(this.context, forwardConnectToInput); // save value for next invocation
+        setConnectWebhookEndpoint(this.context, forwardConnectToInput);
       }
 
-      return forwardConnectToInput;
+      return [forwardToInput, forwardConnectToInput];
     })();
 
     const invalidURLCharsRE = /[^\w-.~:\/?#\[\]@!$&'()*+,;=]/;
