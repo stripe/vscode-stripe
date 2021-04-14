@@ -140,11 +140,6 @@ export class StripeClient {
     return cliPath;
   }
 
-  private getAccountId(fileContents: string, projectName: string) {
-    const data = toml.parse(fileContents);
-    return data[projectName]?.account_id || '';
-  }
-
   async isAuthenticated(): Promise<Boolean> {
     const projectName =
       vscode.workspace.getConfiguration('stripe').get('projectName', null) || 'default';
@@ -154,7 +149,8 @@ export class StripeClient {
 
       const hasConfigForProject = projectName in data;
       if (hasConfigForProject) {
-        setStripeAccountId(this.extensionContext, this.getAccountId(stdout, projectName));
+        const accountId = data[projectName]?.account_id || '';
+        setStripeAccountId(this.extensionContext, accountId);
         return true;
       }
       this.telemetry.sendEvent('cli.notAuthenticated');
