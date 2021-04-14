@@ -73,7 +73,7 @@ export class GATelemetry implements Telemetry {
   }
 
   setup() {
-    if (!this.isTelemetryEnabled) {
+    if (!this.isTelemetryEnabled()) {
       return;
     }
 
