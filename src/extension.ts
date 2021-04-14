@@ -1,5 +1,10 @@
 import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
-import {GATelemetry, LocalTelemetry} from './telemetry';
+import {
+  GATelemetry,
+  LocalTelemetry,
+  StripeAnalyticsServiceTelemetry,
+  TelemetryMigration,
+} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
@@ -24,7 +29,7 @@ export function activate(this: any, context: ExtensionContext) {
   new TelemetryPrompt(context).activate();
   new SurveyPrompt(context).activate();
 
-  const telemetry = getTelemetry();
+  const telemetry = getTelemetry(context);
   telemetry.sendEvent('activate');
 
   const stripeClient = new StripeClient(telemetry, context);
@@ -136,11 +141,14 @@ export function deactivate() {}
  * Implcitly checks by using the magic session string. This session value is used whenever an extension
  * is running on a development host. https://github.com/microsoft/vscode/issues/10272
  */
-function getTelemetry() {
+function getTelemetry(extensionContext: ExtensionContext) {
   if (process.env.EXTENSION_MODE === 'development' || env.sessionId === 'someValue.sessionId') {
     console.log('Extension is running in development mode. Using local telemetry instance');
     return new LocalTelemetry();
   } else {
-    return GATelemetry.getInstance();
+    return new TelemetryMigration(
+      GATelemetry.getInstance(),
+      new StripeAnalyticsServiceTelemetry(extensionContext),
+    );
   }
 }

@@ -1,9 +1,11 @@
 'use strict';
 
 import * as path from 'path';
+import * as toml from 'toml';
 import * as vscode from 'vscode';
 import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
+import {setCliVersion, setStripeAccountId} from './stripeWorkspaceState';
 import {Telemetry} from './telemetry';
 
 const execa = require('execa');
@@ -11,7 +13,7 @@ const fs = require('fs');
 const compareVersions = require('compare-versions');
 
 // The recommended minimum version of the CLI needed to get the full features of this extension.
-const MIN_CLI_VERSION = 'v1.5.12';
+const MIN_CLI_VERSION = 'v1.5.13';
 
 export enum CLICommand {
   LogsTail,
@@ -139,13 +141,16 @@ export class StripeClient {
   }
 
   async isAuthenticated(): Promise<Boolean> {
-    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
+    const projectName =
+      vscode.workspace.getConfiguration('stripe').get('projectName', null) || 'default';
     try {
       const {stdout} = await execa(await this.cliPath, ['config', '--list']);
-      const hasConfigForProject = stdout
-        .split('\n')
-        .some((line: string) => line === `[${projectName || 'default'}]`);
+      const data = toml.parse(stdout);
+
+      const hasConfigForProject = projectName in data;
       if (hasConfigForProject) {
+        const accountId = data[projectName]?.account_id || '';
+        setStripeAccountId(this.extensionContext, accountId);
         return true;
       }
       this.telemetry.sendEvent('cli.notAuthenticated');
@@ -209,6 +214,7 @@ export class StripeClient {
       const {stdout} = await execa(await this.cliPath, ['version']);
       // Expect the output to look something like `stripe version 1.x.x`
       const version = stdout.split('\n')[0].replace('stripe version ', '');
+      setCliVersion(this.extensionContext, version);
 
       // This will happen for versions that are built directly from the source. We can't tell in this case what version they're on.
       if (version === 'master') {
