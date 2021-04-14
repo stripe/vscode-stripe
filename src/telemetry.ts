@@ -1,5 +1,5 @@
 import * as https from 'https';
-import * as queryString from 'query-string';
+import * as queryString from 'querystring';
 import * as vscode from 'vscode';
 import {getCliVersion, getStripeAccountId} from './stripeWorkspaceState';
 import {getExtensionInfo} from './utils';

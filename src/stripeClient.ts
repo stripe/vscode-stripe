@@ -151,6 +151,7 @@ export class StripeClient {
     try {
       const {stdout} = await execa(await this.cliPath, ['config', '--list']);
       const data = toml.parse(stdout);
+
       const hasConfigForProject = projectName in data;
       if (hasConfigForProject) {
         setStripeAccountId(this.extensionContext, this.getAccountId(stdout, projectName));
