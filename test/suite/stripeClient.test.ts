@@ -239,7 +239,7 @@ suite('stripeClient', () => {
     let configStub: sinon.SinonStub;
 
     const mockConfiguration = stubObject<vscode.WorkspaceConfiguration>(
-      vscode.workspace.getConfiguration('salesforcedx-vscode-lightning'),
+      vscode.workspace.getConfiguration('stripe'),
       {
         get: 'myProject',
       },
