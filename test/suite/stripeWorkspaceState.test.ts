@@ -7,14 +7,18 @@ import {
   clearEventDetails,
   connectWebhookEndpointKey,
   eventDetailsKey,
+  getCliVersion,
   getConnectWebhookEndpoint,
   getRecentEvents,
+  getStripeAccountId,
   getWebhookEndpoint,
   initializeStripeWorkspaceState,
   recentEventsKey,
   recordEvent,
   retrieveEventDetails,
+  setCliVersion,
   setConnectWebhookEndpoint,
+  setStripeAccountId,
   setWebhookEndpoint,
   webhookEndpointKey,
 } from '../../src/stripeWorkspaceState';
@@ -138,6 +142,32 @@ suite('stripeWorkspaceState', () => {
       setConnectWebhookEndpoint(extensionContext, connectWebhookEndpoint);
 
       assert.deepStrictEqual(getConnectWebhookEndpoint(extensionContext), connectWebhookEndpoint);
+    });
+  });
+
+  suite('StripeAccountId', () => {
+    test('set and get stripe account id', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      const accountId = 'acct_21314';
+
+      setStripeAccountId(extensionContext, accountId);
+
+      assert.deepStrictEqual(getStripeAccountId(extensionContext), accountId);
+    });
+  });
+
+  suite('CLIVersion', () => {
+    test('set and get cli version', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      const version = '21.2';
+
+      setCliVersion(extensionContext, version);
+
+      assert.deepStrictEqual(getCliVersion(extensionContext), version);
     });
   });
 });

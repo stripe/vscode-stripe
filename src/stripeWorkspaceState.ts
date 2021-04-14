@@ -15,6 +15,12 @@ export const webhookEndpointKey = 'WebhookEndpoint';
 // Used to keep track of the last endpoint the user set to forward Connect webhook events to.
 export const connectWebhookEndpointKey = 'ConnectWebhookEndpoint';
 
+// Used to keep track of the Stripe AccountId
+export const stripeAccountIdKey = 'StripeAccountId';
+
+// Used to keep track of the CLI version used
+export const cliVersionKey = 'CLIVersion';
+
 /**
  * Initialize the keys that we depend on
  * If the keys are already there and have data for whatever reason, clear it.
@@ -87,4 +93,23 @@ export function setConnectWebhookEndpoint(
   connectWebhookEndpoint: string,
 ) {
   extensionContext.workspaceState.update(connectWebhookEndpointKey, connectWebhookEndpoint);
+}
+
+export function setCliVersion(extensionContext: vscode.ExtensionContext, cliVersion: string) {
+  extensionContext.workspaceState.update(cliVersionKey, cliVersion);
+}
+
+export function getCliVersion(extensionContext: vscode.ExtensionContext) {
+  return extensionContext.workspaceState.get(cliVersionKey, '');
+}
+
+export function setStripeAccountId(
+  extensionContext: vscode.ExtensionContext,
+  stripeAccountId: string,
+) {
+  extensionContext.workspaceState.update(stripeAccountIdKey, stripeAccountId);
+}
+
+export function getStripeAccountId(extensionContext: vscode.ExtensionContext) {
+  return extensionContext.workspaceState.get(stripeAccountIdKey, '');
 }

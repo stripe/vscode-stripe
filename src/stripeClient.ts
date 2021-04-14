@@ -1,9 +1,11 @@
 'use strict';
 
 import * as path from 'path';
+import * as toml from 'toml';
 import * as vscode from 'vscode';
 import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
+import {setCliVersion, setStripeAccountId} from './stripeWorkspaceState';
 import {Telemetry} from './telemetry';
 
 const execa = require('execa');
@@ -138,14 +140,20 @@ export class StripeClient {
     return cliPath;
   }
 
+  private getAccountId(fileContents: string, projectName: string) {
+    const data = toml.parse(fileContents);
+    return data[projectName]?.account_id || '';
+  }
+
   async isAuthenticated(): Promise<Boolean> {
-    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
+    const projectName =
+      vscode.workspace.getConfiguration('stripe').get('projectName', null) || 'default';
     try {
       const {stdout} = await execa(await this.cliPath, ['config', '--list']);
-      const hasConfigForProject = stdout
-        .split('\n')
-        .some((line: string) => line === `[${projectName || 'default'}]`);
+      const data = toml.parse(stdout);
+      const hasConfigForProject = projectName in data;
       if (hasConfigForProject) {
+        setStripeAccountId(this.extensionContext, this.getAccountId(stdout, projectName));
         return true;
       }
       this.telemetry.sendEvent('cli.notAuthenticated');
@@ -209,6 +217,7 @@ export class StripeClient {
       const {stdout} = await execa(await this.cliPath, ['version']);
       // Expect the output to look something like `stripe version 1.x.x`
       const version = stdout.split('\n')[0].replace('stripe version ', '');
+      setCliVersion(this.extensionContext, version);
 
       // This will happen for versions that are built directly from the source. We can't tell in this case what version they're on.
       if (version === 'master') {

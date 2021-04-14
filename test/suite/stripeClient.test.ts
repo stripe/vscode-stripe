@@ -1,13 +1,14 @@
 import * as assert from 'assert';
-import * as sinon from 'sinon';
 import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
 import {CLICommand, StripeClient} from '../../src/stripeClient';
 import {Readable, Writable} from 'stream';
+import {TestMemento, mocks} from '../mocks/vscode';
+import {getCliVersion, getStripeAccountId} from '../../src/stripeWorkspaceState';
+import sinon, {stubObject} from 'ts-sinon';
 import {EventEmitter} from 'events';
 import {NoOpTelemetry} from '../../src/telemetry';
 import childProcess from 'child_process';
-import {mocks} from '../mocks/vscode';
 
 const fs = require('fs');
 const proxyquire = require('proxyquire');
@@ -20,8 +21,10 @@ suite('stripeClient', () => {
   let sandbox: sinon.SinonSandbox;
 
   // Get an instance of a client with the mocked execa module
-  const getStripeClientWithExecaProxy = (stdout: string) => {
-    const extensionContext = {...mocks.extensionContextMock};
+  const getStripeClientWithExecaProxy = (
+    stdout: string,
+    extensionContext: vscode.ExtensionContext = {...mocks.extensionContextMock},
+  ) => {
     const execa = sinon.stub().resolves({stdout: stdout});
     const module = setupProxies({execa});
     return new module.StripeClient(new NoOpTelemetry(), extensionContext);
@@ -177,7 +180,7 @@ suite('stripeClient', () => {
     });
   });
 
-  suite('Check CLI version', () => {
+  suite('checkCLIVersion', () => {
     let getCLIPathStub: sinon.SinonStub<any>;
 
     setup(() => {
@@ -219,6 +222,71 @@ suite('stripeClient', () => {
 
       // Verify promptUpdate not called
       assert.strictEqual(promptSpy.callCount, 0);
+    });
+
+    test('saves version in workspaceState', async () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+      const stripeClient = getStripeClientWithExecaProxy('stripe version 12.0', extensionContext);
+      await stripeClient.checkCLIVersion();
+
+      assert.strictEqual(getCliVersion(extensionContext), '12.0');
+    });
+  });
+
+  suite('isAuthenticated', () => {
+    let getCLIPathStub: sinon.SinonStub;
+    let configStub: sinon.SinonStub;
+
+    const mockConfiguration = stubObject<vscode.WorkspaceConfiguration>(
+      vscode.workspace.getConfiguration('salesforcedx-vscode-lightning'),
+      {
+        get: 'myProject',
+      },
+    );
+
+    const standardProfile = `
+    color = ""
+    [myProject]
+      device_name = "st-gracegoo1"
+      account_id = "acct_myProject"
+    [default]
+      device_name = "st-gracegoo1"
+      account_id = "acct_default"
+    `;
+
+    setup(() => {
+      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
+      configStub = sandbox.stub(vscode.workspace, 'getConfiguration').returns(mockConfiguration);
+    });
+
+    teardown(() => {
+      getCLIPathStub.restore();
+      configStub.restore();
+    });
+
+    test('returns true when profile exists', async () => {
+      const stripeClient = getStripeClientWithExecaProxy(standardProfile);
+      assert.strictEqual(await stripeClient.isAuthenticated(), true);
+    });
+
+    test('returns false when profile is empty', async () => {
+      const stripeClient = getStripeClientWithExecaProxy('color = ""');
+      assert.strictEqual(await stripeClient.isAuthenticated(), false);
+    });
+
+    test('returns false when profile is malformed', async () => {
+      const stripeClient = getStripeClientWithExecaProxy('blah blah blah');
+      assert.strictEqual(await stripeClient.isAuthenticated(), false);
+    });
+
+    test('saves accountId in workspaceState', async () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+      const stripeClient = getStripeClientWithExecaProxy(standardProfile, extensionContext);
+      await stripeClient.isAuthenticated();
+
+      assert.strictEqual(getStripeAccountId(extensionContext), 'acct_myProject');
     });
   });
 
