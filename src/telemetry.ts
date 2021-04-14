@@ -97,7 +97,7 @@ export class GATelemetry implements Telemetry {
   }
 
   sendEvent(eventName: string, eventValue?: any) {
-    if (!this.isTelemetryEnabled) {
+    if (!this.isTelemetryEnabled()) {
       return;
     }
 
@@ -159,7 +159,7 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
   }
 
   sendEvent(eventName: string, eventValue?: any) {
-    if (!this.isTelemetryEnabled) {
+    if (!this.isTelemetryEnabled()) {
       return;
     }
 
