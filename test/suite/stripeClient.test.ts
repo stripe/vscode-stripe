@@ -25,7 +25,7 @@ suite('stripeClient', () => {
     stdout: string,
     extensionContext: vscode.ExtensionContext = {...mocks.extensionContextMock},
   ) => {
-    const execa = sinon.stub().resolves({stdout: stdout});
+    const execa = sandbox.stub().resolves({stdout: stdout});
     const module = setupProxies({execa});
     return new module.StripeClient(new NoOpTelemetry(), extensionContext);
   };
@@ -181,21 +181,15 @@ suite('stripeClient', () => {
   });
 
   suite('checkCLIVersion', () => {
-    let getCLIPathStub: sinon.SinonStub<any>;
-
     setup(() => {
-      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
-    });
-
-    teardown(() => {
-      getCLIPathStub.restore();
+      sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
     });
 
     test('prompts for update when current version is lower', async () => {
       const stripeClient = getStripeClientWithExecaProxy(
         'stripe version 1.1.1\nThere is a newer version available...',
       );
-      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      const promptSpy = sandbox.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
 
       // Verify promptUpdate called
@@ -207,7 +201,7 @@ suite('stripeClient', () => {
         'stripe version 12.0.1\nThere is a newer version available...',
       );
 
-      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      const promptSpy = sandbox.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
 
       // Verify promptUpdate not called
@@ -217,7 +211,7 @@ suite('stripeClient', () => {
     test('does not prompt for update when using development bundle', async () => {
       const stripeClient = getStripeClientWithExecaProxy('stripe version master');
 
-      const promptSpy = sinon.spy(stripeClient, 'promptUpdate');
+      const promptSpy = sandbox.spy(stripeClient, 'promptUpdate');
       await stripeClient.checkCLIVersion();
 
       // Verify promptUpdate not called
@@ -235,9 +229,6 @@ suite('stripeClient', () => {
   });
 
   suite('isAuthenticated', () => {
-    let getCLIPathStub: sinon.SinonStub;
-    let configStub: sinon.SinonStub;
-
     const mockConfiguration = stubObject<vscode.WorkspaceConfiguration>(
       vscode.workspace.getConfiguration('stripe'),
       {
@@ -256,13 +247,8 @@ suite('stripeClient', () => {
     `;
 
     setup(() => {
-      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
-      configStub = sandbox.stub(vscode.workspace, 'getConfiguration').returns(mockConfiguration);
-    });
-
-    teardown(() => {
-      getCLIPathStub.restore();
-      configStub.restore();
+      sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
+      sandbox.stub(vscode.workspace, 'getConfiguration').returns(mockConfiguration);
     });
 
     test('returns true when profile exists', async () => {
@@ -293,7 +279,6 @@ suite('stripeClient', () => {
   suite('CLI processes', () => {
     let spawnStub: sinon.SinonStub;
     let cliProcessStub: childProcess.ChildProcess;
-    let getCLIPathStub: sinon.SinonStub;
 
     setup(() => {
       cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
@@ -302,12 +287,7 @@ suite('stripeClient', () => {
       cliProcessStub.stderr = <Readable>new EventEmitter();
       cliProcessStub.kill = () => {};
       spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
-      getCLIPathStub = sinon.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
-    });
-
-    teardown(() => {
-      spawnStub.restore();
-      getCLIPathStub.restore();
+      sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
     });
 
     test('spawns a child process with stripe logs tail', async () => {
