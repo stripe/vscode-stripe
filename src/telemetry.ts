@@ -145,12 +145,10 @@ export class TelemetryMigration implements Telemetry {
  */
 export class StripeAnalyticsServiceTelemetry implements Telemetry {
   private _clientId = 'vscode-stripe';
-  private _userId: string;
   private _isTelemetryEnabled: boolean;
   private _extensionContext: vscode.ExtensionContext;
 
   constructor(extensionContext: vscode.ExtensionContext) {
-    this._userId = vscode.env.machineId;
     this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
     this._extensionContext = extensionContext;
     vscode.workspace.onDidChangeConfiguration(this.configurationChanged, this);
@@ -170,7 +168,7 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
     const params = queryString.stringify({
       event_name: eventName,
       event_value: eventValue,
-      uid: this._userId,
+      uid: vscode.env.machineId,
       event_id: uuidv4(),
       client_id: this._clientId,
       created: Date.now(),
@@ -183,7 +181,6 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
       cli_version: getCliVersion(this._extensionContext),
     });
 
-    // When we have enough data, we can send data from our extension testing to https://qa-r.stripe.com/0
     const options = {
       hostname: 'r.stripe.com',
       path: '/0',
