@@ -63,24 +63,6 @@ export function showQuickPickWithItems(
   });
 }
 
-export async function filterAsync<T>(
-  arr: Array<T>,
-  predicate: (value: T, index: number, array: T[]) => Promise<boolean>,
-): Promise<Array<T>> {
-  const results = await Promise.all(arr.map(predicate));
-  return arr.filter((_v, index) => results[index]);
-}
-
-export async function findAsync<T>(
-  arr: Array<T>,
-  predicate: (value: T, index: number, array: T[]) => Promise<boolean>,
-): Promise<T | undefined> {
-  const promises = arr.map(predicate);
-  const results = await Promise.all(promises);
-  const index = results.findIndex((result) => result);
-  return arr[index];
-}
-
 export function debounce(func: (...args: any[]) => any, wait: number): (...args: any[]) => any {
   let timeout: NodeJS.Timeout;
   return (...args) => {

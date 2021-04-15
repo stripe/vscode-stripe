@@ -18,11 +18,13 @@ const MIN_CLI_VERSION = 'v1.5.13';
 export enum CLICommand {
   LogsTail,
   Listen,
+  Trigger,
 }
 
 const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([
   [CLICommand.LogsTail, ['logs', 'tail']],
   [CLICommand.Listen, ['listen']],
+  [CLICommand.Trigger, ['trigger']],
 ]);
 
 export class StripeClient {
@@ -246,6 +248,7 @@ async function isFile(path: string): Promise<boolean> {
     const fileStat = await fs.promises.stat(resolvedPath);
     return fileStat.isFile();
   } catch (err) {
+    console.error(`Error looking for CLI at ${path}`, err);
     return false;
   }
 }

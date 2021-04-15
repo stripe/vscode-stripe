@@ -1,5 +1,6 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
+import {CLICommand, StripeClient} from './stripeClient';
 import {
   getConnectWebhookEndpoint,
   getRecentEvents,
@@ -257,12 +258,29 @@ export class Commands {
       .then((doc) => vscode.window.showTextDocument(doc, {preview: false}));
   };
 
-  openTriggerEvent = async (extensionContext: vscode.ExtensionContext) => {
+  openTriggerEvent = async (
+    extensionContext: vscode.ExtensionContext,
+    stripeClient: StripeClient,
+    stripeOutputChannel: vscode.OutputChannel,
+  ) => {
     this.telemetry.sendEvent('openTriggerEvent');
     const events = this.buildTriggerEventsList(this.supportedEvents, extensionContext);
     const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
     if (eventName) {
-      this.terminal.execute('trigger', [eventName]);
+      const triggerProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.Trigger, [
+        eventName,
+      ]);
+
+      if (!triggerProcess) {
+        vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}`);
+        return;
+      }
+
+      triggerProcess.stdout.on('data', (chunk) => {
+        stripeOutputChannel.append(chunk.toString());
+      });
+      stripeOutputChannel.show();
+
       recordEvent(extensionContext, eventName);
     }
   };

@@ -9,6 +9,7 @@ import sinon, {stubObject} from 'ts-sinon';
 import {EventEmitter} from 'events';
 import {NoOpTelemetry} from '../../src/telemetry';
 import childProcess from 'child_process';
+import path from 'path';
 
 const fs = require('fs');
 const proxyquire = require('proxyquire');
@@ -50,7 +51,10 @@ suite('stripeClient', () => {
         [utils.OSType.linux, '/usr/local/bin/stripe'],
         [utils.OSType.macOSintel, '/usr/local/bin/stripe'],
         [utils.OSType.macOSarm, '/opt/homebrew/bin/stripe'],
-        [utils.OSType.windows, 'scoop/shims/stripe.exe'],
+        [
+          utils.OSType.windows,
+          path.join(process.env.USERPROFILE || '', 'scoop', 'shims', 'stripe.exe'),
+        ],
       ];
       const resolvedPath = '/resolved/path/to/stripe';
 
