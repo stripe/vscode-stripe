@@ -65,31 +65,4 @@ suite('stripeTerminal', function () {
       assert.deepStrictEqual(sendTextStub.callCount, 0);
     });
   });
-
-  suite('if a Stripe terminal already exists', () => {
-    test('reuses terminal if the command is the same', async () => {
-      const createTerminalStub = sandbox
-        .stub(vscode.window, 'createTerminal')
-        .returns(terminalStub);
-      const sendTextStub = sandbox.stub(terminalStub, 'sendText');
-      const stripeClientStub = <any>{getCLIPath: () => {}};
-      sandbox
-        .stub(stripeClientStub, 'getCLIPath')
-        .returns(Promise.resolve('/usr/local/bin/stripe'));
-
-      const stripeTerminal = new StripeTerminal(stripeClientStub);
-      await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
-
-      // same command => reuse the same terminal
-      await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
-
-      assert.strictEqual(createTerminalStub.callCount, 1);
-      assert.deepStrictEqual(sendTextStub.args[0], [
-        '/usr/local/bin/stripe listen --forward-to localhost',
-      ]);
-      assert.deepStrictEqual(sendTextStub.args[1], [
-        '/usr/local/bin/stripe listen --forward-to localhost',
-      ]);
-    });
-  });
 });

@@ -3,8 +3,11 @@ import * as sinon from 'sinon';
 import * as stripeState from '../../src/stripeWorkspaceState';
 import * as vscode from 'vscode';
 
+import {EventEmitter, Readable} from 'stream';
 import {Commands} from '../../src/commands';
 import {NoOpTelemetry} from '../../src/telemetry';
+import {StripeClient} from '../../src/stripeClient';
+import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
 
 suite('commands', () => {
@@ -24,22 +27,53 @@ suite('commands', () => {
   });
 
   suite('openTriggerEvent', () => {
+    let stripeOutputChannel: Partial<vscode.OutputChannel>;
+    let triggerProcess: childProcess.ChildProcess;
+    let stripeClient: Partial<StripeClient>;
+
+    setup(() => {
+      stripeOutputChannel = {append: (value: string) => {}, show: () => {}};
+
+      triggerProcess = <childProcess.ChildProcess>new EventEmitter();
+      triggerProcess.stdout = <Readable>new EventEmitter();
+
+      stripeClient = {getOrCreateCLIProcess: () => Promise.resolve(triggerProcess)};
+    });
+
     test('executes and records event', async () => {
       const extensionContext = {...mocks.extensionContextMock};
-      const terminalSpy = sandbox.spy(terminal, 'execute');
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const supportedEvents = ['a'];
-
       const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
-      commands.openTriggerEvent(extensionContext);
+
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
       const eventsInState = stripeState.getRecentEvents(extensionContext);
 
-      assert.deepStrictEqual(terminalSpy.args[0], ['trigger', ['a']]);
       assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerEvent']);
       assert.deepStrictEqual(eventsInState, ['a']);
+    });
+
+    test('writes stripe trigger output to output channel', async () => {
+      const extensionContext = {...mocks.extensionContextMock};
+      const appendSpy = sinon.spy(stripeOutputChannel, 'append');
+
+      const supportedEvents = ['a'];
+      const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
+
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+
+      // Pick the first item on the list.
+      await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+      // Simulate output from `stripe trigger <event>`
+      triggerProcess.stdout.emit('data', 'some output from stripe trigger');
+
+      assert.deepStrictEqual(appendSpy.args[0], ['some output from stripe trigger']);
     });
   });
 

@@ -32,6 +32,8 @@ export function activate(this: any, context: ExtensionContext) {
   const telemetry = getTelemetry(context);
   telemetry.sendEvent('activate');
 
+  const stripeOutputChannel = window.createOutputChannel('Stripe');
+
   const stripeClient = new StripeClient(telemetry, context);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
@@ -109,7 +111,10 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openSamples', stripeCommands.openSamples],
     ['stripe.openSurvey', stripeCommands.openSurvey],
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
-    ['stripe.openTriggerEvent', () => stripeCommands.openTriggerEvent(context)],
+    [
+      'stripe.openTriggerEvent',
+      () => stripeCommands.openTriggerEvent(context, stripeClient, stripeOutputChannel),
+    ],
     ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
     ['stripe.resendEvent', stripeCommands.resendEvent],
