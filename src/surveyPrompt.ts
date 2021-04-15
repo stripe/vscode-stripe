@@ -1,19 +1,22 @@
 import * as vscode from 'vscode';
 import moment from 'moment';
 
-enum StorageKeys {
+/**
+ * Google Forms does not support versions of forms so this version is purely made up by us
+ * to avoid spamming users when the survey has not changed since they last took it.
+ */
+export const SURVEY_VERSION = 1.0;
+
+export enum StorageKeys {
   doNotShowAgain = 'stripeDoNotShowAgain',
   lastSurveyDate = 'stripeLastSurveyDate',
+  lastSurveyVersionTaken = 'stripeLastSurveyVersionTaken',
 }
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
 export class SurveyPrompt {
   storage: vscode.Memento;
 
   constructor(context: vscode.ExtensionContext) {
+    // Global state so we don't re-prompt across each workspace the user has.
     this.storage = context.globalState;
   }
 
@@ -32,6 +35,25 @@ export class SurveyPrompt {
     }
 
     // Only sample people took the survey more than 12 weeks ago
+    if (this.tookSurveyRecently()) {
+      return false;
+    }
+
+    // Only sample people who have not taken the latest version of the survey.
+    if (this.tookMostRecentVersionOfSurvey()) {
+      return false;
+    }
+
+    // Only sample 20% of people to avoid spam
+    const randomSample: number = SurveyPrompt.getRandomInt(100);
+    if (randomSample >= 20) {
+      return false;
+    }
+
+    return true;
+  }
+
+  tookSurveyRecently(): boolean {
     const lastSurveyDateEpoch = this.storage.get(StorageKeys.lastSurveyDate) as number;
 
     if (lastSurveyDateEpoch) {
@@ -39,17 +61,28 @@ export class SurveyPrompt {
       const currentDate = moment();
 
       if (currentDate.diff(lastSurveyDate, 'weeks') < 12) {
-        return false;
+        return true;
       }
     }
 
-    // Only sample 20% of people to avoid spam
-    const randomSample: number = getRandomInt(100);
-    if (randomSample >= 20) {
-      return false;
+    return false;
+  }
+
+  tookMostRecentVersionOfSurvey(): boolean {
+    let lastSurveyVersionTaken = this.storage.get(StorageKeys.lastSurveyVersionTaken, 0.0);
+
+    // Edge case we can remove when we update the survey version.
+    // Beacuse this field was introduced later, if the lastSurveyDate is present,
+    // they've taken 1.0
+    if (lastSurveyVersionTaken === 0.0 && this.storage.get(StorageKeys.lastSurveyDate)) {
+      lastSurveyVersionTaken = 1.0;
     }
 
-    return true;
+    return lastSurveyVersionTaken >= SURVEY_VERSION;
+  }
+
+  static getRandomInt(max: number) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
   showSurvey = async () => {
@@ -68,6 +101,7 @@ export class SurveyPrompt {
       vscode.commands.executeCommand('stripe.openSurvey');
       const currentEpoch = moment().valueOf();
       this.storage.update(StorageKeys.lastSurveyDate, currentEpoch);
+      this.storage.update(StorageKeys.lastSurveyVersionTaken, SURVEY_VERSION);
       this.storage.update(StorageKeys.doNotShowAgain, false);
     } else if (selection === "Don't Show Again") {
       this.storage.update(StorageKeys.doNotShowAgain, true);
