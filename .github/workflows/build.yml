@@ -1,24 +1,29 @@
 name: Build
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: npm install, compile, and test
-      run: |
-        npm install
-        xvfb-run -a npm run compile --if-present
-        xvfb-run -a npm run test --if-present
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests (ubuntu)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: xvfb-run -a npm run test
+
+      - name: Run tests (macos, windows)
+        if: ${{ !(matrix.os == 'ubuntu-latest') }}
+        run: npm run test
