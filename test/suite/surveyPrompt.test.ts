@@ -2,6 +2,8 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import {SURVEY_VERSION, StorageKeys, SurveyPrompt} from '../../src/surveyPrompt';
 import {TestMemento, mocks} from '../mocks/vscode';
+import {fn as momentProto} from 'moment';
+
 import sinon from 'sinon';
 
 suite('surveyPrompt', () => {
@@ -96,6 +98,21 @@ suite('surveyPrompt', () => {
       globalState.update(StorageKeys.lastSurveyVersionTaken, SURVEY_VERSION);
       const surveyPrompt = new SurveyPrompt(extensionContext);
       assert.strictEqual(surveyPrompt.tookMostRecentVersionOfSurvey(), true);
+    });
+  });
+
+  suite('updateSurveySettings', () => {
+    test('saves expected settings', () => {
+      sandbox.stub(momentProto, 'valueOf').returns(1000);
+      const surveyPrompt = new SurveyPrompt(extensionContext);
+      surveyPrompt.updateSurveySettings();
+
+      assert.strictEqual(surveyPrompt.storage.get(StorageKeys.lastSurveyDate), 1000);
+      assert.strictEqual(
+        surveyPrompt.storage.get(StorageKeys.lastSurveyVersionTaken),
+        SURVEY_VERSION,
+      );
+      assert.notStrictEqual(surveyPrompt.storage.get(StorageKeys.doNotShowAgain), true);
     });
   });
 });

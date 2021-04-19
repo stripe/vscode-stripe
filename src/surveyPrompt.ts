@@ -12,6 +12,7 @@ export enum StorageKeys {
   lastSurveyDate = 'stripeLastSurveyDate',
   lastSurveyVersionTaken = 'stripeLastSurveyVersionTaken',
 }
+
 export class SurveyPrompt {
   storage: vscode.Memento;
 
@@ -99,12 +100,18 @@ export class SurveyPrompt {
 
     if (selection === 'Take survey') {
       vscode.commands.executeCommand('stripe.openSurvey');
-      const currentEpoch = moment().valueOf();
-      this.storage.update(StorageKeys.lastSurveyDate, currentEpoch);
-      this.storage.update(StorageKeys.lastSurveyVersionTaken, SURVEY_VERSION);
-      this.storage.update(StorageKeys.doNotShowAgain, false);
     } else if (selection === "Don't Show Again") {
       this.storage.update(StorageKeys.doNotShowAgain, true);
     }
+  };
+
+  /**
+   * Update details of survey settings upon survey taking.
+   */
+  updateSurveySettings = () => {
+    const currentEpoch = moment().valueOf();
+    this.storage.update(StorageKeys.lastSurveyDate, currentEpoch);
+    this.storage.update(StorageKeys.lastSurveyVersionTaken, SURVEY_VERSION);
+    this.storage.update(StorageKeys.doNotShowAgain, false);
   };
 }
