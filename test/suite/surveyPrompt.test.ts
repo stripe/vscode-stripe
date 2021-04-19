@@ -79,7 +79,7 @@ suite('surveyPrompt', () => {
       assert.strictEqual(surveyPrompt.tookMostRecentVersionOfSurvey(), false);
     });
 
-    test('returns true if older version of survey was taken', () => {
+    test('returns false if older version of survey was taken', () => {
       globalState.update(StorageKeys.lastSurveyVersionTaken, SURVEY_VERSION - 0.1);
       const surveyPrompt = new SurveyPrompt(extensionContext);
       assert.strictEqual(surveyPrompt.tookMostRecentVersionOfSurvey(), false);
