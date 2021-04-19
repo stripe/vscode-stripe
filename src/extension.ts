@@ -1,7 +1,7 @@
 import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
 import {
   GATelemetry,
-  LocalTelemetry,
+  NoOpTelemetry,
   StripeAnalyticsServiceTelemetry,
   TelemetryMigration,
 } from './telemetry';
@@ -149,8 +149,8 @@ export function deactivate() {}
  */
 function getTelemetry(extensionContext: ExtensionContext) {
   if (process.env.EXTENSION_MODE === 'development' || env.sessionId === 'someValue.sessionId') {
-    console.log('Extension is running in development mode. Using local telemetry instance');
-    return new LocalTelemetry();
+    console.log('Extension is running in development mode. Not emitting Telemetry');
+    return new NoOpTelemetry();
   } else {
     return new TelemetryMigration(
       GATelemetry.getInstance(),
