@@ -7,11 +7,14 @@ import {EventEmitter, Readable} from 'stream';
 import {Commands} from '../../src/commands';
 import {NoOpTelemetry} from '../../src/telemetry';
 import {StripeClient} from '../../src/stripeClient';
+import {SurveyPrompt} from '../../src/surveyPrompt';
 import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
 
 suite('commands', () => {
   let sandbox: sinon.SinonSandbox;
+  let extensionContext: vscode.ExtensionContext;
+
   const terminal = <any>{
     execute: (command: any, args: Array<string>) => {},
   };
@@ -20,6 +23,7 @@ suite('commands', () => {
 
   setup(() => {
     sandbox = sinon.createSandbox();
+    extensionContext = {...mocks.extensionContextMock};
   });
 
   teardown(() => {
@@ -41,7 +45,6 @@ suite('commands', () => {
     });
 
     test('executes and records event', async () => {
-      const extensionContext = {...mocks.extensionContextMock};
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const supportedEvents = ['a'];
@@ -59,7 +62,6 @@ suite('commands', () => {
     });
 
     test('writes stripe trigger output to output channel', async () => {
-      const extensionContext = {...mocks.extensionContextMock};
       const appendSpy = sinon.spy(stripeOutputChannel, 'append');
 
       const supportedEvents = ['a'];
@@ -79,7 +81,6 @@ suite('commands', () => {
 
   suite('buildTriggerEventsList', () => {
     test('returns all original events when no recent events', () => {
-      const extensionContext = {...mocks.extensionContextMock};
       const getEventsStub = sandbox.stub(stripeState, 'getRecentEvents').returns([]);
       const commands = new Commands(telemetry, terminal, extensionContext);
       const supportedEvents = ['a', 'b', 'c', 'd', 'e'];
@@ -91,7 +92,6 @@ suite('commands', () => {
     });
 
     test('returns recent events on top', () => {
-      const extensionContext = {...mocks.extensionContextMock};
       const getEventsStub = sandbox.stub(stripeState, 'getRecentEvents').returns(['c']);
       const commands = new Commands(telemetry, terminal, extensionContext);
 
@@ -105,7 +105,6 @@ suite('commands', () => {
     });
 
     test('does not include events that are not supported', () => {
-      const extensionContext = {...mocks.extensionContextMock};
       const getEventsStub = sandbox
         .stub(stripeState, 'getRecentEvents')
         .returns(['c', 'unsupported']);
@@ -117,6 +116,17 @@ suite('commands', () => {
       const labels = events.map((x) => x.label);
       assert.deepStrictEqual(labels, ['c', 'a', 'b', 'd', 'e']);
       assert.strictEqual(events[0].description, 'recently triggered');
+    });
+  });
+
+  suite('openSurvey', () => {
+    test('openSurvey saves survey prompt settings', () => {
+      const surveyPrompt = new SurveyPrompt(extensionContext);
+      const promptSpy = sandbox.spy(surveyPrompt, 'updateSurveySettings');
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      commands.openSurvey(surveyPrompt);
+
+      assert.strictEqual(promptSpy.calledOnce, true);
     });
   });
 });

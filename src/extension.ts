@@ -27,7 +27,8 @@ export function activate(this: any, context: ExtensionContext) {
   initializeStripeWorkspaceState(context);
 
   new TelemetryPrompt(context).activate();
-  new SurveyPrompt(context).activate();
+  const surveyPrompt: SurveyPrompt = new SurveyPrompt(context);
+  surveyPrompt.activate();
 
   const telemetry = getTelemetry(context);
   telemetry.sendEvent('activate');
@@ -109,7 +110,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
     ['stripe.openSamples', stripeCommands.openSamples],
-    ['stripe.openSurvey', stripeCommands.openSurvey],
+    ['stripe.openSurvey', () => stripeCommands.openSurvey(surveyPrompt)],
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
     [
       'stripe.openTriggerEvent',

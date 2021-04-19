@@ -15,6 +15,7 @@ import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
+import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
 
 export class Commands {
@@ -331,7 +332,7 @@ export class Commands {
     vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-vscode'));
   };
 
-  openSurvey = () => {
+  openSurvey = (surveyPrompt: SurveyPrompt) => {
     this.telemetry.sendEvent('openSurvey');
     const extensionInfo = getExtensionInfo();
 
@@ -344,6 +345,7 @@ export class Commands {
 
     const url = `https://stri.pe/vscode-feedback?${query}`;
     vscode.env.openExternal(vscode.Uri.parse(url));
+    surveyPrompt.updateSurveySettings();
   };
 
   openTelemetryInfo = () => {
