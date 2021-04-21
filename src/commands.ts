@@ -24,12 +24,15 @@ export class Commands {
   context: vscode.ExtensionContext;
 
   supportedEvents: string[] = [
+    'account.updated',
     'balance.available',
     'charge.captured',
     'charge.dispute.created',
     'charge.failed',
     'charge.refunded',
     'charge.succeeded',
+    'checkout.session.async_payment_failed',
+    'checkout.session.async_payment_succeeded',
     'checkout.session.completed',
     'customer.created',
     'customer.deleted',
