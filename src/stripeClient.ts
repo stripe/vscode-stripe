@@ -5,8 +5,10 @@ import * as toml from 'toml';
 import * as vscode from 'vscode';
 import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
-import {setCliVersion, setStripeAccountId} from './stripeWorkspaceState';
+import {StripeCLIClient} from './rpc/commands_grpc_pb';
 import {Telemetry} from './telemetry';
+import {VersionRequest} from './rpc/version_pb';
+import {setStripeAccountId} from './stripeWorkspaceState';
 
 const execa = require('execa');
 const fs = require('fs');
@@ -35,12 +37,18 @@ export class StripeClient {
   private cliPath: Promise<string | null>;
   cliProcesses: Map<CLICommand, ChildProcess>;
   private extensionContext: vscode.ExtensionContext;
+  private stripeCLIClient: StripeCLIClient;
 
-  constructor(telemetry: Telemetry, extensionContext: vscode.ExtensionContext) {
+  constructor(
+    telemetry: Telemetry,
+    extensionContext: vscode.ExtensionContext,
+    stripeCLIClient: StripeCLIClient,
+  ) {
     this.telemetry = telemetry;
     this.cliPath = StripeClient.detectInstallation(telemetry);
     this.cliProcesses = new Map<CLICommand, ChildProcess>();
     this.extensionContext = extensionContext;
+    this.stripeCLIClient = stripeCLIClient;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
@@ -227,26 +235,25 @@ export class StripeClient {
    * Prompts the user to update the version of the stripe CLI if it's lower than the min recommended version.
    * Does not do anything if we cannot tell for certain that they are behind.
    */
-  async checkCLIVersion() {
-    try {
-      const {stdout} = await execa(await this.cliPath, ['version']);
-      // Expect the output to look something like `stripe version 1.x.x`
-      const version = stdout.split('\n')[0].replace('stripe version ', '');
-      setCliVersion(this.extensionContext, version);
+  checkCLIVersion() {
+    this.stripeCLIClient.version(new VersionRequest(), (err, versionResp) => {
+      if (err) {
+        console.log('Error fetching CLI version', err);
+      } else {
+        // Expect the output to look something like `stripe version  1.x.x`
+        const version = versionResp.getVersion().replace('stripe version ', '');
 
-      // This will happen for versions that are built directly from the source. We can't tell in this case what version they're on.
-      if (version === 'master') {
-        return;
-      }
+        // This will happen for versions that are built directly from the source. We can't tell in this case what version they're on.
+        if (version === 'master') {
+          return;
+        }
 
-      // the compare-versions module takes care of comparing the semantic versions (as well as ignoring the leading v)
-      if (compareVersions(version, MIN_CLI_VERSION) < 0) {
-        this.promptUpdate();
+        // the compare-versions module takes care of comparing the semantic versions (as well as ignoring the leading v)
+        if (compareVersions(version, MIN_CLI_VERSION) < 0) {
+          this.promptUpdate();
+        }
       }
-    } catch (err) {
-      // If we fail to fetch the user's CLI version, don't prompt
-      console.log('Error fetching CLI version', err);
-    }
+    });
   }
 
   private async handleDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {

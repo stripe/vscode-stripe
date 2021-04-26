@@ -4,7 +4,6 @@ import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
-import {StripeDashboardViewProvider} from './stripeDashboardView';
 import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
@@ -12,9 +11,13 @@ import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsViewProvider} from './stripeLogsView';
+import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
+import {StripeSamples} from './stripeSamples';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
+import {VersionRequest} from './rpc/version_pb';
+import {createStripeCLIClient} from './stripeGRPCClient';
 import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
 
@@ -30,7 +33,19 @@ export function activate(this: any, context: ExtensionContext) {
 
   const stripeOutputChannel = window.createOutputChannel('Stripe');
 
-  const stripeClient = new StripeClient(telemetry, context);
+  const stripeCLIClient = createStripeCLIClient();
+
+  stripeCLIClient.version(new VersionRequest(), (error, response) => {
+    if (error) {
+      console.log('error here', error);
+    } else {
+      console.log('got version', response.getVersion());
+    }
+  });
+
+  const stripeSamples = new StripeSamples(stripeCLIClient);
+
+  const stripeClient = new StripeClient(telemetry, context, stripeCLIClient);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {
@@ -44,8 +59,8 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  window.createTreeView('stripeDashboardView', {
-    treeDataProvider: new StripeDashboardViewProvider(),
+  window.createTreeView('stripeQuickLinksView', {
+    treeDataProvider: new StripeQuickLinksViewProvider(),
     showCollapseAll: false,
   });
 
@@ -105,6 +120,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
     ['stripe.openSamples', stripeCommands.openSamples],
+    ['stripe.openStripeSample', () => stripeCommands.openStripeSample(stripeSamples)],
     ['stripe.openSurvey', () => stripeCommands.openSurvey(surveyPrompt)],
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
     [

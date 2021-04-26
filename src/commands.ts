@@ -13,6 +13,7 @@ import {getExtensionInfo, showQuickPickWithItems} from './utils';
 import osName = require('os-name');
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
+import {StripeSamples} from './stripeSamples';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {SurveyPrompt} from './surveyPrompt';
@@ -354,5 +355,10 @@ export class Commands {
   resendEvent = (stripeTreeItem: StripeTreeItem) => {
     this.telemetry.sendEvent('resendEvent');
     this.terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
+  };
+
+  openStripeSample = async (stripeSamples: StripeSamples) => {
+    this.telemetry.sendEvent('openStripeSample');
+    await stripeSamples.selectAndCloneSample();
   };
 }
