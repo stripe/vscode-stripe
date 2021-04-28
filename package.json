@@ -32,8 +32,6 @@
     "finance"
   ],
   "activationEvents": [
-    "onDebugInitialConfigurations",
-    "onDebug",
     "onView:stripeEventsView",
     "onView:stripeLogsView",
     "onView:stripeDashboardView",
@@ -56,15 +54,7 @@
     "onCommand:stripe.clearRecentLogs",
     "onCommand:stripe.clearRecentEvents",
     "onCommand:stripe.startEventsStreaming",
-    "onCommand:stripe.stopEventsStreaming",
-    "onLanguage:typescript",
-    "onLanguage:javascript",
-    "onLanguage:csharp",
-    "onLanguage:go",
-    "onLanguage:python",
-    "onLanguage:ruby",
-    "onLanguage:java",
-    "onLanguage:php"
+    "onCommand:stripe.stopEventsStreaming"
   ],
   "main": "./dist/extension.js",
   "contributes": {
