@@ -211,12 +211,19 @@
     "views": {
       "stripe": [
         {
+          "id": "stripeInstallCLIView",
+          "name": "Install Stripe CLI",
+          "when": "stripe.isCLIInstalled == false"
+        },
+        {
           "id": "stripeEventsView",
-          "name": "Events"
+          "name": "Events",
+          "when": "stripe.isCLIInstalled == true"
         },
         {
           "id": "stripeLogsView",
-          "name": "Logs"
+          "name": "Logs",
+          "when": "stripe.isCLIInstalled == true"
         },
         {
           "id": "stripeDashboardView",
@@ -228,6 +235,12 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "stripeInstallCLIView",
+        "contents": "Welcome! The Stripe VS Code extension requires the Stripe CLI.\n[Install Stripe CLI](https://stripe.com/docs/stripe-cli#install)\n[Set a custom path to Stripe CLI](command:workbench.action.openSettings?%5B%22stripe.cliInstallPath%22%5D)\nLearn more about [how to use the Stripe extension for Visual Studio Code](https://stripe.com/docs/stripe-vscode)."
+      }
+    ],
     "menus": {
       "view/title": [
         {

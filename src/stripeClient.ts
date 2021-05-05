@@ -45,7 +45,6 @@ export class StripeClient {
     const openDocsOption = 'Read instructions on how to install Stripe CLI';
     const selectedOption = await vscode.window.showErrorMessage(
       'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-      {modal: true},
       ...[openDocsOption],
     );
     if (selectedOption === openDocsOption) {
@@ -81,17 +80,12 @@ export class StripeClient {
     const installPath = customInstallPath || defaultInstallPath;
 
     if (installPath && (await isFile(installPath))) {
+      // This context tells TreeViews if they should be rendered
+      vscode.commands.executeCommand('setContext', 'stripe.isCLIInstalled', true);
       return Promise.resolve(installPath);
     }
 
-    if (customInstallPath) {
-      vscode.window.showErrorMessage(
-        `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
-        ...['Ok'],
-      );
-    } else {
-      StripeClient.promptInstall();
-    }
+    vscode.commands.executeCommand('setContext', 'stripe.isCLIInstalled', false);
     telemetry.sendEvent('cli.notInstalled');
     return Promise.resolve(null);
   }
@@ -136,6 +130,18 @@ export class StripeClient {
       const isAuthenticated = await this.isAuthenticated();
       if (!isAuthenticated) {
         await this.promptLogin();
+      }
+    } else {
+      const config = vscode.workspace.getConfiguration('stripe');
+      const customInstallPath = config.get('cliInstallPath', null);
+
+      if (customInstallPath) {
+        vscode.window.showErrorMessage(
+          `You set a custom installation path for the Stripe CLI, but we couldn't find the executable in '${customInstallPath}'`,
+          ...['Ok'],
+        );
+      } else {
+        StripeClient.promptInstall();
       }
     }
 
