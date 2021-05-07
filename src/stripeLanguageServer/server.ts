@@ -48,6 +48,7 @@ connection.onInitialize((params: InitializeParams) => {
 });
 
 function findHoverMatches(params: HoverParams): string[] {
+  console.log('HELLO I am in the universal language server ');
   const document = documents.get(params.textDocument.uri);
   if (!document) {
     return [];
