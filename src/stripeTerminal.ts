@@ -22,6 +22,13 @@ export class StripeTerminal {
       return;
     }
 
+    if (command !== 'login') {
+      const isAuthenticated = await this.stripeClient.isAuthenticated();
+      if (!isAuthenticated) {
+        await this.stripeClient.promptLogin();
+      }
+    }
+
     const globalCLIFLags = this.getGlobalCLIFlags();
 
     const commandString = [cliPath, command, ...args, ...globalCLIFLags].join(' ');

@@ -34,7 +34,7 @@ suite('stripeTerminal', function () {
         const createTerminalStub = sandbox
           .stub(vscode.window, 'createTerminal')
           .returns(terminalStub);
-        const stripeClientStub = <any>{getCLIPath: () => {}};
+        const stripeClientStub = <any>{getCLIPath: () => {}, isAuthenticated: () => true};
         const getCLIPathStub = sandbox
           .stub(stripeClientStub, 'getCLIPath')
           .returns(Promise.resolve(path));
@@ -55,7 +55,7 @@ suite('stripeTerminal', function () {
       const createTerminalStub = sandbox
         .stub(vscode.window, 'createTerminal')
         .returns(terminalStub);
-      const stripeClientStub = <any>{getCLIPath: () => {}};
+      const stripeClientStub = <any>{getCLIPath: () => {}, isAuthenticated: () => true};
       sandbox.stub(stripeClientStub, 'getCLIPath').returns(null);
 
       const stripeTerminal = new StripeTerminal(stripeClientStub);
