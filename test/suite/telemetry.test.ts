@@ -9,33 +9,39 @@ const https = require('https');
 
 suite('GATelemetry', function () {
   this.timeout(20000);
-  const telemetry = GATelemetry.getInstance();
+
+  let sandbox: sinon.SinonSandbox;
+  setup(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  teardown(() => {
+    sandbox.restore();
+  });
 
   suite('Telemetry configs', () => {
-    test('Respects overall and Stripe-specific telemetry configs', async () => {
-      const workspaceFolder =
-        vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
-      const telemetryConfig = vscode.workspace.getConfiguration('telemetry', workspaceFolder);
-      const stripeTelemetryConfig = vscode.workspace.getConfiguration(
-        'stripe.telemetry',
-        workspaceFolder,
-      );
+    test('Respects overall and Stripe-specific telemetry configs', () => {
+      const getConfigurationStub = sandbox.stub(vscode.workspace, 'getConfiguration');
 
-      await telemetryConfig.update('enableTelemetry', false);
-      await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
+      [
+        [false, false, false],
+        [false, true, false],
+        [true, false, false],
+        [true, true, true],
+      ].forEach(async ([telemetryEnabled, stripeTelemetryEnabled, expected]) => {
+        getConfigurationStub.withArgs('telemetry').returns(<any>{
+          get: sandbox.stub().withArgs('telemetryEnabled').returns(telemetryEnabled),
+        });
+        getConfigurationStub
+          .withArgs('stripe.telemetry')
+          .returns(<any>{get: sandbox.stub().withArgs('enabled').returns(stripeTelemetryEnabled)});
 
-      await telemetryConfig.update('enableTelemetry', false);
-      await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
+        // Simulate a config change
+        await vscode.workspace.getConfiguration('telemetry').update('stripe', undefined);
+        const telemetry = GATelemetry.getInstance();
 
-      await telemetryConfig.update('enableTelemetry', true);
-      await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
-
-      await telemetryConfig.update('enableTelemetry', true);
-      await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), true);
+        assert.strictEqual(telemetry.isTelemetryEnabled(), expected);
+      });
     });
   });
 });
@@ -54,36 +60,39 @@ suite('Telemetry', function () {
 
   suite('StripeAnalyticsServiceTelemetry', () => {
     const extensionContext = {...mocks.extensionContextMock};
-    const workspaceFolder =
-      vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
-    const telemetryConfig = vscode.workspace.getConfiguration('telemetry', workspaceFolder);
-    const stripeTelemetryConfig = vscode.workspace.getConfiguration(
-      'stripe.telemetry',
-      workspaceFolder,
-    );
 
-    test('Respects overall and Stripe-specific telemetry configs', async () => {
-      const telemetry = new StripeAnalyticsServiceTelemetry(extensionContext);
+    test('Respects overall and Stripe-specific telemetry configs', () => {
+      const getConfigurationStub = sandbox.stub(vscode.workspace, 'getConfiguration');
 
-      await telemetryConfig.update('enableTelemetry', false);
-      await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
+      [
+        [false, false, false],
+        [false, true, false],
+        [true, false, false],
+        [true, true, true],
+      ].forEach(async ([telemetryEnabled, stripeTelemetryEnabled, expected]) => {
+        getConfigurationStub.withArgs('telemetry').returns(<any>{
+          get: sandbox.stub().withArgs('telemetryEnabled').returns(telemetryEnabled),
+        });
+        getConfigurationStub
+          .withArgs('stripe.telemetry')
+          .returns(<any>{get: sandbox.stub().withArgs('enabled').returns(stripeTelemetryEnabled)});
 
-      await telemetryConfig.update('enableTelemetry', false);
-      await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
+        // Simulate a config change
+        await vscode.workspace.getConfiguration('telemetry').update('stripe', undefined);
+        const telemetry = new StripeAnalyticsServiceTelemetry(extensionContext);
 
-      await telemetryConfig.update('enableTelemetry', true);
-      await stripeTelemetryConfig.update('enabled', false);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), false);
-
-      await telemetryConfig.update('enableTelemetry', true);
-      await stripeTelemetryConfig.update('enabled', true);
-      assert.strictEqual(telemetry.isTelemetryEnabled(), true);
+        assert.strictEqual(telemetry.isTelemetryEnabled(), expected);
+      });
     });
 
-    test('sendEvent respects user telemetry settings', async () => {
-      await stripeTelemetryConfig.update('enabled', false);
+    test('sendEvent respects user telemetry settings', () => {
+      const getConfigurationStub = sandbox.stub(vscode.workspace, 'getConfiguration');
+      getConfigurationStub.withArgs('stripe.telemetry').returns(<any>{
+        get: sandbox.stub().withArgs('enabled').returns(false),
+      });
+      getConfigurationStub.withArgs('telemetry').returns(<any>{
+        get: sandbox.stub().withArgs('enableTelemetry').returns(true),
+      });
 
       const httpStub = sandbox.spy(https, 'request');
 
