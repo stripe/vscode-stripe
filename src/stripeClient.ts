@@ -102,7 +102,7 @@ export class StripeClient {
     }
   }
 
-  private async promptLogin() {
+  async promptLogin() {
     const actionText = 'Run `stripe login` in the terminal to login';
     const returnValue = await vscode.window.showErrorMessage(
       'You need to login with the Stripe CLI for this project before you can continue',
@@ -125,12 +125,6 @@ export class StripeClient {
     const cliPath = await this.cliPath;
     if (cliPath) {
       this.checkCLIVersion();
-
-      // isAuthenticated
-      const isAuthenticated = await this.isAuthenticated();
-      if (!isAuthenticated) {
-        await this.promptLogin();
-      }
     } else {
       const config = vscode.workspace.getConfiguration('stripe');
       const customInstallPath = config.get('cliInstallPath', null);
@@ -182,6 +176,11 @@ export class StripeClient {
     const cliPath = await this.getCLIPath();
     if (!cliPath) {
       return null;
+    }
+
+    const isAuthenticated = await this.isAuthenticated();
+    if (!isAuthenticated) {
+      await this.promptLogin();
     }
 
     const commandArgs = cliCommandToArgsMap.get(cliCommand);
@@ -244,6 +243,10 @@ export class StripeClient {
     if (shouldHandleConfigurationChange) {
       // kick off cliPath check
       await this.getCLIPath();
+      const isAuthenticated = await this.isAuthenticated();
+      if (!isAuthenticated) {
+        await this.promptLogin();
+      }
     }
   }
 }

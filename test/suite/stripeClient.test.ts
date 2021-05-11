@@ -107,7 +107,6 @@ suite('stripeClient', () => {
         assert.strictEqual(cliPath, null);
         assert.deepStrictEqual(showErrorMessageSpy.args[0], [
           'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-          {modal: true},
           'Read instructions on how to install Stripe CLI',
         ]);
       });
