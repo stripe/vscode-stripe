@@ -41,15 +41,8 @@ export class StripeClient {
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
 
-  static async promptInstall() {
-    const openDocsOption = 'Read instructions on how to install Stripe CLI';
-    const selectedOption = await vscode.window.showErrorMessage(
-      'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-      ...[openDocsOption],
-    );
-    if (selectedOption === openDocsOption) {
-      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
-    }
+  static promptInstall() {
+    vscode.commands.executeCommand('stripeInstallCLIView.focus');
   }
 
   static async detectInstallation(telemetry: Telemetry) {
@@ -80,12 +73,14 @@ export class StripeClient {
     const installPath = customInstallPath || defaultInstallPath;
 
     if (installPath && (await isFile(installPath))) {
-      // This context tells TreeViews if they should be rendered
-      vscode.commands.executeCommand('setContext', 'stripe.isCLIInstalled', true);
+      // This context tells TreeViews if they should be rendered. It is negative ("is not ...")
+      // because we want to assume the CLI is installed on startup (when undefined, it implies CLI
+      // is installed).
+      vscode.commands.executeCommand('setContext', 'stripe.isNotCLIInstalled', false);
       return Promise.resolve(installPath);
     }
 
-    vscode.commands.executeCommand('setContext', 'stripe.isCLIInstalled', false);
+    vscode.commands.executeCommand('setContext', 'stripe.isNotCLIInstalled', true);
     telemetry.sendEvent('cli.notInstalled');
     return Promise.resolve(null);
   }
@@ -181,6 +176,7 @@ export class StripeClient {
     const isAuthenticated = await this.isAuthenticated();
     if (!isAuthenticated) {
       await this.promptLogin();
+      return null;
     }
 
     const commandArgs = cliCommandToArgsMap.get(cliCommand);

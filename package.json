@@ -213,17 +213,17 @@
         {
           "id": "stripeInstallCLIView",
           "name": "Install Stripe CLI",
-          "when": "stripe.isCLIInstalled == false"
+          "when": "stripe.isNotCLIInstalled == true"
         },
         {
           "id": "stripeEventsView",
           "name": "Events",
-          "when": "stripe.isCLIInstalled == true"
+          "when": "stripe.isNotCLIInstalled == false"
         },
         {
           "id": "stripeLogsView",
           "name": "Logs",
-          "when": "stripe.isCLIInstalled == true"
+          "when": "stripe.isNotCLIInstalled == false"
         },
         {
           "id": "stripeDashboardView",
