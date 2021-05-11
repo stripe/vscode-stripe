@@ -21,9 +21,8 @@ suite('StripeLinter', () => {
   suite('lookForHardCodedAPIKeys', () => {
     test('Editor content is not searched when file is git-ignored', async () => {
       const options = {content: 'I have content with critical data : sk_live_1234'};
-      await vscode.workspace
-        .openTextDocument(options)
-        .then((doc) => vscode.window.showTextDocument(doc, {preview: false}));
+      const doc = await vscode.workspace.openTextDocument(options);
+      await vscode.window.showTextDocument(doc, {preview: false});
 
       const isIgnoredStub = sandbox.stub(git, 'isIgnored').resolves(true);
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
@@ -31,7 +30,7 @@ suite('StripeLinter', () => {
       const linter = new StripeLinter(telemetry, git);
       await linter.activate();
 
-      const diagnostics = vscode.languages.getDiagnostics();
+      const diagnostics = vscode.languages.getDiagnostics(doc.uri);
       assert.strictEqual(isIgnoredStub.calledOnce, true);
       assert.strictEqual(telemetrySpy.callCount, 0);
       assert.strictEqual(diagnostics.length, 0);
