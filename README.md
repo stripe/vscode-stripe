@@ -50,21 +50,22 @@ The Stripe VS Code Extension collects basic telemetry in order to improve this e
 
 ## Third-Party Notices
 
-| Name                               | Description                                                                      | Version |    Size | License |
-| :--------------------------------- | :------------------------------------------------------------------------------- | :------ | ------: | :-----: |
-| @types/universal-analytics         | TypeScript definitions for universal-analytics                                   | 0.4.4   | unknown |   MIT   |
-| byline                             | simple line-by-line stream reader                                                | 5.0.0   |    1.8k |   MIT   |
-| compare-versions                   | Compare semver version strings to find greater, equal or lesser.                 | 3.6.0   |    1.7k |   MIT   |
-| execa                              | Process execution for humans                                                     | 4.0.0   | unknown |   MIT   |
-| moment                             | Parse, validate, manipulate, and display dates                                   | 2.24.0  |  288.4k |   MIT   |
-| os-name                            | Get the name of the current operating system. Example: macOS Sierra              | 3.1.0   | unknown |   MIT   |
-| proxyquire                         | Proxies nodejs require in order to allow overriding dependencies during testing. | 2.1.3   |     16k |   MIT   |
-| toml                               | TOML parser for Node.js (parses TOML spec v0.4.0)                                | 3.0.0   | unknown |   MIT   |
-| universal-analytics                | A node module for Google's Universal Analytics tracking                          | 0.4.20  |  703.7k |   MIT   |
-| uuid                               | RFC4122 (v1, v4, and v5) UUIDs                                                   | 3.4.0   |    8.1k |   MIT   |
-| vscode-languageclient              | VSCode Language client implementation                                            | 6.1.3   | unknown |   MIT   |
-| vscode-languageserver              | Language server implementation for node                                          | 6.1.1   | unknown |   MIT   |
-| vscode-languageserver-textdocument | A simple text document implementation for Node LSP servers                       | 1.0.1   | unknown |   MIT   |
+| Name                               | Description                                                                        | Version |    Size | License |
+| :--------------------------------- | :--------------------------------------------------------------------------------- | :------ | ------: | :-----: |
+| @types/universal-analytics         | TypeScript definitions for universal-analytics                                     | 0.4.4   | unknown |   MIT   |
+| byline                             | simple line-by-line stream reader                                                  | 5.0.0   |    1.8k |   MIT   |
+| compare-versions                   | Compare semver version strings to find greater, equal or lesser.                   | 3.6.0   |    1.7k |   MIT   |
+| execa                              | Process execution for humans                                                       | 4.0.0   |   24.9k |   MIT   |
+| moment                             | Parse, validate, manipulate, and display dates                                     | 2.24.0  |  288.4k |   MIT   |
+| os-name                            | Get the name of the current operating system. Example: macOS Sierra                | 3.1.0   |   29.9k |   MIT   |
+| proxyquire                         | Proxies nodejs require in order to allow overriding dependencies during testing.   | 2.1.3   |     16k |   MIT   |
+| remark-gfm                         | remark plugin to support GFM (autolink literals, strikethrough, tables, tasklists) | 1.0.0   |   22.2k |   MIT   |
+| toml                               | TOML parser for Node.js (parses TOML spec v0.4.0)                                  | 3.0.0   |   27.5k |   MIT   |
+| universal-analytics                | A node module for Google's Universal Analytics tracking                            | 0.4.20  |  703.7k |   MIT   |
+| uuid                               | RFC4122 (v1, v4, and v5) UUIDs                                                     | 3.4.0   |    8.1k |   MIT   |
+| vscode-languageclient              | VSCode Language client implementation                                              | 6.1.3   |  215.3k |   MIT   |
+| vscode-languageserver              | Language server implementation for node                                            | 6.1.1   |  121.9k |   MIT   |
+| vscode-languageserver-textdocument | A simple text document implementation for Node LSP servers                         | 1.0.1   |    3.8k |   MIT   |
 
 ## Code of Conduct
 
