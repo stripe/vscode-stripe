@@ -11,7 +11,9 @@ import {SurveyPrompt} from '../../src/surveyPrompt';
 import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
 
-suite('commands', () => {
+suite('commands', function () {
+  this.timeout(20000);
+
   let sandbox: sinon.SinonSandbox;
   let extensionContext: vscode.ExtensionContext;
 
