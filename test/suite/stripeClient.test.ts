@@ -99,16 +99,13 @@ suite('stripeClient', () => {
 
       test('prompts install when CLI is not installed', async () => {
         sandbox.stub(fs.promises, 'stat').returns(Promise.resolve({isFile: () => false}));
-        const showErrorMessageSpy = sandbox.stub(vscode.window, 'showErrorMessage');
+        const executeCommandSpy = sandbox.stub(vscode.commands, 'executeCommand');
         const stripeClient = getStripeClient();
         sandbox.stub(stripeClient, 'checkCLIVersion');
         sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
         const cliPath = await stripeClient.getCLIPath();
         assert.strictEqual(cliPath, null);
-        assert.deepStrictEqual(showErrorMessageSpy.args[0], [
-          'Welcome! Stripe is using the Stripe CLI behind the scenes, and requires it to be installed on your machine',
-          'Read instructions on how to install Stripe CLI',
-        ]);
+        assert.deepStrictEqual(executeCommandSpy.calledWith('stripeInstallCLIView.focus'), true);
       });
     });
 
