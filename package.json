@@ -412,7 +412,7 @@
     "glob": "^7.1.6",
     "mocha": "^8.2.1",
     "remark": "^13.0.0",
-    "remark-package-dependencies": "^1.1.0",
+    "remark-package-dependencies": "^2.0.1",
     "sinon": "^9.2.1",
     "ts-loader": "^8.0.18",
     "ts-sinon": "^2.0.1",
