@@ -9,7 +9,7 @@ import {
   setConnectWebhookEndpoint,
   setWebhookEndpoint,
 } from './stripeWorkspaceState';
-import {getExtensionInfo, showQuickPickWithItems, showQuickPickWithValues} from './utils';
+import {getExtensionInfo, showQuickPickWithItems} from './utils';
 import osName = require('os-name');
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
@@ -89,13 +89,7 @@ export class Commands {
   openWebhooksListen = async (options: any) => {
     this.telemetry.sendEvent('openWebhooksListen');
 
-    const shouldPromptForURL =
-      !options?.forwardTo &&
-      !options?.forwardConnectTo &&
-      (await showQuickPickWithValues(
-        'Do you want to forward webhook events to your local server?',
-        ['Yes', 'No'],
-      )) === 'Yes';
+    const shouldPromptForURL = !options?.forwardTo && !options?.forwardConnectTo;
 
     const [forwardTo, forwardConnectTo] = await (async () => {
       if (!shouldPromptForURL) {
