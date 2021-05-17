@@ -10,6 +10,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      # Windows throws false positives with linting because of CRLF
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - uses: actions/checkout@v2
 
       - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -19,6 +25,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Lint
+        run: npm run lint
 
       - name: Run tests (ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
