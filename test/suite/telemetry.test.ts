@@ -7,19 +7,6 @@ import sinon from 'ts-sinon';
 
 const https = require('https');
 
-suite('GATelemetry', function () {
-  this.timeout(20000);
-
-  let sandbox: sinon.SinonSandbox;
-  setup(() => {
-    sandbox = sinon.createSandbox();
-  });
-
-  teardown(() => {
-    sandbox.restore();
-  });
-});
-
 suite('Telemetry', function () {
   this.timeout(20000);
 
