@@ -17,4 +17,3 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           strategy: package
           tag_prefix: 'v'
-          commit_message_template: '- {{message}}'
