@@ -63,8 +63,7 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
     const webhooksListenItem = new StripeTreeItem('Forward events to your local machine', {
       commandString: 'openWebhooksListen',
       iconPath: new vscode.ThemeIcon('terminal'),
-      tooltip:
-        "Forward webhook events from Stripe to your local machine by connecting directly to Stripe's API.",
+      tooltip: "Forward webhook events from Stripe's API to your local machine.",
     });
 
     const items = [triggerEventItem, webhooksListenItem, ...eventsItem];
