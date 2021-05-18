@@ -1,10 +1,5 @@
 import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
-import {
-  GATelemetry,
-  NoOpTelemetry,
-  StripeAnalyticsServiceTelemetry,
-  TelemetryMigration,
-} from './telemetry';
+import {NoOpTelemetry, StripeAnalyticsServiceTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
@@ -152,9 +147,6 @@ function getTelemetry(extensionContext: ExtensionContext) {
     console.log('Extension is running in development mode. Not emitting Telemetry');
     return new NoOpTelemetry();
   } else {
-    return new TelemetryMigration(
-      GATelemetry.getInstance(),
-      new StripeAnalyticsServiceTelemetry(extensionContext),
-    );
+    return new StripeAnalyticsServiceTelemetry(extensionContext);
   }
 }
