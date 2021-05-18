@@ -40,7 +40,7 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
 
   buildEventsTree(): StripeTreeItem[] {
     const treeItems = [
-      this.getStreamingControlItem('Events', 'startEventsStreaming', 'stopEventsStreaming'),
+      this.getStreamingControlItem('events', 'startEventsStreaming', 'stopEventsStreaming'),
     ];
 
     if (this.streamingTreeItems.length > 0) {
@@ -60,9 +60,10 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
       iconPath: new vscode.ThemeIcon('add'),
     });
 
-    const webhooksListenItem = new StripeTreeItem('Start webhooks listening', {
+    const webhooksListenItem = new StripeTreeItem('Forward events to your local machine', {
       commandString: 'openWebhooksListen',
       iconPath: new vscode.ThemeIcon('terminal'),
+      tooltip: "Forward webhook events from Stripe's API to your local machine.",
     });
 
     const items = [triggerEventItem, webhooksListenItem, ...eventsItem];
