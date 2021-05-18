@@ -1,1342 +1,1437 @@
 {
-  "List Customer": {
-    "prefix": "StripeCustomerList",
-    "body": "stripe.Customer.list(limit=${1:3})",
-    "description": "List Customer"
-  },
-  "Retrieve Balance Transaction": {
-    "prefix": "StripeBalanceTransactionRetrieve",
-    "body": "stripe.BalanceTransaction.retrieve(\n  \"${1:txn_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Balance Transaction"
-  },
-  "List Balance Transaction": {
-    "prefix": "StripeBalanceTransactionList",
-    "body": "stripe.BalanceTransaction.list(limit=${1:3})",
-    "description": "List Balance Transaction"
-  },
-  "Create Charge": {
-    "prefix": "StripeChargeCreate",
-    "body": "# `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nstripe.Charge.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  source=\"${3:tok_xxxx}\",\n  description=\"${4:My First Test Charge (created for API docs)}\",\n)",
-    "description": "Create Charge"
-  },
-  "Retrieve Charge": {
-    "prefix": "StripeChargeRetrieve",
-    "body": "stripe.Charge.retrieve(\"${1:ch_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Charge"
-  },
-  "Update Charge": {
-    "prefix": "StripeChargeUpdate",
-    "body": "stripe.Charge.modify(\n  \"${1:ch_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Charge"
-  },
-  "Capture Charge": {
-    "prefix": "StripeChargeCapture",
-    "body": "stripe.Charge.capture(\"${1:ch_xxxxxxxxxxxxx}\")",
-    "description": "Capture Charge"
-  },
-  "List Charge": {
-    "prefix": "StripeChargeList",
-    "body": "stripe.Charge.list(limit=${1:3})",
-    "description": "List Charge"
-  },
-  "Create Customer": {
-    "prefix": "StripeCustomerCreate",
-    "body": "stripe.Customer.create(\n  description=\"${1:My First Test Customer (created for API docs)}\",\n)",
-    "description": "Create Customer"
-  },
-  "Retrieve Customer": {
-    "prefix": "StripeCustomerRetrieve",
-    "body": "stripe.Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Customer"
-  },
-  "Update Customer": {
-    "prefix": "StripeCustomerUpdate",
-    "body": "stripe.Customer.modify(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Customer"
-  },
-  "Delete Customer": {
-    "prefix": "StripeCustomerDelete",
-    "body": "stripe.Customer.delete(\"${1:cus_xxxxxxxxxxxxx}\")",
-    "description": "Delete Customer"
-  },
-  "Retrieve Dispute": {
-    "prefix": "StripeDisputeRetrieve",
-    "body": "stripe.Dispute.retrieve(\"${1:dp_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Dispute"
-  },
-  "Update Dispute": {
-    "prefix": "StripeDisputeUpdate",
-    "body": "stripe.Dispute.modify(\n  \"${1:dp_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Dispute"
-  },
-  "Close Dispute": {
-    "prefix": "StripeDisputeClose",
-    "body": "stripe.Dispute.close(\"${1:dp_xxxxxxxxxxxxx}\")",
-    "description": "Close Dispute"
-  },
-  "List Dispute": {
-    "prefix": "StripeDisputeList",
-    "body": "stripe.Dispute.list(limit=${1:3})",
-    "description": "List Dispute"
-  },
-  "Retrieve Event": {
-    "prefix": "StripeEventRetrieve",
-    "body": "stripe.Event.retrieve(\"${1:evt_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Event"
-  },
-  "List Event": {
-    "prefix": "StripeEventList",
-    "body": "stripe.Event.list(limit=${1:3})",
-    "description": "List Event"
-  },
-  "Create File": {
-    "prefix": "StripeFileCreate",
-    "body": "stripe.File.create(\n  purpose=\"${1:dispute_xxxxxxxxxxxxx}\",\n  file=\"${2:{a file descriptor}}\",\n)",
-    "description": "Create File"
-  },
-  "Retrieve File": {
-    "prefix": "StripeFileRetrieve",
-    "body": "stripe.File.retrieve(\"${1:file_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve File"
-  },
-  "List File": {
-    "prefix": "StripeFileList",
-    "body": "stripe.File.list(limit=${1:3})",
-    "description": "List File"
-  },
-  "Create File Link": {
-    "prefix": "StripeFileLinkCreate",
-    "body": "stripe.FileLink.create(file=\"${1:file_xxxxxxxxxxxxx}\")",
-    "description": "Create File Link"
-  },
-  "Retrieve File Link": {
-    "prefix": "StripeFileLinkRetrieve",
-    "body": "stripe.FileLink.retrieve(\"${1:link_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve File Link"
-  },
-  "Update File Link": {
-    "prefix": "StripeFileLinkUpdate",
-    "body": "stripe.FileLink.modify(\n  \"${1:link_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update File Link"
-  },
-  "List File Link": {
-    "prefix": "StripeFileLinkList",
-    "body": "stripe.FileLink.list(limit=${1:3})",
-    "description": "List File Link"
-  },
-  "Retrieve Mandate": {
-    "prefix": "StripeMandateRetrieve",
-    "body": "stripe.Mandate.retrieve(\"${1:mandate_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Mandate"
-  },
-  "Create Payment Intent": {
-    "prefix": "StripePaymentIntentCreate",
-    "body": "stripe.PaymentIntent.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  payment_method_types=[\"${3:card}\"],\n)",
-    "description": "Create Payment Intent"
-  },
-  "Retrieve Payment Intent": {
-    "prefix": "StripePaymentIntentRetrieve",
-    "body": "stripe.PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Payment Intent"
-  },
-  "Update Payment Intent": {
-    "prefix": "StripePaymentIntentUpdate",
-    "body": "stripe.PaymentIntent.modify(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Payment Intent"
-  },
-  "Confirm Payment Intent": {
-    "prefix": "StripePaymentIntentConfirm",
-    "body": "# To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nstripe.PaymentIntent.confirm(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  payment_method=\"${2:pm_card_visa}\",\n)",
-    "description": "Confirm Payment Intent"
-  },
-  "Capture Payment Intent": {
-    "prefix": "StripePaymentIntentCapture",
-    "body": "# To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nstripe.PaymentIntent.capture(\"${1:pi_xxxxxxxxxxxxx}\")",
-    "description": "Capture Payment Intent"
-  },
-  "Cancel Payment Intent": {
-    "prefix": "StripePaymentIntentCancel",
-    "body": "# To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nstripe.PaymentIntent.cancel(\"${1:pi_xxxxxxxxxxxxx}\")",
-    "description": "Cancel Payment Intent"
-  },
-  "List Payment Intent": {
-    "prefix": "StripePaymentIntentList",
-    "body": "stripe.PaymentIntent.list(limit=${1:3})",
-    "description": "List Payment Intent"
-  },
-  "Create Setup Intent": {
-    "prefix": "StripeSetupIntentCreate",
-    "body": "stripe.SetupIntent.create(\n  payment_method_types=[\"${1:card}\"],\n)",
-    "description": "Create Setup Intent"
-  },
-  "Retrieve Setup Intent": {
-    "prefix": "StripeSetupIntentRetrieve",
-    "body": "stripe.SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Setup Intent"
-  },
-  "Update Setup Intent": {
-    "prefix": "StripeSetupIntentUpdate",
-    "body": "stripe.SetupIntent.modify(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  metadata={\"user_id\": \"${2:3435453}\"},\n)",
-    "description": "Update Setup Intent"
-  },
-  "Confirm Setup Intent": {
-    "prefix": "StripeSetupIntentConfirm",
-    "body": "stripe.SetupIntent.confirm(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  payment_method=\"${2:pm_card_visa}\",\n)",
-    "description": "Confirm Setup Intent"
-  },
-  "Cancel Setup Intent": {
-    "prefix": "StripeSetupIntentCancel",
-    "body": "stripe.SetupIntent.cancel(\"${1:seti_xxxxxxxxxxxxx}\")",
-    "description": "Cancel Setup Intent"
-  },
-  "List Setup Intent": {
-    "prefix": "StripeSetupIntentList",
-    "body": "stripe.SetupIntent.list(limit=${1:3})",
-    "description": "List Setup Intent"
-  },
-  "List Setup Attempt": {
-    "prefix": "StripeSetupAttemptList",
-    "body": "stripe.SetupAttempt.list(limit=${1:3})",
-    "description": "List Setup Attempt"
-  },
-  "Create Payout": {
-    "prefix": "StripePayoutCreate",
-    "body": "stripe.Payout.create(amount=${1:1100}, currency=\"${2:usd}\")",
-    "description": "Create Payout"
-  },
-  "Retrieve Payout": {
-    "prefix": "StripePayoutRetrieve",
-    "body": "stripe.Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Payout"
-  },
-  "Update Payout": {
-    "prefix": "StripePayoutUpdate",
-    "body": "stripe.Payout.modify(\n  \"${1:po_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Payout"
-  },
-  "List Payout": {
-    "prefix": "StripePayoutList",
-    "body": "stripe.Payout.list(limit=${1:3})",
-    "description": "List Payout"
-  },
-  "Cancel Payout": {
-    "prefix": "StripePayoutCancel",
-    "body": "stripe.Payout.cancel(\"${1:po_xxxxxxxxxxxxx}\")",
-    "description": "Cancel Payout"
-  },
-  "Reverse Payout": {
-    "prefix": "StripePayoutReverse",
-    "body": "stripe.Payout.reverse(\"${1:po_xxxxxxxxxxxxx}\")",
-    "description": "Reverse Payout"
-  },
-  "Create Product": {
-    "prefix": "StripeProductCreate",
-    "body": "stripe.Product.create(name=\"${1:Gold Special}\")",
-    "description": "Create Product"
-  },
-  "Retrieve Product": {
-    "prefix": "StripeProductRetrieve",
-    "body": "stripe.Product.retrieve(\"${1:prod_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Product"
-  },
-  "Update Product": {
-    "prefix": "StripeProductUpdate",
-    "body": "stripe.Product.modify(\n  \"${1:prod_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Product"
-  },
-  "List Product": {
-    "prefix": "StripeProductList",
-    "body": "stripe.Product.list(limit=${1:3})",
-    "description": "List Product"
-  },
-  "Delete Product": {
-    "prefix": "StripeProductDelete",
-    "body": "stripe.Product.delete(\"${1:prod_xxxxxxxxxxxxx}\")",
-    "description": "Delete Product"
-  },
-  "Create Price": {
-    "prefix": "StripePriceCreate",
-    "body": "stripe.Price.create(\n  unit_amount=${1:2000},\n  currency=\"${2:usd}\",\n  recurring={\"interval\": \"${3:month}\"},\n  product=\"${4:prod_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Price"
-  },
-  "Retrieve Price": {
-    "prefix": "StripePriceRetrieve",
-    "body": "stripe.Price.retrieve(\"${1:price_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Price"
-  },
-  "Update Price": {
-    "prefix": "StripePriceUpdate",
-    "body": "stripe.Price.modify(\n  \"${1:price_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Price"
-  },
-  "List Price": {
-    "prefix": "StripePriceList",
-    "body": "stripe.Price.list(limit=${1:3})",
-    "description": "List Price"
-  },
-  "Create Refund": {
-    "prefix": "StripeRefundCreate",
-    "body": "stripe.Refund.create(charge=\"${1:ch_xxxxxxxxxxxxx}\")",
-    "description": "Create Refund"
-  },
-  "Retrieve Refund": {
-    "prefix": "StripeRefundRetrieve",
-    "body": "stripe.Refund.retrieve(\"${1:re_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Refund"
-  },
-  "Update Refund": {
-    "prefix": "StripeRefundUpdate",
-    "body": "stripe.Refund.modify(\n  \"${1:re_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Refund"
-  },
-  "List Refund": {
-    "prefix": "StripeRefundList",
-    "body": "stripe.Refund.list(limit=${1:3})",
-    "description": "List Refund"
-  },
-  "Create Token": {
-    "prefix": "StripeTokenCreate",
-    "body": "stripe.Token.create(cvc_update={\"cvc\": \"${1:123}\"})",
-    "description": "Create Token"
-  },
-  "Retrieve Token": {
-    "prefix": "StripeTokenRetrieve",
-    "body": "stripe.Token.retrieve(\"${1:tok_xxxx}\")",
-    "description": "Retrieve Token"
-  },
-  "Create Payment Method": {
-    "prefix": "StripePaymentMethodCreate",
-    "body": "stripe.PaymentMethod.create(\n  type=\"${1:card}\",\n  card={\n    \"number\": \"${2:4242424242424242}\",\n    \"exp_month\": ${3:11},\n    \"exp_year\": ${4:2021},\n    \"cvc\": \"${5:314}\",\n  },\n)",
-    "description": "Create Payment Method"
-  },
-  "Retrieve Payment Method": {
-    "prefix": "StripePaymentMethodRetrieve",
-    "body": "stripe.PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Payment Method"
-  },
-  "Update Payment Method": {
-    "prefix": "StripePaymentMethodUpdate",
-    "body": "stripe.PaymentMethod.modify(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Payment Method"
-  },
-  "List Payment Method": {
-    "prefix": "StripePaymentMethodList",
-    "body": "stripe.PaymentMethod.list(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  type=\"${2:card}\",\n)",
-    "description": "List Payment Method"
-  },
-  "Attach Payment Method": {
-    "prefix": "StripePaymentMethodAttach",
-    "body": "stripe.PaymentMethod.attach(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  customer=\"${2:cus_xxxxxxxxxxxxx}\",\n)",
-    "description": "Attach Payment Method"
-  },
-  "Detach Payment Method": {
-    "prefix": "StripePaymentMethodDetach",
-    "body": "stripe.PaymentMethod.detach(\"${1:pm_xxxxxxxxxxxxx}\")",
-    "description": "Detach Payment Method"
-  },
-  "Create Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountCreate",
-    "body": "stripe.Customer.create_source(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  source=\"${2:btok_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Customer Bank Account"
-  },
-  "Retrieve Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountRetrieve",
-    "body": "stripe.Customer.retrieve_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Customer Bank Account"
-  },
-  "Update Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountUpdate",
-    "body": "stripe.Customer.modify_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Customer Bank Account"
-  },
-  "Verify Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountVerify",
-    "body": "stripe.Customer.verify_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  amounts=[${3:32}, ${4:45}],\n)",
-    "description": "Verify Customer Bank Account"
-  },
-  "Delete Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountDelete",
-    "body": "stripe.Customer.delete_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Customer Bank Account"
-  },
-  "List Customer Bank Account": {
-    "prefix": "StripeCustomerBankAccountList",
-    "body": "stripe.Customer.list_sources(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  object=\"${2:bank_account}\",\n  limit=${3:3},\n)",
-    "description": "List Customer Bank Account"
-  },
-  "Create Customer Card": {
-    "prefix": "StripeCustomerCardCreate",
-    "body": "stripe.Customer.create_source(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  source=\"${2:tok_xxxx}\",\n)",
-    "description": "Create Customer Card"
-  },
-  "Retrieve Customer Card": {
-    "prefix": "StripeCustomerCardRetrieve",
-    "body": "stripe.Customer.retrieve_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Customer Card"
-  },
-  "Update Customer Card": {
-    "prefix": "StripeCustomerCardUpdate",
-    "body": "stripe.Customer.modify_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  name=\"${3:Jenny Rosen}\",\n)",
-    "description": "Update Customer Card"
-  },
-  "Delete Customer Card": {
-    "prefix": "StripeCustomerCardDelete",
-    "body": "stripe.Customer.delete_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Customer Card"
-  },
-  "List Customer Card": {
-    "prefix": "StripeCustomerCardList",
-    "body": "stripe.Customer.list_sources(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  object=\"${2:card}\",\n  limit=${3:3},\n)",
-    "description": "List Customer Card"
-  },
-  "Retrieve Source": {
-    "prefix": "StripeSourceRetrieve",
-    "body": "stripe.Source.retrieve(\"${1:src_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Source"
-  },
-  "Update Source": {
-    "prefix": "StripeSourceUpdate",
-    "body": "stripe.Source.modify(\n  \"${1:src_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Source"
-  },
-  "Create Checkout Session": {
-    "prefix": "StripeCheckoutSessionCreate",
-    "body": "stripe.checkout.Session.create(\n  success_url=\"${1:https://example.com/success}\",\n  cancel_url=\"${2:https://example.com/cancel}\",\n  payment_method_types=[\"${3:card}\"],\n  line_items=[\n    {\n      \"price\": \"${4:price_xxxxxxxxxxxxx}\",\n      \"quantity\": ${5:2},\n    },\n  ],\n  mode=\"${6:payment}\",\n)",
-    "description": "Create Checkout Session"
-  },
-  "Retrieve Checkout Session": {
-    "prefix": "StripeCheckoutSessionRetrieve",
-    "body": "stripe.checkout.Session.retrieve(\n  \"${1:cs_test_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Checkout Session"
-  },
-  "List Checkout Session": {
-    "prefix": "StripeCheckoutSessionList",
-    "body": "stripe.checkout.Session.list(limit=${1:3})",
-    "description": "List Checkout Session"
-  },
-  "Create Coupon": {
-    "prefix": "StripeCouponCreate",
-    "body": "stripe.Coupon.create(\n  percent_off=${1:25},\n  duration=\"${2:repeating}\",\n  duration_in_months=${3:3},\n)",
-    "description": "Create Coupon"
-  },
-  "Retrieve Coupon": {
-    "prefix": "StripeCouponRetrieve",
-    "body": "stripe.Coupon.retrieve(\"${1:25_5OFF}\")",
-    "description": "Retrieve Coupon"
-  },
-  "Update Coupon": {
-    "prefix": "StripeCouponUpdate",
-    "body": "stripe.Coupon.modify(\n  \"${1:co_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Coupon"
-  },
-  "Delete Coupon": {
-    "prefix": "StripeCouponDelete",
-    "body": "stripe.Coupon.delete(\"${1:co_xxxxxxxxxxxxx}\")",
-    "description": "Delete Coupon"
-  },
-  "List Coupon": {
-    "prefix": "StripeCouponList",
-    "body": "stripe.Coupon.list(limit=${1:3})",
-    "description": "List Coupon"
-  },
-  "Preview Credit Note": {
-    "prefix": "StripeCreditNotePreview",
-    "body": "stripe.CreditNote.preview(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"${2:invoice_line_item}\",\n      \"invoice_line_item\": \"${3:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${4:1},\n    },\n  ],\n)",
-    "description": "Preview Credit Note"
-  },
-  "Create Credit Note": {
-    "prefix": "StripeCreditNoteCreate",
-    "body": "stripe.CreditNote.create(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"${2:invoice_line_item}\",\n      \"invoice_line_item\": \"${3:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${4:1},\n    },\n  ],\n)",
-    "description": "Create Credit Note"
-  },
-  "Retrieve Credit Note": {
-    "prefix": "StripeCreditNoteRetrieve",
-    "body": "stripe.CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Credit Note"
-  },
-  "Update Credit Note": {
-    "prefix": "StripeCreditNoteUpdate",
-    "body": "stripe.CreditNote.modify(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Credit Note"
-  },
-  "List Credit Note Line Item": {
-    "prefix": "StripeCreditNoteLineItemList",
-    "body": "stripe.CreditNote.list_line_items(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Credit Note Line Item"
-  },
-  "List Credit Note Credit Note Line Item": {
-    "prefix": "StripeCreditNoteCreditNoteLineItemList",
-    "body": "stripe.CreditNote.list_credit_note_line_items(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"${2:invoice_line_item}\",\n      \"invoice_line_item\": \"${3:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${4:1},\n    },\n  ],\n)",
-    "description": "List Credit Note Credit Note Line Item"
-  },
-  "Void Credit Note Credit Note": {
-    "prefix": "StripeCreditNoteVoidCreditNote",
-    "body": "stripe.CreditNote.void_credit_note(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n)",
-    "description": "Void Credit Note Credit Note"
-  },
-  "List Credit Note": {
-    "prefix": "StripeCreditNoteList",
-    "body": "stripe.CreditNote.list(limit=${1:3})",
-    "description": "List Credit Note"
-  },
-  "Create Customer Balance Transaction": {
-    "prefix": "StripeCustomerBalanceTransactionCreate",
-    "body": "stripe.Customer.create_balance_transaction(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  amount=${2:-500},\n  currency=\"${3:usd}\",\n)",
-    "description": "Create Customer Balance Transaction"
-  },
-  "Retrieve Customer Balance Transaction": {
-    "prefix": "StripeCustomerBalanceTransactionRetrieve",
-    "body": "stripe.Customer.retrieve_balance_transaction(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Customer Balance Transaction"
-  },
-  "Update Customer Balance Transaction": {
-    "prefix": "StripeCustomerBalanceTransactionUpdate",
-    "body": "stripe.Customer.modify_balance_transaction(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Customer Balance Transaction"
-  },
-  "List Customer Balance Transaction": {
-    "prefix": "StripeCustomerBalanceTransactionList",
-    "body": "stripe.Customer.list_balance_transactions(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Customer Balance Transaction"
-  },
-  "Create Billing Portal Session": {
-    "prefix": "StripeBillingPortalSessionCreate",
-    "body": "stripe.billing_portal.Session.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  return_url=\"${2:https://example.com/account}\",\n)",
-    "description": "Create Billing Portal Session"
-  },
-  "Create Customer Tax Id": {
-    "prefix": "StripeCustomerTaxIdCreate",
-    "body": "stripe.Customer.create_tax_id(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  type=\"${2:eu_vat}\",\n  value=\"${3:DE123456789}\",\n)",
-    "description": "Create Customer Tax Id"
-  },
-  "Retrieve Customer Tax Id": {
-    "prefix": "StripeCustomerTaxIdRetrieve",
-    "body": "stripe.Customer.retrieve_tax_id(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Customer Tax Id"
-  },
-  "Delete Customer Tax Id": {
-    "prefix": "StripeCustomerTaxIdDelete",
-    "body": "stripe.Customer.delete_tax_id(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Customer Tax Id"
-  },
-  "List Customer Tax Id": {
-    "prefix": "StripeCustomerTaxIdList",
-    "body": "stripe.Customer.list_tax_ids(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Customer Tax Id"
-  },
-  "Create Invoice": {
-    "prefix": "StripeInvoiceCreate",
-    "body": "stripe.Invoice.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Invoice"
-  },
-  "Retrieve Invoice": {
-    "prefix": "StripeInvoiceRetrieve",
-    "body": "stripe.Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Invoice"
-  },
-  "Update Invoice": {
-    "prefix": "StripeInvoiceUpdate",
-    "body": "stripe.Invoice.modify(\n  \"${1:in_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Invoice"
-  },
-  "Delete Invoice": {
-    "prefix": "StripeInvoiceDelete",
-    "body": "stripe.Invoice.delete(\"${1:in_xxxxxxxxxxxxx}\")",
-    "description": "Delete Invoice"
-  },
-  "Finalize Invoice Invoice": {
-    "prefix": "StripeInvoiceFinalizeInvoice",
-    "body": "stripe.Invoice.finalize_invoice(\n  \"${1:in_xxxxxxxxxxxxx}\",\n)",
-    "description": "Finalize Invoice Invoice"
-  },
-  "Pay Invoice": {
-    "prefix": "StripeInvoicePay",
-    "body": "stripe.Invoice.pay(\"${1:in_xxxxxxxxxxxxx}\")",
-    "description": "Pay Invoice"
-  },
-  "Send Invoice Invoice": {
-    "prefix": "StripeInvoiceSendInvoice",
-    "body": "stripe.Invoice.send_invoice(\"${1:in_xxxxxxxxxxxxx}\")",
-    "description": "Send Invoice Invoice"
-  },
-  "Void Invoice Invoice": {
-    "prefix": "StripeInvoiceVoidInvoice",
-    "body": "stripe.Invoice.void_invoice(\"${1:in_xxxxxxxxxxxxx}\")",
-    "description": "Void Invoice Invoice"
-  },
-  "Mark Uncollectible Invoice": {
-    "prefix": "StripeInvoiceMarkUncollectible",
-    "body": "stripe.Invoice.mark_uncollectible(\n  \"${1:in_xxxxxxxxxxxxx}\",\n)",
-    "description": "Mark Uncollectible Invoice"
-  },
-  "List Invoice": {
-    "prefix": "StripeInvoiceList",
-    "body": "stripe.Invoice.list(limit=${1:3})",
-    "description": "List Invoice"
-  },
-  "Create Invoice Item": {
-    "prefix": "StripeInvoiceItemCreate",
-    "body": "stripe.InvoiceItem.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  price=\"${2:price_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Invoice Item"
-  },
-  "Retrieve Invoice Item": {
-    "prefix": "StripeInvoiceItemRetrieve",
-    "body": "stripe.InvoiceItem.retrieve(\"${1:ii_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Invoice Item"
-  },
-  "Update Invoice Item": {
-    "prefix": "StripeInvoiceItemUpdate",
-    "body": "stripe.InvoiceItem.modify(\n  \"${1:ii_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Invoice Item"
-  },
-  "Delete Invoice Item": {
-    "prefix": "StripeInvoiceItemDelete",
-    "body": "stripe.InvoiceItem.delete(\"${1:ii_xxxxxxxxxxxxx}\")",
-    "description": "Delete Invoice Item"
-  },
-  "List Invoice Item": {
-    "prefix": "StripeInvoiceItemList",
-    "body": "stripe.InvoiceItem.list(limit=${1:3})",
-    "description": "List Invoice Item"
-  },
-  "Create Plan": {
-    "prefix": "StripePlanCreate",
-    "body": "stripe.Plan.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  interval=\"${3:month}\",\n  product=\"${4:prod_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Plan"
-  },
-  "Retrieve Plan": {
-    "prefix": "StripePlanRetrieve",
-    "body": "stripe.Plan.retrieve(\"${1:price_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Plan"
-  },
-  "Update Plan": {
-    "prefix": "StripePlanUpdate",
-    "body": "stripe.Plan.modify(\n  \"${1:price_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Plan"
-  },
-  "Delete Plan": {
-    "prefix": "StripePlanDelete",
-    "body": "stripe.Plan.delete(\"${1:price_xxxxxxxxxxxxx}\")",
-    "description": "Delete Plan"
-  },
-  "List Plan": {
-    "prefix": "StripePlanList",
-    "body": "stripe.Plan.list(limit=${1:3})",
-    "description": "List Plan"
-  },
-  "Create Promotion Code": {
-    "prefix": "StripePromotionCodeCreate",
-    "body": "stripe.PromotionCode.create(coupon=\"${1:25_5OFF}\")",
-    "description": "Create Promotion Code"
-  },
-  "Update Promotion Code": {
-    "prefix": "StripePromotionCodeUpdate",
-    "body": "stripe.PromotionCode.modify(\n  \"${1:promo_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Promotion Code"
-  },
-  "Retrieve Promotion Code": {
-    "prefix": "StripePromotionCodeRetrieve",
-    "body": "stripe.PromotionCode.retrieve(\n  \"${1:promo_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Promotion Code"
-  },
-  "List Promotion Code": {
-    "prefix": "StripePromotionCodeList",
-    "body": "stripe.PromotionCode.list(limit=${1:3})",
-    "description": "List Promotion Code"
-  },
-  "Create Subscription": {
-    "prefix": "StripeSubscriptionCreate",
-    "body": "stripe.Subscription.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  items=[{\"price\": \"${2:price_xxxxxxxxxxxxx}\"}],\n)",
-    "description": "Create Subscription"
-  },
-  "Retrieve Subscription": {
-    "prefix": "StripeSubscriptionRetrieve",
-    "body": "stripe.Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Subscription"
-  },
-  "Update Subscription": {
-    "prefix": "StripeSubscriptionUpdate",
-    "body": "stripe.Subscription.modify(\n  \"${1:sub_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Subscription"
-  },
-  "Delete Subscription": {
-    "prefix": "StripeSubscriptionDelete",
-    "body": "stripe.Subscription.delete(\"${1:sub_xxxxxxxxxxxxx}\")",
-    "description": "Delete Subscription"
-  },
-  "List Subscription": {
-    "prefix": "StripeSubscriptionList",
-    "body": "stripe.Subscription.list(limit=${1:3})",
-    "description": "List Subscription"
-  },
-  "Create Subscription Item": {
-    "prefix": "StripeSubscriptionItemCreate",
-    "body": "stripe.SubscriptionItem.create(\n  subscription=\"${1:sub_xxxxxxxxxxxxx}\",\n  price=\"${2:price_xxxxxxxxxxxxx}\",\n  quantity=${3:2},\n)",
-    "description": "Create Subscription Item"
-  },
-  "Retrieve Subscription Item": {
-    "prefix": "StripeSubscriptionItemRetrieve",
-    "body": "stripe.SubscriptionItem.retrieve(\n  \"${1:si_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Subscription Item"
-  },
-  "Update Subscription Item": {
-    "prefix": "StripeSubscriptionItemUpdate",
-    "body": "stripe.SubscriptionItem.modify(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Subscription Item"
-  },
-  "Delete Subscription Item": {
-    "prefix": "StripeSubscriptionItemDelete",
-    "body": "stripe.SubscriptionItem.delete(\"${1:si_xxxxxxxxxxxxx}\")",
-    "description": "Delete Subscription Item"
-  },
-  "List Subscription Item": {
-    "prefix": "StripeSubscriptionItemList",
-    "body": "stripe.SubscriptionItem.list(\n  subscription=\"${1:sub_xxxxxxxxxxxxx}\",\n)",
-    "description": "List Subscription Item"
-  },
-  "Create Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleCreate",
-    "body": "stripe.SubscriptionSchedule.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  start_date=${2:1605558431},\n  end_behavior=\"${3:release}\",\n  phases=[\n    {\n      \"items\": [\n        {\n          \"price\": \"${4:price_xxxxxxxxxxxxx}\",\n          \"quantity\": ${5:1},\n        },\n      ],\n      \"iterations\": ${6:12},\n    },\n  ],\n)",
-    "description": "Create Subscription Schedule"
-  },
-  "Retrieve Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleRetrieve",
-    "body": "stripe.SubscriptionSchedule.retrieve(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Subscription Schedule"
-  },
-  "Update Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleUpdate",
-    "body": "stripe.SubscriptionSchedule.modify(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  end_behavior=\"${2:release}\",\n)",
-    "description": "Update Subscription Schedule"
-  },
-  "Cancel Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleCancel",
-    "body": "stripe.SubscriptionSchedule.cancel(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)",
-    "description": "Cancel Subscription Schedule"
-  },
-  "Release Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleRelease",
-    "body": "stripe.SubscriptionSchedule.release(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)",
-    "description": "Release Subscription Schedule"
-  },
-  "List Subscription Schedule": {
-    "prefix": "StripeSubscriptionScheduleList",
-    "body": "stripe.SubscriptionSchedule.list(limit=${1:3})",
-    "description": "List Subscription Schedule"
-  },
-  "Create Tax Rate": {
-    "prefix": "StripeTaxRateCreate",
-    "body": "stripe.TaxRate.create(\n  display_name=\"${1:VAT}\",\n  description=\"${2:VAT Germany}\",\n  jurisdiction=\"${3:DE}\",\n  percentage=${4:16},\n  inclusive=False,\n)",
-    "description": "Create Tax Rate"
-  },
-  "Retrieve Tax Rate": {
-    "prefix": "StripeTaxRateRetrieve",
-    "body": "stripe.TaxRate.retrieve(\"${1:txr_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Tax Rate"
-  },
-  "Update Tax Rate": {
-    "prefix": "StripeTaxRateUpdate",
-    "body": "stripe.TaxRate.modify(\n  \"${1:txr_xxxxxxxxxxxxx}\",\n  active=False,\n)",
-    "description": "Update Tax Rate"
-  },
-  "List Tax Rate": {
-    "prefix": "StripeTaxRateList",
-    "body": "stripe.TaxRate.list(limit=${1:3})",
-    "description": "List Tax Rate"
-  },
-  "Create Subscription Item Usage Record": {
-    "prefix": "StripeSubscriptionItemUsageRecordCreate",
-    "body": "stripe.SubscriptionItem.create_usage_record(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  quantity=${2:100},\n  timestamp=${3:1571252444},\n)",
-    "description": "Create Subscription Item Usage Record"
-  },
-  "List Subscription Item Usage Record Summary": {
-    "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
-    "body": "stripe.SubscriptionItem.list_usage_record_summaries(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Subscription Item Usage Record Summary"
-  },
-  "Create Account": {
-    "prefix": "StripeAccountCreate",
-    "body": "stripe.Account.create(\n  type=\"${1:custom}\",\n  country=\"${2:US}\",\n  email=\"${3:jenny.rosen@example.com}\",\n  capabilities={\n    \"card_payments\": {\"requested\": True},\n    \"transfers\": {\"requested\": True},\n  },\n)",
-    "description": "Create Account"
-  },
-  "Retrieve Account": {
-    "prefix": "StripeAccountRetrieve",
-    "body": "stripe.Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Account"
-  },
-  "Update Account": {
-    "prefix": "StripeAccountUpdate",
-    "body": "stripe.Account.modify(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Account"
-  },
-  "Delete Account": {
-    "prefix": "StripeAccountDelete",
-    "body": "stripe.Account.delete(\"${1:acct_xxxxxxxxxxxxx}\")",
-    "description": "Delete Account"
-  },
-  "Reject Account": {
-    "prefix": "StripeAccountReject",
-    "body": "stripe.Account.reject(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  reason=\"${2:fraud}\",\n)",
-    "description": "Reject Account"
-  },
-  "List Account": {
-    "prefix": "StripeAccountList",
-    "body": "stripe.Account.list(limit=${1:3})",
-    "description": "List Account"
-  },
-  "Create Account Login Link": {
-    "prefix": "StripeAccountLoginLinkCreate",
-    "body": "stripe.Account.create_login_link(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Account Login Link"
-  },
-  "Create Account Link": {
-    "prefix": "StripeAccountLinkCreate",
-    "body": "stripe.AccountLink.create(\n  account=\"${1:acct_xxxxxxxxxxxxx}\",\n  refresh_url=\"${2:https://example.com/reauth}\",\n  return_url=\"${3:https://example.com/return}\",\n  type=\"${4:account_onboarding}\",\n)",
-    "description": "Create Account Link"
-  },
-  "Retrieve Application Fee": {
-    "prefix": "StripeApplicationFeeRetrieve",
-    "body": "stripe.ApplicationFee.retrieve(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Application Fee"
-  },
-  "List Application Fee": {
-    "prefix": "StripeApplicationFeeList",
-    "body": "stripe.ApplicationFee.list(limit=${1:3})",
-    "description": "List Application Fee"
-  },
-  "Create Application Fee Fee Refund": {
-    "prefix": "StripeApplicationFeeFeeRefundCreate",
-    "body": "stripe.ApplicationFee.create_refund(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Application Fee Fee Refund"
-  },
-  "Retrieve Application Fee Fee Refund": {
-    "prefix": "StripeApplicationFeeFeeRefundRetrieve",
-    "body": "stripe.ApplicationFee.retrieve_refund(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Application Fee Fee Refund"
-  },
-  "Update Application Fee Fee Refund": {
-    "prefix": "StripeApplicationFeeFeeRefundUpdate",
-    "body": "stripe.ApplicationFee.modify_refund(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Application Fee Fee Refund"
-  },
-  "List Application Fee Fee Refund": {
-    "prefix": "StripeApplicationFeeFeeRefundList",
-    "body": "stripe.ApplicationFee.list_refunds(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Application Fee Fee Refund"
-  },
-  "Retrieve Account Capability": {
-    "prefix": "StripeAccountCapabilityRetrieve",
-    "body": "stripe.Account.retrieve_capability(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n)",
-    "description": "Retrieve Account Capability"
-  },
-  "Update Account Capability": {
-    "prefix": "StripeAccountCapabilityUpdate",
-    "body": "stripe.Account.modify_capability(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n  requested=True,\n)",
-    "description": "Update Account Capability"
-  },
-  "List Account Capability": {
-    "prefix": "StripeAccountCapabilityList",
-    "body": "stripe.Account.list_capabilities(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n)",
-    "description": "List Account Capability"
-  },
-  "List Country Spec": {
-    "prefix": "StripeCountrySpecList",
-    "body": "stripe.CountrySpec.list(limit=${1:3})",
-    "description": "List Country Spec"
-  },
-  "Retrieve Country Spec": {
-    "prefix": "StripeCountrySpecRetrieve",
-    "body": "stripe.CountrySpec.retrieve(\"${1:US}\")",
-    "description": "Retrieve Country Spec"
-  },
-  "Create Account Account Bank Account": {
-    "prefix": "StripeAccountAccountBankAccountCreate",
-    "body": "stripe.Account.create_external_account(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  external_account=\"${2:btok_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Account Account Bank Account"
-  },
-  "Retrieve Account Account Bank Account": {
-    "prefix": "StripeAccountAccountBankAccountRetrieve",
-    "body": "stripe.Account.retrieve_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Account Account Bank Account"
-  },
-  "Update Account Account Bank Account": {
-    "prefix": "StripeAccountAccountBankAccountUpdate",
-    "body": "stripe.Account.modify_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Account Account Bank Account"
-  },
-  "Delete Account Account Bank Account": {
-    "prefix": "StripeAccountAccountBankAccountDelete",
-    "body": "stripe.Account.delete_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Account Account Bank Account"
-  },
-  "List Account Account Bank Account": {
-    "prefix": "StripeAccountAccountBankAccountList",
-    "body": "stripe.Account.list_external_accounts(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  object=\"${2:bank_account}\",\n  limit=${3:3},\n)",
-    "description": "List Account Account Bank Account"
+  "Create Bank Account": {
+    "prefix": "StripeBankAccountCreate",
+    "description": "Create Bank Account",
+    "body": "stripe.Account.create_external_account(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  external_account=\"${2:btok_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Bank Account": {
+    "prefix": "StripeBankAccountDelete",
+    "description": "Delete Bank Account",
+    "body": "stripe.Account.delete_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Bank Account": {
+    "prefix": "StripeBankAccountList",
+    "description": "List Bank Account",
+    "body": "stripe.Account.list_external_accounts(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  object=\"${2:bank_account}\",\n  limit=${3:3},\n)"
+  },
+  "Retrieve Bank Account": {
+    "prefix": "StripeBankAccountRetrieve",
+    "description": "Retrieve Bank Account",
+    "body": "stripe.Account.retrieve_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Bank Account": {
+    "prefix": "StripeBankAccountUpdate",
+    "description": "Update Bank Account",
+    "body": "stripe.Account.modify_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
   },
   "Create Account Account Card": {
     "prefix": "StripeAccountAccountCardCreate",
-    "body": "stripe.Account.create_external_account(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  external_account=\"${2:tok_xxxx_debit}\",\n)",
-    "description": "Create Account Account Card"
-  },
-  "Retrieve Account Account Card": {
-    "prefix": "StripeAccountAccountCardRetrieve",
-    "body": "stripe.Account.retrieve_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Account Account Card"
-  },
-  "Update Account Account Card": {
-    "prefix": "StripeAccountAccountCardUpdate",
-    "body": "stripe.Account.modify_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Account Account Card"
+    "description": "Create Account Account Card",
+    "body": "stripe.Account.create_external_account(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  external_account=\"${2:tok_xxxx_debit}\",\n)"
   },
   "Delete Account Account Card": {
     "prefix": "StripeAccountAccountCardDelete",
-    "body": "stripe.Account.delete_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Account Account Card"
+    "description": "Delete Account Account Card",
+    "body": "stripe.Account.delete_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)"
   },
   "List Account Account Card": {
     "prefix": "StripeAccountAccountCardList",
-    "body": "stripe.Account.list_external_accounts(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  object=\"${2:card}\",\n  limit=${3:3},\n)",
-    "description": "List Account Account Card"
+    "description": "List Account Account Card",
+    "body": "stripe.Account.list_external_accounts(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  object=\"${2:card}\",\n  limit=${3:3},\n)"
+  },
+  "Retrieve Account Account Card": {
+    "prefix": "StripeAccountAccountCardRetrieve",
+    "description": "Retrieve Account Account Card",
+    "body": "stripe.Account.retrieve_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Account Account Card": {
+    "prefix": "StripeAccountAccountCardUpdate",
+    "description": "Update Account Account Card",
+    "body": "stripe.Account.modify_external_account(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
+  },
+  "List Account Capability": {
+    "prefix": "StripeAccountCapabilityList",
+    "description": "List Account Capability",
+    "body": "stripe.Account.list_capabilities(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Retrieve Account Capability": {
+    "prefix": "StripeAccountCapabilityRetrieve",
+    "description": "Retrieve Account Capability",
+    "body": "stripe.Account.retrieve_capability(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n)"
+  },
+  "Update Account Capability": {
+    "prefix": "StripeAccountCapabilityUpdate",
+    "description": "Update Account Capability",
+    "body": "stripe.Account.modify_capability(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n  requested=True,\n)"
+  },
+  "Create Account": {
+    "prefix": "StripeAccountCreate",
+    "description": "Create Account",
+    "body": "stripe.Account.create(\n  type=\"${1:custom}\",\n  country=\"${2:US}\",\n  email=\"${3:jenny.rosen@example.com}\",\n  capabilities={\n    \"card_payments\": {\"requested\": True},\n    \"transfers\": {\"requested\": True},\n  },\n)"
+  },
+  "Delete Account": {
+    "prefix": "StripeAccountDelete",
+    "description": "Delete Account",
+    "body": "stripe.Account.delete(\"${1:acct_xxxxxxxxxxxxx}\")"
+  },
+  "Create Account Link": {
+    "prefix": "StripeAccountLinkCreate",
+    "description": "Create Account Link",
+    "body": "stripe.AccountLink.create(\n  account=\"${1:acct_xxxxxxxxxxxxx}\",\n  refresh_url=\"${2:https://example.com/reauth}\",\n  return_url=\"${3:https://example.com/return}\",\n  type=\"${4:account_onboarding}\",\n)"
+  },
+  "List Account": {
+    "prefix": "StripeAccountList",
+    "description": "List Account",
+    "body": "stripe.Account.list(limit=${1:3})"
+  },
+  "Create Account Login Link": {
+    "prefix": "StripeAccountLoginLinkCreate",
+    "description": "Create Account Login Link",
+    "body": "stripe.Account.create_login_link(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n)"
   },
   "Create Account Person": {
     "prefix": "StripeAccountPersonCreate",
-    "body": "stripe.Account.create_person(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  first_name=\"${2:Jane}\",\n  last_name=\"${3:Diaz}\",\n)",
-    "description": "Create Account Person"
-  },
-  "Retrieve Account Person": {
-    "prefix": "StripeAccountPersonRetrieve",
-    "body": "stripe.Account.retrieve_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Account Person"
-  },
-  "Update Account Person": {
-    "prefix": "StripeAccountPersonUpdate",
-    "body": "stripe.Account.modify_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Account Person"
+    "description": "Create Account Person",
+    "body": "stripe.Account.create_person(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  first_name=\"${2:Jane}\",\n  last_name=\"${3:Diaz}\",\n)"
   },
   "Delete Account Person": {
     "prefix": "StripeAccountPersonDelete",
-    "body": "stripe.Account.delete_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Account Person"
+    "description": "Delete Account Person",
+    "body": "stripe.Account.delete_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n)"
   },
   "List Account Person": {
     "prefix": "StripeAccountPersonList",
-    "body": "stripe.Account.list_persons(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Account Person"
+    "description": "List Account Person",
+    "body": "stripe.Account.list_persons(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
   },
-  "Create Topup": {
-    "prefix": "StripeTopupCreate",
-    "body": "stripe.Topup.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  description=\"${3:Top-up for Jenny Rosen}\",\n  statement_descriptor=\"${4:Top-up}\",\n)",
-    "description": "Create Topup"
+  "Retrieve Account Person": {
+    "prefix": "StripeAccountPersonRetrieve",
+    "description": "Retrieve Account Person",
+    "body": "stripe.Account.retrieve_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n)"
   },
-  "Retrieve Topup": {
-    "prefix": "StripeTopupRetrieve",
-    "body": "stripe.Topup.retrieve(\"${1:tu_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Topup"
+  "Update Account Person": {
+    "prefix": "StripeAccountPersonUpdate",
+    "description": "Update Account Person",
+    "body": "stripe.Account.modify_person(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
   },
-  "Update Topup": {
-    "prefix": "StripeTopupUpdate",
-    "body": "stripe.Topup.modify(\n  \"${1:tu_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Topup"
+  "Reject Account": {
+    "prefix": "StripeAccountReject",
+    "description": "Reject Account",
+    "body": "stripe.Account.reject(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  reason=\"${2:fraud}\",\n)"
   },
-  "List Topup": {
-    "prefix": "StripeTopupList",
-    "body": "stripe.Topup.list(limit=${1:3})",
-    "description": "List Topup"
+  "Retrieve Account": {
+    "prefix": "StripeAccountRetrieve",
+    "description": "Retrieve Account",
+    "body": "stripe.Account.retrieve(\"${1:acct_xxxxxxxxxxxxx}\")"
   },
-  "Cancel Topup": {
-    "prefix": "StripeTopupCancel",
-    "body": "stripe.Topup.cancel(\"${1:tu_xxxxxxxxxxxxx}\")",
-    "description": "Cancel Topup"
+  "Update Account": {
+    "prefix": "StripeAccountUpdate",
+    "description": "Update Account",
+    "body": "stripe.Account.modify(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
-  "Create Transfer": {
-    "prefix": "StripeTransferCreate",
-    "body": "stripe.Transfer.create(\n  amount=${1:400},\n  currency=\"${2:usd}\",\n  destination=\"${3:acct_xxxxxxxxxxxxx}\",\n  transfer_group=\"${4:ORDER_95}\",\n)",
-    "description": "Create Transfer"
+  "Create Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundCreate",
+    "description": "Create Application Fee Fee Refund",
+    "body": "stripe.ApplicationFee.create_refund(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n)"
   },
-  "Retrieve Transfer": {
-    "prefix": "StripeTransferRetrieve",
-    "body": "stripe.Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Transfer"
+  "List Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundList",
+    "description": "List Application Fee Fee Refund",
+    "body": "stripe.ApplicationFee.list_refunds(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
   },
-  "Update Transfer": {
-    "prefix": "StripeTransferUpdate",
-    "body": "stripe.Transfer.modify(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Transfer"
+  "Retrieve Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundRetrieve",
+    "description": "Retrieve Application Fee Fee Refund",
+    "body": "stripe.ApplicationFee.retrieve_refund(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n)"
   },
-  "List Transfer": {
-    "prefix": "StripeTransferList",
-    "body": "stripe.Transfer.list(limit=${1:3})",
-    "description": "List Transfer"
+  "Update Application Fee Fee Refund": {
+    "prefix": "StripeApplicationFeeFeeRefundUpdate",
+    "description": "Update Application Fee Fee Refund",
+    "body": "stripe.ApplicationFee.modify_refund(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
   },
-  "Create Transfer Reversal": {
-    "prefix": "StripeTransferReversalCreate",
-    "body": "stripe.Transfer.create_reversal(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  amount=${2:100},\n)",
-    "description": "Create Transfer Reversal"
+  "List Application Fee": {
+    "prefix": "StripeApplicationFeeList",
+    "description": "List Application Fee",
+    "body": "stripe.ApplicationFee.list(limit=${1:3})"
   },
-  "Retrieve Transfer Reversal": {
-    "prefix": "StripeTransferReversalRetrieve",
-    "body": "stripe.Transfer.retrieve_reversal(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Transfer Reversal"
+  "Retrieve Application Fee": {
+    "prefix": "StripeApplicationFeeRetrieve",
+    "description": "Retrieve Application Fee",
+    "body": "stripe.ApplicationFee.retrieve(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n)"
   },
-  "Update Transfer Reversal": {
-    "prefix": "StripeTransferReversalUpdate",
-    "body": "stripe.Transfer.modify_reversal(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)",
-    "description": "Update Transfer Reversal"
+  "Retrieve Balance": {
+    "prefix": "StripeBalanceRetrieve",
+    "description": "Retrieve Balance",
+    "body": "stripe.Balance.retrieve()\n"
   },
-  "List Transfer Reversal": {
-    "prefix": "StripeTransferReversalList",
-    "body": "stripe.Transfer.list_reversals(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)",
-    "description": "List Transfer Reversal"
+  "List Balance Transaction": {
+    "prefix": "StripeBalanceTransactionList",
+    "description": "List Balance Transaction",
+    "body": "stripe.BalanceTransaction.list(limit=${1:3})"
   },
-  "Retrieve Radar Early Fraud Warning": {
-    "prefix": "StripeRadarEarlyFraudWarningRetrieve",
-    "body": "stripe.radar.EarlyFraudWarning.retrieve(\n  \"${1:issfr_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Radar Early Fraud Warning"
+  "Retrieve Balance Transaction": {
+    "prefix": "StripeBalanceTransactionRetrieve",
+    "description": "Retrieve Balance Transaction",
+    "body": "stripe.BalanceTransaction.retrieve(\n  \"${1:txn_xxxxxxxxxxxxx}\",\n)"
   },
-  "List Radar Early Fraud Warning": {
-    "prefix": "StripeRadarEarlyFraudWarningList",
-    "body": "stripe.radar.EarlyFraudWarning.list(limit=${1:3})",
-    "description": "List Radar Early Fraud Warning"
+  "Create Billing Portal Configuration": {
+    "prefix": "StripeBillingPortalConfigurationCreate",
+    "description": "Create Billing Portal Configuration",
+    "body": "stripe.billing_portal.Configuration.create(\n  features={\n    \"customer_update\": {\n      \"allowed_updates\": [\"${1:email}\", \"${2:tax_id}\"],\n      \"enabled\": True,\n    },\n    \"invoice_history\": {\"enabled\": True},\n  },\n  business_profile={\n    \"privacy_policy_url\":\n    \"https://example.com/privacy\",\n    \"terms_of_service_url\":\n    \"https://example.com/terms\",\n  },\n)"
   },
-  "Approve Review": {
-    "prefix": "StripeReviewApprove",
-    "body": "stripe.Review.approve(\"${1:prv_xxxxxxxxxxxxx}\")",
-    "description": "Approve Review"
+  "List Billing Portal Configuration": {
+    "prefix": "StripeBillingPortalConfigurationList",
+    "description": "List Billing Portal Configuration",
+    "body": "stripe.billing_portal.Configuration.list(limit=${1:3})"
   },
-  "Retrieve Review": {
-    "prefix": "StripeReviewRetrieve",
-    "body": "stripe.Review.retrieve(\"${1:prv_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Review"
+  "Retrieve Billing Portal Configuration": {
+    "prefix": "StripeBillingPortalConfigurationRetrieve",
+    "description": "Retrieve Billing Portal Configuration",
+    "body": "stripe.billing_portal.Configuration.retrieve(\n  \"${1:bpc_xxxxxxxxxxxxx}\",\n)"
   },
-  "List Review": {
-    "prefix": "StripeReviewList",
-    "body": "stripe.Review.list(limit=${1:3})",
-    "description": "List Review"
+  "Update Billing Portal Configuration": {
+    "prefix": "StripeBillingPortalConfigurationUpdate",
+    "description": "Update Billing Portal Configuration",
+    "body": "stripe.billing_portal.Configuration.modify(\n  \"${1:bpc_xxxxxxxxxxxxx}\",\n  business_profile={\n    \"privacy_policy_url\":\n    \"https://example.com/privacy\",\n    \"terms_of_service_url\":\n    \"https://example.com/terms\",\n  },\n)"
   },
-  "Create Radar Value List": {
-    "prefix": "StripeRadarValueListCreate",
-    "body": "stripe.radar.ValueList.create(\n  alias=\"${1:custom_ip_xxxxxxxxxxxxx}\",\n  name=\"${2:Custom IP Blocklist}\",\n  item_type=\"${3:ip_address}\",\n)",
-    "description": "Create Radar Value List"
+  "Create Billing Portal Session": {
+    "prefix": "StripeBillingPortalSessionCreate",
+    "description": "Create Billing Portal Session",
+    "body": "stripe.billing_portal.Session.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  return_url=\"${2:https://example.com/account}\",\n)"
   },
-  "Retrieve Radar Value List": {
-    "prefix": "StripeRadarValueListRetrieve",
-    "body": "stripe.radar.ValueList.retrieve(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Radar Value List"
+  "Capture Charge": {
+    "prefix": "StripeChargeCapture",
+    "description": "Capture Charge",
+    "body": "stripe.Charge.capture(\"${1:ch_xxxxxxxxxxxxx}\")"
   },
-  "Update Radar Value List": {
-    "prefix": "StripeRadarValueListUpdate",
-    "body": "stripe.radar.ValueList.modify(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n  name=\"${2:Updated IP Block List}\",\n)",
-    "description": "Update Radar Value List"
+  "Create Charge": {
+    "prefix": "StripeChargeCreate",
+    "description": "Create Charge",
+    "body": "# `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token\nstripe.Charge.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  source=\"${3:tok_xxxx}\",\n  description=\"${4:My First Test Charge (created for API docs)}\",\n)"
   },
-  "Delete Radar Value List": {
-    "prefix": "StripeRadarValueListDelete",
-    "body": "stripe.radar.ValueList.delete(\"${1:rsl_xxxxxxxxxxxxx}\")",
-    "description": "Delete Radar Value List"
+  "List Charge": {
+    "prefix": "StripeChargeList",
+    "description": "List Charge",
+    "body": "stripe.Charge.list(limit=${1:3})"
   },
-  "List Radar Value List": {
-    "prefix": "StripeRadarValueListList",
-    "body": "stripe.radar.ValueList.list(limit=${1:3})",
-    "description": "List Radar Value List"
+  "Retrieve Charge": {
+    "prefix": "StripeChargeRetrieve",
+    "description": "Retrieve Charge",
+    "body": "stripe.Charge.retrieve(\"${1:ch_xxxxxxxxxxxxx}\")"
   },
-  "Create Radar Value List Item": {
-    "prefix": "StripeRadarValueListItemCreate",
-    "body": "stripe.radar.ValueListItem.create(\n  value_list=\"${1:rsl_xxxxxxxxxxxxx}\",\n  value=\"${2:1.2.3.4}\",\n)",
-    "description": "Create Radar Value List Item"
+  "Update Charge": {
+    "prefix": "StripeChargeUpdate",
+    "description": "Update Charge",
+    "body": "stripe.Charge.modify(\n  \"${1:ch_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
-  "Retrieve Radar Value List Item": {
-    "prefix": "StripeRadarValueListItemRetrieve",
-    "body": "stripe.radar.ValueListItem.retrieve(\n  \"${1:rsli_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Radar Value List Item"
+  "Create Checkout Session": {
+    "prefix": "StripeCheckoutSessionCreate",
+    "description": "Create Checkout Session",
+    "body": "stripe.checkout.Session.create(\n  success_url=\"${1:https://example.com/success}\",\n  cancel_url=\"${2:https://example.com/cancel}\",\n  payment_method_types=[\"${3:card}\"],\n  line_items=[\n    {\n      \"price\": \"${4:price_xxxxxxxxxxxxx}\",\n      \"quantity\": ${5:2},\n    },\n  ],\n  mode=\"${6:payment}\",\n)"
   },
-  "Delete Radar Value List Item": {
-    "prefix": "StripeRadarValueListItemDelete",
-    "body": "stripe.radar.ValueListItem.delete(\n  \"${1:rsli_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Radar Value List Item"
+  "Retrieve Checkout Session Line Items": {
+    "prefix": "StripeCheckoutSessionLineItemsRetrieve",
+    "description": "Retrieve Checkout Session Line Items",
+    "body": "line_items = stripe.checkout.Session.list_line_items('${1:cs_test_xxxxxxxxxxxxx}', limit=${2:5})\n\n"
   },
-  "List Radar Value List Item": {
-    "prefix": "StripeRadarValueListItemList",
-    "body": "stripe.radar.ValueListItem.list(\n  limit=${1:3},\n  value_list=\"${2:rsl_xxxxxxxxxxxxx}\",\n)",
-    "description": "List Radar Value List Item"
+  "List Checkout Session": {
+    "prefix": "StripeCheckoutSessionList",
+    "description": "List Checkout Session",
+    "body": "stripe.checkout.Session.list(limit=${1:3})"
   },
-  "Retrieve Issuing Authorization": {
-    "prefix": "StripeIssuingAuthorizationRetrieve",
-    "body": "stripe.issuing.Authorization.retrieve(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Issuing Authorization"
+  "Retrieve Checkout Session": {
+    "prefix": "StripeCheckoutSessionRetrieve",
+    "description": "Retrieve Checkout Session",
+    "body": "stripe.checkout.Session.retrieve(\n  \"${1:cs_test_xxxxxxxxxxxxx}\",\n)"
   },
-  "Update Issuing Authorization": {
-    "prefix": "StripeIssuingAuthorizationUpdate",
-    "body": "stripe.issuing.Authorization.modify(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Issuing Authorization"
+  "List Country Spec": {
+    "prefix": "StripeCountrySpecList",
+    "description": "List Country Spec",
+    "body": "stripe.CountrySpec.list(limit=${1:3})"
+  },
+  "Retrieve Country Spec": {
+    "prefix": "StripeCountrySpecRetrieve",
+    "description": "Retrieve Country Spec",
+    "body": "stripe.CountrySpec.retrieve(\"${1:US}\")"
+  },
+  "Create Coupon": {
+    "prefix": "StripeCouponCreate",
+    "description": "Create Coupon",
+    "body": "stripe.Coupon.create(\n  percent_off=${1:25},\n  duration=\"${2:repeating}\",\n  duration_in_months=${3:3},\n)"
+  },
+  "Delete Coupon": {
+    "prefix": "StripeCouponDelete",
+    "description": "Delete Coupon",
+    "body": "stripe.Coupon.delete(\"${1:co_xxxxxxxxxxxxx}\")"
+  },
+  "List Coupon": {
+    "prefix": "StripeCouponList",
+    "description": "List Coupon",
+    "body": "stripe.Coupon.list(limit=${1:3})"
+  },
+  "Retrieve Coupon": {
+    "prefix": "StripeCouponRetrieve",
+    "description": "Retrieve Coupon",
+    "body": "stripe.Coupon.retrieve(\"${1:25_5OFF}\")"
+  },
+  "Update Coupon": {
+    "prefix": "StripeCouponUpdate",
+    "description": "Update Coupon",
+    "body": "stripe.Coupon.modify(\n  \"${1:co_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Credit Note": {
+    "prefix": "StripeCreditNoteCreate",
+    "description": "Create Credit Note",
+    "body": "stripe.CreditNote.create(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"${2:invoice_line_item}\",\n      \"invoice_line_item\": \"${3:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${4:1},\n    },\n  ],\n)"
+  },
+  "Credit Note Lines": {
+    "prefix": "StripeCreditNoteLines",
+    "description": "Credit Note Lines",
+    "body": "credit_note = stripe.CreditNote.retrieve('${1:cn_xxxxxxxxxxxxx}')\nlines = credit_note.lines.list(limit=${2:5})\n\n"
+  },
+  "Preview Credit Note Lines": {
+    "prefix": "StripeCreditNoteLinesPreview",
+    "description": "Preview Credit Note Lines",
+    "body": "stripe.CreditNote.preview(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"invoice_line_item\",\n      \"invoice_line_item\": \"${2:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${3:1},\n    },\n  ],\n)\ncredit_note = stripe.CreditNote.retrieve('${4:cn_xxxxxxxxxxxxx}')\nlines = credit_note.lines.list(limit=${5:5})\n\n"
+  },
+  "List Credit Note": {
+    "prefix": "StripeCreditNoteList",
+    "description": "List Credit Note",
+    "body": "stripe.CreditNote.list(limit=${1:3})"
+  },
+  "Preview Credit Note": {
+    "prefix": "StripeCreditNotePreview",
+    "description": "Preview Credit Note",
+    "body": "stripe.CreditNote.preview(\n  invoice=\"${1:in_xxxxxxxxxxxxx}\",\n  lines=[\n    {\n      \"type\": \"${2:invoice_line_item}\",\n      \"invoice_line_item\": \"${3:il_xxxxxxxxxxxxx}\",\n      \"quantity\": ${4:1},\n    },\n  ],\n)"
+  },
+  "Retrieve Credit Note": {
+    "prefix": "StripeCreditNoteRetrieve",
+    "description": "Retrieve Credit Note",
+    "body": "stripe.CreditNote.retrieve(\"${1:cn_xxxxxxxxxxxxx}\")"
+  },
+  "Update Credit Note": {
+    "prefix": "StripeCreditNoteUpdate",
+    "description": "Update Credit Note",
+    "body": "stripe.CreditNote.modify(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Void Credit Note Credit Note": {
+    "prefix": "StripeCreditNoteVoidCreditNote",
+    "description": "Void Credit Note Credit Note",
+    "body": "stripe.CreditNote.void_credit_note(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionCreate",
+    "description": "Create Customer Balance Transaction",
+    "body": "stripe.Customer.create_balance_transaction(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  amount=${2:-500},\n  currency=\"${3:usd}\",\n)"
+  },
+  "List Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionList",
+    "description": "List Customer Balance Transaction",
+    "body": "stripe.Customer.list_balance_transactions(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
+  },
+  "Retrieve Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionRetrieve",
+    "description": "Retrieve Customer Balance Transaction",
+    "body": "stripe.Customer.retrieve_balance_transaction(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Customer Balance Transaction": {
+    "prefix": "StripeCustomerBalanceTransactionUpdate",
+    "description": "Update Customer Balance Transaction",
+    "body": "stripe.Customer.modify_balance_transaction(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
+  },
+  "Create Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountCreate",
+    "description": "Create Customer Bank Account",
+    "body": "stripe.Customer.create_source(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  source=\"${2:btok_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountDelete",
+    "description": "Delete Customer Bank Account",
+    "body": "stripe.Customer.delete_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountList",
+    "description": "List Customer Bank Account",
+    "body": "stripe.Customer.list_sources(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  object=\"${2:bank_account}\",\n  limit=${3:3},\n)"
+  },
+  "Retrieve Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountRetrieve",
+    "description": "Retrieve Customer Bank Account",
+    "body": "stripe.Customer.retrieve_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Customer Bank Account": {
+    "prefix": "StripeCustomerBankAccountUpdate",
+    "description": "Update Customer Bank Account",
+    "body": "stripe.Customer.modify_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
+  },
+  "Verify Custome Bank Account": {
+    "prefix": "StripeCustomerBankAccountVerify",
+    "description": "Verify Customer Bank Account",
+    "body": "bank_account = stripe.Customer.retrieve_source(\n  '${1:cus_xxxxxxxxxxxxx}',\n  '${2:ba_xxxxxxxxxxxxx}'\n)\nbank_account.verify(amounts = [${3:32},${4:45}])\n\n"
+  },
+  "Create Customer Card": {
+    "prefix": "StripeCustomerCardCreate",
+    "description": "Create Customer Card",
+    "body": "stripe.Customer.create_source(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  source=\"${2:tok_xxxx}\",\n)"
+  },
+  "Delete Customer Card": {
+    "prefix": "StripeCustomerCardDelete",
+    "description": "Delete Customer Card",
+    "body": "stripe.Customer.delete_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Customer Card": {
+    "prefix": "StripeCustomerCardList",
+    "description": "List Customer Card",
+    "body": "stripe.Customer.list_sources(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  object=\"${2:card}\",\n  limit=${3:3},\n)"
+  },
+  "Retrieve Customer Card": {
+    "prefix": "StripeCustomerCardRetrieve",
+    "description": "Retrieve Customer Card",
+    "body": "stripe.Customer.retrieve_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Customer Card": {
+    "prefix": "StripeCustomerCardUpdate",
+    "description": "Update Customer Card",
+    "body": "stripe.Customer.modify_source(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  name=\"${3:Jenny Rosen}\",\n)"
+  },
+  "Create Customer": {
+    "prefix": "StripeCustomerCreate",
+    "description": "Create Customer",
+    "body": "stripe.Customer.create(\n  description=\"${1:My First Test Customer (created for API docs)}\",\n)"
+  },
+  "Delete Customer": {
+    "prefix": "StripeCustomerDelete",
+    "description": "Delete Customer",
+    "body": "stripe.Customer.delete(\"${1:cus_xxxxxxxxxxxxx}\")"
+  },
+  "List Customer": {
+    "prefix": "StripeCustomerList",
+    "description": "List Customer",
+    "body": "stripe.Customer.list(limit=${1:3})"
+  },
+  "Retrieve Customer": {
+    "prefix": "StripeCustomerRetrieve",
+    "description": "Retrieve Customer",
+    "body": "stripe.Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\")"
+  },
+  "Create Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdCreate",
+    "description": "Create Customer Tax Id",
+    "body": "stripe.Customer.create_tax_id(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  type=\"${2:eu_vat}\",\n  value=\"${3:DE123456789}\",\n)"
+  },
+  "Delete Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdDelete",
+    "description": "Delete Customer Tax Id",
+    "body": "stripe.Customer.delete_tax_id(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdList",
+    "description": "List Customer Tax Id",
+    "body": "stripe.Customer.list_tax_ids(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
+  },
+  "Retrieve Customer Tax Id": {
+    "prefix": "StripeCustomerTaxIdRetrieve",
+    "description": "Retrieve Customer Tax Id",
+    "body": "stripe.Customer.retrieve_tax_id(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Customer": {
+    "prefix": "StripeCustomerUpdate",
+    "description": "Update Customer",
+    "body": "stripe.Customer.modify(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Delete Discount": {
+    "prefix": "StripeDiscountDelete",
+    "description": "Delete Discount",
+    "body": "stripe.Customer.delete_discount('${1: cus_xxxxxxxxxxxxx}')\n\n"
+  },
+  "Close Dispute": {
+    "prefix": "StripeDisputeClose",
+    "description": "Close Dispute",
+    "body": "stripe.Dispute.close(\"${1:dp_xxxxxxxxxxxxx}\")"
+  },
+  "List Dispute": {
+    "prefix": "StripeDisputeList",
+    "description": "List Dispute",
+    "body": "stripe.Dispute.list(limit=${1:3})"
+  },
+  "Retrieve Dispute": {
+    "prefix": "StripeDisputeRetrieve",
+    "description": "Retrieve Dispute",
+    "body": "stripe.Dispute.retrieve(\"${1:dp_xxxxxxxxxxxxx}\")"
+  },
+  "Update Dispute": {
+    "prefix": "StripeDisputeUpdate",
+    "description": "Update Dispute",
+    "body": "stripe.Dispute.modify(\n  \"${1:dp_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "List Event": {
+    "prefix": "StripeEventList",
+    "description": "List Event",
+    "body": "stripe.Event.list(limit=${1:3})"
+  },
+  "Retrieve Event": {
+    "prefix": "StripeEventRetrieve",
+    "description": "Retrieve Event",
+    "body": "stripe.Event.retrieve(\"${1:evt_xxxxxxxxxxxxx}\")"
+  },
+  "Create File": {
+    "prefix": "StripeFileCreate",
+    "description": "Create File",
+    "body": "with open(\"${1:/path/to/a/file.jpg}\", \"rb\") as fp:\n  stripe.File.create(\n    purpose=\"dispute_evidence\",\n    file=fp\n  )\n\n"
+  },
+  "Create File Link": {
+    "prefix": "StripeFileLinkCreate",
+    "description": "Create File Link",
+    "body": "stripe.FileLink.create(file=\"${1:file_xxxxxxxxxxxxx}\")"
+  },
+  "List File Link": {
+    "prefix": "StripeFileLinkList",
+    "description": "List File Link",
+    "body": "stripe.FileLink.list(limit=${1:3})"
+  },
+  "Retrieve File Link": {
+    "prefix": "StripeFileLinkRetrieve",
+    "description": "Retrieve File Link",
+    "body": "stripe.FileLink.retrieve(\"${1:link_xxxxxxxxxxxxx}\")"
+  },
+  "Update File Link": {
+    "prefix": "StripeFileLinkUpdate",
+    "description": "Update File Link",
+    "body": "stripe.FileLink.modify(\n  \"${1:link_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "List File": {
+    "prefix": "StripeFileList",
+    "description": "List File",
+    "body": "stripe.File.list(limit=${1:3})"
+  },
+  "Retrieve File": {
+    "prefix": "StripeFileRetrieve",
+    "description": "Retrieve File",
+    "body": "stripe.File.retrieve(\"${1:file_xxxxxxxxxxxxx}\")"
+  },
+  "Create Funding Instruction": {
+    "prefix": "StripeFundingInstructionCreate",
+    "description": "Create Funding Instruction",
+    "body": "stripe.FundingInstruction.create(\n  funding_type=\"${1:bank_xxxxxxxxxxxxx}\",\n  currency=\"${2:eur}\",\n  destination_balance=\"${3:issuing}\",\n  bank_transfer={\"type\": \"${4:iban}\", \"country\": \"${5:DE}\"},\n)"
+  },
+  "List Funding Instruction": {
+    "prefix": "StripeFundingInstructionList",
+    "description": "List Funding Instruction",
+    "body": "stripe.FundingInstruction.list(limit=${1:3})"
+  },
+  "Retrieve Funding Instruction": {
+    "prefix": "StripeFundingInstructionRetrieve",
+    "description": "Retrieve Funding Instruction",
+    "body": "stripe.FundingInstruction.retrieve(\n  \"${1:fi_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Funding Instruction": {
+    "prefix": "StripeFundingInstructionUpdate",
+    "description": "Update Funding Instruction",
+    "body": "stripe.FundingInstruction.modify(\n  \"${1:fi_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Invoice": {
+    "prefix": "StripeInvoiceCreate",
+    "description": "Create Invoice",
+    "body": "stripe.Invoice.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Invoice": {
+    "prefix": "StripeInvoiceDelete",
+    "description": "Delete Invoice",
+    "body": "stripe.Invoice.delete(\"${1:in_xxxxxxxxxxxxx}\")"
+  },
+  "Finalize Invoice Invoice": {
+    "prefix": "StripeInvoiceFinalizeInvoice",
+    "description": "Finalize Invoice Invoice",
+    "body": "stripe.Invoice.finalize_invoice(\n  \"${1:in_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Invoice Item": {
+    "prefix": "StripeInvoiceItemCreate",
+    "description": "Create Invoice Item",
+    "body": "stripe.InvoiceItem.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  price=\"${2:price_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Invoice Item": {
+    "prefix": "StripeInvoiceItemDelete",
+    "description": "Delete Invoice Item",
+    "body": "stripe.InvoiceItem.delete(\"${1:ii_xxxxxxxxxxxxx}\")"
+  },
+  "List Invoice Item": {
+    "prefix": "StripeInvoiceItemList",
+    "description": "List Invoice Item",
+    "body": "stripe.InvoiceItem.list(limit=${1:3})"
+  },
+  "Retrieve Invoice Item": {
+    "prefix": "StripeInvoiceItemRetrieve",
+    "description": "Retrieve Invoice Item",
+    "body": "stripe.InvoiceItem.retrieve(\"${1:ii_xxxxxxxxxxxxx}\")"
+  },
+  "Update Invoice Item": {
+    "prefix": "StripeInvoiceItemUpdate",
+    "description": "Update Invoice Item",
+    "body": "stripe.InvoiceItem.modify(\n  \"${1:ii_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Invoice Lines": {
+    "prefix": "StripeInvoiceLines",
+    "description": "Invoice Lines",
+    "body": "invoice = stripe.Invoice.retrieve('${1:in_xxxxxxxxxxxxx}')\nlines = invoice.lines.list(limit=${2:5})\n\n"
+  },
+  "Upcoming Invoice Lines": {
+    "prefix": "StripeInvoiceLinesUpcoming",
+    "description": "Upcoming Invoice Lines",
+    "body": "invoice = stripe.Invoice.upcoming(\n  customer='${1 cus_xxxxxxxxxxxxx}',\n)\ninvoice.lines.list(limit=${2:5})\n\n"
+  },
+  "List Invoice": {
+    "prefix": "StripeInvoiceList",
+    "description": "List Invoice",
+    "body": "stripe.Invoice.list(limit=${1:3})"
+  },
+  "Mark Uncollectible Invoice": {
+    "prefix": "StripeInvoiceMarkUncollectible",
+    "description": "Mark Uncollectible Invoice",
+    "body": "stripe.Invoice.mark_uncollectible(\n  \"${1:in_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Pay Invoice": {
+    "prefix": "StripeInvoicePay",
+    "description": "Pay Invoice",
+    "body": "stripe.Invoice.pay(\"${1:in_xxxxxxxxxxxxx}\")"
+  },
+  "Retrieve Invoice": {
+    "prefix": "StripeInvoiceRetrieve",
+    "description": "Retrieve Invoice",
+    "body": "stripe.Invoice.retrieve(\"${1:in_xxxxxxxxxxxxx}\")"
+  },
+  "Send Invoice Invoice": {
+    "prefix": "StripeInvoiceSendInvoice",
+    "description": "Send Invoice Invoice",
+    "body": "stripe.Invoice.send_invoice(\"${1:in_xxxxxxxxxxxxx}\")"
+  },
+  "Upcoming Invoice": {
+    "prefix": "StripeInvoiceUpcoming",
+    "description": "Upcoming Invoice",
+    "body": "stripe.Invoice.upcoming(\n  customer='${1:cus_xxxxxxxxxxxxx}',\n)\n\n"
+  },
+  "Update Invoice": {
+    "prefix": "StripeInvoiceUpdate",
+    "description": "Update Invoice",
+    "body": "stripe.Invoice.modify(\n  \"${1:in_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Void Invoice Invoice": {
+    "prefix": "StripeInvoiceVoidInvoice",
+    "description": "Void Invoice Invoice",
+    "body": "stripe.Invoice.void_invoice(\"${1:in_xxxxxxxxxxxxx}\")"
   },
   "Approve Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationApprove",
-    "body": "stripe.issuing.Authorization.approve(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)",
-    "description": "Approve Issuing Authorization"
+    "description": "Approve Issuing Authorization",
+    "body": "stripe.issuing.Authorization.approve(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)"
   },
   "Decline Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationDecline",
-    "body": "stripe.issuing.Authorization.decline(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)",
-    "description": "Decline Issuing Authorization"
+    "description": "Decline Issuing Authorization",
+    "body": "stripe.issuing.Authorization.decline(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)"
   },
   "List Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationList",
-    "body": "stripe.issuing.Authorization.list(limit=${1:3})",
-    "description": "List Issuing Authorization"
+    "description": "List Issuing Authorization",
+    "body": "stripe.issuing.Authorization.list(limit=${1:3})"
   },
-  "Create Issuing Cardholder": {
-    "prefix": "StripeIssuingCardholderCreate",
-    "body": "stripe.issuing.Cardholder.create(\n  type=\"${1:individual}\",\n  name=\"${2:Jenny Rosen}\",\n  email=\"${3:jenny.rosen@example.com}\",\n  phone_number=\"${4:+18888675309}\",\n  billing={\n    \"address\": {\n      \"line1\": \"${5:1234 Main Street}\",\n      \"city\": \"${6:San Francisco}\",\n      \"state\": \"${7:CA}\",\n      \"country\": \"${8:US}\",\n      \"postal_code\": \"${9:94111}\",\n    },\n  },\n)",
-    "description": "Create Issuing Cardholder"
+  "Retrieve Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationRetrieve",
+    "description": "Retrieve Issuing Authorization",
+    "body": "stripe.issuing.Authorization.retrieve(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n)"
   },
-  "Retrieve Issuing Cardholder": {
-    "prefix": "StripeIssuingCardholderRetrieve",
-    "body": "stripe.issuing.Cardholder.retrieve(\n  \"${1:ich_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Issuing Cardholder"
-  },
-  "Update Issuing Cardholder": {
-    "prefix": "StripeIssuingCardholderUpdate",
-    "body": "stripe.issuing.Cardholder.modify(\n  \"${1:ich_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Issuing Cardholder"
-  },
-  "List Issuing Cardholder": {
-    "prefix": "StripeIssuingCardholderList",
-    "body": "stripe.issuing.Cardholder.list(limit=${1:3})",
-    "description": "List Issuing Cardholder"
+  "Update Issuing Authorization": {
+    "prefix": "StripeIssuingAuthorizationUpdate",
+    "description": "Update Issuing Authorization",
+    "body": "stripe.issuing.Authorization.modify(\n  \"${1:iauth_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
   "Create Issuing Card": {
     "prefix": "StripeIssuingCardCreate",
-    "body": "stripe.issuing.Card.create(\n  cardholder=\"${1:ich_xxxxxxxxxxxxx}\",\n  currency=\"${2:usd}\",\n  type=\"${3:virtual}\",\n)",
-    "description": "Create Issuing Card"
+    "description": "Create Issuing Card",
+    "body": "stripe.issuing.Card.create(\n  cardholder=\"${1:ich_xxxxxxxxxxxxx}\",\n  currency=\"${2:usd}\",\n  type=\"${3:virtual}\",\n)"
   },
-  "Retrieve Issuing Card": {
-    "prefix": "StripeIssuingCardRetrieve",
-    "body": "stripe.issuing.Card.retrieve(\"${1:ic_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Issuing Card"
+  "Create Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderCreate",
+    "description": "Create Issuing Cardholder",
+    "body": "stripe.issuing.Cardholder.create(\n  type=\"${1:individual}\",\n  name=\"${2:Jenny Rosen}\",\n  email=\"${3:jenny.rosen@example.com}\",\n  phone_number=\"${4:+18888675309}\",\n  billing={\n    \"address\": {\n      \"line1\": \"${5:1234 Main Street}\",\n      \"city\": \"${6:San Francisco}\",\n      \"state\": \"${7:CA}\",\n      \"country\": \"${8:US}\",\n      \"postal_code\": \"${9:94111}\",\n    },\n  },\n)"
   },
-  "Update Issuing Card": {
-    "prefix": "StripeIssuingCardUpdate",
-    "body": "stripe.issuing.Card.modify(\n  \"${1:ic_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Issuing Card"
+  "List Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderList",
+    "description": "List Issuing Cardholder",
+    "body": "stripe.issuing.Cardholder.list(limit=${1:3})"
+  },
+  "Retrieve Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderRetrieve",
+    "description": "Retrieve Issuing Cardholder",
+    "body": "stripe.issuing.Cardholder.retrieve(\n  \"${1:ich_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Issuing Cardholder": {
+    "prefix": "StripeIssuingCardholderUpdate",
+    "description": "Update Issuing Cardholder",
+    "body": "stripe.issuing.Cardholder.modify(\n  \"${1:ich_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
   "List Issuing Card": {
     "prefix": "StripeIssuingCardList",
-    "body": "stripe.issuing.Card.list(limit=${1:3})",
-    "description": "List Issuing Card"
+    "description": "List Issuing Card",
+    "body": "stripe.issuing.Card.list(limit=${1:3})"
+  },
+  "Retrieve Issuing Card": {
+    "prefix": "StripeIssuingCardRetrieve",
+    "description": "Retrieve Issuing Card",
+    "body": "stripe.issuing.Card.retrieve(\"${1:ic_xxxxxxxxxxxxx}\")"
+  },
+  "Update Issuing Card": {
+    "prefix": "StripeIssuingCardUpdate",
+    "description": "Update Issuing Card",
+    "body": "stripe.issuing.Card.modify(\n  \"${1:ic_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
   "Create Issuing Dispute": {
     "prefix": "StripeIssuingDisputeCreate",
-    "body": "stripe.issuing.Dispute.create(\n  transaction=\"${1:ipi_xxxxxxxxxxxxx}\",\n  evidence={\n    \"reason\": \"${2:fraudulent}\",\n    \"fraudulent\": {\n      \"explanation\": \"${3:Purchase was unrecognized.}\",\n    },\n  },\n)",
-    "description": "Create Issuing Dispute"
-  },
-  "Submit Issuing Dispute": {
-    "prefix": "StripeIssuingDisputeSubmit",
-    "body": "stripe.issuing.Dispute.submit(\"${1:idp_xxxxxxxxxxxxx}\")",
-    "description": "Submit Issuing Dispute"
-  },
-  "Retrieve Issuing Dispute": {
-    "prefix": "StripeIssuingDisputeRetrieve",
-    "body": "stripe.issuing.Dispute.retrieve(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Issuing Dispute"
-  },
-  "Update Issuing Dispute": {
-    "prefix": "StripeIssuingDisputeUpdate",
-    "body": "stripe.issuing.Dispute.modify(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n  evidence={\n    \"reason\": \"${2:not_xxxxxxxxxxxxx}\",\n    \"not_received\": {\n      \"expected_at\": ${3:1590000000},\n      \"explanation${4:}\": \"\",\n      \"product_description\": \"${5:Baseball cap}\",\n      \"product_type\": \"${6:merchandise}\",\n    },\n  },\n)",
-    "description": "Update Issuing Dispute"
+    "description": "Create Issuing Dispute",
+    "body": "stripe.issuing.Dispute.create(\n  transaction=\"${1:ipi_xxxxxxxxxxxxx}\",\n  evidence={\n    \"reason\": \"${2:fraudulent}\",\n    \"fraudulent\": {\n      \"explanation\": \"${3:Purchase was unrecognized.}\",\n    },\n  },\n)"
   },
   "List Issuing Dispute": {
     "prefix": "StripeIssuingDisputeList",
-    "body": "stripe.issuing.Dispute.list(limit=${1:3})",
-    "description": "List Issuing Dispute"
+    "description": "List Issuing Dispute",
+    "body": "stripe.issuing.Dispute.list(limit=${1:3})"
   },
-  "Retrieve Issuing Transaction": {
-    "prefix": "StripeIssuingTransactionRetrieve",
-    "body": "stripe.issuing.Transaction.retrieve(\n  \"${1:ipi_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Issuing Transaction"
+  "Retrieve Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeRetrieve",
+    "description": "Retrieve Issuing Dispute",
+    "body": "stripe.issuing.Dispute.retrieve(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n)"
   },
-  "Update Issuing Transaction": {
-    "prefix": "StripeIssuingTransactionUpdate",
-    "body": "stripe.issuing.Transaction.modify(\n  \"${1:ipi_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Issuing Transaction"
+  "Submit Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeSubmit",
+    "description": "Submit Issuing Dispute",
+    "body": "stripe.issuing.Dispute.submit(\"${1:idp_xxxxxxxxxxxxx}\")"
+  },
+  "Update Issuing Dispute": {
+    "prefix": "StripeIssuingDisputeUpdate",
+    "description": "Update Issuing Dispute",
+    "body": "stripe.issuing.Dispute.modify(\n  \"${1:idp_xxxxxxxxxxxxx}\",\n  evidence={\n    \"reason\": \"${2:not_xxxxxxxxxxxxx}\",\n    \"not_received\": {\n      \"expected_at\": ${3:1590000000},\n      \"explanation${4:}\": \"\",\n      \"product_description\": \"${5:Baseball cap}\",\n      \"product_type\": \"${6:merchandise}\",\n    },\n  },\n)"
   },
   "List Issuing Transaction": {
     "prefix": "StripeIssuingTransactionList",
-    "body": "stripe.issuing.Transaction.list(limit=${1:3})",
-    "description": "List Issuing Transaction"
+    "description": "List Issuing Transaction",
+    "body": "stripe.issuing.Transaction.list(limit=${1:3})"
   },
-  "Create Terminal Connection Token": {
-    "prefix": "StripeTerminalConnectionTokenCreate",
-    "body": "stripe.terminal.ConnectionToken.create()",
-    "description": "Create Terminal Connection Token"
+  "Retrieve Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionRetrieve",
+    "description": "Retrieve Issuing Transaction",
+    "body": "stripe.issuing.Transaction.retrieve(\n  \"${1:ipi_xxxxxxxxxxxxx}\",\n)"
   },
-  "Create Terminal Location": {
-    "prefix": "StripeTerminalLocationCreate",
-    "body": "stripe.terminal.Location.create(\n  display_name=\"${1:My First Store}\",\n  address={\n    \"line1\": \"${2:1234 Main Street}\",\n    \"city\": \"${3:San Francisco}\",\n    \"country\": \"${4:US}\",\n    \"postal_code\": \"${5:94111}\",\n  },\n)",
-    "description": "Create Terminal Location"
+  "Update Issuing Transaction": {
+    "prefix": "StripeIssuingTransactionUpdate",
+    "description": "Update Issuing Transaction",
+    "body": "stripe.issuing.Transaction.modify(\n  \"${1:ipi_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
-  "Retrieve Terminal Location": {
-    "prefix": "StripeTerminalLocationRetrieve",
-    "body": "stripe.terminal.Location.retrieve(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Terminal Location"
-  },
-  "Update Terminal Location": {
-    "prefix": "StripeTerminalLocationUpdate",
-    "body": "stripe.terminal.Location.modify(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n  display_name=\"${2:My First Store}\",\n)",
-    "description": "Update Terminal Location"
-  },
-  "Delete Terminal Location": {
-    "prefix": "StripeTerminalLocationDelete",
-    "body": "stripe.terminal.Location.delete(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n)",
-    "description": "Delete Terminal Location"
-  },
-  "List Terminal Location": {
-    "prefix": "StripeTerminalLocationList",
-    "body": "stripe.terminal.Location.list(limit=${1:3})",
-    "description": "List Terminal Location"
-  },
-  "Create Terminal Reader": {
-    "prefix": "StripeTerminalReaderCreate",
-    "body": "stripe.terminal.Reader.create(\n  registration_code=\"${1:puppies-plug-could}\",\n  label=\"${2:Blue Rabbit}\",\n  location=\"${3:tml_1234}\",\n)",
-    "description": "Create Terminal Reader"
-  },
-  "Retrieve Terminal Reader": {
-    "prefix": "StripeTerminalReaderRetrieve",
-    "body": "stripe.terminal.Reader.retrieve(\n  \"${1:tmr_P400-123-456-789}\",\n)",
-    "description": "Retrieve Terminal Reader"
-  },
-  "Update Terminal Reader": {
-    "prefix": "StripeTerminalReaderUpdate",
-    "body": "stripe.terminal.Reader.modify(\n  \"${1:tmr_P400-123-456-789}\",\n  label=\"${2:Blue Rabbit}\",\n)",
-    "description": "Update Terminal Reader"
-  },
-  "Delete Terminal Reader": {
-    "prefix": "StripeTerminalReaderDelete",
-    "body": "stripe.terminal.Reader.delete(\n  \"${1:tmr_P400-123-456-789}\",\n)",
-    "description": "Delete Terminal Reader"
-  },
-  "List Terminal Reader": {
-    "prefix": "StripeTerminalReaderList",
-    "body": "stripe.terminal.Reader.list(limit=${1:3})",
-    "description": "List Terminal Reader"
+  "Retrieve Mandate": {
+    "prefix": "StripeMandateRetrieve",
+    "description": "Retrieve Mandate",
+    "body": "stripe.Mandate.retrieve(\"${1:mandate_xxxxxxxxxxxxx}\")"
   },
   "Create Order": {
     "prefix": "StripeOrderCreate",
-    "body": "stripe.Order.create(\n  currency=\"${1:usd}\",\n  email=\"${2:jenny.rosen@example.com}\",\n  items=[\n    {\n      \"type\": \"${3:sku}\",\n      \"parent\": \"${4:sku_xxxxxxxxxxxxx}\",\n    },\n  ],\n  shipping={\n    \"name\": \"${5:Jenny Rosen}\",\n    \"address\": {\n      \"line1\": \"${6:1234 Main Street}\",\n      \"city\": \"${7:San Francisco}\",\n      \"state\": \"${8:CA}\",\n      \"country\": \"${9:US}\",\n      \"postal_code\": \"${10:94111}\",\n    },\n  },\n)",
-    "description": "Create Order"
-  },
-  "Retrieve Order": {
-    "prefix": "StripeOrderRetrieve",
-    "body": "stripe.Order.retrieve(\"${1:or_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Order"
-  },
-  "Update Order": {
-    "prefix": "StripeOrderUpdate",
-    "body": "stripe.Order.modify(\n  \"${1:or_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Order"
-  },
-  "Pay Order": {
-    "prefix": "StripeOrderPay",
-    "body": "stripe.Order.pay(\n  \"${1:or_xxxxxxxxxxxxx}\",\n  source=\"${2:tok_xxxx}\",\n)",
-    "description": "Pay Order"
+    "description": "Create Order",
+    "body": "stripe.Order.create(\n  currency=\"${1:usd}\",\n  email=\"${2:jenny.rosen@example.com}\",\n  items=[\n    {\n      \"type\": \"${3:sku}\",\n      \"parent\": \"${4:sku_xxxxxxxxxxxxx}\",\n    },\n  ],\n  shipping={\n    \"name\": \"${5:Jenny Rosen}\",\n    \"address\": {\n      \"line1\": \"${6:1234 Main Street}\",\n      \"city\": \"${7:San Francisco}\",\n      \"state\": \"${8:CA}\",\n      \"country\": \"${9:US}\",\n      \"postal_code\": \"${10:94111}\",\n    },\n  },\n)"
   },
   "List Order": {
     "prefix": "StripeOrderList",
-    "body": "stripe.Order.list(limit=${1:3})",
-    "description": "List Order"
+    "description": "List Order",
+    "body": "stripe.Order.list(limit=${1:3})"
   },
-  "Retrieve Order Return": {
-    "prefix": "StripeOrderReturnRetrieve",
-    "body": "stripe.OrderReturn.retrieve(\"${1:orret_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Order Return"
+  "Pay Order": {
+    "prefix": "StripeOrderPay",
+    "description": "Pay Order",
+    "body": "stripe.Order.pay(\n  \"${1:or_xxxxxxxxxxxxx}\",\n  source=\"${2:tok_xxxx}\",\n)"
+  },
+  "Retrieve Order": {
+    "prefix": "StripeOrderRetrieve",
+    "description": "Retrieve Order",
+    "body": "stripe.Order.retrieve(\"${1:or_xxxxxxxxxxxxx}\")"
+  },
+  "Return Order": {
+    "prefix": "StripeOrderReturn",
+    "description": "Return Order",
+    "body": "order = stripe.Order.return_order(\n  '${1:or_xxxxxxxxxxxxx}',\n  items=[\n    {\n      'type': 'sku',\n      'parent': '${2:sku_xxxxxxxxxxxxx}',\n    },\n  ]\n)\n\n"
   },
   "List Order Return": {
     "prefix": "StripeOrderReturnList",
-    "body": "stripe.OrderReturn.list(limit=${1:3})",
-    "description": "List Order Return"
+    "description": "List Order Return",
+    "body": "stripe.OrderReturn.list(limit=${1:3})"
   },
-  "Create Sku": {
-    "prefix": "StripeSkuCreate",
-    "body": "stripe.SKU.create(\n  attributes={\n    \"size\": \"${1:Medium}\",\n    \"gender\": \"${2:Unisex}\",\n  },\n  price=${3:1500},\n  currency=\"${4:usd}\",\n  inventory={\"type\": \"${5:finite}\", \"quantity\": ${6:500}},\n  product=\"${7:prod_xxxxxxxxxxxxx}\",\n)",
-    "description": "Create Sku"
+  "Retrieve Order Return": {
+    "prefix": "StripeOrderReturnRetrieve",
+    "description": "Retrieve Order Return",
+    "body": "stripe.OrderReturn.retrieve(\"${1:orret_xxxxxxxxxxxxx}\")"
   },
-  "Retrieve Sku": {
-    "prefix": "StripeSkuRetrieve",
-    "body": "stripe.SKU.retrieve(\"${1:sku_xxxxxxxxxxxxx}\")",
-    "description": "Retrieve Sku"
+  "Update Order": {
+    "prefix": "StripeOrderUpdate",
+    "description": "Update Order",
+    "body": "stripe.Order.modify(\n  \"${1:or_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
-  "Update Sku": {
-    "prefix": "StripeSkuUpdate",
-    "body": "stripe.SKU.modify(\n  \"${1:sku_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)",
-    "description": "Update Sku"
+  "Cancel Payment Intent": {
+    "prefix": "StripePaymentIntentCancel",
+    "description": "Cancel Payment Intent",
+    "body": "# To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nstripe.PaymentIntent.cancel(\"${1:pi_xxxxxxxxxxxxx}\")"
   },
-  "List Sku": {
-    "prefix": "StripeSkuList",
-    "body": "stripe.SKU.list(limit=${1:3})",
-    "description": "List Sku"
+  "Capture Payment Intent": {
+    "prefix": "StripePaymentIntentCapture",
+    "description": "Capture Payment Intent",
+    "body": "# To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nstripe.PaymentIntent.capture(\"${1:pi_xxxxxxxxxxxxx}\")"
   },
-  "Delete Sku": {
-    "prefix": "StripeSkuDelete",
-    "body": "stripe.SKU.delete(\"${1:sku_xxxxxxxxxxxxx}\")",
-    "description": "Delete Sku"
+  "Confirm Payment Intent": {
+    "prefix": "StripePaymentIntentConfirm",
+    "description": "Confirm Payment Intent",
+    "body": "# To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nstripe.PaymentIntent.confirm(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  payment_method=\"${2:pm_card_visa}\",\n)"
   },
-  "Retrieve Sigma Scheduled Query Run": {
-    "prefix": "StripeSigmaScheduledQueryRunRetrieve",
-    "body": "stripe.sigma.ScheduledQueryRun.retrieve(\n  \"${1:sqr_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Sigma Scheduled Query Run"
+  "Create Payment Intent": {
+    "prefix": "StripePaymentIntentCreate",
+    "description": "Create Payment Intent",
+    "body": "stripe.PaymentIntent.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  payment_method_types=[\"${3:card}\"],\n)"
   },
-  "List Sigma Scheduled Query Run": {
-    "prefix": "StripeSigmaScheduledQueryRunList",
-    "body": "stripe.sigma.ScheduledQueryRun.list(limit=${1:3})",
-    "description": "List Sigma Scheduled Query Run"
+  "List Payment Intent": {
+    "prefix": "StripePaymentIntentList",
+    "description": "List Payment Intent",
+    "body": "stripe.PaymentIntent.list(limit=${1:3})"
+  },
+  "Retrieve Payment Intent": {
+    "prefix": "StripePaymentIntentRetrieve",
+    "description": "Retrieve Payment Intent",
+    "body": "stripe.PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\")"
+  },
+  "Update Payment Intent": {
+    "prefix": "StripePaymentIntentUpdate",
+    "description": "Update Payment Intent",
+    "body": "stripe.PaymentIntent.modify(\n  \"${1:pi_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Attach Payment Method": {
+    "prefix": "StripePaymentMethodAttach",
+    "description": "Attach Payment Method",
+    "body": "stripe.PaymentMethod.attach(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  customer=\"${2:cus_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Payment Method": {
+    "prefix": "StripePaymentMethodCreate",
+    "description": "Create Payment Method",
+    "body": "stripe.PaymentMethod.create(\n  type=\"${1:card}\",\n  card={\n    \"number\": \"${2:4242424242424242}\",\n    \"exp_month\": ${3:5},\n    \"exp_year\": ${4:2022},\n    \"cvc\": \"${5:314}\",\n  },\n)"
+  },
+  "Detach Payment Method": {
+    "prefix": "StripePaymentMethodDetach",
+    "description": "Detach Payment Method",
+    "body": "stripe.PaymentMethod.detach(\"${1:pm_xxxxxxxxxxxxx}\")"
+  },
+  "List Payment Method": {
+    "prefix": "StripePaymentMethodList",
+    "description": "List Payment Method",
+    "body": "stripe.PaymentMethod.list(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  type=\"${2:card}\",\n)"
+  },
+  "Retrieve Payment Method": {
+    "prefix": "StripePaymentMethodRetrieve",
+    "description": "Retrieve Payment Method",
+    "body": "stripe.PaymentMethod.retrieve(\"${1:pm_xxxxxxxxxxxxx}\")"
+  },
+  "Update Payment Method": {
+    "prefix": "StripePaymentMethodUpdate",
+    "description": "Update Payment Method",
+    "body": "stripe.PaymentMethod.modify(\n  \"${1:pm_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Cancel Payout": {
+    "prefix": "StripePayoutCancel",
+    "description": "Cancel Payout",
+    "body": "stripe.Payout.cancel(\"${1:po_xxxxxxxxxxxxx}\")"
+  },
+  "Create Payout": {
+    "prefix": "StripePayoutCreate",
+    "description": "Create Payout",
+    "body": "stripe.Payout.create(amount=${1:1100}, currency=\"${2:usd}\")"
+  },
+  "List Payout": {
+    "prefix": "StripePayoutList",
+    "description": "List Payout",
+    "body": "stripe.Payout.list(limit=${1:3})"
+  },
+  "Retrieve Payout": {
+    "prefix": "StripePayoutRetrieve",
+    "description": "Retrieve Payout",
+    "body": "stripe.Payout.retrieve(\"${1:po_xxxxxxxxxxxxx}\")"
+  },
+  "Reverse Payout": {
+    "prefix": "StripePayoutReverse",
+    "description": "Reverse Payout",
+    "body": "stripe.Payout.reverse(\"${1:po_xxxxxxxxxxxxx}\")"
+  },
+  "Update Payout": {
+    "prefix": "StripePayoutUpdate",
+    "description": "Update Payout",
+    "body": "stripe.Payout.modify(\n  \"${1:po_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Plan": {
+    "prefix": "StripePlanCreate",
+    "description": "Create Plan",
+    "body": "stripe.Plan.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  interval=\"${3:month}\",\n  product=\"${4:prod_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Plan": {
+    "prefix": "StripePlanDelete",
+    "description": "Delete Plan",
+    "body": "stripe.Plan.delete(\"${1:price_xxxxxxxxxxxxx}\")"
+  },
+  "List Plan": {
+    "prefix": "StripePlanList",
+    "description": "List Plan",
+    "body": "stripe.Plan.list(limit=${1:3})"
+  },
+  "Retrieve Plan": {
+    "prefix": "StripePlanRetrieve",
+    "description": "Retrieve Plan",
+    "body": "stripe.Plan.retrieve(\"${1:price_xxxxxxxxxxxxx}\")"
+  },
+  "Update Plan": {
+    "prefix": "StripePlanUpdate",
+    "description": "Update Plan",
+    "body": "stripe.Plan.modify(\n  \"${1:price_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Price": {
+    "prefix": "StripePriceCreate",
+    "description": "Create Price",
+    "body": "stripe.Price.create(\n  unit_amount=${1:2000},\n  currency=\"${2:usd}\",\n  recurring={\"interval\": \"${3:month}\"},\n  product=\"${4:prod_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Price": {
+    "prefix": "StripePriceList",
+    "description": "List Price",
+    "body": "stripe.Price.list(limit=${1:3})"
+  },
+  "Retrieve Price": {
+    "prefix": "StripePriceRetrieve",
+    "description": "Retrieve Price",
+    "body": "stripe.Price.retrieve(\"${1:price_xxxxxxxxxxxxx}\")"
+  },
+  "Update Price": {
+    "prefix": "StripePriceUpdate",
+    "description": "Update Price",
+    "body": "stripe.Price.modify(\n  \"${1:price_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Product": {
+    "prefix": "StripeProductCreate",
+    "description": "Create Product",
+    "body": "stripe.Product.create(name=\"${1:Gold Special}\")"
+  },
+  "Delete Product": {
+    "prefix": "StripeProductDelete",
+    "description": "Delete Product",
+    "body": "stripe.Product.delete(\"${1:prod_xxxxxxxxxxxxx}\")"
+  },
+  "List Product": {
+    "prefix": "StripeProductList",
+    "description": "List Product",
+    "body": "stripe.Product.list(limit=${1:3})"
+  },
+  "Retrieve Product": {
+    "prefix": "StripeProductRetrieve",
+    "description": "Retrieve Product",
+    "body": "stripe.Product.retrieve(\"${1:prod_xxxxxxxxxxxxx}\")"
+  },
+  "Update Product": {
+    "prefix": "StripeProductUpdate",
+    "description": "Update Product",
+    "body": "stripe.Product.modify(\n  \"${1:prod_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Promotion Code": {
+    "prefix": "StripePromotionCodeCreate",
+    "description": "Create Promotion Code",
+    "body": "stripe.PromotionCode.create(coupon=\"${1:25_5OFF}\")"
+  },
+  "List Promotion Code": {
+    "prefix": "StripePromotionCodeList",
+    "description": "List Promotion Code",
+    "body": "stripe.PromotionCode.list(limit=${1:3})"
+  },
+  "Retrieve Promotion Code": {
+    "prefix": "StripePromotionCodeRetrieve",
+    "description": "Retrieve Promotion Code",
+    "body": "stripe.PromotionCode.retrieve(\n  \"${1:promo_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Promotion Code": {
+    "prefix": "StripePromotionCodeUpdate",
+    "description": "Update Promotion Code",
+    "body": "stripe.PromotionCode.modify(\n  \"${1:promo_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "List Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningList",
+    "description": "List Radar Early Fraud Warning",
+    "body": "stripe.radar.EarlyFraudWarning.list(limit=${1:3})"
+  },
+  "Retrieve Radar Early Fraud Warning": {
+    "prefix": "StripeRadarEarlyFraudWarningRetrieve",
+    "description": "Retrieve Radar Early Fraud Warning",
+    "body": "stripe.radar.EarlyFraudWarning.retrieve(\n  \"${1:issfr_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Radar Value List": {
+    "prefix": "StripeRadarValueListCreate",
+    "description": "Create Radar Value List",
+    "body": "stripe.radar.ValueList.create(\n  alias=\"${1:custom_ip_xxxxxxxxxxxxx}\",\n  name=\"${2:Custom IP Blocklist}\",\n  item_type=\"${3:ip_address}\",\n)"
+  },
+  "Delete Radar Value List": {
+    "prefix": "StripeRadarValueListDelete",
+    "description": "Delete Radar Value List",
+    "body": "stripe.radar.ValueList.delete(\"${1:rsl_xxxxxxxxxxxxx}\")"
+  },
+  "Create Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemCreate",
+    "description": "Create Radar Value List Item",
+    "body": "stripe.radar.ValueListItem.create(\n  value_list=\"${1:rsl_xxxxxxxxxxxxx}\",\n  value=\"${2:1.2.3.4}\",\n)"
+  },
+  "Delete Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemDelete",
+    "description": "Delete Radar Value List Item",
+    "body": "stripe.radar.ValueListItem.delete(\n  \"${1:rsli_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemList",
+    "description": "List Radar Value List Item",
+    "body": "stripe.radar.ValueListItem.list(\n  limit=${1:3},\n  value_list=\"${2:rsl_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Retrieve Radar Value List Item": {
+    "prefix": "StripeRadarValueListItemRetrieve",
+    "description": "Retrieve Radar Value List Item",
+    "body": "stripe.radar.ValueListItem.retrieve(\n  \"${1:rsli_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Radar Value List": {
+    "prefix": "StripeRadarValueListList",
+    "description": "List Radar Value List",
+    "body": "stripe.radar.ValueList.list(limit=${1:3})"
+  },
+  "Retrieve Radar Value List": {
+    "prefix": "StripeRadarValueListRetrieve",
+    "description": "Retrieve Radar Value List",
+    "body": "stripe.radar.ValueList.retrieve(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Radar Value List": {
+    "prefix": "StripeRadarValueListUpdate",
+    "description": "Update Radar Value List",
+    "body": "stripe.radar.ValueList.modify(\n  \"${1:rsl_xxxxxxxxxxxxx}\",\n  name=\"${2:Updated IP Block List}\",\n)"
+  },
+  "Create Refund": {
+    "prefix": "StripeRefundCreate",
+    "description": "Create Refund",
+    "body": "stripe.Refund.create(charge=\"${1:ch_xxxxxxxxxxxxx}\")"
+  },
+  "List Refund": {
+    "prefix": "StripeRefundList",
+    "description": "List Refund",
+    "body": "stripe.Refund.list(limit=${1:3})"
+  },
+  "Retrieve Refund": {
+    "prefix": "StripeRefundRetrieve",
+    "description": "Retrieve Refund",
+    "body": "stripe.Refund.retrieve(\"${1:re_xxxxxxxxxxxxx}\")"
+  },
+  "Update Refund": {
+    "prefix": "StripeRefundUpdate",
+    "description": "Update Refund",
+    "body": "stripe.Refund.modify(\n  \"${1:re_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
   "Create Reporting Report Run": {
     "prefix": "StripeReportingReportRunCreate",
-    "body": "stripe.reporting.ReportRun.create(\n  report_type=\"${1:balance.summary.1}\",\n  parameters={\n    \"interval_start\": ${2:1522540800},\n    \"interval_end\": ${3:1525132800},\n  },\n)",
-    "description": "Create Reporting Report Run"
-  },
-  "Retrieve Reporting Report Run": {
-    "prefix": "StripeReportingReportRunRetrieve",
-    "body": "stripe.reporting.ReportRun.retrieve(\n  \"${1:frr_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Reporting Report Run"
+    "description": "Create Reporting Report Run",
+    "body": "stripe.reporting.ReportRun.create(\n  report_type=\"${1:balance.summary.1}\",\n  parameters={\n    \"interval_start\": ${2:1522540800},\n    \"interval_end\": ${3:1525132800},\n  },\n)"
   },
   "List Reporting Report Run": {
     "prefix": "StripeReportingReportRunList",
-    "body": "stripe.reporting.ReportRun.list(limit=${1:3})",
-    "description": "List Reporting Report Run"
+    "description": "List Reporting Report Run",
+    "body": "stripe.reporting.ReportRun.list(limit=${1:3})"
   },
-  "Retrieve Reporting Report Type": {
-    "prefix": "StripeReportingReportTypeRetrieve",
-    "body": "stripe.reporting.ReportType.retrieve(\n  \"${1:balance.summary.1}\",\n)",
-    "description": "Retrieve Reporting Report Type"
+  "Retrieve Reporting Report Run": {
+    "prefix": "StripeReportingReportRunRetrieve",
+    "description": "Retrieve Reporting Report Run",
+    "body": "stripe.reporting.ReportRun.retrieve(\n  \"${1:frr_xxxxxxxxxxxxx}\",\n)"
   },
   "List Reporting Report Type": {
     "prefix": "StripeReportingReportTypeList",
-    "body": "stripe.reporting.ReportType.list()",
-    "description": "List Reporting Report Type"
+    "description": "List Reporting Report Type",
+    "body": "stripe.reporting.ReportType.list()"
+  },
+  "Retrieve Reporting Report Type": {
+    "prefix": "StripeReportingReportTypeRetrieve",
+    "description": "Retrieve Reporting Report Type",
+    "body": "stripe.reporting.ReportType.retrieve(\n  \"${1:balance.summary.1}\",\n)"
+  },
+  "Approve Review": {
+    "prefix": "StripeReviewApprove",
+    "description": "Approve Review",
+    "body": "stripe.Review.approve(\"${1:prv_xxxxxxxxxxxxx}\")"
+  },
+  "List Review": {
+    "prefix": "StripeReviewList",
+    "description": "List Review",
+    "body": "stripe.Review.list(limit=${1:3})"
+  },
+  "Retrieve Review": {
+    "prefix": "StripeReviewRetrieve",
+    "description": "Retrieve Review",
+    "body": "stripe.Review.retrieve(\"${1:prv_xxxxxxxxxxxxx}\")"
+  },
+  "List Setup Attempt": {
+    "prefix": "StripeSetupAttemptList",
+    "description": "List Setup Attempt",
+    "body": "stripe.SetupAttempt.list(limit=${1:3})"
+  },
+  "Cancel Setup Intent": {
+    "prefix": "StripeSetupIntentCancel",
+    "description": "Cancel Setup Intent",
+    "body": "stripe.SetupIntent.cancel(\"${1:seti_xxxxxxxxxxxxx}\")"
+  },
+  "Confirm Setup Intent": {
+    "prefix": "StripeSetupIntentConfirm",
+    "description": "Confirm Setup Intent",
+    "body": "stripe.SetupIntent.confirm(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  payment_method=\"${2:pm_card_visa}\",\n)"
+  },
+  "Create Setup Intent": {
+    "prefix": "StripeSetupIntentCreate",
+    "description": "Create Setup Intent",
+    "body": "stripe.SetupIntent.create(\n  payment_method_types=[\"${1:card}\"],\n)"
+  },
+  "List Setup Intent": {
+    "prefix": "StripeSetupIntentList",
+    "description": "List Setup Intent",
+    "body": "stripe.SetupIntent.list(limit=${1:3})"
+  },
+  "Retrieve Setup Intent": {
+    "prefix": "StripeSetupIntentRetrieve",
+    "description": "Retrieve Setup Intent",
+    "body": "stripe.SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\")"
+  },
+  "Update Setup Intent": {
+    "prefix": "StripeSetupIntentUpdate",
+    "description": "Update Setup Intent",
+    "body": "stripe.SetupIntent.modify(\n  \"${1:seti_xxxxxxxxxxxxx}\",\n  metadata={\"user_id\": \"${2:3435453}\"},\n)"
+  },
+  "List Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunList",
+    "description": "List Sigma Scheduled Query Run",
+    "body": "stripe.sigma.ScheduledQueryRun.list(limit=${1:3})"
+  },
+  "Retrieve Sigma Scheduled Query Run": {
+    "prefix": "StripeSigmaScheduledQueryRunRetrieve",
+    "description": "Retrieve Sigma Scheduled Query Run",
+    "body": "stripe.sigma.ScheduledQueryRun.retrieve(\n  \"${1:sqr_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Sku": {
+    "prefix": "StripeSkuCreate",
+    "description": "Create Sku",
+    "body": "stripe.SKU.create(\n  attributes={\n    \"size\": \"${1:Medium}\",\n    \"gender\": \"${2:Unisex}\",\n  },\n  price=${3:1500},\n  currency=\"${4:usd}\",\n  inventory={\"type\": \"${5:finite}\", \"quantity\": ${6:500}},\n  product=\"${7:prod_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Delete Sku": {
+    "prefix": "StripeSkuDelete",
+    "description": "Delete Sku",
+    "body": "stripe.SKU.delete(\"${1:sku_xxxxxxxxxxxxx}\")"
+  },
+  "List Sku": {
+    "prefix": "StripeSkuList",
+    "description": "List Sku",
+    "body": "stripe.SKU.list(limit=${1:3})"
+  },
+  "Retrieve Sku": {
+    "prefix": "StripeSkuRetrieve",
+    "description": "Retrieve Sku",
+    "body": "stripe.SKU.retrieve(\"${1:sku_xxxxxxxxxxxxx}\")"
+  },
+  "Update Sku": {
+    "prefix": "StripeSkuUpdate",
+    "description": "Update Sku",
+    "body": "stripe.SKU.modify(\n  \"${1:sku_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Attach Source": {
+    "prefix": "StripeSourceAttach",
+    "description": "Attach Source",
+    "body": "source = stripe.Customer.create_source(\n  '${1:cus_xxxxxxxxxxxxx}',\n  source='${2:src_xxxxxxxxxxxxx}'\n)\n\n"
+  },
+  "Create Source": {
+    "prefix": "StripeSourceCreate",
+    "description": "Create Source",
+    "body": "stripe.Source.create(\n  type='ach_credit_transfer',\n  currency='${1:usd}',\n  owner={\n    'email': '${2:jenny.rosen@example.com}'\n  }\n)\n\n"
+  },
+  "Detach Source": {
+    "prefix": "StripeSourceDetach",
+    "description": "Detach Source",
+    "body": "stripe.Customer.delete_source(\n  '${1:cus_xxxxxxxxxxxxx}',\n  '${2:src_xxxxxxxxxxxxx}'\n)\n\n"
+  },
+  "Retrieve Source": {
+    "prefix": "StripeSourceRetrieve",
+    "description": "Retrieve Source",
+    "body": "stripe.Source.retrieve(\"${1:src_xxxxxxxxxxxxx}\")"
+  },
+  "Update Source": {
+    "prefix": "StripeSourceUpdate",
+    "description": "Update Source",
+    "body": "stripe.Source.modify(\n  \"${1:src_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Subscription": {
+    "prefix": "StripeSubscriptionCreate",
+    "description": "Create Subscription",
+    "body": "stripe.Subscription.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  items=[{\"price\": \"${2:price_xxxxxxxxxxxxx}\"}],\n)"
+  },
+  "Delete Subscription": {
+    "prefix": "StripeSubscriptionDelete",
+    "description": "Delete Subscription",
+    "body": "stripe.Subscription.delete(\"${1:sub_xxxxxxxxxxxxx}\")"
+  },
+  "Delete Subscription Discount": {
+    "prefix": "StripeSubscriptionDiscountDelete",
+    "description": "Delete Subscription Discount",
+    "body": "stripe.Subscription.delete_discount('${1:sub_xxxxxxxxxxxxx}')\n\n"
+  },
+  "Create Subscription Item": {
+    "prefix": "StripeSubscriptionItemCreate",
+    "description": "Create Subscription Item",
+    "body": "stripe.SubscriptionItem.create(\n  subscription=\"${1:sub_xxxxxxxxxxxxx}\",\n  price=\"${2:price_xxxxxxxxxxxxx}\",\n  quantity=${3:2},\n)"
+  },
+  "Delete Subscription Item": {
+    "prefix": "StripeSubscriptionItemDelete",
+    "description": "Delete Subscription Item",
+    "body": "stripe.SubscriptionItem.delete(\"${1:si_xxxxxxxxxxxxx}\")"
+  },
+  "List Subscription Item": {
+    "prefix": "StripeSubscriptionItemList",
+    "description": "List Subscription Item",
+    "body": "stripe.SubscriptionItem.list(\n  subscription=\"${1:sub_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Retrieve Subscription Item": {
+    "prefix": "StripeSubscriptionItemRetrieve",
+    "description": "Retrieve Subscription Item",
+    "body": "stripe.SubscriptionItem.retrieve(\n  \"${1:si_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Subscription Item": {
+    "prefix": "StripeSubscriptionItemUpdate",
+    "description": "Update Subscription Item",
+    "body": "stripe.SubscriptionItem.modify(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Subscription Item Usage Record": {
+    "prefix": "StripeSubscriptionItemUsageRecordCreate",
+    "description": "Create Subscription Item Usage Record",
+    "body": "stripe.SubscriptionItem.create_usage_record(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  quantity=${2:100},\n  timestamp=${3:1571252444},\n)"
+  },
+  "List Subscription Item Usage Record Summary": {
+    "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
+    "description": "List Subscription Item Usage Record Summary",
+    "body": "stripe.SubscriptionItem.list_usage_record_summaries(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
+  },
+  "List Subscription": {
+    "prefix": "StripeSubscriptionList",
+    "description": "List Subscription",
+    "body": "stripe.Subscription.list(limit=${1:3})"
+  },
+  "Retrieve Subscription": {
+    "prefix": "StripeSubscriptionRetrieve",
+    "description": "Retrieve Subscription",
+    "body": "stripe.Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\")"
+  },
+  "Cancel Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCancel",
+    "description": "Cancel Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.cancel(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Create Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleCreate",
+    "description": "Create Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.create(\n  customer=\"${1:cus_xxxxxxxxxxxxx}\",\n  start_date=${2:1620753115},\n  end_behavior=\"${3:release}\",\n  phases=[\n    {\n      \"items\": [\n        {\n          \"price\": \"${4:price_xxxxxxxxxxxxx}\",\n          \"quantity\": ${5:1},\n        },\n      ],\n      \"iterations\": ${6:12},\n    },\n  ],\n)"
+  },
+  "List Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleList",
+    "description": "List Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.list(limit=${1:3})"
+  },
+  "Release Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRelease",
+    "description": "Release Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.release(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Retrieve Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleRetrieve",
+    "description": "Retrieve Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.retrieve(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Subscription Schedule": {
+    "prefix": "StripeSubscriptionScheduleUpdate",
+    "description": "Update Subscription Schedule",
+    "body": "stripe.SubscriptionSchedule.modify(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  end_behavior=\"${2:release}\",\n)"
+  },
+  "Update Subscription": {
+    "prefix": "StripeSubscriptionUpdate",
+    "description": "Update Subscription",
+    "body": "stripe.Subscription.modify(\n  \"${1:sub_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Tax Rate": {
+    "prefix": "StripeTaxRateCreate",
+    "description": "Create Tax Rate",
+    "body": "stripe.TaxRate.create(\n  display_name=\"${1:VAT}\",\n  description=\"${2:VAT Germany}\",\n  jurisdiction=\"${3:DE}\",\n  percentage=${4:16},\n  inclusive=False,\n)"
+  },
+  "List Tax Rate": {
+    "prefix": "StripeTaxRateList",
+    "description": "List Tax Rate",
+    "body": "stripe.TaxRate.list(limit=${1:3})"
+  },
+  "Retrieve Tax Rate": {
+    "prefix": "StripeTaxRateRetrieve",
+    "description": "Retrieve Tax Rate",
+    "body": "stripe.TaxRate.retrieve(\"${1:txr_xxxxxxxxxxxxx}\")"
+  },
+  "Update Tax Rate": {
+    "prefix": "StripeTaxRateUpdate",
+    "description": "Update Tax Rate",
+    "body": "stripe.TaxRate.modify(\n  \"${1:txr_xxxxxxxxxxxxx}\",\n  active=False,\n)"
+  },
+  "Create Terminal Connection Token": {
+    "prefix": "StripeTerminalConnectionTokenCreate",
+    "description": "Create Terminal Connection Token",
+    "body": "stripe.terminal.ConnectionToken.create()"
+  },
+  "Create Terminal Location": {
+    "prefix": "StripeTerminalLocationCreate",
+    "description": "Create Terminal Location",
+    "body": "stripe.terminal.Location.create(\n  display_name=\"${1:My First Store}\",\n  address={\n    \"line1\": \"${2:1234 Main Street}\",\n    \"city\": \"${3:San Francisco}\",\n    \"country\": \"${4:US}\",\n    \"postal_code\": \"${5:94111}\",\n  },\n)"
+  },
+  "Delete Terminal Location": {
+    "prefix": "StripeTerminalLocationDelete",
+    "description": "Delete Terminal Location",
+    "body": "stripe.terminal.Location.delete(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n)"
+  },
+  "List Terminal Location": {
+    "prefix": "StripeTerminalLocationList",
+    "description": "List Terminal Location",
+    "body": "stripe.terminal.Location.list(limit=${1:3})"
+  },
+  "Retrieve Terminal Location": {
+    "prefix": "StripeTerminalLocationRetrieve",
+    "description": "Retrieve Terminal Location",
+    "body": "stripe.terminal.Location.retrieve(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Terminal Location": {
+    "prefix": "StripeTerminalLocationUpdate",
+    "description": "Update Terminal Location",
+    "body": "stripe.terminal.Location.modify(\n  \"${1:tml_xxxxxxxxxxxxx}\",\n  display_name=\"${2:My First Store}\",\n)"
+  },
+  "Create Terminal Reader": {
+    "prefix": "StripeTerminalReaderCreate",
+    "description": "Create Terminal Reader",
+    "body": "stripe.terminal.Reader.create(\n  registration_code=\"${1:puppies-plug-could}\",\n  label=\"${2:Blue Rabbit}\",\n  location=\"${3:tml_1234}\",\n)"
+  },
+  "Delete Terminal Reader": {
+    "prefix": "StripeTerminalReaderDelete",
+    "description": "Delete Terminal Reader",
+    "body": "stripe.terminal.Reader.delete(\n  \"${1:tmr_P400-123-456-789}\",\n)"
+  },
+  "List Terminal Reader": {
+    "prefix": "StripeTerminalReaderList",
+    "description": "List Terminal Reader",
+    "body": "stripe.terminal.Reader.list(limit=${1:3})"
+  },
+  "Retrieve Terminal Reader": {
+    "prefix": "StripeTerminalReaderRetrieve",
+    "description": "Retrieve Terminal Reader",
+    "body": "stripe.terminal.Reader.retrieve(\n  \"${1:tmr_P400-123-456-789}\",\n)"
+  },
+  "Update Terminal Reader": {
+    "prefix": "StripeTerminalReaderUpdate",
+    "description": "Update Terminal Reader",
+    "body": "stripe.terminal.Reader.modify(\n  \"${1:tmr_P400-123-456-789}\",\n  label=\"${2:Blue Rabbit}\",\n)"
+  },
+  "Create Token": {
+    "prefix": "StripeTokenCreate",
+    "description": "Create Token",
+    "body": "stripe.Token.create(cvc_update={\"cvc\": \"${1:123}\"})"
+  },
+  "Retrieve Token": {
+    "prefix": "StripeTokenRetrieve",
+    "description": "Retrieve Token",
+    "body": "stripe.Token.retrieve(\"${1:tok_xxxx}\")"
+  },
+  "Cancel Topup": {
+    "prefix": "StripeTopupCancel",
+    "description": "Cancel Topup",
+    "body": "stripe.Topup.cancel(\"${1:tu_xxxxxxxxxxxxx}\")"
+  },
+  "Create Topup": {
+    "prefix": "StripeTopupCreate",
+    "description": "Create Topup",
+    "body": "stripe.Topup.create(\n  amount=${1:2000},\n  currency=\"${2:usd}\",\n  description=\"${3:Top-up for Jenny Rosen}\",\n  statement_descriptor=\"${4:Top-up}\",\n)"
+  },
+  "List Topup": {
+    "prefix": "StripeTopupList",
+    "description": "List Topup",
+    "body": "stripe.Topup.list(limit=${1:3})"
+  },
+  "Retrieve Topup": {
+    "prefix": "StripeTopupRetrieve",
+    "description": "Retrieve Topup",
+    "body": "stripe.Topup.retrieve(\"${1:tu_xxxxxxxxxxxxx}\")"
+  },
+  "Update Topup": {
+    "prefix": "StripeTopupUpdate",
+    "description": "Update Topup",
+    "body": "stripe.Topup.modify(\n  \"${1:tu_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
+  },
+  "Create Transfer": {
+    "prefix": "StripeTransferCreate",
+    "description": "Create Transfer",
+    "body": "stripe.Transfer.create(\n  amount=${1:400},\n  currency=\"${2:usd}\",\n  destination=\"${3:acct_xxxxxxxxxxxxx}\",\n  transfer_group=\"${4:ORDER_95}\",\n)"
+  },
+  "List Transfer": {
+    "prefix": "StripeTransferList",
+    "description": "List Transfer",
+    "body": "stripe.Transfer.list(limit=${1:3})"
+  },
+  "Retrieve Transfer": {
+    "prefix": "StripeTransferRetrieve",
+    "description": "Retrieve Transfer",
+    "body": "stripe.Transfer.retrieve(\"${1:tr_xxxxxxxxxxxxx}\")"
+  },
+  "Create Transfer Reversal": {
+    "prefix": "StripeTransferReversalCreate",
+    "description": "Create Transfer Reversal",
+    "body": "stripe.Transfer.create_reversal(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  amount=${2:100},\n)"
+  },
+  "List Transfer Reversal": {
+    "prefix": "StripeTransferReversalList",
+    "description": "List Transfer Reversal",
+    "body": "stripe.Transfer.list_reversals(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  limit=${2:3},\n)"
+  },
+  "Retrieve Transfer Reversal": {
+    "prefix": "StripeTransferReversalRetrieve",
+    "description": "Retrieve Transfer Reversal",
+    "body": "stripe.Transfer.retrieve_reversal(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Transfer Reversal": {
+    "prefix": "StripeTransferReversalUpdate",
+    "description": "Update Transfer Reversal",
+    "body": "stripe.Transfer.modify_reversal(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${3:6735}\"},\n)"
+  },
+  "Update Transfer": {
+    "prefix": "StripeTransferUpdate",
+    "description": "Update Transfer",
+    "body": "stripe.Transfer.modify(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  metadata={\"order_id\": \"${2:6735}\"},\n)"
   },
   "Create Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointCreate",
-    "body": "stripe.WebhookEndpoint.create(\n  url=\"${1:https://example.com/my/webhook/endpoint}\",\n  enabled_events=[\n    \"charge.failed\",\n    \"charge.succeeded\",\n  ],\n)",
-    "description": "Create Webhook Endpoint"
-  },
-  "Retrieve Webhook Endpoint": {
-    "prefix": "StripeWebhookEndpointRetrieve",
-    "body": "stripe.WebhookEndpoint.retrieve(\n  \"${1:we_xxxxxxxxxxxxx}\",\n)",
-    "description": "Retrieve Webhook Endpoint"
-  },
-  "Update Webhook Endpoint": {
-    "prefix": "StripeWebhookEndpointUpdate",
-    "body": "stripe.WebhookEndpoint.modify(\n  \"${1:we_xxxxxxxxxxxxx}\",\n  url=\"${2:https://example.com/new_endpoint}\",\n)",
-    "description": "Update Webhook Endpoint"
-  },
-  "List Webhook Endpoint": {
-    "prefix": "StripeWebhookEndpointList",
-    "body": "stripe.WebhookEndpoint.list(limit=${1:3})",
-    "description": "List Webhook Endpoint"
+    "description": "Create Webhook Endpoint",
+    "body": "stripe.WebhookEndpoint.create(\n  url=\"${1:https://example.com/my/webhook/endpoint}\",\n  enabled_events=[\n    \"charge.failed\",\n    \"charge.succeeded\",\n  ],\n)"
   },
   "Delete Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointDelete",
-    "body": "stripe.WebhookEndpoint.delete(\"${1:we_xxxxxxxxxxxxx}\")",
-    "description": "Delete Webhook Endpoint"
+    "description": "Delete Webhook Endpoint",
+    "body": "stripe.WebhookEndpoint.delete(\"${1:we_xxxxxxxxxxxxx}\")"
+  },
+  "List Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointList",
+    "description": "List Webhook Endpoint",
+    "body": "stripe.WebhookEndpoint.list(limit=${1:3})"
+  },
+  "Retrieve Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointRetrieve",
+    "description": "Retrieve Webhook Endpoint",
+    "body": "stripe.WebhookEndpoint.retrieve(\n  \"${1:we_xxxxxxxxxxxxx}\",\n)"
+  },
+  "Update Webhook Endpoint": {
+    "prefix": "StripeWebhookEndpointUpdate",
+    "description": "Update Webhook Endpoint",
+    "body": "stripe.WebhookEndpoint.modify(\n  \"${1:we_xxxxxxxxxxxxx}\",\n  url=\"${2:https://example.com/new_endpoint}\",\n)"
   }
 }
