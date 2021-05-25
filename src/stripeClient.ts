@@ -93,7 +93,7 @@ export class StripeClient {
       ...[actionText],
     );
     if (returnValue === actionText) {
-      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#install'));
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#upgrade'));
     }
   }
 
