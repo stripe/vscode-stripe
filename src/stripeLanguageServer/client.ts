@@ -60,17 +60,8 @@ export class StripeLanguageClient {
   ) {
     // TODO: replace this with real function that can find the executable
     const dotNetExecutable = '/usr/local/share/dotnet/dotnet';
-
-    // Replace this with the one that is packed into this extension.
-    // const serverAssembly = context.asAbsolutePath(
-    //   '/Users/gracegoo/stripe/dotnet/stripe-dotnet-language-server/bin/Debug/net5.0/stripe-dotnet-language-server.dll',
-    // );
-
-    // const serverAssembly =
-    //   '/Users/gracegoo/stripe/dotnet/stripe-dotnet-language-server/bin/Debug/net5.0/stripe-dotnet-language-server.dll';
-
     const serverAssembly = context.asAbsolutePath(
-      'src/stripeDotnetLanguageServer/bin/Debug/net5.0/stripe-dotnet-language-server.dll',
+      'src/stripeDotnetLanguageServer/bin/Debug/net5.0/stripe.LanguageServer.dll',
     );
     console.log(serverAssembly);
 
