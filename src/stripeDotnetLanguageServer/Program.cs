@@ -22,7 +22,7 @@ namespace stripe.LanguageServer
             // TODO -- don't save to fs? Can we pipe it directly to the vscode output console?
             Log.Logger = new LoggerConfiguration()
                         .Enrich.FromLogContext()
-                        .WriteTo.File("/tmp/stripe-dotnet-language-server-logs.txt", rollingInterval: RollingInterval.Day)
+                        .WriteTo.File("/tmp/stripe.LanguageServer-logs.txt", rollingInterval: RollingInterval.Day)
                         .MinimumLevel.Debug()
                         .CreateLogger();
 

@@ -17,7 +17,7 @@ dotnet run
 
 ## Debugging
 
-Log files are locally saved to /tmp/stripe-dotnet-language-server-logs[date].txt. Ex: /tmp/stripe-dotnet-language-server-logs20210520.txt
+Log files are locally saved to /tmp/stripe.LanguageServer-logs[date].txt. Ex: /tmp/stripe.LanguageServer-logs20210520.txt
 
 To run the language server end to end:
 
