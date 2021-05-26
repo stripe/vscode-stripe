@@ -52,8 +52,6 @@ namespace stripe.LanguageServer
 
         public override async Task<Hover> Handle(HoverParams request, CancellationToken cancellationToken)
         {
-
-            // Return null or empty hover?
             if (cancellationToken.IsCancellationRequested)
             {
                 _logger.LogDebug("Hover request canceled for file: {0}", request.TextDocument.Uri);
@@ -82,15 +80,6 @@ namespace stripe.LanguageServer
                     Value = $"See this method in the [Stripe API Reference]({url})"
                 })
             };
-
-            // if (hoverRanges == null || hoverRanges.Length == 0) return new Hover();
-
-            // HoverRange chosen = hoverRanges
-            //     .Where(hoverRange => hoverRange.Range.IsInside(request.Position))
-            //     .OrderBy(hoverRange => hoverRange.Range)
-            //     .FirstOrDefault();
-
-            // if (chosen == null) return new Hover();
         }
 
         /*
@@ -114,12 +103,10 @@ namespace stripe.LanguageServer
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
-            // TODO -- use position to get this.
             SourceText sourceText = await document.GetTextAsync(cancellationToken);
             int position = sourceText.Lines.GetPosition(new LinePosition(request.Position.Line, request.Position.Character));
             _logger.LogDebug("Postion: " + position);
 
-            // Option 2 - get details from compiled symbol.
             ISymbol hoverSymbol = await SymbolFinder.FindSymbolAtPositionAsync(
                 semanticModel, position, _workspaceManager.GetWorkspace(), cancellationToken);
             string type = hoverSymbol?.ContainingType?.ToString();
