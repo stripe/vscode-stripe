@@ -63,7 +63,6 @@ export class StripeLanguageClient {
     const serverAssembly = context.asAbsolutePath(
       'src/stripeDotnetLanguageServer/bin/Debug/net5.0/stripe.LanguageServer.dll',
     );
-    console.log(serverAssembly);
 
     const serverOptions: ServerOptions = {
       command: dotNetExecutable,

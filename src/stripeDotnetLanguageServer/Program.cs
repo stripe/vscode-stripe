@@ -41,10 +41,6 @@ namespace stripe.LanguageServer
 
             Log.Debug("Created project...");
 
-            // Check workspace
-            foreach (Document document in project.Documents)
-                Log.Debug("Document in project " + document.Name);
-
             Log.Debug("Starting language server from the VSCode repo!...");
             var server = await OmniSharp.Extensions.LanguageServer.Server.LanguageServer.From(options =>
                 options

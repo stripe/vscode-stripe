@@ -1,5 +1,15 @@
 ## My test dotnet project
 
+## Developing
+
+### C# Intellisense
+
+If you find that intellisense is not working in this directory, you may have to help the omnisharp extension out a bit due to our project having multiple workspace folders.
+
+1. Open the Command Palette
+1. Write "OmniSharp: Select Project" and press Enter.
+1. Choose stripeDotnetLanguageServer.sln
+
 ## Running
 
 ```
