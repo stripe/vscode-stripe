@@ -11,7 +11,8 @@
       "name": "Attach to Language Server",
       "port": 6009,
       "restart": true,
-      "outFiles": ["${workspaceRoot}/dist/stripeLanguageServer/**/*.js"]
+      "outFiles": ["${workspaceRoot}/dist/stripeLanguageServer/**/*.js"],
+      "preLaunchTask": "Build all",
     },
     {
       "name": "Run Extension",
