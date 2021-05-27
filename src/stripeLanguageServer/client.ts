@@ -18,7 +18,7 @@ export class StripeLanguageClient {
     serverOptions: ServerOptions,
     telemetry: Telemetry,
   ) {
-    const outputChannel = vscode.window.createOutputChannel('Stripe Lanaguage Client');
+    const outputChannel = vscode.window.createOutputChannel('Stripe Language Client');
     outputChannel.appendLine('Starting universal client');
     const universalClientOptions: LanguageClientOptions = {
       // Register the server for stripe-supported languages. dotnet is not yet supported.
@@ -92,7 +92,7 @@ export class StripeLanguageClient {
 
     // Create the language client and start the client.
     const dotnetClient = new LanguageClient(
-      'stripeCsharpLangaugeServer',
+      'stripeCsharpLanguageServer',
       'Stripe C# Server',
       serverOptions,
       clientOptions,

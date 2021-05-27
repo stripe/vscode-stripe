@@ -63,19 +63,7 @@ namespace stripe.LanguageServer
                                 {
                                     var loggerFactory = provider.GetService<ILoggerFactory>();
                                     var logger = loggerFactory.CreateLogger<WorkspaceManager>();
-                                    logger.LogInformation("Configuring");
                                     return new WorkspaceManager(logger, workspace);
-                                }
-                            );
-                            services.AddSingleton(
-                                new ConfigurationItem
-                                {
-                                    Section = "typescript",
-                                }
-                            ).AddSingleton(
-                                new ConfigurationItem
-                                {
-                                    Section = "terminal",
                                 }
                             );
                         }
