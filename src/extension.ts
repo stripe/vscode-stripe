@@ -45,7 +45,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   const stripeSamples = new StripeSamples(stripeCLIClient);
 
-  const stripeClient = new StripeClient(telemetry, context, stripeCLIClient);
+  const stripeClient = new StripeClient(telemetry, context);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {

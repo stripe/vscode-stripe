@@ -20,6 +20,45 @@ export class StripeSamples {
   }
 
   /**
+   * Show a menu with a list of Stripe samples, prompt for sample options, clone the sample, and
+   * prompt to open the sample.
+   */
+  selectAndCloneSample = async () => {
+    const selectedSample = await this.promptSample();
+    if (!selectedSample) {
+      return;
+    }
+
+    const selectedIntegration = await this.promptIntegration(selectedSample);
+    if (!selectedIntegration) {
+      return;
+    }
+
+    const selectedClient = await this.promptClient(selectedIntegration);
+    if (!selectedClient) {
+      return;
+    }
+
+    const selectedServer = await this.promptServer(selectedIntegration);
+    if (!selectedServer) {
+      return;
+    }
+
+    const clonePath = await this.promptPath(selectedSample);
+    if (!clonePath) {
+      return;
+    }
+
+    await this.createSample(
+      selectedSample.sampleData.name,
+      selectedIntegration.getIntegrationName(),
+      selectedServer,
+      selectedClient,
+      clonePath,
+    );
+  };
+
+  /**
    * Get a list of Stripe Samples items to show in a quick pick menu.
    */
   getQuickPickItems = async () => {
@@ -73,10 +112,7 @@ export class StripeSamples {
     });
   }
 
-  /**
-   * Show a menu with a list of Stripe Samples, clone the selected sample at a selected path, and open the sample.
-   */
-  selectAndCloneSample = async () => {
+  promptSample = async (): Promise<SampleQuickPickItem | undefined> => {
     let selectedSample: SampleQuickPickItem | undefined;
     try {
       selectedSample = await vscode.window.showQuickPick(this.getQuickPickItems(), {
@@ -87,60 +123,56 @@ export class StripeSamples {
       vscode.window.showErrorMessage(`Error fetching list of Stripe samples: ${e}`);
       return;
     }
-    if (!selectedSample) {
-      return;
-    }
+    return selectedSample;
+  };
 
+  promptIntegration = async (
+    sample: SampleQuickPickItem,
+  ): Promise<SampleConfigsResponse.Integration | undefined> => {
     let integrations: SampleConfigsResponse.Integration[] | undefined;
-
-    let selectedIntegrationName: string | undefined;
 
     const getIntegrationNames = async (sampleName: string) => {
       integrations = await this.getConfigsForSample(sampleName);
       return integrations.map((i) => i.getIntegrationName());
     };
 
+    let selectedIntegrationName: string | undefined;
     try {
       selectedIntegrationName = await vscode.window.showQuickPick(
-        await getIntegrationNames(selectedSample.sampleData.name),
+        await getIntegrationNames(sample.sampleData.name),
         {
           placeHolder: 'Select an integration',
         },
       );
     } catch (e) {
-      vscode.window.showErrorMessage(
-        `Error fetching configs for ${selectedSample.sampleData.name}: ${e}`,
-      );
+      vscode.window.showErrorMessage(`Error fetching configs for ${sample.sampleData.name}: ${e}`);
       return;
     }
+
     if (!integrations) {
       return;
     }
+
     if (!selectedIntegrationName) {
       return;
     }
 
-    const selectedIntegration = integrations.find(
-      (i) => i.getIntegrationName() === selectedIntegrationName,
-    );
-    if (!selectedIntegration) {
-      return;
-    }
+    return integrations.find((i) => i.getIntegrationName() === selectedIntegrationName);
+  };
 
-    const selectedClient = await vscode.window.showQuickPick(selectedIntegration.getClientsList(), {
+  promptClient = (integration: SampleConfigsResponse.Integration): Thenable<string | undefined> => {
+    return vscode.window.showQuickPick(integration.getClientsList(), {
       placeHolder: 'Select a client language',
     });
-    if (!selectedClient) {
-      return;
-    }
+  };
 
-    const selectedServer = await vscode.window.showQuickPick(selectedIntegration.getServersList(), {
+  promptServer = (integration: SampleConfigsResponse.Integration): Thenable<string | undefined> => {
+    return vscode.window.showQuickPick(integration.getServersList(), {
       placeHolder: 'Select a server language',
     });
-    if (!selectedServer) {
-      return;
-    }
+  };
 
+  promptPath = async (sample: SampleQuickPickItem): Promise<string | undefined> => {
     const cloneDirectoryUri = await vscode.window.showOpenDialog({
       canSelectFiles: false,
       canSelectFolders: true,
@@ -155,17 +187,24 @@ export class StripeSamples {
       return;
     }
 
-    const clonePath = path.resolve(
-      cloneDirectoryUri[0].fsPath,
-      selectedSample?.sampleData.name || 'testing',
-    );
+    const clonePath = path.resolve(cloneDirectoryUri[0].fsPath, sample.sampleData.name);
 
+    return clonePath;
+  };
+
+  createSample = async (
+    sampleName: string,
+    integrationName: string,
+    server: string,
+    client: string,
+    path: string,
+  ) => {
     const sampleCreateRequest = new SampleCreateRequest()
-      .setSampleName(selectedSample.sampleData.name)
-      .setIntegrationName(selectedIntegrationName)
-      .setServer(selectedServer)
-      .setClient(selectedClient)
-      .setPath(clonePath);
+      .setSampleName(sampleName)
+      .setIntegrationName(integrationName)
+      .setServer(server)
+      .setClient(client)
+      .setPath(path);
 
     try {
       const sampleCreateResponse = await new Promise<SampleCreateResponse>((resolve, reject) => {
@@ -193,12 +232,12 @@ export class StripeSamples {
 
       switch (selectedOption) {
         case openFolderOptions.sameWindow:
-          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(clonePath), {
+          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(path), {
             forceNewWindow: false,
           });
           break;
         case openFolderOptions.newWindow:
-          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(clonePath), {
+          await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(path), {
             forceNewWindow: true,
           });
           break;
