@@ -64,6 +64,10 @@ suite('stripeClient', () => {
           let statStub: sinon.SinonStub;
 
           setup(() => {
+            sandbox
+              .stub(vscode.workspace, 'getConfiguration')
+              .withArgs('stripe')
+              .returns(<any>{get: () => null});
             sandbox.stub(utils, 'getOSType').returns(os);
             realpathStub = sandbox
               .stub(fs.promises, 'realpath')
@@ -98,6 +102,10 @@ suite('stripeClient', () => {
       });
 
       test('prompts install when CLI is not installed', async () => {
+        sandbox
+          .stub(vscode.workspace, 'getConfiguration')
+          .withArgs('stripe')
+          .returns(<any>{get: () => null});
         sandbox.stub(fs.promises, 'stat').returns(Promise.resolve({isFile: () => false}));
         const executeCommandSpy = sandbox.stub(vscode.commands, 'executeCommand');
         const stripeClient = getStripeClient();
