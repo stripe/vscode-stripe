@@ -103,7 +103,7 @@ export class StripeClient {
   async promptUpdateForDaemon() {
     const actionText = 'Read instructions on how to update Stripe CLI';
     const returnValue = await vscode.window.showErrorMessage(
-      `This command requires ${MIN_CLI_VERSION_FOR_DAEMON} of the CLI for the best experience.`,
+      `This command requires ${MIN_CLI_VERSION_FOR_DAEMON} of the Stripe CLI.`,
       {},
       ...[actionText],
     );
