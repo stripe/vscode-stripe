@@ -1,8 +1,9 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {EventEmitter, Readable, Writable} from 'stream';
+import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../stripeClient';
-import {StripeDaemon} from '../../src//daemon/stripeDaemon';
+import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import execa from 'execa';
 import proxyquire from 'proxyquire';
 
@@ -36,7 +37,6 @@ suite('StripeDaemon', () => {
     daemonProcessStub.stderr = new Readable({read: () => {}});
     daemonProcessStub.kill = () => {};
 
-    // const execa = sandbox.stub().resolves(daemonProcessStub);
     const module = setupProxies({execa: () => daemonProcessStub});
     return new module.StripeDaemon(stripeClient);
   };
@@ -49,43 +49,18 @@ suite('StripeDaemon', () => {
     sandbox.restore();
   });
 
-  suite('getClient', () => {
-    test('prompts update if no daemon command', async () => {
+  suite('setupClient', () => {
+    test('returns a new client that connects to the daemon address', async () => {
       const stripeDaemon = getStripeDaemonWithExecaProxy(
-        'Unknown command "daemon"',
+        '{"host": "::1", "port": 12345}',
         <any>stripeClient,
       );
-      const promptSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
+
+      const constructorStub = sandbox.stub();
+      Object.setPrototypeOf(StripeCLIClient, constructorStub);
+
       await stripeDaemon.setupClient();
-      assert.strictEqual(promptSpy.calledOnce, true);
-    });
-  });
-
-  suite('startDaemon', () => {
-    test('reads config from stdout', async () => {
-      const stripeDaemon = getStripeDaemonWithExecaProxy(
-        '{"host": "::1", "port": 12345}',
-        <any>stripeClient,
-      );
-
-      const config = await stripeDaemon.startDaemon();
-      assert.strictEqual(config.host, '::1');
-      assert.strictEqual(config.port, 12345);
-    });
-
-    test('restarts daemon on the same port when it dies', async () => {
-      const stripeDaemon = getStripeDaemonWithExecaProxy(
-        '{"host": "::1", "port": 12345}',
-        <any>stripeClient,
-      );
-
-      const startDaemonSpy = sinon.spy(stripeDaemon, 'startDaemon');
-
-      await stripeDaemon.startDaemon();
-
-      daemonProcessStub.emit('exit');
-
-      assert.deepStrictEqual(startDaemonSpy.secondCall.args, [12345]);
+      assert.strictEqual(constructorStub.args[0][0], '[::1]:12345');
     });
 
     test('rejects with SyntaxError when stdout is invalid json', async () => {
@@ -93,12 +68,12 @@ suite('StripeDaemon', () => {
         'unexpected string from stripe daemon',
         <any>stripeClient,
       );
-      await assert.rejects(stripeDaemon.startDaemon(), SyntaxError);
+      await assert.rejects(stripeDaemon.setupClient(), SyntaxError);
     });
 
     test('rejects with MalformedConfigError when stdout is valid json but not a daemon config', async () => {
       const stripeDaemon = getStripeDaemonWithExecaProxy('{"foo": "bar"}', <any>stripeClient);
-      await assert.rejects(stripeDaemon.startDaemon(), {
+      await assert.rejects(stripeDaemon.setupClient(), {
         name: 'MalformedConfigError',
         message: 'Received malformed config from stripe daemon: {"foo":"bar"}',
       });
@@ -109,7 +84,7 @@ suite('StripeDaemon', () => {
         'Unknown command "daemon" for "stripe".',
         <any>stripeClient,
       );
-      await assert.rejects(stripeDaemon.startDaemon(), {
+      await assert.rejects(stripeDaemon.setupClient(), {
         name: 'NoDaemonCommandError',
         message: 'Daemon is not available with this CLI version',
       });
