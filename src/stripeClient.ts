@@ -15,6 +15,9 @@ const compareVersions = require('compare-versions');
 // The recommended minimum version of the CLI needed to get the full features of this extension.
 const MIN_CLI_VERSION = 'v1.5.13';
 
+// The minimum version for of the CLI to that has the `stripe daemon` command.
+const MIN_CLI_VERSION_FOR_DAEMON = 'v1.6.0';
+
 export enum CLICommand {
   LogsTail,
   Listen,
@@ -89,6 +92,18 @@ export class StripeClient {
     const actionText = 'Read instructions on how to update Stripe CLI';
     const returnValue = await vscode.window.showErrorMessage(
       'We recommend being on at least ' + MIN_CLI_VERSION + ' of the CLI for the best experience.',
+      {},
+      ...[actionText],
+    );
+    if (returnValue === actionText) {
+      vscode.env.openExternal(vscode.Uri.parse('https://stripe.com/docs/stripe-cli#upgrade'));
+    }
+  }
+
+  async promptUpdateForDaemon() {
+    const actionText = 'Read instructions on how to update Stripe CLI';
+    const returnValue = await vscode.window.showErrorMessage(
+      `This command requires ${MIN_CLI_VERSION_FOR_DAEMON} of the Stripe CLI.`,
       {},
       ...[actionText],
     );
