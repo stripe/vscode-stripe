@@ -39,8 +39,7 @@ export class StripeDaemon {
    * exist.
    *
    * Get a gRPC client connected to a Stripe daemon gRPC server. If the server doesn't already
-   * exist, start a new one and return a new client. If there is no daemon command, prompt the user
-   * to upgrade their CLI.
+   * exist, start a new one and return a new client.
    */
   setupClient = async (): Promise<StripeCLIClient> => {
     // If there is no daemon process or config, restart everything and return a new client
