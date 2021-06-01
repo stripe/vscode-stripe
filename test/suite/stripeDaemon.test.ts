@@ -17,6 +17,7 @@ suite('StripeDaemon', () => {
 
   const stripeClient = <Partial<StripeClient>>{
     getCLIPath: () => Promise.resolve('/path/to/cli'),
+    promptUpdateForDaemon: () => {},
   };
 
   // Get an instance of StripeDaemon with the mocked execa module
@@ -46,6 +47,18 @@ suite('StripeDaemon', () => {
 
   teardown(() => {
     sandbox.restore();
+  });
+
+  suite('getClient', () => {
+    test('prompts update if no daemon command', async () => {
+      const stripeDaemon = getStripeDaemonWithExecaProxy(
+        'Unknown command "daemon"',
+        <any>stripeClient,
+      );
+      const promptSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
+      await stripeDaemon.setupClient();
+      assert.strictEqual(promptSpy.calledOnce, true);
+    });
   });
 
   suite('startDaemon', () => {

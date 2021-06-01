@@ -35,30 +35,40 @@ export class StripeDaemon {
 
   /**
    * Get a gRPC client connected to a Stripe daemon gRPC server. If the server doesn't already
-   * exist, start a new one and return a new client. Throws MalformedConfigError,
-   * NoDaemonCommandError, or SyntaxError if the server can't be started.
+   * exist, start a new one and return a new client. If there is no daemon command, prompt the user
+   * to upgrade their CLI.
    */
-  getClient = async (): Promise<StripeCLIClient> => {
-    // If there is no daemon process or config, restart everything and return a new client
-    if (!this.config || !this.daemonProcess) {
-      this.stripeCLIClient?.close();
-      this.config = await this.restartDaemon();
-      const address = `[${this.config.host}]:${this.config.port}`;
-      return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
-        interceptors: [authOutboundInterceptor, errorInboundInterceptor],
-      });
-    }
+  setupClient = async (): Promise<StripeCLIClient | null> => {
+    try {
+      // If there is no daemon process or config, restart everything and return a new client
+      if (!this.config || !this.daemonProcess) {
+        this.stripeCLIClient?.close();
+        this.config = await this.restartDaemon();
+        const address = `[${this.config.host}]:${this.config.port}`;
+        return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
+          interceptors: [authOutboundInterceptor, errorInboundInterceptor],
+        });
+      }
 
-    // If the daemon exists but there is no client, return a new client
-    if (!this.stripeCLIClient) {
-      const address = `[${this.config.host}]:${this.config.port}`;
-      return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
-        interceptors: [authOutboundInterceptor, errorInboundInterceptor],
-      });
-    }
+      // If the daemon exists but there is no client, return a new client
+      if (!this.stripeCLIClient) {
+        const address = `[${this.config.host}]:${this.config.port}`;
+        return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
+          interceptors: [authOutboundInterceptor, errorInboundInterceptor],
+        });
+      }
 
-    // Daemon and client exist, so return the client
-    return this.stripeCLIClient;
+      // Daemon and client exist, so return the client
+      return this.stripeCLIClient;
+    } catch (e) {
+      if (e.name === 'NoDaemonCommandError') {
+        this.stripeClient.promptUpdateForDaemon();
+      } else {
+        vscode.window.showErrorMessage(e.message);
+      }
+      console.error(e);
+      return null;
+    }
   };
 
   /**
