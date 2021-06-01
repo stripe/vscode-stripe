@@ -4,6 +4,7 @@ import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
+import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
@@ -16,8 +17,6 @@ import {StripeSamples} from './stripeSamples';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
-import {VersionRequest} from './rpc/version_pb';
-import {createStripeCLIClient} from './stripeGRPCClient';
 import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
 
@@ -33,19 +32,9 @@ export function activate(this: any, context: ExtensionContext) {
 
   const stripeOutputChannel = window.createOutputChannel('Stripe');
 
-  const stripeCLIClient = createStripeCLIClient();
-
-  stripeCLIClient.version(new VersionRequest(), (error, response) => {
-    if (error) {
-      console.log('error here', error);
-    } else {
-      console.log('got version', response.getVersion());
-    }
-  });
-
-  const stripeSamples = new StripeSamples(stripeCLIClient);
-
   const stripeClient = new StripeClient(telemetry, context);
+  const stripeDaemon = new StripeDaemon(stripeClient);
+  const stripeSamples = new StripeSamples(stripeClient, stripeDaemon);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {
