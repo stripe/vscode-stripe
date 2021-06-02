@@ -88,7 +88,7 @@ export class StripeSamples {
       if ((e as grpc.ServiceError).code === grpc.status.UNAUTHENTICATED) {
         this.stripeClient.promptLogin();
       } else {
-        vscode.window.showErrorMessage(e.message);
+        vscode.window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
       }
       console.error(e);
     }
@@ -155,15 +155,10 @@ export class StripeSamples {
    * Ask for which sample to clone.
    */
   private promptSample = async (): Promise<SampleQuickPickItem | undefined> => {
-    let selectedSample: SampleQuickPickItem | undefined;
-    try {
-      selectedSample = await vscode.window.showQuickPick(this.getQuickPickItems(), {
-        matchOnDetail: true,
-        placeHolder: 'Select a sample to clone',
-      });
-    } catch (e) {
-      throw new Error(`Error fetching list of Stripe samples: ${e.message}`);
-    }
+    const selectedSample = await vscode.window.showQuickPick(this.getQuickPickItems(), {
+      matchOnDetail: true,
+      placeHolder: 'Select a sample to clone',
+    });
     return selectedSample;
   };
 
@@ -180,17 +175,12 @@ export class StripeSamples {
       return integrations.map((i) => i.getIntegrationName());
     };
 
-    let selectedIntegrationName: string | undefined;
-    try {
-      selectedIntegrationName = await vscode.window.showQuickPick(
-        await getIntegrationNames(sample.sampleData.name),
-        {
-          placeHolder: 'Select an integration',
-        },
-      );
-    } catch (e) {
-      throw new Error(`Error fetching configs for ${sample.sampleData.name}: ${e.message}`);
-    }
+    const selectedIntegrationName = await vscode.window.showQuickPick(
+      await getIntegrationNames(sample.sampleData.name),
+      {
+        placeHolder: 'Select an integration',
+      },
+    );
 
     if (!integrations) {
       return;
