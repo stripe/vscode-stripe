@@ -23,19 +23,46 @@ suite('StripeSamples', function () {
     promptLogin: () => {},
   };
 
+  // Mock gRPC server responses
   const daemonClient = <Partial<StripeCLIClient>>{
     samplesList: (
       req: SamplesListRequest,
       callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-    ) => {},
+    ) => {
+      const sampleData = new SamplesListResponse.SampleData();
+      sampleData.setName('accept-a-payment');
+      sampleData.setDescription('Learn how to accept a payment');
+      sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
+
+      const response = new SamplesListResponse();
+      response.setSamplesList([sampleData]);
+
+      callback(null, response);
+    },
     sampleConfigs: (
       req: SampleConfigsRequest,
       callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
-    ) => {},
+    ) => {
+      const integration = new SampleConfigsResponse.Integration();
+      integration.setIntegrationName('using-webhooks');
+      integration.setClientsList(['html', 'react']);
+      integration.setServersList(['node', 'ruby']);
+
+      const response = new SampleConfigsResponse();
+      response.setIntegrationsList([integration]);
+
+      callback(null, response);
+    },
     sampleCreate: (
       req: SampleCreateRequest,
       callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-    ) => {},
+    ) => {
+      const response = new SampleCreateResponse();
+      response.setPath('/foo/bar');
+      response.setPostInstall('a post install message');
+
+      callback(null, response);
+    },
   };
 
   const stripeDaemon = <Partial<StripeDaemon>>{
@@ -53,62 +80,7 @@ suite('StripeSamples', function () {
   suite('selectAndCloneSample', () => {
     suite('success', () => {
       test('prompts for sample config, clones, and opens sample', async () => {
-        // Mock gRPC server
-        sandbox
-          .stub(daemonClient, 'samplesList')
-          .value(
-            (
-              req: SamplesListRequest,
-              callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-            ) => {
-              const sampleData = new SamplesListResponse.SampleData();
-              sampleData.setName('accept-a-payment');
-              sampleData.setDescription('Learn how to accept a payment');
-              sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
-
-              const response = new SamplesListResponse();
-              response.setSamplesList([sampleData]);
-
-              callback(null, response);
-            },
-          );
-
-        sandbox
-          .stub(daemonClient, 'sampleConfigs')
-          .value(
-            (
-              req: SampleConfigsRequest,
-              callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
-            ) => {
-              const integration = new SampleConfigsResponse.Integration();
-              integration.setIntegrationName('using-webhooks');
-              integration.setClientsList(['html', 'react']);
-              integration.setServersList(['node', 'ruby']);
-
-              const response = new SampleConfigsResponse();
-              response.setIntegrationsList([integration]);
-
-              callback(null, response);
-            },
-          );
-
-        sandbox
-          .stub(daemonClient, 'sampleCreate')
-          .value(
-            (
-              req: SampleCreateRequest,
-              callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-            ) => {
-              const response = new SampleCreateResponse();
-              response.setPath('/foo/bar');
-              response.setPostInstall('a post install message');
-
-              callback(null, response);
-            },
-          );
-
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-
         const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
         const showOpenDialogStub = sandbox
           .stub(vscode.window, 'showOpenDialog')
@@ -119,25 +91,7 @@ suite('StripeSamples', function () {
 
         stripeSamples.selectAndCloneSample();
 
-        // Simulate select sample
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select integration
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select client
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select server
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select path
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+        await simulateSelectAll();
 
         assert.strictEqual(showQuickPickSpy.callCount, 4);
         assert.strictEqual(showOpenDialogStub.callCount, 1);
@@ -145,44 +99,11 @@ suite('StripeSamples', function () {
       });
 
       test('shows special post install message if API keys could not be set', async () => {
-        // Mock gRPC server
-        sandbox
-          .stub(daemonClient, 'samplesList')
-          .value(
-            (
-              req: SamplesListRequest,
-              callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-            ) => {
-              const sampleData = new SamplesListResponse.SampleData();
-              sampleData.setName('accept-a-payment');
-              sampleData.setDescription('Learn how to accept a payment');
-              sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
-
-              const response = new SamplesListResponse();
-              response.setSamplesList([sampleData]);
-
-              callback(null, response);
-            },
-          );
-
-        sandbox
-          .stub(daemonClient, 'sampleConfigs')
-          .value(
-            (
-              req: SampleConfigsRequest,
-              callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
-            ) => {
-              const integration = new SampleConfigsResponse.Integration();
-              integration.setIntegrationName('using-webhooks');
-              integration.setClientsList(['html', 'react']);
-              integration.setServersList(['node', 'ruby']);
-
-              const response = new SampleConfigsResponse();
-              response.setIntegrationsList([integration]);
-
-              callback(null, response);
-            },
-          );
+        // Simulate the special error response from the gRPC server
+        const err: Partial<grpc.ServiceError> = {
+          code: grpc.status.UNKNOWN,
+          details: 'we could not set',
+        };
 
         sandbox
           .stub(daemonClient, 'sampleCreate')
@@ -191,43 +112,19 @@ suite('StripeSamples', function () {
               req: SampleCreateRequest,
               callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
             ) => {
-              const err: Partial<grpc.ServiceError> = {
-                code: grpc.status.UNKNOWN,
-                details: 'we could not set',
-              };
               callback(<any>err, new SampleCreateResponse());
             },
           );
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-
         const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
 
-        // Simulate select sample
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select integration
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select client
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select server
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-        // Simulate select path
-        await sleep(500);
-        await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+        await simulateSelectAll();
 
         assert.deepStrictEqual(
           showInformationMessageSpy.args[0][0],
@@ -250,7 +147,11 @@ suite('StripeSamples', function () {
       });
 
       test('shows error message when any other error occurs', async () => {
-        // Mock gRPC server
+        const err: Partial<grpc.ServiceError> = {
+          code: grpc.status.UNKNOWN,
+          details: 'An unknown error occurred',
+        };
+
         sandbox
           .stub(daemonClient, 'samplesList')
           .value(
@@ -258,15 +159,11 @@ suite('StripeSamples', function () {
               req: SamplesListRequest,
               callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
             ) => {
-              const err: Partial<grpc.ServiceError> = {
-                code: grpc.status.UNKNOWN,
-              };
               callback(<any>err, new SamplesListResponse());
             },
           );
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-
         const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
@@ -278,3 +175,28 @@ suite('StripeSamples', function () {
     });
   });
 });
+
+/**
+ * Simulate a user interaction with each of the menus.
+ */
+async function simulateSelectAll() {
+  // Simulate select sample
+  await sleep(500);
+  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  // Simulate select integration
+  await sleep(500);
+  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  // Simulate select client
+  await sleep(500);
+  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  // Simulate select server
+  await sleep(500);
+  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  // Simulate select path
+  await sleep(500);
+  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+}
