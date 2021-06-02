@@ -164,24 +164,16 @@ export class StripeSamples {
   private promptIntegration = async (
     sample: SampleQuickPickItem,
   ): Promise<SampleConfigsResponse.Integration | undefined> => {
-    let integrations: SampleConfigsResponse.Integration[] | undefined;
-
-    const getIntegrationNames = async (sampleName: string) => {
-      integrations = await this.getConfigsForSample(sampleName);
-      return integrations.map((i) => i.getIntegrationName());
-    };
-
-    const selectedIntegrationName = await vscode.window.showQuickPick(
-      await getIntegrationNames(sample.sampleData.name),
-      {
-        placeHolder: 'Select an integration',
-      },
-    );
-
+    const integrations = await this.getConfigsForSample(sample.sampleData.name);
     if (!integrations) {
       return;
     }
 
+    const integrationNames = integrations.map((i) => i.getIntegrationName());
+
+    const selectedIntegrationName = await vscode.window.showQuickPick(integrationNames, {
+      placeHolder: 'Select an integration',
+    });
     if (!selectedIntegrationName) {
       return;
     }
