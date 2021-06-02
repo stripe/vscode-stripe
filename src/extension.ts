@@ -4,7 +4,7 @@ import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
-import {StripeDashboardViewProvider} from './stripeDashboardView';
+import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
@@ -12,6 +12,8 @@ import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsViewProvider} from './stripeLogsView';
+import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
+import {StripeSamples} from './stripeSamples';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
@@ -31,6 +33,8 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeOutputChannel = window.createOutputChannel('Stripe');
 
   const stripeClient = new StripeClient(telemetry, context);
+  const stripeDaemon = new StripeDaemon(stripeClient);
+  const stripeSamples = new StripeSamples(stripeClient, stripeDaemon);
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
   window.createTreeView('stripeEventsView', {
@@ -44,8 +48,8 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  window.createTreeView('stripeDashboardView', {
-    treeDataProvider: new StripeDashboardViewProvider(),
+  window.createTreeView('stripeQuickLinksView', {
+    treeDataProvider: new StripeQuickLinksViewProvider(),
     showCollapseAll: false,
   });
 
@@ -89,6 +93,7 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeCommands = new Commands(telemetry, stripeTerminal, context);
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
+    ['stripe.createStripeSample', () => stripeCommands.createStripeSample(stripeSamples)],
     ['stripe.login', stripeCommands.startLogin],
     ['stripe.openCLI', stripeCommands.openCLI],
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],

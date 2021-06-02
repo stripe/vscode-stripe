@@ -36,8 +36,9 @@
     "onDebug",
     "onView:stripeEventsView",
     "onView:stripeLogsView",
-    "onView:stripeDashboardView",
+    "onView:stripeQuickLinksView",
     "onView:stripeHelpView",
+    "onCommand:stripe.createStripeSample",
     "onCommand:stripe.login",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
@@ -90,6 +91,11 @@
       }
     },
     "commands": [
+      {
+        "category": "Stripe",
+        "command": "stripe.createStripeSample",
+        "title": "Clone a sample integration built by Stripe"
+      },
       {
         "category": "Stripe",
         "command": "stripe.openWebhooksListen",
@@ -226,8 +232,8 @@
           "when": "stripe.isNotCLIInstalled == false"
         },
         {
-          "id": "stripeDashboardView",
-          "name": "Dashboard"
+          "id": "stripeQuickLinksView",
+          "name": "Quick Links"
         },
         {
           "id": "stripeHelpView",

@@ -2,9 +2,17 @@ import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import {ThemeIcon} from 'vscode';
 
-export class StripeDashboardViewProvider extends StripeTreeViewDataProvider {
+export class StripeQuickLinksViewProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
+
+    const samplesItem = new StripeTreeItem('Start with a Stripe Sample', {
+      commandString: 'createStripeSample',
+      iconPath: new ThemeIcon('repo-clone'),
+      tooltip: 'Clone a sample integration built by Stripe',
+    });
+
+    items.push(samplesItem);
 
     const apiKeysItem = new StripeTreeItem('Open API keys page', {
       commandString: 'openDashboardApikeys',
