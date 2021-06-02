@@ -93,6 +93,7 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeCommands = new Commands(telemetry, stripeTerminal, context);
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
+    ['stripe.createStripeSample', () => stripeCommands.createStripeSample(stripeSamples)],
     ['stripe.login', stripeCommands.startLogin],
     ['stripe.openCLI', stripeCommands.openCLI],
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
@@ -109,7 +110,6 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
     ['stripe.openSamples', stripeCommands.openSamples],
-    ['stripe.openStripeSample', () => stripeCommands.openStripeSample(stripeSamples)],
     ['stripe.openSurvey', () => stripeCommands.openSurvey(surveyPrompt)],
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
     [

@@ -7,7 +7,7 @@ export class StripeQuickLinksViewProvider extends StripeTreeViewDataProvider {
     const items = [];
 
     const samplesItem = new StripeTreeItem('Start with a Stripe Sample', {
-      commandString: 'openStripeSample',
+      commandString: 'createStripeSample',
       iconPath: new ThemeIcon('repo-clone'),
       tooltip: 'Clone a sample integration built by Stripe',
     });

@@ -357,8 +357,8 @@ export class Commands {
     this.terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
   };
 
-  openStripeSample = async (stripeSamples: StripeSamples) => {
-    this.telemetry.sendEvent('openStripeSample');
+  createStripeSample = async (stripeSamples: StripeSamples) => {
+    this.telemetry.sendEvent('createStripeSample');
     await stripeSamples.selectAndCloneSample();
   };
 }
