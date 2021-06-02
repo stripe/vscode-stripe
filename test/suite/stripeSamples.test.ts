@@ -231,7 +231,7 @@ suite('StripeSamples', function () {
 
         assert.deepStrictEqual(
           showInformationMessageSpy.args[0][0],
-          'We could not set the API keys in the .env file; please set them manually.',
+          'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.',
         );
       });
     });
