@@ -280,7 +280,7 @@ export class StripeSamples {
     };
 
     const selectedOption = await vscode.window.showInformationMessage(
-      postInstallMessage || 'Successfully created sample',
+      postInstallMessage || 'Successfully created sample.',
       {modal: true},
       ...Object.values(openFolderOptions),
     );
