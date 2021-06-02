@@ -1,4 +1,3 @@
-import * as grpc from '@grpc/grpc-js';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
@@ -81,16 +80,13 @@ export class StripeSamples {
         clonePath,
       );
 
-      const postInstallMessage = sampleCreateResponse.getPostInstall();
+      const postInstallMessage = sampleCreateResponse
+        ? sampleCreateResponse.getPostInstall()
+        : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
 
       await this.promptOpenFolder(postInstallMessage, clonePath);
     } catch (e) {
-      if ((e as grpc.ServiceError).code === grpc.status.UNAUTHENTICATED) {
-        this.stripeClient.promptLogin();
-      } else {
-        vscode.window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
-      }
-      console.error(e);
+      vscode.window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
   };
 
@@ -247,7 +243,7 @@ export class StripeSamples {
     server: string,
     client: string,
     path: string,
-  ): Promise<SampleCreateResponse> => {
+  ): Promise<SampleCreateResponse | null> => {
     const sampleCreateRequest = new SampleCreateRequest();
     sampleCreateRequest.setSampleName(sampleName);
     sampleCreateRequest.setIntegrationName(integrationName);
@@ -255,19 +251,22 @@ export class StripeSamples {
     sampleCreateRequest.setClient(client);
     sampleCreateRequest.setPath(path);
 
-    try {
-      return new Promise<SampleCreateResponse>((resolve, reject) => {
-        this.daemonClient?.sampleCreate(sampleCreateRequest, (error, response) => {
-          if (error) {
+    return new Promise<SampleCreateResponse | null>((resolve, reject) => {
+      this.daemonClient?.sampleCreate(sampleCreateRequest, (error, response) => {
+        if (error) {
+          // The error message that starts with 'we could not set...' is a special case that we want to
+          // handle differently. Unfortunately, the server does not distinguish this error from other
+          // ones, so we have to do our own handling.
+          if (error.details.startsWith('we could not set')) {
+            resolve(null);
+          } else {
             reject(error);
-          } else if (response) {
-            resolve(response);
           }
-        });
+        } else if (response) {
+          resolve(response);
+        }
       });
-    } catch (e) {
-      throw new Error(`Failed to create Stripe Sample: ${e.message}`);
-    }
+    });
   };
 
   /**
