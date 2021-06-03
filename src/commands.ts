@@ -128,13 +128,18 @@ export class Commands {
     }
 
     const skipVerify = await (async () => {
-      if ([forwardTo, forwardConnectTo].some((url) => url.startsWith('https'))) {
-        const selected = await vscode.window.showQuickPick(['Yes', 'No'], {
-          placeHolder: 'Skip SSL certificate verification?',
-        });
-        return selected === 'Yes';
+      if (options.skipVerify !== undefined) {
+        return options.skipVerify;
       }
-      return false;
+
+      if (![forwardTo, forwardConnectTo].some((url) => url.startsWith('https'))) {
+        return false;
+      }
+
+      const selected = await vscode.window.showQuickPick(['Yes', 'No'], {
+        placeHolder: 'Skip SSL certificate verification?',
+      });
+      return selected === 'Yes';
     })();
 
     if (Array.isArray(options?.events)) {

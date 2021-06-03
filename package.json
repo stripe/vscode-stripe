@@ -331,6 +331,11 @@
                 "type": "array",
                 "markdownDescription": "An array of specific events to listen for. For a list of all possible events, see: https://stripe.com/docs/api/events/types (default: listen for all events)",
                 "default": []
+              },
+              "skipVerify": {
+                "type": "boolean",
+                "description": "Skip certificate verification when forwarding to HTTPS endpoints",
+                "default": false
               }
             }
           }
