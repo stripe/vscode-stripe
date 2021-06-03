@@ -1,13 +1,13 @@
-import {CLICommand, StripeClient} from './stripeClient';
+import * as grpc from '@grpc/grpc-js';
 import {ThemeIcon, window} from 'vscode';
-import {ChildProcess} from 'child_process';
-import {LineStream} from 'byline';
+import {Message} from 'google-protobuf';
+import {StripeClient} from './stripeClient';
+import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
 import {debounce} from './utils';
-import stream from 'stream';
 
-enum ViewState {
+export enum ViewState {
   Idle,
   Loading,
   Streaming,
@@ -18,21 +18,20 @@ const REFRESH_DEBOUNCE_MILLIS = 1000;
 /**
  * This is an abstract class for TreeViews with streaming tree items.
  */
-export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvider {
+export abstract class StreamingViewDataProvider<
+  Res extends Message,
+> extends StripeTreeViewDataProvider {
   protected stripeClient: StripeClient;
+  protected stripeDaemon: StripeDaemon;
   protected streamingTreeItems: StripeTreeItem[];
-  private streamCommand: CLICommand;
+  private readableStream?: grpc.ClientReadableStream<Res>;
   private viewState: ViewState;
-  private stdoutStream: stream.Writable | null;
-  private stderrStream: stream.Writable | null;
 
-  constructor(stripeClient: StripeClient, streamCommand: CLICommand) {
+  constructor(stripeClient: StripeClient, stripeDaemon: StripeDaemon) {
     super();
     this.stripeClient = stripeClient;
-    this.streamCommand = streamCommand;
+    this.stripeDaemon = stripeDaemon;
     this.streamingTreeItems = [];
-    this.stdoutStream = null;
-    this.stderrStream = null;
     this.viewState = ViewState.Idle;
   }
 
@@ -106,75 +105,49 @@ export abstract class StreamingViewDataProvider extends StripeTreeViewDataProvid
   }
 
   private async setupStreams() {
-    const tailProcess = await this.createStreamProcess();
-    tailProcess.on('exit', this.stopStreaming);
+    this.readableStream = await this.createReadableStream();
 
-    if (!this.stderrStream) {
-      this.stderrStream = new stream.Writable({
-        write: (chunk, _, callback) => {
-          if (this.streamReady(chunk)) {
-            this.setViewState(ViewState.Streaming);
-          } else if (!this.streamLoading(chunk)) {
-            window.showErrorMessage(chunk);
-            this.stopStreaming();
-          }
-          callback();
-        },
-        decodeStrings: false,
-      });
-      tailProcess.stderr.setEncoding('utf8').pipe(new LineStream()).pipe(this.stderrStream);
-    }
+    this.readableStream.on('exit', this.stopStreaming);
 
-    if (!this.stdoutStream) {
-      this.stdoutStream = new stream.Writable({
-        write: (chunk, _, callback) => {
-          try {
-            const object = this.createStreamTreeItem(chunk);
-            if (object) {
-              this.insertItem(object);
-            }
-          } catch {}
-          callback();
-        },
-        decodeStrings: false,
-      });
-      tailProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(this.stdoutStream);
-    }
+    this.readableStream.on('error', (err: grpc.ServiceError) => {
+      switch (err.code) {
+        case grpc.status.UNAUTHENTICATED:
+          this.stripeClient.promptLogin();
+          break;
+        case grpc.status.CANCELLED:
+          // noop
+          break;
+        default:
+          window.showErrorMessage(err.message);
+          break;
+      }
+      this.stopStreaming();
+    });
+
+    this.readableStream.on('data', this.handleData);
   }
 
-  // Tell us how to start the process
-  abstract createStreamProcess(): Promise<ChildProcess>;
+  // Tell us how to create the readable stream
+  abstract createReadableStream(): Promise<grpc.ClientReadableStream<Res>>;
 
-  // Tell us how we can tell when the process is ready
-  abstract streamReady(chunk: any): boolean;
+  // Tell us how to handle response from the Stripe daemon
+  abstract handleData: (res: Res) => void;
 
-  // Tell us how we can tell if the stream is still loading
-  abstract streamLoading(chunk: any): boolean;
-
-  // Tell us how to process the chunk into a tree item.
-  abstract createStreamTreeItem(chunk: any): StripeTreeItem | null;
-
-  private cleanupStreams = () => {
-    if (this.stdoutStream) {
-      this.stdoutStream.destroy();
-      this.stdoutStream = null;
-    }
-    if (this.stderrStream) {
-      this.stderrStream.destroy();
-      this.stderrStream = null;
-    }
-    this.stripeClient.endCLIProcess(this.streamCommand);
-  };
-
-  private debouncedRefresh = debounce(this.refresh.bind(this), REFRESH_DEBOUNCE_MILLIS);
-
-  private insertItem = (treeItem: StripeTreeItem) => {
+  protected insertItem = (treeItem: StripeTreeItem) => {
     this.streamingTreeItems.unshift(treeItem);
     this.debouncedRefresh();
   };
 
-  private setViewState(viewState: ViewState) {
+  protected setViewState(viewState: ViewState) {
     this.viewState = viewState;
     this.refresh();
   }
+
+  private cleanupStreams = () => {
+    this.readableStream?.cancel();
+    this.readableStream?.destroy();
+    this.readableStream = undefined;
+  };
+
+  private debouncedRefresh = debounce(this.refresh.bind(this), REFRESH_DEBOUNCE_MILLIS);
 }

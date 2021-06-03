@@ -19,16 +19,10 @@ const MIN_CLI_VERSION = 'v1.5.13';
 const MIN_CLI_VERSION_FOR_DAEMON = 'v1.6.0';
 
 export enum CLICommand {
-  LogsTail,
-  Listen,
   Trigger,
 }
 
-const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([
-  [CLICommand.LogsTail, ['logs', 'tail']],
-  [CLICommand.Listen, ['listen']],
-  [CLICommand.Trigger, ['trigger']],
-]);
+const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([[CLICommand.Trigger, ['trigger']]]);
 
 export class StripeClient {
   telemetry: Telemetry;

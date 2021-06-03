@@ -36,13 +36,17 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeDaemon = new StripeDaemon(stripeClient);
   const stripeSamples = new StripeSamples(stripeClient, stripeDaemon);
 
-  const stripeEventsViewProvider = new StripeEventsViewProvider(stripeClient, context);
+  const stripeEventsViewProvider = new StripeEventsViewProvider(
+    stripeClient,
+    stripeDaemon,
+    context,
+  );
   window.createTreeView('stripeEventsView', {
     treeDataProvider: stripeEventsViewProvider,
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient);
+  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
