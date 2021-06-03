@@ -13,8 +13,12 @@ import {Git} from './git';
 
 import {Telemetry} from './telemetry';
 
+/**
+ * Stripe returns redacted API keys in the form of sk_live_aa********************1234, so don't match unless there are
+ * at least three unredacted characters of the body of the API key.
+ */
 const stripeKeysRegex = new RegExp(
-  '(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]+',
+  '(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]{2}[a-zA-Z0-9]+',
   'g',
 );
 const diagnosticMessageNoGit =
@@ -22,9 +26,8 @@ const diagnosticMessageNoGit =
 const diagnosticMessageGit =
   'This Stripe API Key is in a file not ignored by git. For better security, consider using a .env file. See https://stripe.com/docs/keys#safe-keys for more advice.';
 
-const diagnosticCollection: DiagnosticCollection = languages.createDiagnosticCollection(
-  'StripeHardCodedAPIKeys',
-);
+const diagnosticCollection: DiagnosticCollection =
+  languages.createDiagnosticCollection('StripeHardCodedAPIKeys');
 
 export class StripeLinter {
   telemetry: Telemetry;
@@ -56,7 +59,7 @@ export class StripeLinter {
     performance.mark('ignore-end');
     performance.measure('ignore', 'ignore-start', 'ignore-end');
 
-    if (isIgnored) {
+    if (isIgnored || document.fileName.endsWith('.env')) {
       diagnosticCollection.delete(document.uri);
       return;
     }
@@ -76,24 +79,26 @@ export class StripeLinter {
 
   // prepareAPIKeyDiagnostics regex matches all instances of a Stripe API Key in a supplied line of text
   // will return a list of Diagnostics pointing at instances of the Stripe API Keys it found
-  prepareLineDiagnostics = (message: string) => (line: string, index: number): Diagnostic[] => {
-    const diagnostics: Diagnostic[] = [];
+  prepareLineDiagnostics =
+    (message: string) =>
+    (line: string, index: number): Diagnostic[] => {
+      const diagnostics: Diagnostic[] = [];
 
-    let match;
-    while ((match = stripeKeysRegex.exec(line)) !== null) {
-      const severity = /sk_live/.test(match[0])
-        ? DiagnosticSeverity.Error
-        : DiagnosticSeverity.Warning;
+      let match;
+      while ((match = stripeKeysRegex.exec(line)) !== null) {
+        const severity = /sk_live/.test(match[0])
+          ? DiagnosticSeverity.Error
+          : DiagnosticSeverity.Warning;
 
-      // specify line and character range to draw the squiggly line under the API Key in the document
-      const range = new Range(index, match.index, index, match.index + match[0].length);
-      // create new diagnostic and add to the list of total diagnostics for this line of code
-      const diagnostic = new Diagnostic(range, message, severity);
+        // specify line and character range to draw the squiggly line under the API Key in the document
+        const range = new Range(index, match.index, index, match.index + match[0].length);
+        // create new diagnostic and add to the list of total diagnostics for this line of code
+        const diagnostic = new Diagnostic(range, message, severity);
 
-      this.telemetry.sendEvent('diagnostics.show', severity);
-      diagnostics.push(diagnostic);
-    }
+        this.telemetry.sendEvent('diagnostics.show', severity);
+        diagnostics.push(diagnostic);
+      }
 
-    return diagnostics;
-  };
+      return diagnostics;
+    };
 }
