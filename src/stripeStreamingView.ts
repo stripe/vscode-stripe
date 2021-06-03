@@ -106,29 +106,32 @@ export abstract class StreamingViewDataProvider<
 
   private async setupStreams() {
     this.readableStream = await this.createReadableStream();
+    if (!this.readableStream) {
+      this.setViewState(ViewState.Idle);
+    } else {
+      this.readableStream.on('exit', this.stopStreaming);
 
-    this.readableStream.on('exit', this.stopStreaming);
+      this.readableStream.on('error', (err: grpc.ServiceError) => {
+        switch (err.code) {
+          case grpc.status.UNAUTHENTICATED:
+            this.stripeClient.promptLogin();
+            break;
+          case grpc.status.CANCELLED:
+            // noop
+            break;
+          default:
+            window.showErrorMessage(err.message);
+            break;
+        }
+        this.stopStreaming();
+      });
 
-    this.readableStream.on('error', (err: grpc.ServiceError) => {
-      switch (err.code) {
-        case grpc.status.UNAUTHENTICATED:
-          this.stripeClient.promptLogin();
-          break;
-        case grpc.status.CANCELLED:
-          // noop
-          break;
-        default:
-          window.showErrorMessage(err.message);
-          break;
-      }
-      this.stopStreaming();
-    });
-
-    this.readableStream.on('data', this.handleData);
+      this.readableStream.on('data', this.handleData);
+    }
   }
 
   // Tell us how to create the readable stream
-  abstract createReadableStream(): Promise<grpc.ClientReadableStream<Res>>;
+  abstract createReadableStream(): Promise<grpc.ClientReadableStream<Res> | undefined>;
 
   // Tell us how to handle response from the Stripe daemon
   abstract handleData: (res: Res) => void;

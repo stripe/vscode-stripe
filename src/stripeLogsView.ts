@@ -20,10 +20,17 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
     return Promise.resolve(treeItems);
   }
 
-  async createReadableStream(): Promise<ClientReadableStream<LogsTailResponse>> {
-    const daemonClient = await this.stripeDaemon.setupClient();
-    const logsTailStream = daemonClient.logsTail(new LogsTailRequest());
-    return logsTailStream;
+  async createReadableStream(): Promise<ClientReadableStream<LogsTailResponse> | undefined> {
+    try {
+      const daemonClient = await this.stripeDaemon.setupClient();
+      const logsTailStream = daemonClient.logsTail(new LogsTailRequest());
+      return logsTailStream;
+    } catch (e) {
+      if (e.name === 'NoDaemonCommandError') {
+        this.stripeClient.promptUpdateForDaemon();
+      }
+      console.error(e);
+    }
   }
 
   handleData = (response: LogsTailResponse) => {

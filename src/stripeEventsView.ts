@@ -77,10 +77,17 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
 
     return Promise.resolve(items);
   }
-  async createReadableStream(): Promise<ClientReadableStream<ListenResponse>> {
-    const daemonClient = await this.stripeDaemon.setupClient();
-    const listenStream = daemonClient.listen(new ListenRequest());
-    return listenStream;
+  async createReadableStream(): Promise<ClientReadableStream<ListenResponse> | undefined> {
+    try {
+      const daemonClient = await this.stripeDaemon.setupClient();
+      const listenStream = daemonClient.listen(new ListenRequest());
+      return listenStream;
+    } catch (e) {
+      if (e.name === 'NoDaemonCommandError') {
+        this.stripeClient.promptUpdateForDaemon();
+      }
+      console.error(e);
+    }
   }
 
   handleData = (response: ListenResponse): void => {
