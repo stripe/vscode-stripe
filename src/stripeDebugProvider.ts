@@ -32,6 +32,7 @@ export class StripeDebugProvider implements vscode.DebugConfigurationProvider {
           forwardTo: config.forwardTo,
           forwardConnectTo: config.forwardConnectTo,
           events: config.events,
+          skipVerify: config.skipVerify,
         });
       }
     } else {

@@ -127,6 +127,21 @@ export class Commands {
       return;
     }
 
+    const skipVerify = await (async () => {
+      if (options.skipVerify !== undefined) {
+        return options.skipVerify;
+      }
+
+      if (![forwardTo, forwardConnectTo].some((url) => url.startsWith('https'))) {
+        return false;
+      }
+
+      const selected = await vscode.window.showQuickPick(['Yes', 'No'], {
+        placeHolder: 'Skip SSL certificate verification?',
+      });
+      return selected === 'Yes';
+    })();
+
     if (Array.isArray(options?.events)) {
       const invalidEventCharsRE = /[^a-z_.]/;
       const invalidEvent = options.events.find((e: string) => invalidEventCharsRE.test(e));
@@ -146,7 +161,14 @@ export class Commands {
         ? ['--events', options.events.join(',')]
         : [];
 
-    this.terminal.execute('listen', [...forwardToFlag, ...forwardConnectToFlag, ...eventsFlag]);
+    const skipVerifyFlag = skipVerify ? ['--skip-verify'] : [];
+
+    this.terminal.execute('listen', [
+      ...forwardToFlag,
+      ...forwardConnectToFlag,
+      ...eventsFlag,
+      ...skipVerifyFlag,
+    ]);
   };
 
   startEventsStreaming = (stripeEventsViewProvider: StripeEventsViewProvider) => {
