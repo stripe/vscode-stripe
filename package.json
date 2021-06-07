@@ -233,11 +233,13 @@
         },
         {
           "id": "stripeQuickLinksView",
-          "name": "Quick Links"
+          "name": "Quick Links",
+          "when": "stripe.isNotCLIInstalled == false"
         },
         {
           "id": "stripeHelpView",
-          "name": "Help and feedback"
+          "name": "Help and feedback",
+          "when": "stripe.isNotCLIInstalled == false"
         }
       ]
     },
