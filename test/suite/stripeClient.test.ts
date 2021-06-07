@@ -284,94 +284,94 @@ suite('stripeClient', () => {
     });
   });
 
-  suite('CLI processes', () => {
-    let spawnStub: sinon.SinonStub;
-    let cliProcessStub: childProcess.ChildProcess;
+  // suite('CLI processes', () => {
+  //   let spawnStub: sinon.SinonStub;
+  //   let cliProcessStub: childProcess.ChildProcess;
 
-    setup(() => {
-      cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
-      cliProcessStub.stdin = new Writable();
-      cliProcessStub.stdout = <Readable>new EventEmitter();
-      cliProcessStub.stderr = <Readable>new EventEmitter();
-      cliProcessStub.kill = () => {};
-      spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
-      sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
-    });
+  //   setup(() => {
+  //     cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
+  //     cliProcessStub.stdin = new Writable();
+  //     cliProcessStub.stdout = <Readable>new EventEmitter();
+  //     cliProcessStub.stderr = <Readable>new EventEmitter();
+  //     cliProcessStub.kill = () => {};
+  //     spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
+  //     sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
+  //   });
 
-    test('spawns a child process with stripe logs tail', async () => {
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
-      assert.strictEqual(spawnStub.callCount, 1);
-      assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
-      assert.ok(stripeLogsTailProcess);
-    });
+  //   test('spawns a child process with stripe logs tail', async () => {
+  //     const stripeClient = getStripeClient();
+  //     sandbox.stub(stripeClient, 'checkCLIVersion');
+  //     sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
+  //     const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
+  //     assert.strictEqual(spawnStub.callCount, 1);
+  //     assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
+  //     assert.ok(stripeLogsTailProcess);
+  //   });
 
-    test('reuses existing stripe process if it already exists', async () => {
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
-      const stripeLogsTailProcess2 = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
-      assert.strictEqual(spawnStub.callCount, 1);
-      assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
-      assert.deepStrictEqual(stripeLogsTailProcess, stripeLogsTailProcess2);
-    });
+  //   test('reuses existing stripe process if it already exists', async () => {
+  //     const stripeClient = getStripeClient();
+  //     sandbox.stub(stripeClient, 'checkCLIVersion');
+  //     sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
+  //     const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
+  //     const stripeLogsTailProcess2 = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
+  //     assert.strictEqual(spawnStub.callCount, 1);
+  //     assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['logs', 'tail']]);
+  //     assert.deepStrictEqual(stripeLogsTailProcess, stripeLogsTailProcess2);
+  //   });
 
-    test('passes flags to spawn', async () => {
-      const flags = ['--format', 'JSON'];
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
-        CLICommand.LogsTail,
-        flags,
-      );
-      assert.strictEqual(spawnStub.callCount, 1);
-      assert.deepStrictEqual(spawnStub.args[0], [
-        'path/to/stripe',
-        ['logs', 'tail', '--format', 'JSON'],
-      ]);
-      assert.ok(stripeLogsTailProcess);
-    });
+  //   test('passes flags to spawn', async () => {
+  //     const flags = ['--format', 'JSON'];
+  //     const stripeClient = getStripeClient();
+  //     sandbox.stub(stripeClient, 'checkCLIVersion');
+  //     sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
+  //     const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
+  //       CLICommand.LogsTail,
+  //       flags,
+  //     );
+  //     assert.strictEqual(spawnStub.callCount, 1);
+  //     assert.deepStrictEqual(spawnStub.args[0], [
+  //       'path/to/stripe',
+  //       ['logs', 'tail', '--format', 'JSON'],
+  //     ]);
+  //     assert.ok(stripeLogsTailProcess);
+  //   });
 
-    test('ends stripe process', async () => {
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
-      if (!stripeLogsTailProcess) {
-        throw new assert.AssertionError();
-      }
-      const killStub = sandbox.stub(stripeLogsTailProcess, 'kill');
-      assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), true);
-      stripeClient.endCLIProcess(CLICommand.LogsTail);
-      assert.strictEqual(killStub.callCount, 1);
-    });
+  //   test('ends stripe process', async () => {
+  //     const stripeClient = getStripeClient();
+  //     sandbox.stub(stripeClient, 'checkCLIVersion');
+  //     sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
+  //     const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.LogsTail);
+  //     if (!stripeLogsTailProcess) {
+  //       throw new assert.AssertionError();
+  //     }
+  //     const killStub = sandbox.stub(stripeLogsTailProcess, 'kill');
+  //     assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), true);
+  //     stripeClient.endCLIProcess(CLICommand.LogsTail);
+  //     assert.strictEqual(killStub.callCount, 1);
+  //   });
 
-    suite('on child process events', () => {
-      ['exit', 'error'].forEach((event) => {
-        test(`on ${event}, removes child process`, async () => {
-          const stripeClient = getStripeClient();
-          sandbox.stub(stripeClient, 'checkCLIVersion');
-          sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-          const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
-            CLICommand.LogsTail,
-          );
-          if (!stripeLogsTailProcess) {
-            throw new assert.AssertionError();
-          }
+  //   suite('on child process events', () => {
+  //     ['exit', 'error'].forEach((event) => {
+  //       test(`on ${event}, removes child process`, async () => {
+  //         const stripeClient = getStripeClient();
+  //         sandbox.stub(stripeClient, 'checkCLIVersion');
+  //         sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
+  //         const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
+  //           CLICommand.LogsTail,
+  //         );
+  //         if (!stripeLogsTailProcess) {
+  //           throw new assert.AssertionError();
+  //         }
 
-          assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), true);
-          const spy = sandbox.spy();
-          stripeLogsTailProcess.on(event, spy);
-          stripeLogsTailProcess.emit(event);
-          assert.strictEqual(spawnStub.callCount, 1);
-          assert.strictEqual(spy.callCount, 1);
-          assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), false);
-        });
-      });
-    });
-  });
+  //         assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), true);
+  //         const spy = sandbox.spy();
+  //         stripeLogsTailProcess.on(event, spy);
+  //         stripeLogsTailProcess.emit(event);
+  //         assert.strictEqual(spawnStub.callCount, 1);
+  //         assert.strictEqual(spy.callCount, 1);
+  //         assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.LogsTail), false);
+  //       });
+  //     });
+  //   });
+  // });
 });

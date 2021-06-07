@@ -84,7 +84,6 @@ export abstract class StreamingViewDataProvider<
           };
       }
     })();
-
     return this.createItemWithCommand(streamingControlItemArgs);
   }
 
@@ -120,7 +119,7 @@ export abstract class StreamingViewDataProvider<
             // noop
             break;
           default:
-            window.showErrorMessage(err.message);
+            window.showErrorMessage(err.details);
             break;
         }
         this.stopStreaming();
