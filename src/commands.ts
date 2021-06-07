@@ -128,7 +128,7 @@ export class Commands {
     }
 
     const skipVerify = await (async () => {
-      if (options.skipVerify !== undefined) {
+      if (options?.skipVerify !== undefined) {
         return options.skipVerify;
       }
 
