@@ -6,7 +6,7 @@ export class StripeQuickLinksViewProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
-    const samplesItem = new StripeTreeItem('Start with a Stripe Sample', {
+    const samplesItem = new StripeTreeItem('Start with a Stripe sample', {
       commandString: 'createStripeSample',
       iconPath: new ThemeIcon('repo-clone'),
       tooltip: 'Clone a sample integration built by Stripe',
