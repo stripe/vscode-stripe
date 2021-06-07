@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as grpc from '@grpc/grpc-js';
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import Sinon, * as sinon from 'sinon';
 import {EventEmitter} from 'stream';
 import {LogsTailResponse} from '../../src/rpc/logs_tail_pb';
 import {NoDaemonCommandError} from '../../src/daemon/types';
@@ -27,7 +27,7 @@ suite('stripeLogsView', () => {
   let logsTailStream: grpc.ClientReadableStream<LogsTailResponse>;
   let daemonClient: Partial<StripeCLIClient>;
 
-  let stripeTreeItemConstructorStub: Sinon.SinonStub;
+  let stripeTreeItemConstructorStub: sinon.SinonStub;
 
   setup(() => {
     sandbox = sinon.createSandbox();
