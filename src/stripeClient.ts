@@ -91,7 +91,7 @@ export class StripeClient {
   private async promptUpdate() {
     const actionText = 'Read instructions on how to update Stripe CLI';
     const returnValue = await vscode.window.showErrorMessage(
-      'We recommend being on at least ' + MIN_CLI_VERSION + ' of the CLI for the best experience.',
+      'Stripe for VS Code requires a newer version of the Stripe CLI. Please update your Stripe CLI to the newest version.',
       {},
       ...[actionText],
     );
