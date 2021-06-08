@@ -1,37 +1,10 @@
-import {CLICommand, StripeClient} from './stripeClient';
-import {ChildProcess} from 'child_process';
-import {StreamingViewDataProvider} from './stripeStreamingView';
+import {LogsTailRequest, LogsTailResponse} from './rpc/logs_tail_pb';
+import {StreamingViewDataProvider, ViewState} from './stripeStreamingView';
+import {ClientReadableStream} from '@grpc/grpc-js';
 import {StripeTreeItem} from './stripeTreeItem';
 import {unixToLocaleStringTZ} from './utils';
 
-type LogObject = {
-  status: number;
-  method: string;
-  url: string;
-  // eslint-disable-next-line camelcase
-  request_id: string;
-  // eslint-disable-next-line camelcase
-  created_at: number;
-};
-
-export const isLogObject = (object: any): object is LogObject => {
-  if (!object || typeof object !== 'object') {
-    return false;
-  }
-  const possibleLogObject = object as LogObject;
-  return (
-    typeof possibleLogObject.status === 'number' &&
-    typeof possibleLogObject.method === 'string' &&
-    typeof possibleLogObject.url === 'string' &&
-    typeof possibleLogObject.request_id === 'string'
-  );
-};
-
-export class StripeLogsViewProvider extends StreamingViewDataProvider {
-  constructor(stripeClient: StripeClient) {
-    super(stripeClient, CLICommand.LogsTail);
-  }
-
+export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailResponse> {
   buildTree(): Promise<StripeTreeItem[]> {
     const treeItems = [
       this.getStreamingControlItem('API logs', 'startLogsStreaming', 'stopLogsStreaming'),
@@ -47,39 +20,60 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider {
     return Promise.resolve(treeItems);
   }
 
-  async createStreamProcess(): Promise<ChildProcess> {
-    const stripeLogsTailProcess = await this.stripeClient.getOrCreateCLIProcess(
-      CLICommand.LogsTail,
-      ['--format', 'JSON'],
-    );
-    if (!stripeLogsTailProcess) {
-      throw new Error('Failed to start `stripe logs tail` process');
+  async createReadableStream(): Promise<ClientReadableStream<LogsTailResponse> | undefined> {
+    try {
+      const daemonClient = await this.stripeDaemon.setupClient();
+      const logsTailStream = daemonClient.logsTail(new LogsTailRequest());
+      return logsTailStream;
+    } catch (e) {
+      if (e.name === 'NoDaemonCommandError') {
+        this.stripeClient.promptUpdateForDaemon();
+      }
+      console.error(e);
     }
-    return stripeLogsTailProcess;
   }
 
-  streamReady(chunk: any): boolean {
-    return chunk.includes('Ready!');
-  }
-
-  streamLoading(chunk: any): boolean {
-    return chunk.includes('Getting ready');
-  }
-
-  createStreamTreeItem(chunk: any): StripeTreeItem | null {
-    const object = JSON.parse(chunk);
-    if (isLogObject(object)) {
-      const label = `[${object.status}] ${object.method} ${object.url} [${object.request_id}]`;
-      const logTreeItem = new StripeTreeItem(label, {
-        commandString: 'openDashboardLogFromTreeItem',
-        contextValue: 'logItem',
-        tooltip: unixToLocaleStringTZ(object.created_at),
-      });
-      logTreeItem.metadata = {
-        id: object.request_id,
-      };
-      return logTreeItem;
+  handleData = (response: LogsTailResponse) => {
+    const state = response.getState();
+    const log = response.getLog();
+    if (state) {
+      this.handleState(state);
+    } else if (log) {
+      this.handleLog(log);
     }
-    return null;
+  };
+
+  private handleState(state: number): void {
+    switch (state) {
+      case LogsTailResponse.State.STATE_DONE:
+        this.setViewState(ViewState.Idle);
+        break;
+      case LogsTailResponse.State.STATE_LOADING:
+        this.setViewState(ViewState.Loading);
+        break;
+      case LogsTailResponse.State.STATE_READY:
+        this.setViewState(ViewState.Streaming);
+        break;
+      case LogsTailResponse.State.STATE_RECONNECTING:
+        this.setViewState(ViewState.Loading);
+        break;
+      default:
+        // this case should never be hit
+        this.setViewState(ViewState.Idle);
+        console.error('Received unknown stream state');
+    }
+  }
+
+  private handleLog(log: LogsTailResponse.Log): void {
+    const label = `[${log.getStatus()}] ${log.getMethod()} ${log.getUrl()} [${log.getRequestId()}]`;
+    const logTreeItem = new StripeTreeItem(label, {
+      commandString: 'openDashboardLogFromTreeItem',
+      contextValue: 'logItem',
+      tooltip: unixToLocaleStringTZ(log.getCreatedAt()),
+    });
+    logTreeItem.metadata = {
+      id: log.getRequestId(),
+    };
+    this.insertItem(logTreeItem);
   }
 }

@@ -1,11 +1,14 @@
 import * as vscode from 'vscode';
 
-import {CLICommand, StripeClient} from './stripeClient';
+import {ListenRequest, ListenResponse} from './rpc/listen_pb';
+import {StreamingViewDataProvider, ViewState} from './stripeStreamingView';
 import {addEventDetails, clearEventDetails} from './stripeWorkspaceState';
-import {ChildProcess} from 'child_process';
-import {StreamingViewDataProvider} from './stripeStreamingView';
+import {camelToSnakeCase, recursivelyRenameKeys, unixToLocaleStringTZ} from './utils';
+import {ClientReadableStream} from '@grpc/grpc-js';
+import {StripeClient} from './stripeClient';
+import {StripeDaemon} from './daemon/stripeDaemon';
+import {StripeEvent} from './rpc/common_pb';
 import {StripeTreeItem} from './stripeTreeItem';
-import {unixToLocaleStringTZ} from './utils';
 
 type EventObject = {
   created: number;
@@ -30,11 +33,15 @@ export const isEventObject = (object: any): object is EventObject => {
   );
 };
 
-export class StripeEventsViewProvider extends StreamingViewDataProvider {
+export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenResponse> {
   private extensionContext: vscode.ExtensionContext;
 
-  constructor(stripeClient: StripeClient, extensionContext: vscode.ExtensionContext) {
-    super(stripeClient, CLICommand.Listen);
+  constructor(
+    stripeClient: StripeClient,
+    stripeDaemon: StripeDaemon,
+    extensionContext: vscode.ExtensionContext,
+  ) {
+    super(stripeClient, stripeDaemon);
     this.extensionContext = extensionContext;
   }
 
@@ -70,50 +77,79 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider {
 
     return Promise.resolve(items);
   }
-  async createStreamProcess(): Promise<ChildProcess> {
-    const stripeListenProcess = await this.stripeClient.getOrCreateCLIProcess(CLICommand.Listen, [
-      '--format',
-      'JSON',
-    ]);
-    if (!stripeListenProcess) {
-      throw new Error('Failed to start `stripe listen` process');
+  async createReadableStream(): Promise<ClientReadableStream<ListenResponse> | undefined> {
+    try {
+      const daemonClient = await this.stripeDaemon.setupClient();
+      const listenStream = daemonClient.listen(new ListenRequest());
+      return listenStream;
+    } catch (e) {
+      if (e.name === 'NoDaemonCommandError') {
+        this.stripeClient.promptUpdateForDaemon();
+      }
+      console.error(e);
     }
-    return stripeListenProcess;
   }
 
-  streamReady(chunk: any): boolean {
-    return chunk.includes('Ready!');
-  }
-
-  streamLoading(chunk: any): boolean {
-    return chunk.includes('Getting ready');
-  }
-
-  createStreamTreeItem(chunk: any): StripeTreeItem | null {
-    const object = JSON.parse(chunk);
-    if (isEventObject(object)) {
-      const label = object.type;
-      const event = new StripeTreeItem(label, {
-        commandString: 'openEventDetails',
-        contextValue: 'eventItem',
-        tooltip: unixToLocaleStringTZ(object.created),
-      });
-
-      event.metadata = {
-        type: object.type,
-        id: object.id,
-      };
-
-      // Save the event object in memento
-      addEventDetails(this.extensionContext, object.id, object);
-      return event;
+  handleData = (response: ListenResponse): void => {
+    const state = response.getState();
+    const stripeEvent = response.getStripeEvent();
+    if (state) {
+      this.handleState(state);
+    } else if (stripeEvent) {
+      this.handleStripeEvent(stripeEvent);
     }
-    return null;
-  }
+  };
 
   // override parent method.
   clearItems() {
     super.clearItems();
     clearEventDetails(this.extensionContext);
+  }
+
+  private handleState(state: number): void {
+    switch (state) {
+      case ListenResponse.State.STATE_DONE:
+        this.setViewState(ViewState.Idle);
+        break;
+      case ListenResponse.State.STATE_LOADING:
+        this.setViewState(ViewState.Loading);
+        break;
+      case ListenResponse.State.STATE_READY:
+        this.setViewState(ViewState.Streaming);
+        break;
+      case ListenResponse.State.STATE_RECONNECTING:
+        this.setViewState(ViewState.Loading);
+        break;
+      default:
+        // this case should never be hit
+        this.setViewState(ViewState.Idle);
+        console.error('Received unknown stream state');
+    }
+  }
+
+  private handleStripeEvent(stripeEvent: StripeEvent): void {
+    const label = stripeEvent.getType();
+    const eventTreeItem = new StripeTreeItem(label, {
+      commandString: 'openEventDetails',
+      contextValue: 'eventItem',
+      tooltip: unixToLocaleStringTZ(stripeEvent.getCreated()),
+    });
+
+    eventTreeItem.metadata = {
+      type: stripeEvent.getType(),
+      id: stripeEvent.getId(),
+    };
+
+    // Unfortunately these steps are necessary for correct rendering
+    const stripeEventObj = {
+      ...stripeEvent.toObject(),
+      data: stripeEvent.getData()?.toJavaScript(),
+    };
+    const snakeCaseStripeEventObj = recursivelyRenameKeys(stripeEventObj, camelToSnakeCase);
+
+    // Save the event object in memento
+    addEventDetails(this.extensionContext, stripeEvent.getId(), snakeCaseStripeEventObj);
+
+    this.insertItem(eventTreeItem);
   }
 }

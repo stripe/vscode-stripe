@@ -87,3 +87,25 @@ export function debounce(func: (...args: any[]) => any, wait: number): (...args:
 export function unixToLocaleStringTZ(unix: number): string {
   return new Date(unix * 1000).toLocaleString(vscode.env.language, {timeZoneName: 'short'});
 }
+
+/**
+ * Convert e.g. apiVersion to api_version
+ */
+export function camelToSnakeCase(str: string): string {
+  return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+}
+
+/**
+ * Apply rename to all the keys in object
+ */
+export function recursivelyRenameKeys(object: Object, rename: (str: string) => string): Object {
+  if (Array.isArray(object)) {
+    return object.map((o) => recursivelyRenameKeys(o, rename));
+  }
+  if (object && typeof object === 'object') {
+    return Object.fromEntries(
+      Object.entries(object).map(([k, v]) => [rename(k), recursivelyRenameKeys(v, rename)]),
+    );
+  }
+  return object;
+}
