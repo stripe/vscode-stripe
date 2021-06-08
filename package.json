@@ -94,12 +94,12 @@
       {
         "category": "Stripe",
         "command": "stripe.createStripeSample",
-        "title": "Clone a sample integration built by Stripe"
+        "title": "Start with a Stripe sample"
       },
       {
         "category": "Stripe",
         "command": "stripe.openWebhooksListen",
-        "title": "Start Webhooks events listening with CLI"
+        "title": "Forward webhook events to your local machine"
       },
       {
         "category": "Stripe",
@@ -109,17 +109,17 @@
       {
         "category": "Stripe",
         "command": "stripe.startEventsStreaming",
-        "title": "Start streaming Events"
+        "title": "Start streaming events"
       },
       {
         "category": "Stripe",
         "command": "stripe.stopEventsStreaming",
-        "title": "Stop streaming Events"
+        "title": "Stop streaming events"
       },
       {
         "category": "Stripe",
         "command": "stripe.startLogsStreaming",
-        "title": "Start streaming API logs "
+        "title": "Start streaming API logs"
       },
       {
         "category": "Stripe",
@@ -139,7 +139,7 @@
       {
         "category": "Stripe",
         "command": "stripe.openDashboardApikeys",
-        "title": "Open Dashboard to manage API Keys"
+        "title": "Open Dashboard to manage API keys"
       },
       {
         "category": "Stripe",
@@ -159,12 +159,12 @@
       {
         "category": "Stripe",
         "command": "stripe.openDashboardEvents",
-        "title": "Open Dashboard to see recent Events"
+        "title": "Open Dashboard to see recent events"
       },
       {
         "category": "Stripe",
         "command": "stripe.openDashboardWebhooks",
-        "title": "Open Dashboard to manage Webhooks"
+        "title": "Open Dashboard to manage webhooks"
       },
       {
         "category": "Stripe",
