@@ -11,11 +11,13 @@ type StripeTreeItemOptions = Pick<TreeItem, 'contextValue' | 'tooltip' | 'iconPa
 export class StripeTreeItem extends TreeItem {
   parent: StripeTreeItem | undefined;
   children: StripeTreeItem[] = [];
+  readonly label: string;
   private _metadata: object | undefined;
   private commandString: string | undefined;
 
   constructor(label: string, options: StripeTreeItemOptions = {}) {
     super(label, TreeItemCollapsibleState.None);
+    this.label = label;
     this.contextValue = options.contextValue || 'stripe';
     this.commandString = options.commandString;
     this.iconPath = options.iconPath;

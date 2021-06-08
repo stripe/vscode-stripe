@@ -11,7 +11,6 @@ import {StripeClient} from '../../src/stripeClient';
 import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeEvent} from '../../src/rpc/common_pb';
 import {StripeEventsViewProvider} from '../../src/stripeEventsView';
-import {StripeTreeItem} from '../../src/stripeTreeItem';
 
 suite('stripeEventsView', () => {
   let sandbox: sinon.SinonSandbox;
@@ -32,8 +31,6 @@ suite('stripeEventsView', () => {
   let listenStream: grpc.ClientReadableStream<ListenResponse>;
   let daemonClient: Partial<StripeCLIClient>;
 
-  let stripeTreeItemConstructorStub: sinon.SinonStub;
-
   setup(() => {
     sandbox = sinon.createSandbox();
 
@@ -44,10 +41,6 @@ suite('stripeEventsView', () => {
     daemonClient = {
       listen: () => listenStream,
     };
-
-    // Mock tree item constructor
-    stripeTreeItemConstructorStub = sandbox.stub();
-    Object.setPrototypeOf(StripeTreeItem, stripeTreeItemConstructorStub);
   });
 
   teardown(() => {
@@ -59,42 +52,151 @@ suite('stripeEventsView', () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
     });
 
-    test('renders loading state', async () => {
-      const stripeEventsView = new StripeEventsViewProvider(
-        <any>stripeClient,
-        <any>stripeDaemon,
-        extensionContext,
-      );
-      await stripeEventsView.startStreaming();
+    suite('state transitions', () => {
+      test('renders loading state when stream is LOADING', async () => {
+        const stripeEventsView = new StripeEventsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
+        await stripeEventsView.startStreaming();
 
-      // Mock loading response
-      const response = new ListenResponse();
-      response.setState(ListenResponse.State.STATE_LOADING);
+        // Make sure we start in the idle state
+        const doneResponse = new ListenResponse();
+        doneResponse.setState(ListenResponse.State.STATE_DONE);
+        listenStream.emit('data', doneResponse);
 
-      listenStream.emit('data', response);
+        const loadingResponse = new ListenResponse();
+        loadingResponse.setState(ListenResponse.State.STATE_LOADING);
 
-      await stripeEventsView.buildTree(); // Simulate view refresh
+        listenStream.emit('data', loadingResponse);
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'Starting streaming events ...');
-    });
+        const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
 
-    test('renders ready state', async () => {
-      const stripeEventsView = new StripeEventsViewProvider(
-        <any>stripeClient,
-        <any>stripeDaemon,
-        extensionContext,
-      );
-      await stripeEventsView.startStreaming();
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Starting streaming events ...';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
 
-      // Mock loading response
-      const response = new ListenResponse();
-      response.setState(ListenResponse.State.STATE_READY);
+      test('renders loading state when stream is RECONNECTING', async () => {
+        const stripeEventsView = new StripeEventsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
+        await stripeEventsView.startStreaming();
 
-      listenStream.emit('data', response);
+        // Make sure we start in the idle state
+        const doneResponse = new ListenResponse();
+        doneResponse.setState(ListenResponse.State.STATE_DONE);
+        listenStream.emit('data', doneResponse);
 
-      await stripeEventsView.buildTree(); // Simulate view refresh
+        const reconnectingResponse = new ListenResponse();
+        reconnectingResponse.setState(ListenResponse.State.STATE_RECONNECTING);
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'Stop streaming events');
+        listenStream.emit('data', reconnectingResponse);
+
+        const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Starting streaming events ...';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders ready state when stream is READY', async () => {
+        const stripeEventsView = new StripeEventsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
+        await stripeEventsView.startStreaming();
+
+        // Make sure we start in the streaming state
+        const doneResponse = new ListenResponse();
+        doneResponse.setState(ListenResponse.State.STATE_DONE);
+        listenStream.emit('data', doneResponse);
+
+        const readyResponse = new ListenResponse();
+        readyResponse.setState(ListenResponse.State.STATE_READY);
+
+        listenStream.emit('data', readyResponse);
+
+        const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Stop streaming events';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders idle state when stream is DONE', async () => {
+        const stripeEventsView = new StripeEventsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
+        await stripeEventsView.startStreaming();
+
+        // Make sure we start in the streaming state
+        const readyResponse = new ListenResponse();
+        readyResponse.setState(ListenResponse.State.STATE_READY);
+        listenStream.emit('data', readyResponse);
+
+        const doneResponse = new ListenResponse();
+        doneResponse.setState(ListenResponse.State.STATE_DONE);
+
+        listenStream.emit('data', doneResponse);
+
+        const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Start streaming events';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders idle state when stream is receives unknown state', async () => {
+        const stripeEventsView = new StripeEventsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
+        await stripeEventsView.startStreaming();
+
+        // Make sure we start in the ready state
+        const readyResponse = new ListenResponse();
+        readyResponse.setState(ListenResponse.State.STATE_READY);
+        listenStream.emit('data', readyResponse);
+
+        const unknownStateResponse = new ListenResponse();
+        unknownStateResponse.setState(<any>-1); // This should be impossible
+
+        listenStream.emit('data', unknownStateResponse);
+
+        const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Start streaming events';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
     });
 
     test('creates tree items from stream', async () => {
@@ -121,7 +223,16 @@ suite('stripeEventsView', () => {
 
       listenStream.emit('data', response);
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'customer.created');
+      const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
+
+      const recentEvents = treeItems.find(({label}) => label === 'Recent events');
+      const labels = recentEvents?.children?.map(({label}) => label);
+      const expectedLabel = 'customer.created';
+      assert.strictEqual(
+        labels?.includes(expectedLabel),
+        true,
+        `Expected [${labels?.toString()}] to contain ${expectedLabel}`,
+      );
     });
   });
 
@@ -146,9 +257,15 @@ suite('stripeEventsView', () => {
 
       stripeEventsView.stopStreaming();
 
-      await stripeEventsView.buildTree();
+      const treeItems = await stripeEventsView.buildTree(); // Simulate view refresh
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'Start streaming events');
+      const labels = treeItems.map(({label}) => label);
+      const expectedLabel = 'Start streaming events';
+      assert.strictEqual(
+        labels.includes(expectedLabel),
+        true,
+        `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+      );
     });
   });
 

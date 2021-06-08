@@ -45,10 +45,6 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
 
   private handleState(state: number): void {
     switch (state) {
-      case LogsTailResponse.State.STATE_UNSPECIFIED:
-        // this case should never be hit
-        this.setViewState(ViewState.Idle);
-        break;
       case LogsTailResponse.State.STATE_DONE:
         this.setViewState(ViewState.Idle);
         break;
@@ -59,9 +55,11 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
         this.setViewState(ViewState.Streaming);
         break;
       case LogsTailResponse.State.STATE_RECONNECTING:
-        // noop
+        this.setViewState(ViewState.Loading);
         break;
       default:
+        // this case should never be hit
+        this.setViewState(ViewState.Idle);
         console.error('Received unknown stream state');
     }
   }

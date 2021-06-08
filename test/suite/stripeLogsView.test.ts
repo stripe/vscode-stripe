@@ -9,7 +9,6 @@ import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../../src/stripeClient';
 import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeLogsViewProvider} from '../../src/stripeLogsView';
-import {StripeTreeItem} from '../../src/stripeTreeItem';
 
 suite('stripeLogsView', () => {
   let sandbox: sinon.SinonSandbox;
@@ -27,8 +26,6 @@ suite('stripeLogsView', () => {
   let logsTailStream: grpc.ClientReadableStream<LogsTailResponse>;
   let daemonClient: Partial<StripeCLIClient>;
 
-  let stripeTreeItemConstructorStub: sinon.SinonStub;
-
   setup(() => {
     sandbox = sinon.createSandbox();
 
@@ -39,10 +36,6 @@ suite('stripeLogsView', () => {
     daemonClient = {
       logsTail: () => logsTailStream,
     };
-
-    // Mock tree item constructor
-    stripeTreeItemConstructorStub = sandbox.stub();
-    Object.setPrototypeOf(StripeTreeItem, stripeTreeItemConstructorStub);
   });
 
   teardown(() => {
@@ -54,37 +47,131 @@ suite('stripeLogsView', () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
     });
 
-    test('renders loading state', async () => {
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
-      await stripeLogsView.startStreaming();
+    suite('state transitions', () => {
+      test('renders loading state when stream is LOADING', async () => {
+        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        await stripeLogsView.startStreaming();
 
-      // Mock loading response
-      const response = new LogsTailResponse();
-      response.setState(LogsTailResponse.State.STATE_LOADING);
+        // Make sure we start in the idle state
+        const doneResponse = new LogsTailResponse();
+        doneResponse.setState(LogsTailResponse.State.STATE_DONE);
+        logsTailStream.emit('data', doneResponse);
 
-      logsTailStream.emit('data', response);
+        const loadingResponse = new LogsTailResponse();
+        loadingResponse.setState(LogsTailResponse.State.STATE_LOADING);
 
-      await stripeLogsView.buildTree(); // Simulate view refresh
+        logsTailStream.emit('data', loadingResponse);
 
-      assert.strictEqual(
-        stripeTreeItemConstructorStub.args[0][0],
-        'Starting streaming API logs ...',
-      );
-    });
+        const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
 
-    test('renders ready state', async () => {
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
-      await stripeLogsView.startStreaming();
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Starting streaming API logs ...';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
 
-      // Mock loading response
-      const response = new LogsTailResponse();
-      response.setState(LogsTailResponse.State.STATE_READY);
+      test('renders loading state when stream is RECONNECTING', async () => {
+        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        await stripeLogsView.startStreaming();
 
-      logsTailStream.emit('data', response);
+        // Make sure we start in the idle state
+        const doneResponse = new LogsTailResponse();
+        doneResponse.setState(LogsTailResponse.State.STATE_DONE);
+        logsTailStream.emit('data', doneResponse);
 
-      await stripeLogsView.buildTree(); // Simulate view refresh
+        const reconnectingResponse = new LogsTailResponse();
+        reconnectingResponse.setState(LogsTailResponse.State.STATE_RECONNECTING);
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'Stop streaming API logs');
+        logsTailStream.emit('data', reconnectingResponse);
+
+        const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Starting streaming API logs ...';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders ready state when stream is READY', async () => {
+        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        await stripeLogsView.startStreaming();
+
+        // Make sure we start in the streaming state
+        const doneResponse = new LogsTailResponse();
+        doneResponse.setState(LogsTailResponse.State.STATE_DONE);
+        logsTailStream.emit('data', doneResponse);
+
+        const readyResponse = new LogsTailResponse();
+        readyResponse.setState(LogsTailResponse.State.STATE_READY);
+
+        logsTailStream.emit('data', readyResponse);
+
+        const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Stop streaming API logs';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders idle state when stream is DONE', async () => {
+        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        await stripeLogsView.startStreaming();
+
+        // Make sure we start in the streaming state
+        const readyResponse = new LogsTailResponse();
+        readyResponse.setState(LogsTailResponse.State.STATE_READY);
+        logsTailStream.emit('data', readyResponse);
+
+        const doneResponse = new LogsTailResponse();
+        doneResponse.setState(LogsTailResponse.State.STATE_DONE);
+
+        logsTailStream.emit('data', doneResponse);
+
+        const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Start streaming API logs';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
+
+      test('renders idle state when stream is receives unknown state', async () => {
+        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        await stripeLogsView.startStreaming();
+
+        // Make sure we start in the ready state
+        const readyResponse = new LogsTailResponse();
+        readyResponse.setState(LogsTailResponse.State.STATE_READY);
+        logsTailStream.emit('data', readyResponse);
+
+        const unknownStateResponse = new LogsTailResponse();
+        unknownStateResponse.setState(<any>-1); // This should be impossible
+
+        logsTailStream.emit('data', unknownStateResponse);
+
+        const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
+
+        const labels = treeItems.map(({label}) => label);
+        const expectedLabel = 'Start streaming API logs';
+        assert.strictEqual(
+          labels.includes(expectedLabel),
+          true,
+          `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+        );
+      });
     });
 
     test('creates tree items from stream', async () => {
@@ -110,9 +197,15 @@ suite('stripeLogsView', () => {
 
       logsTailStream.emit('data', response);
 
+      const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
+
+      const recentLogs = treeItems.find(({label}) => label === 'Recent logs');
+      const labels = recentLogs?.children?.map(({label}) => label);
+      const expectedLabel = '[200] POST /v1/customers [req_123]';
       assert.strictEqual(
-        stripeTreeItemConstructorStub.args[0][0],
-        '[200] POST /v1/customers [req_123]',
+        labels?.includes(expectedLabel),
+        true,
+        `Expected [${labels?.toString()}] to contain ${expectedLabel}`,
       );
     });
   });
@@ -134,9 +227,15 @@ suite('stripeLogsView', () => {
 
       stripeLogsView.stopStreaming();
 
-      await stripeLogsView.buildTree();
+      const treeItems = await stripeLogsView.buildTree(); // Simulate view refresh
 
-      assert.strictEqual(stripeTreeItemConstructorStub.args[0][0], 'Start streaming API logs');
+      const labels = treeItems.map(({label}) => label);
+      const expectedLabel = 'Start streaming API logs';
+      assert.strictEqual(
+        labels.includes(expectedLabel),
+        true,
+        `Expected [${labels.toString()}] to contain ${expectedLabel}`,
+      );
     });
   });
 
