@@ -10,9 +10,7 @@ export const recentEventsKey = 'RecentEvents';
 export const eventDetailsKey = 'EventDetails';
 
 // Used to keep track of log details for log tree items while log streaming is active.
-// Note: We want to keep the naming consistent with `eventDetailsKey`, but for an unknown reason,
-// setting the value to 'LogDetails' causes problems, so we set it to 'RequestLogDetails' instead.
-export const logDetailsKey = 'RequestLogDetails';
+export const logDetailsKey = 'LogDetails';
 
 // Used to keep track of the last endpoint the user set to forward webhook events to.
 export const webhookEndpointKey = 'WebhookEndpoint';
@@ -33,6 +31,7 @@ export const cliVersionKey = 'CLIVersion';
 export function initializeStripeWorkspaceState(extensionContext: vscode.ExtensionContext) {
   clearRecordedEvents(extensionContext);
   clearEventDetails(extensionContext);
+  clearLogDetails(extensionContext);
 }
 
 export function getRecentEvents(
@@ -90,9 +89,9 @@ export function addLogDetails(
   extensionContext.workspaceState.update(logDetailsKey, logDetailsMap);
 }
 
-export function retrieveLogDetails(extensionContext: vscode.ExtensionContext, eventId: string) {
+export function retrieveLogDetails(extensionContext: vscode.ExtensionContext, logId: string) {
   const logDetailsMap = getLogDetailsMap(extensionContext);
-  return logDetailsMap.get(eventId);
+  return logDetailsMap.get(logId);
 }
 
 export function clearLogDetails(extensionContext: vscode.ExtensionContext) {

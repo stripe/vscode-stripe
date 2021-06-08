@@ -115,10 +115,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
     ['stripe.openDashboardEvent', stripeCommands.openDashboardEvent],
     ['stripe.openDashboardEvents', stripeCommands.openDashboardEvents],
-    [
-      'stripe.openDashboardLogFromTreeItemContextMenu',
-      stripeCommands.openDashboardLogFromTreeItemContextMenu,
-    ],
+    ['stripe.openDashboardLog', stripeCommands.openDashboardLog],
     ['stripe.openDashboardLogs', stripeCommands.openDashboardLogs],
     ['stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks],
     ['stripe.openDocs', stripeCommands.openDocs],
