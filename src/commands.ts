@@ -127,6 +127,13 @@ export class Commands {
       return;
     }
 
+    // forwardTo and forwardConnectTo can be null if the user clicks away
+    // and doesn't hit enter when clicking forward events to your local
+    // machine
+    if (forwardTo === undefined || forwardConnectTo === undefined) {
+      return;
+    }
+
     const skipVerify = await (async () => {
       if (options?.skipVerify !== undefined) {
         return options.skipVerify;
