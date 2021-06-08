@@ -14,6 +14,13 @@ export class StripeSamplesViewProvider extends StripeTreeViewDataProvider {
 
     items.push(samplesItem);
 
+    const findSamplesItem = new StripeTreeItem('Find code samples', {
+      commandString: 'openSamples',
+      iconPath: new ThemeIcon('code'),
+      tooltip: 'Sample integrations built by Stripe',
+    });
+    items.push(findSamplesItem);
+
     return Promise.resolve(items);
   }
 }

@@ -14,12 +14,12 @@ import {StripeLinter} from './stripeLinter';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
 import {StripeSamples} from './stripeSamples';
+import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
-import {StripeSamplesViewProvider} from './stripeSamplesView';
 
 export function activate(this: any, context: ExtensionContext) {
   initializeStripeWorkspaceState(context);
