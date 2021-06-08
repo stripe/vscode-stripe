@@ -10,7 +10,9 @@ export const recentEventsKey = 'RecentEvents';
 export const eventDetailsKey = 'EventDetails';
 
 // Used to keep track of log details for log tree items while log streaming is active.
-export const logDetailsKey = 'LogDetails';
+// Note: We want to keep the naming consistent with `eventDetailsKey`, but for an unknown reason,
+// setting the value to 'LogDetails' causes problems, so we set it to 'RequestLogDetails' instead.
+export const logDetailsKey = 'RequestLogDetails';
 
 // Used to keep track of the last endpoint the user set to forward webhook events to.
 export const webhookEndpointKey = 'WebhookEndpoint';

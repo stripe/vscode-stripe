@@ -1,10 +1,25 @@
+import * as vscode from 'vscode';
 import {LogsTailRequest, LogsTailResponse} from './rpc/logs_tail_pb';
 import {StreamingViewDataProvider, ViewState} from './stripeStreamingView';
+import {addLogDetails, clearLogDetails} from './stripeWorkspaceState';
+import {camelToSnakeCase, recursivelyRenameKeys, unixToLocaleStringTZ} from './utils';
 import {ClientReadableStream} from '@grpc/grpc-js';
+import {StripeClient} from './stripeClient';
+import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeTreeItem} from './stripeTreeItem';
-import {unixToLocaleStringTZ} from './utils';
 
 export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailResponse> {
+  private extensionContext: vscode.ExtensionContext;
+
+  constructor(
+    stripeClient: StripeClient,
+    stripeDaemon: StripeDaemon,
+    extensionContext: vscode.ExtensionContext,
+  ) {
+    super(stripeClient, stripeDaemon);
+    this.extensionContext = extensionContext;
+  }
+
   buildTree(): Promise<StripeTreeItem[]> {
     const treeItems = [
       this.getStreamingControlItem('API logs', 'startLogsStreaming', 'stopLogsStreaming'),
@@ -43,6 +58,12 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
     }
   };
 
+  // override parent method.
+  clearItems() {
+    super.clearItems();
+    clearLogDetails(this.extensionContext);
+  }
+
   private handleState(state: number): void {
     switch (state) {
       case LogsTailResponse.State.STATE_DONE:
@@ -67,13 +88,21 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
   private handleLog(log: LogsTailResponse.Log): void {
     const label = `[${log.getStatus()}] ${log.getMethod()} ${log.getUrl()} [${log.getRequestId()}]`;
     const logTreeItem = new StripeTreeItem(label, {
-      commandString: 'openDashboardLogFromTreeItem',
+      commandString: 'openLogDetails',
       contextValue: 'logItem',
       tooltip: unixToLocaleStringTZ(log.getCreatedAt()),
     });
     logTreeItem.metadata = {
       id: log.getRequestId(),
     };
+
+    // Unfortunately these steps are necessary for correct rendering
+    const stripeLogObj = {...log.toObject()};
+    const snakeCaseStripeLogObj = recursivelyRenameKeys(stripeLogObj, camelToSnakeCase);
+
+    // Save the log object in memento
+    addLogDetails(this.extensionContext, log.getRequestId(), snakeCaseStripeLogObj);
+
     this.insertItem(logTreeItem);
   }
 }

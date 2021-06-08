@@ -11,6 +11,7 @@ import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
+import {StripeLogTextDocumentContentProvider} from './stripeLogTextDocumentContentProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
 import {StripeSamples} from './stripeSamples';
@@ -47,7 +48,7 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon);
+  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon, context);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
@@ -74,6 +75,11 @@ export function activate(this: any, context: ExtensionContext) {
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
     new StripeEventTextDocumentContentProvider(context),
+  );
+
+  workspace.registerTextDocumentContentProvider(
+    'stripeLog',
+    new StripeLogTextDocumentContentProvider(context),
   );
 
   const git = new Git();
@@ -109,7 +115,6 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
     ['stripe.openDashboardEvent', stripeCommands.openDashboardEvent],
     ['stripe.openDashboardEvents', stripeCommands.openDashboardEvents],
-    ['stripe.openDashboardLogFromTreeItem', stripeCommands.openDashboardLogFromTreeItem],
     [
       'stripe.openDashboardLogFromTreeItemContextMenu',
       stripeCommands.openDashboardLogFromTreeItemContextMenu,
@@ -118,6 +123,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks],
     ['stripe.openDocs', stripeCommands.openDocs],
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
+    ['stripe.openLogDetails', stripeCommands.openLogDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
     ['stripe.openSamples', stripeCommands.openSamples],
     ['stripe.openSurvey', () => stripeCommands.openSurvey(surveyPrompt)],

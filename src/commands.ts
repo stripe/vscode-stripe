@@ -287,6 +287,17 @@ export class Commands {
       .then((doc) => vscode.window.showTextDocument(doc, {preview: false}));
   };
 
+  openLogDetails = (data: any) => {
+    this.telemetry.sendEvent('openLogDetails');
+    const {id} = data;
+    const filename = id;
+    const uri = vscode.Uri.parse(`stripeLog:${filename}`);
+    vscode.workspace
+      .openTextDocument(uri)
+      .then((doc) => vscode.languages.setTextDocumentLanguage(doc, 'json'))
+      .then((doc) => vscode.window.showTextDocument(doc, {preview: false}));
+  };
+
   openTriggerEvent = async (
     extensionContext: vscode.ExtensionContext,
     stripeClient: StripeClient,
