@@ -10,16 +10,10 @@ export class StripeSamplesViewProvider extends StripeTreeViewDataProvider {
       commandString: 'createStripeSample',
       iconPath: new ThemeIcon('repo-clone'),
       tooltip: 'Clone a sample integration built by Stripe',
+      contextValue: 'samplesItem',
     });
 
     items.push(samplesItem);
-
-    const findSamplesItem = new StripeTreeItem('Find code samples', {
-      commandString: 'openSamples',
-      iconPath: new ThemeIcon('code'),
-      tooltip: 'Sample integrations built by Stripe',
-    });
-    items.push(findSamplesItem);
 
     return Promise.resolve(items);
   }

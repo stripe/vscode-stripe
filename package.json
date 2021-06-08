@@ -281,6 +281,10 @@
         {
           "command": "stripe.openDashboardLogFromTreeItemContextMenu",
           "when": "viewItem == logItem"
+        },
+        {
+          "command": "stripe.openSamples",
+          "when": "viewItem == samplesItem"
         }
       ],
       "commandPalette": [
