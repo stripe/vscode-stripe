@@ -14,6 +14,7 @@ import {StripeLinter} from './stripeLinter';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
 import {StripeSamples} from './stripeSamples';
+import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
@@ -50,6 +51,11 @@ export function activate(this: any, context: ExtensionContext) {
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
+  });
+
+  window.createTreeView('stripeSamplesView', {
+    treeDataProvider: new StripeSamplesViewProvider(),
+    showCollapseAll: false,
   });
 
   window.createTreeView('stripeQuickLinksView', {

@@ -12,13 +12,6 @@ export class StripeHelpViewProvider extends StripeTreeViewDataProvider {
     });
     items.push(docsItem);
 
-    const samplesItem = new StripeTreeItem('Find code samples', {
-      commandString: 'openSamples',
-      iconPath: new ThemeIcon('code'),
-      tooltip: 'Sample integrations built by Stripe',
-    });
-    items.push(samplesItem);
-
     const reportItem = new StripeTreeItem('Report issue', {
       commandString: 'openReportIssue',
       iconPath: new ThemeIcon('report'),
