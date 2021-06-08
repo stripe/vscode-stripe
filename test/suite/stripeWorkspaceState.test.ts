@@ -49,6 +49,9 @@ suite('stripeWorkspaceState', () => {
     // Verify EventDetails is present with an empy Map
     assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
 
+    // Verify LogDetails is present with an empy Map
+    assert.deepStrictEqual(extensionContext.workspaceState.get(logDetailsKey), new Map());
+
     // Verify WebhookEndpointKey is not set
     assert.strictEqual(extensionContext.workspaceState.get(webhookEndpointKey), undefined);
 
