@@ -232,14 +232,21 @@
           "when": "stripe.isNotCLIInstalled == false"
         },
         {
+          "id": "stripeSamplesView",
+          "name": "Samples",
+          "when": "stripe.isNotCLIInstalled == false"
+        },
+        {
           "id": "stripeQuickLinksView",
           "name": "Quick Links",
-          "when": "stripe.isNotCLIInstalled == false"
+          "when": "stripe.isNotCLIInstalled == false",
+          "visibility": "collapsed"
         },
         {
           "id": "stripeHelpView",
           "name": "Help and feedback",
-          "when": "stripe.isNotCLIInstalled == false"
+          "when": "stripe.isNotCLIInstalled == false",
+          "visibility": "collapsed"
         }
       ]
     },

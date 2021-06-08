@@ -19,6 +19,7 @@ import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
+import {StripeSamplesViewProvider} from './stripeSamplesView';
 
 export function activate(this: any, context: ExtensionContext) {
   initializeStripeWorkspaceState(context);
@@ -46,6 +47,11 @@ export function activate(this: any, context: ExtensionContext) {
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
+  });
+
+  window.createTreeView('stripeSamplesView', {
+    treeDataProvider: new StripeSamplesViewProvider(),
+    showCollapseAll: false,
   });
 
   window.createTreeView('stripeQuickLinksView', {
