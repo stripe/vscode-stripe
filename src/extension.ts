@@ -1,4 +1,13 @@
-import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
+import {
+  Disposable,
+  ExtensionContext,
+  commands,
+  debug,
+  env,
+  languages,
+  window,
+  workspace,
+} from 'vscode';
 import {NoOpTelemetry, StripeAnalyticsServiceTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
 import {Commands} from './commands';
@@ -12,6 +21,7 @@ import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogTextDocumentContentProvider} from './stripeLogTextDocumentContentProvider';
+import {StripeLogsDashboardLinkProvider} from './stripeLogsDashboardLinkProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
 import {StripeSamples} from './stripeSamples';
@@ -80,6 +90,11 @@ export function activate(this: any, context: ExtensionContext) {
   workspace.registerTextDocumentContentProvider(
     'stripeLog',
     new StripeLogTextDocumentContentProvider(context),
+  );
+
+  languages.registerDocumentLinkProvider(
+    {scheme: 'stripeLog'},
+    new StripeLogsDashboardLinkProvider(),
   );
 
   const git = new Git();

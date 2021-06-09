@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
+import {EVENT_ID_REGEXP} from './resourceIDs';
 import {retrieveEventDetails} from './stripeWorkspaceState';
 
 export class StripeEventTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-  private static EVENT_ID_REGEXP = /evt_[\w]+/;
-
   private extensionContext: vscode.ExtensionContext;
 
   constructor(extensionContext: vscode.ExtensionContext) {
@@ -30,7 +29,7 @@ export class StripeEventTextDocumentContentProvider implements vscode.TextDocume
 
   private getResourceIdFromUri(uri: vscode.Uri): string | null {
     const {path} = uri;
-    const match = path.match(StripeEventTextDocumentContentProvider.EVENT_ID_REGEXP);
+    const match = path.match(EVENT_ID_REGEXP);
     if (!match || match.length < 1) {
       return null;
     }

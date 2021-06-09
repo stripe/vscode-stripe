@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
+import {LOG_ID_REGEXP} from './resourceIDs';
 import {retrieveLogDetails} from './stripeWorkspaceState';
 
 export class StripeLogTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-  private static LOG_ID_REGEXP = /req_[\w]+/;
-
   private extensionContext: vscode.ExtensionContext;
 
   constructor(extensionContext: vscode.ExtensionContext) {
@@ -30,7 +29,7 @@ export class StripeLogTextDocumentContentProvider implements vscode.TextDocument
 
   private getResourceIdFromUri(uri: vscode.Uri): string | null {
     const {path} = uri;
-    const match = path.match(StripeLogTextDocumentContentProvider.LOG_ID_REGEXP);
+    const match = path.match(LOG_ID_REGEXP);
     if (!match || match.length < 1) {
       return null;
     }
