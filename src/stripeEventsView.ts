@@ -3,7 +3,13 @@ import * as vscode from 'vscode';
 import {ListenRequest, ListenResponse} from './rpc/listen_pb';
 import {StreamingViewDataProvider, ViewState} from './stripeStreamingView';
 import {addEventDetails, clearEventDetails} from './stripeWorkspaceState';
-import {camelToSnakeCase, recursivelyRenameKeys, unixToLocaleStringTZ} from './utils';
+import {
+  camelToSnakeCase,
+  emptyStringToNull,
+  recursivelyMapValues,
+  recursivelyRenameKeys,
+  unixToLocaleStringTZ,
+} from './utils';
 import {ClientReadableStream} from '@grpc/grpc-js';
 import {StripeClient} from './stripeClient';
 import {StripeDaemon} from './daemon/stripeDaemon';
@@ -145,10 +151,15 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
       ...stripeEvent.toObject(),
       data: stripeEvent.getData()?.toJavaScript(),
     };
+
     const snakeCaseStripeEventObj = recursivelyRenameKeys(stripeEventObj, camelToSnakeCase);
 
+    // In the Stripe Dashboard, empty strings are shown as null. Unfortunately, this extension's
+    // data source returns empty strings. For consistency, convert them all to null.
+    const finalStripeEventObj = recursivelyMapValues(snakeCaseStripeEventObj, emptyStringToNull);
+
     // Save the event object in memento
-    addEventDetails(this.extensionContext, stripeEvent.getId(), snakeCaseStripeEventObj);
+    addEventDetails(this.extensionContext, stripeEvent.getId(), finalStripeEventObj);
 
     this.insertItem(eventTreeItem);
   }
