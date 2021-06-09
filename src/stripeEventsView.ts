@@ -146,16 +146,13 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
       id: stripeEvent.getId(),
     };
 
-    // Unfortunately these steps are necessary for correct rendering
+    // Unfortunately, the following steps are necessary for correct JSON formatting. We want the
+    // JSON to look like what a user sees in the Stripe Dashboard.
     const stripeEventObj = {
       ...stripeEvent.toObject(),
       data: stripeEvent.getData()?.toJavaScript(),
     };
-
     const snakeCaseStripeEventObj = recursivelyRenameKeys(stripeEventObj, camelToSnakeCase);
-
-    // In the Stripe Dashboard, empty strings are shown as null. Unfortunately, this extension's
-    // data source returns empty strings. For consistency, convert them all to null.
     const finalStripeEventObj = recursivelyMapValues(snakeCaseStripeEventObj, emptyStringToNull);
 
     // Save the event object in memento
