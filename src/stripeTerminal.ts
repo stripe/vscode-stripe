@@ -61,7 +61,7 @@ export class StripeTerminal {
     if (this.terminals.length > 0) {
       const terminal = await this.createNewSplitTerminal();
       if (!terminal) {
-        throw new Error('Failed to split Stripe terminal');
+        throw new Error('Failed to create a terminal for this Stripe command. Please try again.');
       }
 
       this.terminals.push(terminal);
