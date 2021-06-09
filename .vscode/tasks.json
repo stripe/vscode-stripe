@@ -37,7 +37,7 @@
       "type": "process",
       "args": [
           "build",
-          "${workspaceFolder}/src/stripeDotnetLanguageServer/stripe.LanguageServer.csproj",
+          "${workspaceFolder}/src/stripeDotnetLanguageServer/stripe.LanguageServer/stripe.LanguageServer.csproj",
           "/property:GenerateFullPaths=true",
           "/consoleloggerparameters:NoSummary"
       ],
