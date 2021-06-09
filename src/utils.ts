@@ -109,3 +109,28 @@ export function recursivelyRenameKeys(object: Object, rename: (str: string) => s
   }
   return object;
 }
+
+/**
+ * Convert empty string to null, or noop if the input is not an empty string
+ */
+export function emptyStringToNull(input: any): any {
+  if (typeof input === 'string' && input === '') {
+    return null;
+  }
+  return input;
+}
+
+/**
+ * Apply fn to all the values in object
+ */
+export function recursivelyMapValues(object: Object, fn: (str: any) => any): Object {
+  if (Array.isArray(object)) {
+    return object.map((o) => recursivelyMapValues(o, fn));
+  }
+  if (object && typeof object === 'object') {
+    return Object.fromEntries(
+      Object.entries(object).map(([k, v]) => [k, recursivelyMapValues(v, fn)]),
+    );
+  }
+  return fn(object);
+}

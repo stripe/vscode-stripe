@@ -149,4 +149,80 @@ suite('Utils', () => {
       );
     });
   });
+
+  suite('emptyStringToNull', () => {
+    test('converts empty string to null', () => {
+      // convert to null
+      assert.strictEqual(utils.emptyStringToNull(''), null);
+
+      // noop
+      assert.strictEqual(utils.emptyStringToNull('foo'), 'foo');
+      assert.strictEqual(utils.emptyStringToNull(null), null);
+      assert.strictEqual(utils.emptyStringToNull(undefined), undefined);
+      assert.strictEqual(utils.emptyStringToNull(0), 0);
+      assert.strictEqual(utils.emptyStringToNull(1), 1);
+      assert.strictEqual(utils.emptyStringToNull(true), true);
+      assert.strictEqual(utils.emptyStringToNull(false), false);
+      assert.deepStrictEqual(utils.emptyStringToNull([]), []);
+      assert.deepStrictEqual(utils.emptyStringToNull(['']), ['']);
+      assert.deepStrictEqual(utils.emptyStringToNull({}), {});
+      assert.deepStrictEqual(utils.emptyStringToNull({foo: ''}), {foo: ''});
+    });
+  });
+
+  suite('recursivelyMapValues', () => {
+    test('recursively maps values', () => {
+      const testFn = (str: any) => {
+        if (typeof str === 'string') {
+          return `${str}_renamed`;
+        }
+        return str;
+      };
+
+      // non-objects
+      assert.deepStrictEqual(utils.recursivelyMapValues(1, testFn), 1);
+      assert.deepStrictEqual(utils.recursivelyMapValues('foo', testFn), 'foo_renamed');
+
+      // single level
+      assert.deepStrictEqual(utils.recursivelyMapValues({foo: 'foo', bar: 'bar', baz: 1}, testFn), {
+        foo: 'foo_renamed',
+        bar: 'bar_renamed',
+        baz: 1,
+      });
+
+      // with array
+      assert.deepStrictEqual(
+        utils.recursivelyMapValues({foo: [{bar: 'bar'}, {baz: 'baz'}, {qux: 1}]}, testFn),
+        {
+          foo: [{bar: 'bar_renamed'}, {baz: 'baz_renamed'}, {qux: 1}],
+        },
+      );
+
+      // wide
+      assert.deepStrictEqual(
+        utils.recursivelyMapValues(
+          {foo: 'foo', bar: {baz: 'baz'}, qux: {quux: 'quux'}, corge: {grault: 1}},
+          testFn,
+        ),
+        {
+          foo: 'foo_renamed',
+          bar: {baz: 'baz_renamed'},
+          qux: {quux: 'quux_renamed'},
+          corge: {grault: 1},
+        },
+      );
+
+      // deep
+      assert.deepStrictEqual(
+        utils.recursivelyMapValues(
+          {foo: 'foo', bar: {baz: {qux: {quux: {corge: 'grault'}}}}},
+          testFn,
+        ),
+        {
+          foo: 'foo_renamed',
+          bar: {baz: {qux: {quux: {corge: 'grault_renamed'}}}},
+        },
+      );
+    });
+  });
 });
