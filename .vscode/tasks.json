@@ -32,8 +32,20 @@
       }
     },
     {
+      "label": "build dotnet server",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+          "build",
+          "${workspaceFolder}/src/stripeDotnetLanguageServer/stripe.LanguageServer.csproj",
+          "/property:GenerateFullPaths=true",
+          "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+  },
+    {
       "label": "Build all",
-      "dependsOn": ["Build language server", "Build extension"]
+      "dependsOn": ["Build language server", "build dotnet server", "Build extension"]
     }
   ]
 }

@@ -41,7 +41,7 @@ namespace stripe.LanguageServer
 
             Log.Debug("Created project...");
 
-            Log.Debug("Starting language server from the VSCode repo!...");
+            Log.Debug("Starting language server...");
             var server = await OmniSharp.Extensions.LanguageServer.Server.LanguageServer.From(options =>
                 options
                     .WithInput(Console.OpenStandardInput())
@@ -52,7 +52,7 @@ namespace stripe.LanguageServer
                                 .AddLanguageProtocolLogging()
                                 .SetMinimumLevel(LogLevel.Debug)
                         )
-                    // .WithHandler<TextDocumentHandler>()
+                    .WithHandler<TextDocumentSyncHandler>()
                     .WithHandler<APIReferenceHandler>()
                     .WithServices(x => x.AddLogging(b => b.SetMinimumLevel(LogLevel.Trace)))
                     .WithServices(

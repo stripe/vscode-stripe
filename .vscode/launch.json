@@ -25,12 +25,25 @@
       "env": {
         "EXTENSION_MODE": "development"
       }
+    },
+    {
+      "name": ".NET Server Attach",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+      "requireExactSource": false,
+      "preLaunchTask": "build dotnet server"
     }
   ],
+
   "compounds": [
     {
       "name": "Client + Server",
       "configurations": ["Run Extension", "Attach to Language Server"]
+    },
+    {
+      "name": "Client + Dotnet Server",
+      "configurations": ["Run Extension", ".NET Server Attach"]
     }
   ]
 }
