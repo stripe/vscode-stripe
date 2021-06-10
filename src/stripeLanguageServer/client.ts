@@ -61,7 +61,7 @@ export class StripeLanguageClient {
     // TODO: replace this with real function that can find the executable
     const dotNetExecutable = '/usr/local/share/dotnet/dotnet';
     const serverAssembly = context.asAbsolutePath(
-      'src/stripeDotnetLanguageServer/bin/Debug/net5.0/stripe.LanguageServer.dll',
+      'src/stripeDotnetLanguageServer/stripe.LanguageServer/bin/Debug/net5.0/stripe.LanguageServer.dll',
     );
 
     const serverOptions: ServerOptions = {

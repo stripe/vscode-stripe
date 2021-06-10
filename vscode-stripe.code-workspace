@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "stripeDotnetLanguageServer",
+      "path": "src/stripeDotnetLanguageServer"
+    },
+    {
+      "name": "vscode-stripe",
+      "path": "."
+    }
+  ]
+}
