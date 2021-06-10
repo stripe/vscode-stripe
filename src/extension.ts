@@ -28,7 +28,7 @@ import {StripeLinter} from './stripeLinter';
 import {StripeLogsDashboardLinkProvider} from './stripeLogsDashboardLinkProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
-import {StripeResourceDocumentContentProvider} from './StripeResourceDocumentContentProvider';
+import {StripeResourceDocumentContentProvider} from './stripeResourceDocumentContentProvider';
 import {StripeSamples} from './stripeSamples';
 import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
