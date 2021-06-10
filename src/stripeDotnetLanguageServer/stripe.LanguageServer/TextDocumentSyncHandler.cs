@@ -40,14 +40,14 @@ namespace stripe.LanguageServer
 
             // we have full sync enabled, so first change is the whole document
             var contents = notification.ContentChanges.First().Text;
-            _workspaceManager.UpdateDocument(notification.TextDocument.Uri, contents);
+            _workspaceManager.HandleDidUpdateTextDocument(notification.TextDocument.Uri, contents);
             return Unit.Task;
         }
 
         public override Task<Unit> Handle(DidOpenTextDocumentParams notification, CancellationToken token)
         {
             _logger.LogDebug("Received DidOpenTextDocument Notification for " + notification.TextDocument.Uri);
-            _workspaceManager.OpenDocument(notification.TextDocument.Uri);
+            _workspaceManager.HandleDidOpenTextDocument(notification.TextDocument.Uri);
             return Unit.Task;
         }
         public override Task<Unit> Handle(DidCloseTextDocumentParams notification, CancellationToken token) => Unit.Task;

@@ -45,7 +45,7 @@ namespace stripe.LanguageServer
         // If document already exists in the project, return it. If document does not exist, it can be for two reasons:
         //  1. the .cs file is a metdata file that was opened. i.e. a library reference. In this case, the scheme of the uri returned will be "omnisharp-metadata"
         //  2. the .cs file is a new file created for the project.
-        public void OpenDocument(DocumentUri uri)
+        public void HandleDidOpenTextDocument(DocumentUri uri)
         {
 
             if (uri.Scheme.Equals("omnisharp-metadata")) return;
@@ -62,7 +62,7 @@ namespace stripe.LanguageServer
 
         }
 
-        public void UpdateDocument(DocumentUri uri, string contents)
+        public void HandleDidUpdateTextDocument(DocumentUri uri, string contents)
         {
             Document document = this.GetDocument(uri);
 

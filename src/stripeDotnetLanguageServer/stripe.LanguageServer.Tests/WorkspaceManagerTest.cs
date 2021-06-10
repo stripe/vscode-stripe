@@ -69,7 +69,7 @@ namespace stripe.LanguageServer.Tests
             var workspace = CreateWorkspaceWithDocument(documentPath);
 
             WorkspaceManager workspaceManager = new WorkspaceManager(logger, workspace);
-            workspaceManager.OpenDocument(DocumentUri.FromFileSystemPath(documentPath));
+            workspaceManager.HandleDidOpenTextDocument(DocumentUri.FromFileSystemPath(documentPath));
 
             Assert.Single(workspaceManager.GetCurrentSolution().Projects.First().DocumentIds);
         }
@@ -82,7 +82,7 @@ namespace stripe.LanguageServer.Tests
             var workspace = CreateWorkspaceWithDocument(documentPath);
 
             WorkspaceManager workspaceManager = new WorkspaceManager(logger, workspace);
-            workspaceManager.OpenDocument(DocumentUri.From(new Uri("omnisharp-metadata://hello.cs")));
+            workspaceManager.HandleDidOpenTextDocument(DocumentUri.From(new Uri("omnisharp-metadata://hello.cs")));
             Assert.Single(workspaceManager.GetCurrentSolution().Projects.First().DocumentIds);
         }
 
@@ -94,7 +94,7 @@ namespace stripe.LanguageServer.Tests
             var workspace = CreateWorkspaceWithDocument(documentPath);
 
             WorkspaceManager workspaceManager = new WorkspaceManager(logger, workspace);
-            workspaceManager.OpenDocument(DocumentUri.FromFileSystemPath("newfile.cs"));
+            workspaceManager.HandleDidOpenTextDocument(DocumentUri.FromFileSystemPath("newfile.cs"));
 
             Assert.Equal(2, workspaceManager.GetCurrentSolution().Projects.First().DocumentIds.Count());
         }
@@ -108,7 +108,7 @@ namespace stripe.LanguageServer.Tests
 
             string content = "HELLO!";
             WorkspaceManager workspaceManager = new WorkspaceManager(logger, workspace);
-            workspaceManager.UpdateDocument(DocumentUri.FromFileSystemPath(documentPath), content);
+            workspaceManager.HandleDidUpdateTextDocument(DocumentUri.FromFileSystemPath(documentPath), content);
 
             var text = await workspaceManager.GetDocument(documentPath).GetTextAsync();
             Assert.Equal(content, text.ToString());
@@ -123,7 +123,7 @@ namespace stripe.LanguageServer.Tests
 
             string content = "HELLO!";
             WorkspaceManager workspaceManager = new WorkspaceManager(logger, workspace);
-            workspaceManager.UpdateDocument(DocumentUri.FromFileSystemPath("/newPath.cs"), content);
+            workspaceManager.HandleDidUpdateTextDocument(DocumentUri.FromFileSystemPath("/newPath.cs"), content);
 
             var text = await workspaceManager.GetDocument(documentPath).GetTextAsync();
 
