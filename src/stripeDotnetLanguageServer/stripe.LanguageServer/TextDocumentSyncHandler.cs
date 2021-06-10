@@ -10,8 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-#pragma warning disable CS0618
-
 namespace stripe.LanguageServer
 {
     internal class TextDocumentSyncHandler : TextDocumentSyncHandlerBase
@@ -50,8 +48,6 @@ namespace stripe.LanguageServer
         {
             _logger.LogDebug("Received DidOpenTextDocument Notification for " + notification.TextDocument.Uri);
             _workspaceManager.OpenDocument(notification.TextDocument.Uri);
-            var document = _workspaceManager.GetDocument(notification.TextDocument.Uri);
-            _logger.LogDebug("Opened document: " + document.FilePath);
             return Unit.Task;
         }
         public override Task<Unit> Handle(DidCloseTextDocumentParams notification, CancellationToken token) => Unit.Task;

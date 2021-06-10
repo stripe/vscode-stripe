@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Logging;
-using Moq;
 using System;
 using Xunit;
-using stripe.LanguageServer;
 using Microsoft.CodeAnalysis;
 using System.Linq;
 using OmniSharp.Extensions.LanguageServer.Protocol;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace stripe.LanguageServer.Tests
 {
@@ -27,9 +26,8 @@ namespace stripe.LanguageServer.Tests
             var solutionInfo = Microsoft.CodeAnalysis.SolutionInfo.Create(SolutionId.CreateNewId(), VersionStamp.Default);
             workspace.AddSolution(solutionInfo);
             var project = workspace.AddProject("foo.dll", LanguageNames.CSharp);
-            Console.WriteLine("ProjectId: " + project.Id);
 
-            DocumentInfo documentInfo = DocumentInfo.Create(DocumentId.CreateNewId(project.Id), "HelloWorld.cs",
+            DocumentInfo documentInfo = DocumentInfo.Create(DocumentId.CreateNewId(project.Id), Path.GetFileName(filePath),
                 filePath: filePath);
             workspace.TryApplyChanges(workspace.CurrentSolution.AddDocument(documentInfo));
             return workspace;

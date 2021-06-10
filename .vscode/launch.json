@@ -40,10 +40,6 @@
     {
       "name": "Client + Server",
       "configurations": ["Run Extension", "Attach to Language Server"]
-    },
-    {
-      "name": "Client + Dotnet Server",
-      "configurations": ["Run Extension", ".NET Server Attach"]
     }
   ]
 }
