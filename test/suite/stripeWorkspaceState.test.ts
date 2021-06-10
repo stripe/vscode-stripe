@@ -4,7 +4,9 @@ import * as sinon from 'sinon';
 import {TestMemento, mocks} from '../mocks/vscode';
 import {
   addEventDetails,
+  addLogDetails,
   clearEventDetails,
+  clearLogDetails,
   connectWebhookEndpointKey,
   eventDetailsKey,
   getCliVersion,
@@ -13,9 +15,11 @@ import {
   getStripeAccountId,
   getWebhookEndpoint,
   initializeStripeWorkspaceState,
+  logDetailsKey,
   recentEventsKey,
   recordEvent,
   retrieveEventDetails,
+  retrieveLogDetails,
   setCliVersion,
   setConnectWebhookEndpoint,
   setStripeAccountId,
@@ -44,6 +48,9 @@ suite('stripeWorkspaceState', () => {
 
     // Verify EventDetails is present with an empy Map
     assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
+
+    // Verify LogDetails is present with an empy Map
+    assert.deepStrictEqual(extensionContext.workspaceState.get(logDetailsKey), new Map());
 
     // Verify WebhookEndpointKey is not set
     assert.strictEqual(extensionContext.workspaceState.get(webhookEndpointKey), undefined);
@@ -116,6 +123,34 @@ suite('stripeWorkspaceState', () => {
       clearEventDetails(extensionContext);
 
       assert.deepStrictEqual(extensionContext.workspaceState.get(eventDetailsKey), new Map());
+    });
+  });
+
+  suite('LogDetails', () => {
+    test('add and retrieve log details', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      const logId = 'log_id';
+      const logObject = {logId: logId, value: 'hello'};
+
+      addLogDetails(extensionContext, logId, logObject);
+
+      assert.deepStrictEqual(retrieveLogDetails(extensionContext, logId), logObject);
+    });
+
+    test('clearLogDetails empties LogDetails key', () => {
+      const workspaceState = new TestMemento();
+      const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+
+      // manually populate memento
+      const logDetailsMap = new Map<string, any>();
+      logDetailsMap.set('log_id', {value: 'blah'});
+      extensionContext.workspaceState.update(logDetailsKey, logDetailsMap);
+
+      clearLogDetails(extensionContext);
+
+      assert.deepStrictEqual(extensionContext.workspaceState.get(logDetailsKey), new Map());
     });
   });
 

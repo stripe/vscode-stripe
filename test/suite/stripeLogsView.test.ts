@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import * as grpc from '@grpc/grpc-js';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
+import {TestMemento, mocks} from '../mocks/vscode';
 import {EventEmitter} from 'stream';
 import {LogsTailResponse} from '../../src/rpc/logs_tail_pb';
 import {NoDaemonCommandError} from '../../src/daemon/types';
@@ -12,6 +13,9 @@ import {StripeLogsViewProvider} from '../../src/stripeLogsView';
 
 suite('stripeLogsView', () => {
   let sandbox: sinon.SinonSandbox;
+
+  const workspaceState = new TestMemento();
+  const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
 
   const stripeClient = <Partial<StripeClient>>{
     getCLIPath: () => Promise.resolve('/path/to/cli'),
@@ -49,7 +53,11 @@ suite('stripeLogsView', () => {
 
     suite('state transitions', () => {
       test('renders loading state when stream is LOADING', async () => {
-        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        const stripeLogsView = new StripeLogsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
         await stripeLogsView.startStreaming();
 
         // Make sure we start in the idle state
@@ -74,7 +82,11 @@ suite('stripeLogsView', () => {
       });
 
       test('renders loading state when stream is RECONNECTING', async () => {
-        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        const stripeLogsView = new StripeLogsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
         await stripeLogsView.startStreaming();
 
         // Make sure we start in the idle state
@@ -99,7 +111,11 @@ suite('stripeLogsView', () => {
       });
 
       test('renders ready state when stream is READY', async () => {
-        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        const stripeLogsView = new StripeLogsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
         await stripeLogsView.startStreaming();
 
         // Make sure we start in the streaming state
@@ -124,7 +140,11 @@ suite('stripeLogsView', () => {
       });
 
       test('renders idle state when stream is DONE', async () => {
-        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        const stripeLogsView = new StripeLogsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
         await stripeLogsView.startStreaming();
 
         // Make sure we start in the streaming state
@@ -149,7 +169,11 @@ suite('stripeLogsView', () => {
       });
 
       test('renders idle state when stream is receives unknown state', async () => {
-        const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+        const stripeLogsView = new StripeLogsViewProvider(
+          <any>stripeClient,
+          <any>stripeDaemon,
+          extensionContext,
+        );
         await stripeLogsView.startStreaming();
 
         // Make sure we start in the ready state
@@ -175,7 +199,11 @@ suite('stripeLogsView', () => {
     });
 
     test('creates tree items from stream', async () => {
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
       await stripeLogsView.startStreaming();
 
       // Mock ready response
@@ -217,7 +245,11 @@ suite('stripeLogsView', () => {
 
     test('stops streaming', async () => {
       // Simulate a stream in progress
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
       await stripeLogsView.startStreaming();
 
       const readyResponse = new LogsTailResponse();
@@ -245,7 +277,11 @@ suite('stripeLogsView', () => {
 
       const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
 
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
 
       await stripeLogsView.startStreaming();
 
@@ -257,7 +293,11 @@ suite('stripeLogsView', () => {
 
       const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
 
       await stripeLogsView.startStreaming();
 
@@ -276,7 +316,11 @@ suite('stripeLogsView', () => {
 
       const promptLoginSpy = sandbox.spy(stripeClient, 'promptLogin');
 
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
 
       await stripeLogsView.startStreaming();
 
@@ -290,7 +334,11 @@ suite('stripeLogsView', () => {
 
       const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
-      const stripeLogsView = new StripeLogsViewProvider(<any>stripeClient, <any>stripeDaemon);
+      const stripeLogsView = new StripeLogsViewProvider(
+        <any>stripeClient,
+        <any>stripeDaemon,
+        extensionContext,
+      );
 
       await stripeLogsView.startStreaming();
 

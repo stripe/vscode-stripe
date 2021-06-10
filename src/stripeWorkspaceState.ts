@@ -9,6 +9,9 @@ export const recentEventsKey = 'RecentEvents';
 // Used to keep track of event details for event tree items while event streaming is active.
 export const eventDetailsKey = 'EventDetails';
 
+// Used to keep track of log details for log tree items while log streaming is active.
+export const logDetailsKey = 'LogDetails';
+
 // Used to keep track of the last endpoint the user set to forward webhook events to.
 export const webhookEndpointKey = 'WebhookEndpoint';
 
@@ -28,6 +31,7 @@ export const cliVersionKey = 'CLIVersion';
 export function initializeStripeWorkspaceState(extensionContext: vscode.ExtensionContext) {
   clearRecordedEvents(extensionContext);
   clearEventDetails(extensionContext);
+  clearLogDetails(extensionContext);
 }
 
 export function getRecentEvents(
@@ -69,6 +73,29 @@ export function retrieveEventDetails(extensionContext: vscode.ExtensionContext, 
 
 export function clearEventDetails(extensionContext: vscode.ExtensionContext) {
   extensionContext.workspaceState.update(eventDetailsKey, new Map<string, any>());
+}
+
+function getLogDetailsMap(extensionContext: vscode.ExtensionContext) {
+  return extensionContext.workspaceState.get(logDetailsKey, new Map<string, any>());
+}
+
+export function addLogDetails(
+  extensionContext: vscode.ExtensionContext,
+  logId: string,
+  logObject: any,
+) {
+  const logDetailsMap = getLogDetailsMap(extensionContext);
+  logDetailsMap.set(logId, logObject);
+  extensionContext.workspaceState.update(logDetailsKey, logDetailsMap);
+}
+
+export function retrieveLogDetails(extensionContext: vscode.ExtensionContext, logId: string) {
+  const logDetailsMap = getLogDetailsMap(extensionContext);
+  return logDetailsMap.get(logId);
+}
+
+export function clearLogDetails(extensionContext: vscode.ExtensionContext) {
+  extensionContext.workspaceState.update(logDetailsKey, new Map<string, any>());
 }
 
 export function getWebhookEndpoint(extensionContext: vscode.ExtensionContext): string | undefined {

@@ -1,24 +1,39 @@
-import {Disposable, ExtensionContext, commands, debug, env, window, workspace} from 'vscode';
+import {
+  Disposable,
+  ExtensionContext,
+  commands,
+  debug,
+  env,
+  languages,
+  window,
+  workspace,
+} from 'vscode';
+import {EVENT_ID_REGEXP, LOG_ID_REGEXP} from './resourceIDs';
 import {NoOpTelemetry, StripeAnalyticsServiceTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
+import {
+  initializeStripeWorkspaceState,
+  retrieveEventDetails,
+  retrieveLogDetails,
+} from './stripeWorkspaceState';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
-import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
+import {StripeLogsDashboardLinkProvider} from './stripeLogsDashboardLinkProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
+import {StripeResourceDocumentContentProvider} from './stripeResourceDocumentContentProvider';
 import {StripeSamples} from './stripeSamples';
 import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
-import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
 
 export function activate(this: any, context: ExtensionContext) {
@@ -47,7 +62,7 @@ export function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon);
+  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon, context);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
@@ -73,7 +88,17 @@ export function activate(this: any, context: ExtensionContext) {
 
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
-    new StripeEventTextDocumentContentProvider(context),
+    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails),
+  );
+
+  workspace.registerTextDocumentContentProvider(
+    'stripeLog',
+    new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, retrieveLogDetails),
+  );
+
+  languages.registerDocumentLinkProvider(
+    {scheme: 'stripeLog'},
+    new StripeLogsDashboardLinkProvider(),
   );
 
   const git = new Git();
@@ -109,15 +134,12 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
     ['stripe.openDashboardEvent', stripeCommands.openDashboardEvent],
     ['stripe.openDashboardEvents', stripeCommands.openDashboardEvents],
-    ['stripe.openDashboardLogFromTreeItem', stripeCommands.openDashboardLogFromTreeItem],
-    [
-      'stripe.openDashboardLogFromTreeItemContextMenu',
-      stripeCommands.openDashboardLogFromTreeItemContextMenu,
-    ],
+    ['stripe.openDashboardLog', stripeCommands.openDashboardLog],
     ['stripe.openDashboardLogs', stripeCommands.openDashboardLogs],
     ['stripe.openDashboardWebhooks', stripeCommands.openDashboardWebhooks],
     ['stripe.openDocs', stripeCommands.openDocs],
     ['stripe.openEventDetails', stripeCommands.openEventDetails],
+    ['stripe.openLogDetails', stripeCommands.openLogDetails],
     ['stripe.openReportIssue', stripeCommands.openReportIssue],
     ['stripe.openSamples', stripeCommands.openSamples],
     ['stripe.openSurvey', () => stripeCommands.openSurvey(surveyPrompt)],
