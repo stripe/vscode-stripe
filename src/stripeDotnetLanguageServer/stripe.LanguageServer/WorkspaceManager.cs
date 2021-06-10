@@ -8,25 +8,30 @@ using System.Linq;
 
 namespace stripe.LanguageServer
 {
-    internal class WorkspaceManager
+    public class WorkspaceManager
     {
         private readonly ILogger<WorkspaceManager> _logger;
 
         // Workspace for project context
-        private MSBuildWorkspace _workspace;
+        private Workspace _workspace;
 
         private Solution _currentSolution;
 
-        public WorkspaceManager(ILogger<WorkspaceManager> logger, MSBuildWorkspace workspace)
+        public WorkspaceManager(ILogger<WorkspaceManager> logger, Workspace workspace)
         {
             _logger = logger;
             _workspace = workspace;
             _currentSolution = workspace.CurrentSolution;
         }
 
-        public MSBuildWorkspace GetWorkspace()
+        public Workspace GetWorkspace()
         {
             return _workspace;
+        }
+
+        public Solution GetCurrentSolution()
+        {
+            return _currentSolution;
         }
 
         public Document GetDocument(DocumentUri uri)
@@ -65,6 +70,7 @@ namespace stripe.LanguageServer
             {
                 // an untracked document, such as metadata documents.
                 _logger.LogDebug("Document was not found in the workspace. Ignoring. " + uri);
+                return;
             }
 
             Document updatedDocument = document.WithText(SourceText.From(contents));
