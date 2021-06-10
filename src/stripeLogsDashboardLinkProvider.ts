@@ -28,6 +28,8 @@ const linesToLinksReducer = (
     const target = vscode.Uri.parse(`https://dashboard.stripe.com/test/logs/${match[0]}`);
 
     const link = new vscode.DocumentLink(range, target);
+    link.tooltip = 'Open log in Dashboard';
+
     links.push(link);
   }
 
