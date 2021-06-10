@@ -40,13 +40,6 @@ module.exports = {
     'arrow-spacing': 'error',
     'block-scoped-var': 'off',
     'block-spacing': 'off',
-    'brace-style': [
-      'error',
-      '1tbs',
-      {
-        allowSingleLine: true,
-      },
-    ],
     camelcase: [
       'error',
       {

@@ -8,28 +8,32 @@ import {
   window,
   workspace,
 } from 'vscode';
+import {EVENT_ID_REGEXP, LOG_ID_REGEXP} from './resourceIDs';
 import {NoOpTelemetry, StripeAnalyticsServiceTelemetry} from './telemetry';
 import {ServerOptions, TransportKind} from 'vscode-languageclient';
+import {
+  initializeStripeWorkspaceState,
+  retrieveEventDetails,
+  retrieveLogDetails,
+} from './stripeWorkspaceState';
 import {Commands} from './commands';
 import {Git} from './git';
 import {StripeClient} from './stripeClient';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
-import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeHelpViewProvider} from './stripeHelpView';
 import {StripeLanguageClient} from './stripeLanguageServer/client';
 import {StripeLinter} from './stripeLinter';
-import {StripeLogTextDocumentContentProvider} from './stripeLogTextDocumentContentProvider';
 import {StripeLogsDashboardLinkProvider} from './stripeLogsDashboardLinkProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeQuickLinksViewProvider} from './stripeQuickLinksView';
+import {StripeResourceDocumentContentProvider} from './StripeResourceDocumentContentProvider';
 import {StripeSamples} from './stripeSamples';
 import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
-import {initializeStripeWorkspaceState} from './stripeWorkspaceState';
 import path from 'path';
 
 export function activate(this: any, context: ExtensionContext) {
@@ -84,12 +88,12 @@ export function activate(this: any, context: ExtensionContext) {
 
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
-    new StripeEventTextDocumentContentProvider(context),
+    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails),
   );
 
   workspace.registerTextDocumentContentProvider(
     'stripeLog',
-    new StripeLogTextDocumentContentProvider(context),
+    new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, retrieveLogDetails),
   );
 
   languages.registerDocumentLinkProvider(
