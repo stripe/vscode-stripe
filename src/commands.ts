@@ -100,12 +100,13 @@ export class Commands {
       const defaultForwardToURL = 'http://localhost:3000';
 
       const forwardToInput = await vscode.window.showInputBox({
-        prompt: 'Enter local server URL to forward webhook events to',
+        prompt:
+          '[Account events] Enter local server URL to forward webhook events from your account',
         value: getWebhookEndpoint(this.context) || defaultForwardToURL,
       });
       const forwardConnectToInput = await vscode.window.showInputBox({
         prompt:
-          'Enter local server URL to forward Connect webhook events to (default: same as normal events)',
+          '[Connect events] Enter local server URL to forward events from Connect applications (default: same URL as normal events)',
         value: getConnectWebhookEndpoint(this.context) || forwardToInput,
       });
 
