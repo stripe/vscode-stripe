@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="8" r="6" />
+
+  <style>
+    circle {
+      animation: 1.4s ease-in-out infinite both circle--animation;
+      display: block;
+
+      fill: transparent;
+      stroke: grey;
+      stroke-linecap: round;
+      stroke-width: 1;
+      stroke-dasharray: 38;
+      transform-origin: 50% 50%;
+      stroke-dashoffset: 34;
+    }
+
+
+    @keyframes circle--animation {
+
+      0%,
+      25% {
+        stroke-dashoffset: 38;
+        transform: rotate(0);
+      }
+
+      50%,
+      75% {
+        stroke-dashoffset: 1;
+        transform: rotate(45deg);
+      }
+
+      100% {
+        stroke-dashoffset: 36;
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</svg>

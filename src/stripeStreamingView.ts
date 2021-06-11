@@ -1,4 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
+import * as path from 'path';
 import {ThemeIcon, window} from 'vscode';
 import {Message} from 'google-protobuf';
 import {StripeClient} from './stripeClient';
@@ -74,7 +75,7 @@ export abstract class StreamingViewDataProvider<
           return {
             label: `Starting streaming ${viewName} ...`,
             command: stopCommand,
-            iconId: 'loading',
+            iconFileName: 'loading',
           };
         case ViewState.Streaming:
           return {
@@ -91,16 +92,27 @@ export abstract class StreamingViewDataProvider<
     label,
     command,
     iconId,
+    iconFileName,
   }: {
     label: string;
     command?: string;
     iconId?: string;
+    iconFileName?: string;
   }) {
-    const item = new StripeTreeItem(label, {
-      commandString: command,
-      iconPath: iconId ? new ThemeIcon(iconId) : undefined,
-    });
-    return item;
+    if (iconFileName) {
+      return new StripeTreeItem(label, {
+        commandString: command,
+        iconPath: {
+          light: path.resolve(__dirname, `../resources/icons/light/${iconFileName}.svg`),
+          dark: path.resolve(__dirname, `../resources/icons/dark/${iconFileName}.svg`),
+        },
+      });
+    } else {
+      return new StripeTreeItem(label, {
+        commandString: command,
+        iconPath: iconId ? new ThemeIcon(iconId) : undefined,
+      });
+    }
   }
 
   private async setupStreams() {
