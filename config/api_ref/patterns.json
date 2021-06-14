@@ -1162,7 +1162,7 @@
     }
   },
   {
-    "url": "/customer_portal/create",
+    "url": "/customer_portal/sessions/create",
     "regexps": {
       "ruby": "BillingPortal::Session\\.create\\(",
       "go": "session\\.New\\(",
@@ -1170,6 +1170,49 @@
       "java": "Session\\.create\\(",
       "node": "billingPortal\\.sessions\\.create\\(",
       "php": "billingPortal->sessions->create\\("
+    }
+  },
+  {
+    "url": "/customer_portal/configurations/create",
+    "regexps": {
+      "ruby": "BillingPortal::Configuration\\.create\\(",
+      "go": "configuration\\.New\\(",
+      "python": "billing_portal\\.Configuration\\.create\\(",
+      "java": "Configuration\\.create\\(",
+      "node": "billingPortal\\.configurations\\.create\\(",
+      "php": "billingPortal->configurations->create\\("
+    }
+  },
+  {
+    "url": "/customer_portal/configurations/update",
+    "regexps": {
+      "ruby": "BillingPortal::Configuration\\.update\\(",
+      "go": "configuration\\.Update\\(",
+      "python": "billing_portal\\.Configuration\\.modify\\(",
+      "node": "billingPortal\\.configurations\\.update\\(",
+      "php": "billingPortal->configurations->update\\("
+    }
+  },
+  {
+    "url": "/customer_portal/configurations/retrieve",
+    "regexps": {
+      "ruby": "BillingPortal::Configuration\\.retrieve\\(",
+      "go": "configuration\\.Get\\(",
+      "python": "billing_portal\\.Configuration\\.retrieve\\(",
+      "java": "Configuration\\.retrieve\\(",
+      "node": "billingPortal\\.configurations\\.retrieve\\(",
+      "php": "billingPortal->configurations->retrieve\\("
+    }
+  },
+  {
+    "url": "/customer_portal/configurations/list",
+    "regexps": {
+      "ruby": "BillingPortal::Configuration\\.list\\(",
+      "go": "configuration\\.List\\(",
+      "python": "billing_portal\\.Configuration\\.list\\(",
+      "java": "Configuration\\.list\\(",
+      "node": "billingPortal\\.configurations\\.list\\(",
+      "php": "billingPortal->configurations->all\\("
     }
   },
   {
