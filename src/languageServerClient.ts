@@ -127,7 +127,7 @@ export class StripeLanguageClient {
    * If the user is working with multiple workspaces that contain C# projects, we don't know which one to run the server on, so we'll return the first one we find.
    * In the future, we may want to prompt the user to pick one, or expose a command that let's the user change the tracking project and restart.
    *
-   * Returns null if none of the workspaces are .NET projects.
+   * Returns [] if none of the workspaces are .NET projects.
    */
   static async getDotnetProjectFiles(): Promise<string[]> {
     const workspaceFolders = vscode.workspace.workspaceFolders;

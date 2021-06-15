@@ -19,7 +19,6 @@ suite('languageServerClient', () => {
 
     test('returns empty when no workspaces', async () => {
       sandbox.stub(vscode.workspace, 'workspaceFolders').value([]);
-      console.log('BAOASPJD');
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
       assert.deepStrictEqual(projectFiles, []);
     });
@@ -57,8 +56,12 @@ suite('languageServerClient', () => {
         },
       ]);
       const fileFilesStub = sandbox.stub(vscode.workspace, 'findFiles');
-      fileFilesStub.onCall(0).returns(Promise.resolve([]));
-      fileFilesStub.onCall(1).returns(Promise.resolve([vscode.Uri.file(csprojFile)]));
+      fileFilesStub
+        .withArgs(new vscode.RelativePattern(workspacePath, '**/*.sln'))
+        .returns(Promise.resolve([]));
+      fileFilesStub
+        .withArgs(new vscode.RelativePattern(workspacePath, '**/*.csproj'))
+        .returns(Promise.resolve([vscode.Uri.file(csprojFile)]));
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
       assert.deepStrictEqual(projectFiles, [csprojFile]);
@@ -87,18 +90,28 @@ suite('languageServerClient', () => {
         {
           index: 0,
           name: 'workspace',
-          uri: vscode.Uri.file(workspacePath),
+          uri: vscode.Uri.file('/path/to/workspace/1'),
         },
         {
           index: 1,
           name: 'another workspace',
-          uri: vscode.Uri.file(workspacePath),
+          uri: vscode.Uri.file('/path/to/workspace/2'),
         },
       ]);
       const fileFilesStub = sandbox.stub(vscode.workspace, 'findFiles');
-      fileFilesStub.onCall(0).returns(Promise.resolve([vscode.Uri.file(slnFile)]));
-      fileFilesStub.onCall(1).returns(Promise.resolve([]));
-      fileFilesStub.onCall(2).returns(Promise.resolve([]));
+
+      // first workspace has a solution
+      fileFilesStub
+        .withArgs(new vscode.RelativePattern('/path/to/workspace/1', '**/*.sln'))
+        .returns(Promise.resolve([vscode.Uri.file(slnFile)]));
+
+      // second workspace is not a dotnet project
+      fileFilesStub
+        .withArgs(new vscode.RelativePattern('/path/to/workspace/2', '**/*.sln'))
+        .returns(Promise.resolve([]));
+      fileFilesStub
+        .withArgs(new vscode.RelativePattern('/path/to/workspace/2', '**/*.csproj'))
+        .returns(Promise.resolve([]));
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
       assert.deepStrictEqual(projectFiles, [slnFile]);
