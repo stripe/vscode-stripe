@@ -145,10 +145,9 @@ export class StripeLanguageClient {
         if (sln && sln.length === 1) {
           return sln[0].fsPath;
         } else {
-          // Check for csproj files. If there was no solutions file, return the csproj files.
-          // Note -- if there is no sln file there should be just one csproj file in the workspace.
+          // If there was no solutions file, look for a csproj file.
           const pattern = new vscode.RelativePattern(workspacePath, '**/*.csproj');
-          const csproj = await vscode.workspace.findFiles(pattern, null);
+          const csproj = await vscode.workspace.findFiles(pattern, null, 1);
           if (csproj && csproj.length === 1) {
             return csproj[0].fsPath;
           }
