@@ -9,7 +9,7 @@ import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventTextDocumentContentProvider} from './stripeEventTextDocumentContentProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeHelpViewProvider} from './stripeHelpView';
-import {StripeLanguageClient} from './stripeLanguageServer/client';
+import {StripeLanguageClient} from './languageServerClient';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeTerminal} from './stripeTerminal';
