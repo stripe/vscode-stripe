@@ -23,7 +23,7 @@ import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeHelpViewProvider} from './stripeHelpView';
-import {StripeLanguageClient} from './stripeLanguageServer/client';
+import {StripeLanguageClient} from './languageServerClient';
 import {StripeLinter} from './stripeLinter';
 import {StripeLogsDashboardLinkProvider} from './stripeLogsDashboardLinkProvider';
 import {StripeLogsViewProvider} from './stripeLogsView';

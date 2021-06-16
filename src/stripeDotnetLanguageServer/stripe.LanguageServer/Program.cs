@@ -19,6 +19,7 @@ namespace stripe.LanguageServer
     {
         static async Task Main(string[] args)
         {
+
             // TODO -- don't save to fs? Can we pipe it directly to the vscode output console?
             Log.Logger = new LoggerConfiguration()
                         .Enrich.FromLogContext()
@@ -26,9 +27,8 @@ namespace stripe.LanguageServer
                         .MinimumLevel.Debug()
                         .CreateLogger();
 
-            Log.Debug("Creating project..");
-            // TODO -- Get this as an arg from the client.
-            const string projectFile = "/Users/gracegoo/stripe/samples/accept-a-payment-dotnet/server/server.csproj";
+            string projectFile = args[0];
+            Log.Debug("Creating project for " + projectFile);
 
             // Without this MSBuild can't find the SDK folder.
             MSBuildLocator.RegisterDefaults();
@@ -37,7 +37,15 @@ namespace stripe.LanguageServer
             // We need to register to the failed event to be notified if there were any failures.
             // https://docs.microsoft.com/en-us/dotnet/standard/events/
             workspace.WorkspaceFailed += WorkspaceFailed;
-            var project = await workspace.OpenProjectAsync(projectFile);
+
+            if (Path.GetExtension(projectFile) == ".sln")
+            {
+                await workspace.OpenSolutionAsync(projectFile);
+            }
+            else if (Path.GetExtension(projectFile) == ".csproj")
+            {
+                await workspace.OpenProjectAsync(projectFile);
+            }
 
             Log.Debug("Created project...");
 
