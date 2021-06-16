@@ -33,15 +33,9 @@
     },
     {
       "label": "build dotnet server",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-          "build",
-          "${workspaceFolder}/src/stripeDotnetLanguageServer/stripe.LanguageServer/stripe.LanguageServer.csproj",
-          "/property:GenerateFullPaths=true",
-          "/consoleloggerparameters:NoSummary"
-      ],
-      "problemMatcher": "$msCompile"
+      "type": "npm",
+      "script": "publish:dotnet-server",
+      "isBackground": true
   },
     {
       "label": "Build all",
