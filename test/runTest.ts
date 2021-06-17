@@ -20,7 +20,7 @@ async function main() {
     const launchArgs = [
       testWorkspace,
       // This disables all extensions except the one being testing
-      '--disable-extensions',
+      // '--disable-extensions',
     ];
 
     const extensionTestsEnv = {
