@@ -20,10 +20,10 @@ namespace stripe.LanguageServer
         static async Task Main(string[] args)
         {
 
-            // TODO -- don't save to fs? Can we pipe it directly to the vscode output console?
+            // TODO -- Can we pipe it directly to the vscode output console?
             Log.Logger = new LoggerConfiguration()
                         .Enrich.FromLogContext()
-                        .WriteTo.File("/tmp/stripe.LanguageServer-logs.txt", rollingInterval: RollingInterval.Day)
+                        .WriteTo.Console()
                         .MinimumLevel.Debug()
                         .CreateLogger();
 
