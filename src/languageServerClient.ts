@@ -1,4 +1,5 @@
 /* eslint-disable no-warning-comments */
+import * as path from 'path';
 import * as vscode from 'vscode';
 import {
   CloseAction,
@@ -21,7 +22,7 @@ export class StripeLanguageClient {
     // start the csharp server if this is a dotnet project
     const dotnetProjectFile = await this.getDotnetProjectFiles();
     if (dotnetProjectFile.length > 0) {
-      this.activateDotNetServer(context, outputChannel, dotnetProjectFile[0]);
+      this.activateDotNetServer(context, outputChannel, dotnetProjectFile[0], telemetry);
     } else {
       this.activateUniversalServer(context, outputChannel, serverOptions, telemetry);
     }
@@ -69,9 +70,25 @@ export class StripeLanguageClient {
     context: vscode.ExtensionContext,
     outputChannel: vscode.OutputChannel,
     projectFile: string,
+    telemetry: Telemetry,
   ) {
-    // TODO: replace this with real function that can find the executable
-    const dotNetExecutable = '/usr/local/share/dotnet/dotnet';
+    const dotnetRuntimeVersion = '5.0';
+    const result = await vscode.commands.executeCommand<{dotnetPath: string}>('dotnet.acquire', {
+      version: dotnetRuntimeVersion,
+      requestingExtensionId: 'stripe.vscode-stripe',
+    });
+
+    if (!result) {
+      outputChannel.appendLine(
+        `Failed to install .NET runtime v${dotnetRuntimeVersion}. Unable to start language server`,
+      );
+
+      telemetry.sendEvent('dotnetRuntimeAcquisitionFailed');
+      return;
+    }
+
+    const dotNetExecutable = path.resolve(result.dotnetPath);
+    console.log('dotnet path: ' + dotNetExecutable);
     const serverAssembly = context.asAbsolutePath(
       'dist/stripeDotnetLanguageServer/stripe.LanguageServer.dll',
     );
