@@ -414,13 +414,14 @@
     "lint": "eslint --ext .ts .",
     "pretest": "npm run compile && npm run webpack-dev",
     "test": "node ./out/test/runTest.js",
-    "vscode:prepublish": "npm run clean && npm run webpack-prod",
+    "vscode:prepublish": "npm run clean && npm run webpack-prod && npm run publish:dotnet-server",
     "webpack-dev:extension": "webpack --mode development --config ./webpack.config.js",
     "webpack-dev:language-server": "webpack --mode development --config ./src/stripeLanguageServer/webpack.config.js",
     "webpack-dev": "npm run webpack-dev:extension && npm run webpack-dev:language-server",
     "webpack-prod:extension": "webpack --mode production --config ./webpack.config.js && webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
     "webpack-prod:language-server": "webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
-    "webpack-prod": "npm run webpack-prod:extension && npm run webpack-prod:language-server"
+    "webpack-prod": "npm run webpack-prod:extension && npm run webpack-prod:language-server",
+    "publish:dotnet-server": "dotnet publish src/stripeDotnetLanguageServer/stripe.LanguageServer/ -o ./dist/stripeDotnetLanguageServer"
   },
   "devDependencies": {
     "@types/byline": "^4.2.32",
