@@ -88,6 +88,8 @@ export class StripeLanguageClient {
     }
 
     const dotNetExecutable = path.resolve(result.dotnetPath);
+    outputChannel.appendLine('dotnet runtime acquired: ' + dotNetExecutable);
+
     console.log('dotnet path: ' + dotNetExecutable);
     const serverAssembly = context.asAbsolutePath(
       'dist/stripeDotnetLanguageServer/stripe.LanguageServer.dll',
@@ -127,7 +129,7 @@ export class StripeLanguageClient {
     );
 
     dotnetClient.trace = Trace.Verbose;
-    outputChannel.appendLine('Starting C# language service...');
+    outputChannel.appendLine('Starting C# language service for ' + projectFile);
 
     const disposable = dotnetClient.start();
     // Push the disposable to the context's subscriptions so that the
