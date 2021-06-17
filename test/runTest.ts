@@ -17,11 +17,7 @@ async function main() {
     // The path to the extension test workspace
     const testWorkspace = path.resolve(__dirname, extensionDevelopmentPath + '/test/workspace/');
 
-    const launchArgs = [
-      testWorkspace,
-      // This disables all extensions except the one being testing
-      // '--disable-extensions',
-    ];
+    const launchArgs = [testWorkspace];
 
     const extensionTestsEnv = {
       EXTENSION_MODE: 'development',
