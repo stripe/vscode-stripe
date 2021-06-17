@@ -94,7 +94,7 @@
       {
         "category": "Stripe",
         "command": "stripe.createStripeSample",
-        "title": "Start with a Stripe sample"
+        "title": "Start with a Stripe Sample"
       },
       {
         "category": "Stripe",
