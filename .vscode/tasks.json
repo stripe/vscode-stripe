@@ -32,8 +32,14 @@
       }
     },
     {
+      "label": "build dotnet server",
+      "type": "npm",
+      "script": "publish:dotnet-server",
+      "isBackground": true
+  },
+    {
       "label": "Build all",
-      "dependsOn": ["Build language server", "Build extension"]
+      "dependsOn": ["Build language server", "build dotnet server", "Build extension"]
     }
   ]
 }

@@ -11,7 +11,8 @@
       "name": "Attach to Language Server",
       "port": 6009,
       "restart": true,
-      "outFiles": ["${workspaceRoot}/dist/stripeLanguageServer/**/*.js"]
+      "outFiles": ["${workspaceRoot}/dist/stripeLanguageServer/**/*.js"],
+      "preLaunchTask": "Build all",
     },
     {
       "name": "Run Extension",
@@ -24,8 +25,17 @@
       "env": {
         "EXTENSION_MODE": "development"
       }
+    },
+    {
+      "name": ".NET Server Attach",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+      "requireExactSource": false,
+      "preLaunchTask": "build dotnet server"
     }
   ],
+
   "compounds": [
     {
       "name": "Client + Server",
