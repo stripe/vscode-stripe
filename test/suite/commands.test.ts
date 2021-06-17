@@ -123,6 +123,8 @@ suite('commands', function () {
 
   suite('openSurvey', () => {
     test('openSurvey saves survey prompt settings', () => {
+      sandbox.stub(vscode.env, 'openExternal');
+
       const surveyPrompt = new SurveyPrompt(extensionContext);
       const promptSpy = sandbox.spy(surveyPrompt, 'updateSurveySettings');
       const commands = new Commands(telemetry, terminal, extensionContext);
