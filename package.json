@@ -2,7 +2,7 @@
   "name": "vscode-stripe",
   "displayName": "Stripe",
   "description": "Build, test, and use Stripe inside your editor.",
-  "version": "1.7.8",
+  "version": "2.0.0",
   "publisher": "stripe",
   "author": "Stripe (https://www.stripe.com)",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -467,5 +467,7 @@
     "vscode-languageserver": "^6.1.1",
     "vscode-languageserver-textdocument": "^1.0.1"
   },
-  "extensionDependencies": ["ms-dotnettools.vscode-dotnet-runtime"]
+  "extensionDependencies": [
+    "ms-dotnettools.vscode-dotnet-runtime"
+  ]
 }
