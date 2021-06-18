@@ -287,12 +287,12 @@ export class StripeSamples {
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:
-        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(path), {
+        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), {
           forceNewWindow: false,
         });
         break;
       case openFolderOptions.newWindow:
-        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(path), {
+        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), {
           forceNewWindow: true,
         });
         break;
