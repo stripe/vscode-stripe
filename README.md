@@ -19,7 +19,7 @@ Read more about this extension in the official Stripe documentation at [https://
 
 ## Contributions
 
-Stripe for Visual Studio Code is an open source project, and is currently in **public beta**. We do development in the open, where our [issue tracker](https://github.com/stripe/vscode-stripe/issues) is public here in GitHub.
+Stripe for Visual Studio Code is an open source project. We do development in the open, where our [issue tracker](https://github.com/stripe/vscode-stripe/issues) is public here in GitHub.
 
 Contributions and feedback to the project are welcome, so please open issues for feature requests, questions and alike.
 
