@@ -34,7 +34,7 @@ export class StripeLanguageClient {
     serverOptions: ServerOptions,
     telemetry: Telemetry,
   ) {
-    outputChannel.appendLine('Starting universal client');
+    outputChannel.appendLine('Starting universal language server');
     const universalClientOptions: LanguageClientOptions = {
       // Register the server for stripe-supported languages. dotnet is not yet supported.
       documentSelector: [
@@ -64,6 +64,7 @@ export class StripeLanguageClient {
     });
 
     universalClient.start();
+    outputChannel.appendLine('Universal language server is running');
   }
 
   static async activateDotNetServer(
@@ -72,6 +73,8 @@ export class StripeLanguageClient {
     projectFile: string,
     telemetry: Telemetry,
   ) {
+    outputChannel.appendLine('Detected C# Project file: ' + projectFile);
+
     const dotnetRuntimeVersion = '5.0';
     const result = await vscode.commands.executeCommand<{dotnetPath: string}>('dotnet.acquire', {
       version: dotnetRuntimeVersion,
@@ -159,13 +162,18 @@ export class StripeLanguageClient {
 
         // First look for solutions files. We only expect one solutions file to be present in a workspace.
         const pattern = new vscode.RelativePattern(workspacePath, '**/*.sln');
-        const sln = await vscode.workspace.findFiles(pattern, null, 1);
+
+        // Files and folders to exclude
+        // There may be more we want to exclude but starting with the same set omnisharp uses:
+        // https://github.com/OmniSharp/omnisharp-vscode/blob/master/src/omnisharp/launcher.ts#L66
+        const exclude = '{**/node_modules/**,**/.git/**,**/bower_components/**}';
+        const sln = await vscode.workspace.findFiles(pattern, exclude, 1);
         if (sln && sln.length === 1) {
           return sln[0].fsPath;
         } else {
           // If there was no solutions file, look for a csproj file.
           const pattern = new vscode.RelativePattern(workspacePath, '**/*.csproj');
-          const csproj = await vscode.workspace.findFiles(pattern, null, 1);
+          const csproj = await vscode.workspace.findFiles(pattern, exclude, 1);
           if (csproj && csproj.length === 1) {
             return csproj[0].fsPath;
           }
