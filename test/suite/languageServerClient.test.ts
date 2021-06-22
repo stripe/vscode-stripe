@@ -16,7 +16,9 @@ suite('languageServerClient', () => {
 
   suite('getDotnetProjectFiles', () => {
     const workspaceRoot = vscode.Uri.file('my/path');
-    const workspacePath = workspaceRoot.path;
+    console.log('Path: ' + workspaceRoot.path);
+    console.log('FS Path: ' + workspaceRoot.fsPath);
+    const workspacePath = workspaceRoot.fsPath;
 
     test('returns empty when no workspaces', async () => {
       sandbox.stub(vscode.workspace, 'workspaceFolders').value([]);
@@ -42,7 +44,7 @@ suite('languageServerClient', () => {
       sandbox.stub(vscode.workspace, 'findFiles').returns(Promise.resolve([slnFile]));
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
-      assert.deepStrictEqual(projectFiles, [slnFile.path]);
+      assert.deepStrictEqual(projectFiles, [slnFile.fsPath]);
     });
 
     test('returns csproj if it exists', async () => {
@@ -63,7 +65,7 @@ suite('languageServerClient', () => {
         .returns(Promise.resolve([csprojFile]));
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
-      assert.deepStrictEqual(projectFiles, [csprojFile.path]);
+      assert.deepStrictEqual(projectFiles, [csprojFile.fsPath]);
     });
 
     test('returns empty when no dotnet projects', async () => {
@@ -103,19 +105,19 @@ suite('languageServerClient', () => {
 
       // first workspace has a solution
       fileFilesStub
-        .withArgs(new vscode.RelativePattern(workspacePath1.path, '**/*.sln'))
+        .withArgs(new vscode.RelativePattern(workspacePath1.fsPath, '**/*.sln'))
         .returns(Promise.resolve([slnFile]));
 
       // second workspace is not a dotnet project
       fileFilesStub
-        .withArgs(new vscode.RelativePattern(workspacePath2.path, '**/*.sln'))
+        .withArgs(new vscode.RelativePattern(workspacePath2.fsPath, '**/*.sln'))
         .returns(Promise.resolve([]));
       fileFilesStub
-        .withArgs(new vscode.RelativePattern(workspacePath2.path, '**/*.csproj'))
+        .withArgs(new vscode.RelativePattern(workspacePath2.fsPath, '**/*.csproj'))
         .returns(Promise.resolve([]));
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
-      assert.deepStrictEqual(projectFiles, [slnFile.path]);
+      assert.deepStrictEqual(projectFiles, [slnFile.fsPath]);
     });
   });
 });
