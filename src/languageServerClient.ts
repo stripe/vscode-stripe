@@ -78,7 +78,7 @@ export class StripeLanguageClient {
     outputChannel.appendLine('Detected C# Project file: ' + projectFile);
     const dotnetRuntimeVersion = '5.0';
 
-    // arm64 is not supported for dotnet < 6.0:
+    // Applie Silicon is not supported for dotnet < 6.0:
     // https://github.com/dotnet/core/issues/4879#issuecomment-729046912
     if (getOSType() === OSType.macOSarm) {
       outputChannel.appendLine(`.NET runtime v${dotnetRuntimeVersion} is not supported for M1`);
