@@ -9,6 +9,7 @@ import {
   ServerOptions,
   Trace,
 } from 'vscode-languageclient';
+import {OSType, getOSType} from './utils';
 import {Telemetry} from './telemetry';
 
 export class StripeLanguageClient {
@@ -65,6 +66,7 @@ export class StripeLanguageClient {
 
     universalClient.start();
     outputChannel.appendLine('Universal language server is running');
+    telemetry.sendEvent('universalLanguageServerStarted');
   }
 
   static async activateDotNetServer(
@@ -74,8 +76,16 @@ export class StripeLanguageClient {
     telemetry: Telemetry,
   ) {
     outputChannel.appendLine('Detected C# Project file: ' + projectFile);
-
     const dotnetRuntimeVersion = '5.0';
+
+    // arm64 is not supported for dotnet < 6.0:
+    // https://github.com/dotnet/core/issues/4879#issuecomment-729046912
+    if (getOSType() === OSType.macOSarm) {
+      outputChannel.appendLine(`.NET runtime v${dotnetRuntimeVersion} is not supported for M1`);
+      telemetry.sendEvent('dotnetRuntimeAcquisitionSkippedForM1');
+      return;
+    }
+
     const result = await vscode.commands.executeCommand<{dotnetPath: string}>('dotnet.acquire', {
       version: dotnetRuntimeVersion,
       requestingExtensionId: 'stripe.vscode-stripe',
@@ -140,6 +150,7 @@ export class StripeLanguageClient {
 
     await dotnetClient.onReady();
     outputChannel.appendLine('C# language service is running.');
+    telemetry.sendEvent('dotnetServerStarted');
   }
 
   /**
