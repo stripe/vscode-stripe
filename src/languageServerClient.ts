@@ -128,7 +128,7 @@ export class StripeLanguageClient {
 
           return ErrorAction.Continue;
         },
-        closed: () => CloseAction.Restart,
+        closed: () => CloseAction.DoNotRestart,
       },
     };
 
