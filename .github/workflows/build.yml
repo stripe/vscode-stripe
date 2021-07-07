@@ -29,6 +29,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Install Extension dependencies
+        run: code --install-extension ms-dotnettools.vscode-dotnet-runtime
+
       - name: Run tests (ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: xvfb-run -a npm run test
