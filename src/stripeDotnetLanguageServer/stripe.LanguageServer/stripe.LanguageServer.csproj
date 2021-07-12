@@ -18,7 +18,9 @@
     <!-- https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis?view=roslyn-dotnet-3.9.0 -->
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.9.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.9.0" />
-    <PackageReference Include="OmniSharp.Extensions.JsonRpc" Version="0.19.1"  />
+    <PackageReference Include="NuGet.Packaging" Version="4.3.0" />
+    <PackageReference Include="UmbracoForms" Version="8.4.1" />
+    <PackageReference Include="OmniSharp.Extensions.JsonRpc" Version="0.19.1" />
     <PackageReference Include="OmniSharp.Extensions.LanguageProtocol" Version="0.19.1" />
     <PackageReference Include="OmniSharp.Extensions.LanguageServer" Version="0.19.1" />
     <PackageReference Include="Serilog" Version="2.10.0" />

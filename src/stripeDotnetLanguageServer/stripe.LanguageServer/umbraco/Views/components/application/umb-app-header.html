@@ -1,0 +1,50 @@
+
+<div>
+
+    <div class="umb-app-header">
+
+        <umb-sections
+            ng-if="authenticated"
+            sections="sections">
+        </umb-sections>
+
+        <div class="flex items-center">
+            <ul class="umb-app-header__actions">
+                <li data-element="global-search" class="umb-app-header__action">
+                    <button class="umb-app-header__button btn-reset" hotkey="ctrl+space" ng-click="searchClick()" ng-mousedown="rememberFocus()" prevent-default style="font-size: 20px;">
+                        <span class="sr-only">Open/Close backoffice search</span>
+                        <i class="umb-app-header__action-icon icon-search"></i>
+                    </button>
+                </li>
+                <li data-element="global-help" class="umb-app-header__action">
+                    <button class="umb-app-header__button btn-reset" hotkey="ctrl+shift+h" ng-click="helpClick()" prevent-default>
+                        <span class="sr-only">Open/Close backoffice help window</span>
+                        <i class="umb-app-header__action-icon icon-help-alt"></i>
+                    </button>
+                </li>
+                <li data-element="global-user" class="umb-app-header__action">
+                   <button class="umb-app-header__button btn-reset" ng-click="avatarClick()" hotkey="ctrl+shift+u" title="{{user.name}}" aria-label="Open/Close your profile options window" prevent-default>
+                        <umb-avatar
+                            class="umb-app-header__action-icon"
+                            size="xxs"
+                            color="secondary"
+                            name="{{user.name}}"
+                            img-src="{{avatar[0].value}}"
+                            img-srcset="{{avatar[1].value}} 2x, {{avatar[2].value}} 3x">
+                        </umb-avatar>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <umb-overlay
+        data-element="overlay-user"
+        ng-if="userDialog.show"
+        model="userDialog"
+        view="userDialog.view"
+        position="right">
+    </umb-overlay>
+
+</div>

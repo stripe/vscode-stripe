@@ -1,0 +1,20 @@
+<div on-outside-click="outSideClick()">
+    <div class='umb-modalcolumn-header'>
+        <h1>{{menuDialogTitle}}</h1>
+    </div>
+
+    <div class='umb-modalcolumn-body'>
+        <ul class="umb-actions">
+            <li data-element="action-{{action.alias}}" ng-click="executeMenuItem(action)" class="umb-action" ng-class="{sep:action.separator, '-opens-dialog': action.opensDialog}" ng-repeat="action in menuActions">
+                <button class="umb-action-link btn-reset umb-outline" prevent-default umb-auto-focus ng-if="$index === 0">
+                    <i class="icon icon-{{action.cssclass}}"></i>
+                    <span class="menu-label">{{action.name}}</span>
+                </button>
+                <button class="umb-action-link btn-reset umb-outline" prevent-default ng-if="$index !== 0">
+                    <i class="icon icon-{{action.cssclass}}"></i>
+                    <span class="menu-label">{{action.name}}</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
