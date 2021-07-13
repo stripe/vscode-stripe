@@ -5,7 +5,6 @@ import * as vscode from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from '../../src/rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from '../../src/rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from '../../src/rpc/samples_list_pb';
-import {NoDaemonCommandError} from '../../src/daemon/types';
 import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../../src/stripeClient';
 import {StripeDaemon} from '../../src/daemon/stripeDaemon';
