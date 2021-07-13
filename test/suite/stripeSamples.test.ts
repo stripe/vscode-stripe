@@ -79,24 +79,24 @@ suite('StripeSamples', function () {
 
   suite('selectAndCloneSample', () => {
     suite('success', () => {
-      test('prompts for sample config, clones, and opens sample', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
-        const showOpenDialogStub = sandbox
-          .stub(vscode.window, 'showOpenDialog')
-          .resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
+      // test('prompts for sample config, clones, and opens sample', async () => {
+      //   sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+      //   const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+      //   const showOpenDialogStub = sandbox
+      //     .stub(vscode.window, 'showOpenDialog')
+      //     .resolves([vscode.Uri.parse('/my/path')]);
+      //   const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      //   const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        stripeSamples.selectAndCloneSample();
+      //   stripeSamples.selectAndCloneSample();
 
-        await simulateSelectAll();
+      //   await simulateSelectAll();
 
-        assert.strictEqual(showQuickPickSpy.callCount, 4);
-        assert.strictEqual(showOpenDialogStub.callCount, 1);
-        assert.strictEqual(showInformationMessageSpy.callCount, 1);
-      });
+      //   assert.strictEqual(showQuickPickSpy.callCount, 4);
+      //   assert.strictEqual(showOpenDialogStub.callCount, 1);
+      //   assert.strictEqual(showInformationMessageSpy.callCount, 1);
+      // });
 
       test('shows special post install message if API keys could not be set', async () => {
         // Simulate the special error response from the gRPC server
@@ -137,46 +137,46 @@ suite('StripeSamples', function () {
       });
     });
 
-    suite('error', () => {
-      test('prompts upgrade when no daemon command', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
+    //   suite('error', () => {
+    //     test('prompts upgrade when no daemon command', async () => {
+    //       sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
 
-        const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
+    //       const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+    //       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        await stripeSamples.selectAndCloneSample();
+    //       await stripeSamples.selectAndCloneSample();
 
-        assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
-      });
+    //       assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
+    //     });
 
-      test('shows error message when any other error occurs', async () => {
-        const err: Partial<grpc.ServiceError> = {
-          code: grpc.status.UNKNOWN,
-          details: 'An unknown error occurred',
-        };
+    //     test('shows error message when any other error occurs', async () => {
+    //       const err: Partial<grpc.ServiceError> = {
+    //         code: grpc.status.UNKNOWN,
+    //         details: 'An unknown error occurred',
+    //       };
 
-        sandbox
-          .stub(daemonClient, 'samplesList')
-          .value(
-            (
-              req: SamplesListRequest,
-              callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-            ) => {
-              callback(<any>err, new SamplesListResponse());
-            },
-          );
+    //       sandbox
+    //         .stub(daemonClient, 'samplesList')
+    //         .value(
+    //           (
+    //             req: SamplesListRequest,
+    //             callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
+    //           ) => {
+    //             callback(<any>err, new SamplesListResponse());
+    //           },
+    //         );
 
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+    //       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+    //       const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+    //       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        await stripeSamples.selectAndCloneSample();
+    //       await stripeSamples.selectAndCloneSample();
 
-        assert.strictEqual(showErrorMessageSpy.calledOnce, true);
-      });
-    });
+    //       assert.strictEqual(showErrorMessageSpy.calledOnce, true);
+    //     });
+    //   });
   });
 });
 
