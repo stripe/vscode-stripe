@@ -49,26 +49,35 @@ export class StripeSamples {
     try {
       const selectedSample = await this.promptSample();
       if (!selectedSample) {
+        console.log('Did not select sample');
         return;
       }
 
       const selectedIntegration = await this.promptIntegration(selectedSample);
       if (!selectedIntegration) {
+        console.log('Did not select integration');
+
         return;
       }
 
       const selectedClient = await this.promptClient(selectedIntegration);
       if (!selectedClient) {
+        console.log('Did not select client');
+
         return;
       }
 
       const selectedServer = await this.promptServer(selectedIntegration);
       if (!selectedServer) {
+        console.log('Did not select server');
+
         return;
       }
 
       const clonePath = await this.promptPath(selectedSample);
       if (!clonePath) {
+        console.log('Did not select path');
+
         return;
       }
 
@@ -79,10 +88,12 @@ export class StripeSamples {
         selectedClient,
         clonePath,
       );
+      console.log('Created sample');
 
       const postInstallMessage = sampleCreateResponse
         ? sampleCreateResponse.getPostInstall()
         : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
+      console.log('postInstallMessage :' + postInstallMessage);
 
       await this.promptOpenFolder(postInstallMessage, clonePath);
     } catch (e) {

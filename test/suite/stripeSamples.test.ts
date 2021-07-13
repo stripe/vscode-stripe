@@ -117,6 +117,8 @@ suite('StripeSamples', function () {
           );
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        sandbox.spy(vscode.window, 'showQuickPick');
+
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
         const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
 
