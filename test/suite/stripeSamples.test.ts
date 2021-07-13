@@ -117,7 +117,6 @@ suite('StripeSamples', function () {
           );
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        sandbox.spy(vscode.window, 'showQuickPick');
 
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
         const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
@@ -188,20 +187,25 @@ async function simulateSelectAll() {
   // Simulate select sample
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  console.log('Picked item sample');
 
   // Simulate select integration
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  console.log('Picked item integration');
 
   // Simulate select client
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  console.log('Picked item client');
 
   // Simulate select server
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  console.log('Picked item server');
 
   // Simulate select path
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  console.log('Picked item path');
 }
