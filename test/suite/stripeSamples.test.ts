@@ -125,6 +125,9 @@ suite('StripeSamples', function () {
         stripeSamples.selectAndCloneSample();
 
         await simulateSelectAll();
+        assert.strictEqual(showInformationMessageSpy.callCount, 1);
+        console.log('Args: ' + showInformationMessageSpy.args);
+        console.log('Args[0]: ' + showInformationMessageSpy.args[0]);
 
         assert.deepStrictEqual(
           showInformationMessageSpy.args[0][0],
