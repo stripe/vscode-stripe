@@ -78,24 +78,26 @@ suite('StripeSamples', function () {
 
   suite('selectAndCloneSample', () => {
     suite('success', () => {
-      // test('prompts for sample config, clones, and opens sample', async () => {
-      //   sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-      //   const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
-      //   const showOpenDialogStub = sandbox
-      //     .stub(vscode.window, 'showOpenDialog')
-      //     .resolves([vscode.Uri.parse('/my/path')]);
-      //   const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
+      test('prompts for sample config, clones, and opens sample', async () => {
+        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+        const showOpenDialogStub = sandbox
+          .stub(vscode.window, 'showOpenDialog')
+          .resolves([vscode.Uri.parse('/my/path')]);
+        const showInformationMessageStub = sandbox
+          .stub(vscode.window, 'showInformationMessage')
+          .resolves();
 
-      //   const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-      //   stripeSamples.selectAndCloneSample();
+        stripeSamples.selectAndCloneSample();
 
-      //   await simulateSelectAll();
+        await simulateSelectAll();
 
-      //   assert.strictEqual(showQuickPickSpy.callCount, 4);
-      //   assert.strictEqual(showOpenDialogStub.callCount, 1);
-      //   assert.strictEqual(showInformationMessageSpy.callCount, 1);
-      // });
+        assert.strictEqual(showQuickPickSpy.callCount, 4);
+        assert.strictEqual(showOpenDialogStub.callCount, 1);
+        assert.strictEqual(showInformationMessageStub.callCount, 1);
+      });
 
       test('shows special post install message if API keys could not be set', async () => {
         // Simulate the special error response from the gRPC server
@@ -118,19 +120,21 @@ suite('StripeSamples', function () {
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
 
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
+        const showInformationMessageStub = sandbox
+          .stub(vscode.window, 'showInformationMessage')
+          .resolves();
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
 
         await simulateSelectAll();
-        assert.strictEqual(showInformationMessageSpy.callCount, 1);
-        console.log('Args: ' + showInformationMessageSpy.args);
-        console.log('Args[0]: ' + showInformationMessageSpy.args[0]);
+        assert.strictEqual(showInformationMessageStub.callCount, 1);
+        console.log('Args: ' + showInformationMessageStub.args);
+        console.log('Args[0]: ' + showInformationMessageStub.args[0]);
 
         assert.deepStrictEqual(
-          showInformationMessageSpy.args[0][0],
+          showInformationMessageStub.args[0][0],
           'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.',
         );
       });
