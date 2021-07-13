@@ -85,8 +85,9 @@ suite('StripeSamples', function () {
         const showOpenDialogStub = sandbox
           .stub(vscode.window, 'showOpenDialog')
           .resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
-
+        const showInformationMessageStub = sandbox
+          .stub(vscode.window, 'showInformationMessage')
+          .resolves();
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
@@ -95,7 +96,7 @@ suite('StripeSamples', function () {
 
         assert.strictEqual(showQuickPickSpy.callCount, 4);
         assert.strictEqual(showOpenDialogStub.callCount, 1);
-        assert.strictEqual(showInformationMessageSpy.callCount, 1);
+        assert.strictEqual(showInformationMessageStub.callCount, 1);
       });
 
       test('shows special post install message if API keys could not be set', async () => {
@@ -118,8 +119,9 @@ suite('StripeSamples', function () {
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageSpy = sandbox.spy(vscode.window, 'showInformationMessage');
-
+        const showInformationMessageStub = sandbox
+          .stub(vscode.window, 'showInformationMessage')
+          .resolves();
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
@@ -127,7 +129,7 @@ suite('StripeSamples', function () {
         await simulateSelectAll();
 
         assert.deepStrictEqual(
-          showInformationMessageSpy.args[0][0],
+          showInformationMessageStub.args[0][0],
           'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.',
         );
       });
