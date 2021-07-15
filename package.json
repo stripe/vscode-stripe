@@ -463,7 +463,7 @@
     "remark-gfm": "^1.0.0",
     "toml": "^3.0.0",
     "uuid": "^3.4.0",
-    "vscode-languageclient": "^6.1.3",
+    "vscode-languageclient": "^7.0.0",
     "vscode-languageserver": "^6.1.1",
     "vscode-languageserver-textdocument": "^1.0.1"
   },
