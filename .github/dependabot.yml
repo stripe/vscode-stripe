@@ -13,5 +13,3 @@ updates:
     directory: "/src/stripeDotnetLanguageServer" # Location of package manifests
     schedule:
       interval: "daily"
-    # Temporarily for testing purposes. 
-    target-branch: "gracegoo-package-scan"
