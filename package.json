@@ -448,7 +448,7 @@
     "ts-protoc-gen": "^0.15.0",
     "ts-sinon": "^2.0.1",
     "typescript": "^4.2.3",
-    "vscode-test": "^1.4.1",
+    "vscode-test": "^1.6.1",
     "webpack": "^5.26.3",
     "webpack-cli": "^4.7.2"
   },
