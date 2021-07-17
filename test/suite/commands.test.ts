@@ -11,6 +11,10 @@ import {SurveyPrompt} from '../../src/surveyPrompt';
 import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
 
+const proxyquire = require('proxyquire');
+const modulePath = '../../src/commands';
+const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
+
 suite('commands', function () {
   this.timeout(20000);
 
@@ -124,10 +128,13 @@ suite('commands', function () {
   suite('openSurvey', () => {
     test('openSurvey saves survey prompt settings', () => {
       sandbox.stub(vscode.env, 'openExternal');
+      // stub out osName
+      const osName = sandbox.stub().returns('testOS');
+      const module = setupProxies({'os-name': osName});
 
       const surveyPrompt = new SurveyPrompt(extensionContext);
       const promptSpy = sandbox.spy(surveyPrompt, 'updateSurveySettings');
-      const commands = new Commands(telemetry, terminal, extensionContext);
+      const commands = new module.Commands(telemetry, terminal, extensionContext);
       commands.openSurvey(surveyPrompt);
 
       assert.strictEqual(promptSpy.calledOnce, true);
