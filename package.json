@@ -424,7 +424,7 @@
     "publish:dotnet-server": "dotnet publish src/stripeDotnetLanguageServer/stripe.LanguageServer/ -o ./dist/stripeDotnetLanguageServer"
   },
   "devDependencies": {
-    "@types/byline": "^4.2.32",
+    "@types/byline": "^4.2.33",
     "@types/glob": "^7.1.4",
     "@types/google-protobuf": "^3.7.4",
     "@types/mocha": "^8.2.3",
@@ -449,7 +449,7 @@
     "ts-sinon": "^2.0.1",
     "typescript": "^4.2.3",
     "vscode-test": "^1.6.1",
-    "webpack": "^5.26.3",
+    "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
