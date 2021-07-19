@@ -424,7 +424,7 @@
     "publish:dotnet-server": "dotnet publish src/stripeDotnetLanguageServer/stripe.LanguageServer/ -o ./dist/stripeDotnetLanguageServer"
   },
   "devDependencies": {
-    "@types/byline": "^4.2.32",
+    "@types/byline": "^4.2.33",
     "@types/glob": "^7.1.4",
     "@types/google-protobuf": "^3.7.4",
     "@types/mocha": "^8.2.3",
