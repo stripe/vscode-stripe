@@ -23,7 +23,6 @@ namespace stripe.LanguageServer
             // TODO -- Can we pipe it directly to the vscode output console?
             Log.Logger = new LoggerConfiguration()
                         .Enrich.FromLogContext()
-                        .WriteTo.Console()
                         .MinimumLevel.Debug()
                         .CreateLogger();
 
