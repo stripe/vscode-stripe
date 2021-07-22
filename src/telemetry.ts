@@ -51,10 +51,12 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
   private _clientId = 'vscode-stripe';
   private _isTelemetryEnabled: boolean;
   private _extensionContext: vscode.ExtensionContext;
+  private _osName: string;
 
   constructor(extensionContext: vscode.ExtensionContext) {
     this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
     this._extensionContext = extensionContext;
+    this._osName = osName();
     vscode.workspace.onDidChangeConfiguration(this.configurationChanged, this);
   }
 
@@ -79,7 +81,7 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
       vscode_session_id: vscode.env.sessionId,
       language: vscode.env.language,
       vscode_version: vscode.version,
-      uos: osName(),
+      uos: this._osName,
       extension_version: extensionInfo.version,
       merchant: getStripeAccountId(this._extensionContext),
       cli_version: getCliVersion(this._extensionContext),
