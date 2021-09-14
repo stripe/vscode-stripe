@@ -19,7 +19,7 @@ import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
-import {TriggersListRequest, TriggersListResponse} from './rpc/triggers_list_pb';
+import {TriggersListRequest} from './rpc/triggers_list_pb';
 
 export class Commands {
   telemetry: Telemetry;
