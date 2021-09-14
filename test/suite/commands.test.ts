@@ -1,12 +1,16 @@
 import * as assert from 'assert';
+import * as grpc from '@grpc/grpc-js';
 import * as sinon from 'sinon';
 import * as stripeState from '../../src/stripeWorkspaceState';
 import * as vscode from 'vscode';
 
 import {EventEmitter, Readable} from 'stream';
+import {TriggersListRequest, TriggersListResponse} from '../../src/rpc/triggers_list_pb';
 import {Commands} from '../../src/commands';
 import {NoOpTelemetry} from '../../src/telemetry';
+import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../../src/stripeClient';
+import {StripeDaemon} from '../daemon/stripeDaemon';
 import {SurveyPrompt} from '../../src/surveyPrompt';
 import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
@@ -27,6 +31,20 @@ suite('commands', function () {
 
   const telemetry = new NoOpTelemetry();
 
+  const stripeDaemon = <Partial<StripeDaemon>>{
+      setupClient: () => {},
+    };
+
+  const supportedEvents = ['a'];
+  const daemonClient = <Partial<StripeCLIClient>>{
+      triggersList: (
+        req: TriggersListRequest,
+        callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
+    ) => {
+      callback(null, new TriggersListResponse());
+    },
+  };
+
   setup(() => {
     sandbox = sinon.createSandbox();
     extensionContext = {...mocks.extensionContextMock};
@@ -42,21 +60,32 @@ suite('commands', function () {
     let stripeClient: Partial<StripeClient>;
 
     setup(() => {
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
       stripeOutputChannel = {append: (value: string) => {}, show: () => {}};
 
       triggerProcess = <childProcess.ChildProcess>new EventEmitter();
       triggerProcess.stdout = <Readable>new EventEmitter();
-
       stripeClient = {getOrCreateCLIProcess: () => Promise.resolve(triggerProcess)};
     });
 
     test('executes and records event', async () => {
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
+      const mockResp = new TriggersListResponse();
+      mockResp.setEventsList(supportedEvents);
 
-      const supportedEvents = ['a'];
-      const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
+      sandbox
+        .stub(daemonClient, 'triggersList')
+        .value(
+          (
+            req: TriggersListRequest,
+            callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
+          ) => {
+            callback(null, mockResp);
+          },
+        );
 
-      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeDaemon, <any>stripeOutputChannel);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
@@ -64,16 +93,59 @@ suite('commands', function () {
       const eventsInState = stripeState.getRecentEvents(extensionContext);
 
       assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerEvent']);
-      assert.deepStrictEqual(eventsInState, ['a']);
+      assert.deepStrictEqual(eventsInState, supportedEvents);
     });
+
+    test('uses fallback events list if fails to retrieve list through grpc', async () => {
+      const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
+      const err: Partial<grpc.ServiceError> = {
+          code: grpc.status.UNKNOWN,
+          details: 'An unknown error occurred',
+        };
+
+      sandbox
+        .stub(daemonClient, 'triggersList')
+        .value(
+          (
+            req: TriggersListRequest,
+            callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
+          ) => {
+            callback(<any>err, new TriggersListResponse());
+          },
+        );
+
+      const fallbackEventsList = ['fall', 'back', 'list'];
+      const commands = new Commands(telemetry, terminal, extensionContext, fallbackEventsList);
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeDaemon, <any>stripeOutputChannel);
+
+      // Pick the first item on the list.
+      await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+      const eventsInState = stripeState.getRecentEvents(extensionContext);
+
+      assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerEvent']);
+      assert.deepStrictEqual(eventsInState[0], 'fall');
+    });
+
 
     test('writes stripe trigger output to output channel', async () => {
       const appendSpy = sinon.spy(stripeOutputChannel, 'append');
+      const mockResp = new TriggersListResponse();
+      mockResp.setEventsList(supportedEvents);
 
-      const supportedEvents = ['a'];
-      const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
+      sandbox
+        .stub(daemonClient, 'triggersList')
+        .value(
+          (
+            req: TriggersListRequest,
+            callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
+          ) => {
+            callback(null, mockResp);
+          },
+        );
 
-      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeDaemon, <any>stripeOutputChannel);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');

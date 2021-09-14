@@ -11,6 +11,7 @@ import {
 } from './stripeWorkspaceState';
 import {getExtensionInfo, showQuickPickWithItems} from './utils';
 import osName = require('os-name');
+import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeSamples} from './stripeSamples';
@@ -18,6 +19,7 @@ import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
+import {TriggersListRequest} from './rpc/triggers_list_pb';
 
 export class Commands {
   telemetry: Telemetry;
@@ -285,10 +287,24 @@ export class Commands {
   openTriggerEvent = async (
     extensionContext: vscode.ExtensionContext,
     stripeClient: StripeClient,
+    stripeDaemon: StripeDaemon,
     stripeOutputChannel: vscode.OutputChannel,
   ) => {
     this.telemetry.sendEvent('openTriggerEvent');
-    const events = this.buildTriggerEventsList(this.supportedEvents, extensionContext);
+    const daemonClient = await stripeDaemon.setupClient();
+
+    const supportedTriggersList = await new Promise<string[]>((resolve, reject) => {
+      daemonClient.triggersList(new TriggersListRequest(), (error, response) => {
+        if (error) {
+          stripeOutputChannel.append('Warning: Failed to retrieve supported triggered event list dynamically: ' + error + '\n');
+          resolve(this.supportedEvents);
+        } else if (response) {
+          resolve(response.getEventsList());
+        }
+      });
+    });
+
+    const events = this.buildTriggerEventsList(supportedTriggersList, extensionContext);
     const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
     if (eventName) {
       const triggerProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.Trigger, [
