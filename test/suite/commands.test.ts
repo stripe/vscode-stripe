@@ -7,6 +7,7 @@ import {EventEmitter, Readable} from 'stream';
 import {Commands} from '../../src/commands';
 import {NoOpTelemetry} from '../../src/telemetry';
 import {StripeClient} from '../../src/stripeClient';
+import {StripeDaemon} from '../daemon/stripeDaemon';
 import {SurveyPrompt} from '../../src/surveyPrompt';
 import childProcess from 'child_process';
 import {mocks} from '../mocks/vscode';
@@ -40,6 +41,7 @@ suite('commands', function () {
     let stripeOutputChannel: Partial<vscode.OutputChannel>;
     let triggerProcess: childProcess.ChildProcess;
     let stripeClient: Partial<StripeClient>;
+    let stripeDaemon: Partial<StripeDaemon>;
 
     setup(() => {
       stripeOutputChannel = {append: (value: string) => {}, show: () => {}};
@@ -56,7 +58,7 @@ suite('commands', function () {
       const supportedEvents = ['a'];
       const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
 
-      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeDaemon, <any>stripeOutputChannel);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
@@ -73,7 +75,7 @@ suite('commands', function () {
       const supportedEvents = ['a'];
       const commands = new Commands(telemetry, terminal, extensionContext, supportedEvents);
 
-      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeOutputChannel);
+      commands.openTriggerEvent(extensionContext, <any>stripeClient, <any>stripeDaemon, <any>stripeOutputChannel);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
