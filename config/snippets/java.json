@@ -504,25 +504,45 @@
     "description": "Retrieve File",
     "body": "File file = File.retrieve(\"${1:file_xxxxxxxxxxxxx}\");"
   },
-  "Create Funding Instruction": {
-    "prefix": "StripeFundingInstructionCreate",
-    "description": "Create Funding Instruction",
-    "body": "Map<String, Object> bankTransfer =\n  new HashMap<>();\nbankTransfer.put(\"type\", \"${4:iban}\");\nbankTransfer.put(\"country\", \"${5:DE}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"funding_type\", \"${1:bank_xxxxxxxxxxxxx}\");\nparams.put(\"currency\", \"${2:eur}\");\nparams.put(\"destination_balance\", \"${3:issuing}\");\nparams.put(\"bank_transfer\", bankTransfer);\n\nFundingInstruction fundingInstruction =\n  FundingInstruction.create(params);"
+  "List Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportList",
+    "description": "List Identity Verification Report",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nVerificationReportCollection verificationReports =\n  VerificationReport.list(params);"
   },
-  "List Funding Instruction": {
-    "prefix": "StripeFundingInstructionList",
-    "description": "List Funding Instruction",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nFundingInstructionCollection fundingInstructions =\n  FundingInstruction.list(params);"
+  "Retrieve Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportRetrieve",
+    "description": "Retrieve Identity Verification Report",
+    "body": "VerificationReport verificationReport =\n  VerificationReport.retrieve(\"${1:vr_xxxxxxxxxxxxx}\");"
   },
-  "Retrieve Funding Instruction": {
-    "prefix": "StripeFundingInstructionRetrieve",
-    "description": "Retrieve Funding Instruction",
-    "body": "FundingInstruction fundingInstruction =\n  FundingInstruction.retrieve(\"${1:fi_xxxxxxxxxxxxx}\");"
+  "Cancel Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCancel",
+    "description": "Cancel Identity Verification Session",
+    "body": "VerificationSession verificationSession =\n  VerificationSession.retrieve(\n    \"${1:vs_xxxxxxxxxxxxx}\"\n  );\n\nVerificationSession updatedVerificationSession =\n  verificationSession.cancel();"
   },
-  "Update Funding Instruction": {
-    "prefix": "StripeFundingInstructionUpdate",
-    "description": "Update Funding Instruction",
-    "body": "FundingInstruction fundingInstruction =\n  FundingInstruction.retrieve(\"${1:fi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nFundingInstruction updatedFundingInstruction =\n  fundingInstruction.update(params);"
+  "Create Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCreate",
+    "description": "Create Identity Verification Session",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:document}\");\n\nVerificationSession verificationSession =\n  VerificationSession.create(params);"
+  },
+  "List Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionList",
+    "description": "List Identity Verification Session",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nVerificationSessionCollection verificationSessions =\n  VerificationSession.list(params);"
+  },
+  "Redact Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRedact",
+    "description": "Redact Identity Verification Session",
+    "body": "VerificationSession verificationSession =\n  VerificationSession.retrieve(\n    \"${1:vs_xxxxxxxxxxxxx}\"\n  );\n\nVerificationSession updatedVerificationSession =\n  verificationSession.redact();"
+  },
+  "Retrieve Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRetrieve",
+    "description": "Retrieve Identity Verification Session",
+    "body": "VerificationSession verificationSession =\n  VerificationSession.retrieve(\n    \"${1:vs_xxxxxxxxxxxxx}\"\n  );"
+  },
+  "Update Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionUpdate",
+    "description": "Update Identity Verification Session",
+    "body": "VerificationSession verificationSession =\n  VerificationSession.retrieve(\n    \"${1:vs_xxxxxxxxxxxxx}\"\n  );\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${2:id_number}\");\n\nVerificationSession updatedVerificationSession =\n  verificationSession.update(params);"
   },
   "Create Invoice": {
     "prefix": "StripeInvoiceCreate",
@@ -812,7 +832,7 @@
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
     "description": "Create Payment Method",
-    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:5});\ncard.put(\"exp_year\", ${4:2022});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);"
+    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:9});\ncard.put(\"exp_year\", ${4:2022});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);"
   },
   "Detach Payment Method": {
     "prefix": "StripePaymentMethodDetach",
@@ -937,7 +957,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:25_5OFF}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:Z4OV52SU}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
@@ -953,6 +973,41 @@
     "prefix": "StripePromotionCodeUpdate",
     "description": "Update Promotion Code",
     "body": "PromotionCode promotionCode =\n  PromotionCode.retrieve(\"${1:promo_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPromotionCode updatedPromotionCode =\n  promotionCode.update(params);"
+  },
+  "Accept Quote Quote": {
+    "prefix": "StripeQuoteAcceptQuote",
+    "description": "Accept Quote Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.acceptQuote();"
+  },
+  "Cancel Quote Quote": {
+    "prefix": "StripeQuoteCancelQuote",
+    "description": "Cancel Quote Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.cancelQuote();"
+  },
+  "Create Quote": {
+    "prefix": "StripeQuoteCreate",
+    "description": "Create Quote",
+    "body": "List<Object> lineItems = new ArrayList<>();\nMap<String, Object> lineItem1 = new HashMap<>();\nlineItem1.put(\"price\", \"${2:price_xxxxxxxxxxxxx}\");\nlineItem1.put(\"quantity\", ${3:2});\nlineItems.add(line_item1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"line_items\", lineItems);\n\nQuote quote = Quote.create(params);"
+  },
+  "Finalize Quote Quote": {
+    "prefix": "StripeQuoteFinalizeQuote",
+    "description": "Finalize Quote Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.finalizeQuote();"
+  },
+  "List Quote": {
+    "prefix": "StripeQuoteList",
+    "description": "List Quote",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nQuoteCollection quotes = Quote.list(params);"
+  },
+  "Retrieve Quote": {
+    "prefix": "StripeQuoteRetrieve",
+    "description": "Retrieve Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");"
+  },
+  "Update Quote": {
+    "prefix": "StripeQuoteUpdate",
+    "description": "Update Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nQuote updatedQuote = quote.update(params);"
   },
   "List Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningList",
@@ -1227,7 +1282,7 @@
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
     "description": "Create Subscription Schedule",
-    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1620753115});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);"
+    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1633379417});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);"
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
@@ -1253,6 +1308,16 @@
     "prefix": "StripeSubscriptionUpdate",
     "description": "Update Subscription",
     "body": "Subscription subscription =\n  Subscription.retrieve(\"${1:sub_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSubscription updatedSubscription =\n  subscription.update(params);"
+  },
+  "List Tax Code": {
+    "prefix": "StripeTaxCodeList",
+    "description": "List Tax Code",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nTaxCodeCollection taxCodes = TaxCode.list(params);"
+  },
+  "Retrieve Tax Code": {
+    "prefix": "StripeTaxCodeRetrieve",
+    "description": "Retrieve Tax Code",
+    "body": "TaxCode taxCode =\n  TaxCode.retrieve(\"${1:txcd_xxxxxxxxxxxxx}\");"
   },
   "Create Tax Rate": {
     "prefix": "StripeTaxRateCreate",

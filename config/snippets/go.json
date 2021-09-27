@@ -519,25 +519,45 @@
     "description": "Retrieve File",
     "body": "f, _ := file.Get(\"${1:file_xxxxxxxxxxxxx}\", nil)"
   },
-  "Create Funding Instruction": {
-    "prefix": "StripeFundingInstructionCreate",
-    "description": "Create Funding Instruction",
-    "body": "params := &stripe.FundingInstructionParams{\n  BankTransfer: &stripe.FundingInstructionBankTransferParams{\n    Type: stripe.String(\"${4:iban}\"),\n    Country: stripe.String(\"${5:DE}\"),\n  },\n  Currency: stripe.String(string(stripe.CurrencyEUR)),\n  DestinationBalance: stripe.String(\"${3:issuing}\"),\n  FundingType: stripe.String(\"${1:bank_xxxxxxxxxxxxx}\"),\n}\nfi, _ := fundinginstruction.New(params)"
+  "List Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportList",
+    "description": "List Identity Verification Report",
+    "body": "params := &stripe.\n  IdentityVerificationReportListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := verificationreport.List(params)\nfor i.Next() {\n  vr := i.IdentityVerificationReport()\n}"
   },
-  "List Funding Instruction": {
-    "prefix": "StripeFundingInstructionList",
-    "description": "List Funding Instruction",
-    "body": "params := &stripe.FundingInstructionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := fundinginstruction.List(params)\nfor i.Next() {\n  fi := i.FundingInstruction()\n}"
+  "Retrieve Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportRetrieve",
+    "description": "Retrieve Identity Verification Report",
+    "body": "vr, _ := verificationreport.Get(\n  \"${1:vr_xxxxxxxxxxxxx}\",\n  nil,\n)"
   },
-  "Retrieve Funding Instruction": {
-    "prefix": "StripeFundingInstructionRetrieve",
-    "description": "Retrieve Funding Instruction",
-    "body": "fi, _ := fundinginstruction.Get(\n  \"${1:fi_xxxxxxxxxxxxx}\",\n  nil,\n)"
+  "Cancel Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCancel",
+    "description": "Cancel Identity Verification Session",
+    "body": "vs, _ := verificationsession.Cancel(\n  \"${1:vs_xxxxxxxxxxxxx}\",\n  nil,\n)"
   },
-  "Update Funding Instruction": {
-    "prefix": "StripeFundingInstructionUpdate",
-    "description": "Update Funding Instruction",
-    "body": "params := &stripe.FundingInstructionParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\nfi, _ := fundinginstruction.Update(\n  \"${1:fi_xxxxxxxxxxxxx}\",\n  params,\n)"
+  "Create Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCreate",
+    "description": "Create Identity Verification Session",
+    "body": "params := &stripe.\n  IdentityVerificationSessionParams{\n  Type: stripe.String(\"${1:document}\"),\n}\nvs, _ := verificationsession.New(params)"
+  },
+  "List Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionList",
+    "description": "List Identity Verification Session",
+    "body": "params := &stripe.\n  IdentityVerificationSessionListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := verificationsession.List(params)\nfor i.Next() {\n  vs := i.IdentityVerificationSession()\n}"
+  },
+  "Redact Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRedact",
+    "description": "Redact Identity Verification Session",
+    "body": "vs, _ := verificationsession.Redact(\n  \"${1:vs_xxxxxxxxxxxxx}\",\n  nil,\n)"
+  },
+  "Retrieve Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRetrieve",
+    "description": "Retrieve Identity Verification Session",
+    "body": "vs, _ := verificationsession.Get(\n  \"${1:vs_xxxxxxxxxxxxx}\",\n  nil,\n)"
+  },
+  "Update Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionUpdate",
+    "description": "Update Identity Verification Session",
+    "body": "params := &stripe.\n  IdentityVerificationSessionParams{\n  Type: stripe.String(\"${2:id_number}\"),\n}\nvs, _ := verificationsession.Update(\n  \"${1:vs_xxxxxxxxxxxxx}\",\n  params,\n)"
   },
   "Create Invoice": {
     "prefix": "StripeInvoiceCreate",
@@ -822,7 +842,7 @@
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
     "description": "Create Payment Method",
-    "body": "params := &stripe.PaymentMethodParams{\n  Card: &stripe.PaymentMethodCardParams{\n    Number: stripe.String(\"${2:4242424242424242}\"),\n    ExpMonth: stripe.String(\"${3:5}\"),\n    ExpYear: stripe.String(\"${4:2022}\"),\n    CVC: stripe.String(\"${5:314}\"),\n  },\n  Type: stripe.String(\"${1:card}\"),\n}\npm, _ := paymentmethod.New(params)"
+    "body": "params := &stripe.PaymentMethodParams{\n  Card: &stripe.PaymentMethodCardParams{\n    Number: stripe.String(\"${2:4242424242424242}\"),\n    ExpMonth: stripe.String(\"${3:9}\"),\n    ExpYear: stripe.String(\"${4:2022}\"),\n    CVC: stripe.String(\"${5:314}\"),\n  },\n  Type: stripe.String(\"${1:card}\"),\n}\npm, _ := paymentmethod.New(params)"
   },
   "Detach Payment Method": {
     "prefix": "StripePaymentMethodDetach",
@@ -968,6 +988,41 @@
     "prefix": "StripePromotionCodeUpdate",
     "description": "Update Promotion Code",
     "body": "params := &stripe.PromotionCodeParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\npc, _ := promotioncode.Update(\n  \"${1:promo_xxxxxxxxxxxxx}\",\n  params,\n)"
+  },
+  "Accept Quote Quote": {
+    "prefix": "StripeQuoteAcceptQuote",
+    "description": "Accept Quote Quote",
+    "body": "q, _ := quote.AcceptQuote(\"${1:qt_xxxxxxxxxxxxx}\", nil)"
+  },
+  "Cancel Quote Quote": {
+    "prefix": "StripeQuoteCancelQuote",
+    "description": "Cancel Quote Quote",
+    "body": "q, _ := quote.CancelQuote(\"${1:qt_xxxxxxxxxxxxx}\", nil)"
+  },
+  "Create Quote": {
+    "prefix": "StripeQuoteCreate",
+    "description": "Create Quote",
+    "body": "params := &stripe.QuoteParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  LineItems: []*stripe.QuoteLineItemParams{\n    {\n      Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n      Quantity: stripe.Int64(2),\n    },\n  },\n}\nq, _ := quote.New(params)"
+  },
+  "Finalize Quote Quote": {
+    "prefix": "StripeQuoteFinalizeQuote",
+    "description": "Finalize Quote Quote",
+    "body": "q, _ := quote.FinalizeQuote(\n  \"${1:qt_xxxxxxxxxxxxx}\",\n  nil,\n)"
+  },
+  "List Quote": {
+    "prefix": "StripeQuoteList",
+    "description": "List Quote",
+    "body": "params := &stripe.QuoteListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := quote.List(params)\nfor i.Next() {\n  q := i.Quote()\n}"
+  },
+  "Retrieve Quote": {
+    "prefix": "StripeQuoteRetrieve",
+    "description": "Retrieve Quote",
+    "body": "q, _ := quote.Get(\"${1:qt_xxxxxxxxxxxxx}\", nil)"
+  },
+  "Update Quote": {
+    "prefix": "StripeQuoteUpdate",
+    "description": "Update Quote",
+    "body": "params := &stripe.QuoteParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\nq, _ := quote.Update(\"${1:qt_xxxxxxxxxxxxx}\", params)"
   },
   "List Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningList",
@@ -1247,7 +1302,7 @@
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
     "description": "Create Subscription Schedule",
-    "body": "params := &stripe.SubscriptionScheduleParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  EndBehavior: stripe.String(\"${3:release}\"),\n  Phases: []*stripe.SubscriptionSchedulePhaseParams{\n    {\n      Items: []*stripe.SubscriptionSchedulePhaseItemParams{\n        {\n          Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n          Quantity: stripe.Int64(1),\n        },\n      },\n      Iterations: stripe.Int64(12),\n    },\n  },\n  StartDate: stripe.Int64(${2:1620753115}),\n}\nss, _ := subschedule.New(params)"
+    "body": "params := &stripe.SubscriptionScheduleParams{\n  Customer: stripe.String(\"${1:cus_xxxxxxxxxxxxx}\"),\n  EndBehavior: stripe.String(\"${3:release}\"),\n  Phases: []*stripe.SubscriptionSchedulePhaseParams{\n    {\n      Items: []*stripe.SubscriptionSchedulePhaseItemParams{\n        {\n          Price: stripe.String(\"price_xxxxxxxxxxxxx\"),\n          Quantity: stripe.Int64(1),\n        },\n      },\n      Iterations: stripe.Int64(12),\n    },\n  },\n  StartDate: stripe.Int64(${2:1633379417}),\n}\nss, _ := subschedule.New(params)"
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
@@ -1273,6 +1328,16 @@
     "prefix": "StripeSubscriptionUpdate",
     "description": "Update Subscription",
     "body": "params := &stripe.SubscriptionParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\ns, _ := sub.Update(\"${1:sub_xxxxxxxxxxxxx}\", params)"
+  },
+  "List Tax Code": {
+    "prefix": "StripeTaxCodeList",
+    "description": "List Tax Code",
+    "body": "params := &stripe.TaxCodeListParams{}\nparams.Filters.AddFilter(\"limit\", \"\", \"3\")\ni := taxcode.List(params)\nfor i.Next() {\n  tc := i.TaxCode()\n}"
+  },
+  "Retrieve Tax Code": {
+    "prefix": "StripeTaxCodeRetrieve",
+    "description": "Retrieve Tax Code",
+    "body": "tc, _ := taxcode.Get(\"${1:txcd_xxxxxxxxxxxxx}\", nil)"
   },
   "Create Tax Rate": {
     "prefix": "StripeTaxRateCreate",
