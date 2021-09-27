@@ -957,7 +957,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:Z4OV52SU}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:25_5OFF}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",

@@ -162,7 +162,7 @@
   "Retrieve Balance": {
     "prefix": "StripeBalanceRetrieve",
     "description": "Retrieve Balance",
-    "body": "$stripe->balance->retrieve()\n"
+    "body": "\\$stripe->balance->retrieve()\n"
   },
   "List Balance Transaction": {
     "prefix": "StripeBalanceTransactionList",
@@ -232,7 +232,7 @@
   "Retrieve Checkout Session Line Items": {
     "prefix": "StripeCheckoutSessionLineItemsRetrieve",
     "description": "Retrieve Checkout Session Line Items",
-    "body": "$line_items = $stripe->checkout->sessions->allLineItems('${1:cs_test_xxxxxxxxxxxxx}', ['limit' => ${2:5}]);\n\n"
+    "body": "\\$line_items = \\$stripe->checkout->sessions->allLineItems('${1:cs_test_xxxxxxxxxxxxx}', ['limit' => ${2:5}]);\n\n"
   },
   "List Checkout Session": {
     "prefix": "StripeCheckoutSessionList",
@@ -442,7 +442,7 @@
   "Delete Discount": {
     "prefix": "StripeDiscountDelete",
     "description": "Delete Discount",
-    "body": "$stripe->customers->deleteDiscount('${1:cus_xxxxxxxxxxxxx}');\n\n"
+    "body": "\\$stripe->customers->deleteDiscount('${1:cus_xxxxxxxxxxxxx}');\n\n"
   },
   "Close Dispute": {
     "prefix": "StripeDisputeClose",
@@ -477,7 +477,7 @@
   "Create File": {
     "prefix": "StripeFileCreate",
     "description": "Create File",
-    "body": "$fp = fopen('${1:/path/to/a/file.jpg}', 'r');\n$stripe->files->create([\n  'purpose' => 'dispute_evidence',\n  'file' => $fp\n]);\n\n"
+    "body": "\\$fp = fopen('${1:/path/to/a/file.jpg}', 'r');\n\\$stripe->files->create([\n  'purpose' => 'dispute_evidence',\n  'file' => \\$fp\n]);\n\n"
   },
   "Create File Link": {
     "prefix": "StripeFileLinkCreate",
@@ -592,12 +592,12 @@
   "Invoice Lines": {
     "prefix": "StripeInvoiceLines",
     "description": "Invoice Lines",
-    "body": "$lines = $stripe->invoices->allLines('${1:in_xxxxxxxxxxxxx}', ['limit' => ${2:5}]);\n\n"
+    "body": "\\$lines = \\$stripe->invoices->allLines('${1:in_xxxxxxxxxxxxx}', ['limit' => ${2:5}]);\n\n"
   },
   "Upcoming Invoice Lines": {
     "prefix": "StripeInvoiceLinesUpcoming",
     "description": "Upcoming Invoice Lines",
-    "body": "$stripe->invoices->upcomingLines([\n  'customer' => '${1: cus_xxxxxxxxxxxxx}',\n  'limit' => ${2:5},\n]);\n\n"
+    "body": "\\$stripe->invoices->upcomingLines([\n  'customer' => '${1: cus_xxxxxxxxxxxxx}',\n  'limit' => ${2:5},\n]);\n\n"
   },
   "List Invoice": {
     "prefix": "StripeInvoiceList",
@@ -627,7 +627,7 @@
   "Upcoming Invoice": {
     "prefix": "StripeInvoiceUpcoming",
     "description": "Upcoming Invoice",
-    "body": "$stripe->invoices->upcoming([\n  'customer' => '${1: cus_xxxxxxxxxxxxx}',\n]);\n\n"
+    "body": "\\$stripe->invoices->upcoming([\n  'customer' => '${1: cus_xxxxxxxxxxxxx}',\n]);\n\n"
   },
   "Update Invoice": {
     "prefix": "StripeInvoiceUpdate",
@@ -772,7 +772,7 @@
   "Return Order": {
     "prefix": "StripeOrderReturn",
     "description": "Return Order",
-    "body": "$stripe->orders->returnOrder([\n  'items' => [\n    [\n      'type' => 'sku',\n      'parent' => '${1:sku_xxxxxxxxxxxxx}',\n    ],\n  ],\n]);\n\n"
+    "body": "\\$stripe->orders->returnOrder([\n  'items' => [\n    [\n      'type' => 'sku',\n      'parent' => '${1:sku_xxxxxxxxxxxxx}',\n    ],\n  ],\n]);\n\n"
   },
   "List Order Return": {
     "prefix": "StripeOrderReturnList",
@@ -1197,17 +1197,17 @@
   "Attach Source": {
     "prefix": "StripeSourceAttach",
     "description": "Attach Source",
-    "body": "$stripe->customers->createSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  [\n    'source' => '${2:src_xxxxxxxxxxxxx}',\n  ]\n);\n\n"
+    "body": "\\$stripe->customers->createSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  [\n    'source' => '${2:src_xxxxxxxxxxxxx}',\n  ]\n);\n\n"
   },
   "Create Source": {
     "prefix": "StripeSourceCreate",
     "description": "Create Source",
-    "body": "$stripe->sources->create([\n  \"type\" => \"ach_credit_transfer\",\n  \"currency\" => \"${1:usd}\",\n  \"owner\" => [\n    \"email\" => \"${2:jenny.rosen@example.com}\"\n  ]\n]);\n\n"
+    "body": "\\$stripe->sources->create([\n  \"type\" => \"ach_credit_transfer\",\n  \"currency\" => \"${1:usd}\",\n  \"owner\" => [\n    \"email\" => \"${2:jenny.rosen@example.com}\"\n  ]\n]);\n\n"
   },
   "Detach Source": {
     "prefix": "StripeSourceDetach",
     "description": "Detach Source",
-    "body": "$stripe->customers->deleteSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  '${2:src_xxxxxxxxxxxxx}'\n);\n\n"
+    "body": "\\$stripe->customers->deleteSource(\n  '${1:cus_xxxxxxxxxxxxx}',\n  '${2:src_xxxxxxxxxxxxx}'\n);\n\n"
   },
   "Retrieve Source": {
     "prefix": "StripeSourceRetrieve",
@@ -1232,7 +1232,7 @@
   "Delete Subscription Discount": {
     "prefix": "StripeSubscriptionDiscountDelete",
     "description": "Delete Subscription Discount",
-    "body": "$stripe->subscriptions->deleteDiscount('${1:sub_xxxxxxxxxxxxx}');\n\n"
+    "body": "\\$stripe->subscriptions->deleteDiscount('${1:sub_xxxxxxxxxxxxx}');\n\n"
   },
   "Create Subscription Item": {
     "prefix": "StripeSubscriptionItemCreate",
