@@ -509,25 +509,45 @@
     "description": "Retrieve File",
     "body": "var service = new FileService();\nservice.Get(\"${1:file_xxxxxxxxxxxxx}\");"
   },
-  "Create Funding Instruction": {
-    "prefix": "StripeFundingInstructionCreate",
-    "description": "Create Funding Instruction",
-    "body": "var options = new FundingInstructionCreateOptions\n{\n  FundingType = \"${1:bank_xxxxxxxxxxxxx}\",\n  Currency = \"${2:eur}\",\n  DestinationBalance = \"${3:issuing}\",\n  BankTransfer = new FundingInstructionBankTransferOptions\n  {\n    Type = \"${4:iban}\",\n    Country = \"${5:DE}\",\n  },\n};\nvar service = new FundingInstructionService();\nservice.Create(options);"
+  "List Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportList",
+    "description": "List Identity Verification Report",
+    "body": "var options = new VerificationReportListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationReportService();\nStripeList<VerificationReport> verificationReports = service.List(\n  options\n);"
   },
-  "List Funding Instruction": {
-    "prefix": "StripeFundingInstructionList",
-    "description": "List Funding Instruction",
-    "body": "var options = new FundingInstructionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new FundingInstructionService();\nStripeList<FundingInstruction> fundingInstructions = service.List(\n  options\n);"
+  "Retrieve Identity Verification Report": {
+    "prefix": "StripeIdentityVerificationReportRetrieve",
+    "description": "Retrieve Identity Verification Report",
+    "body": "var service = new VerificationReportService();\nservice.Get(\"${1:vr_xxxxxxxxxxxxx}\");"
   },
-  "Retrieve Funding Instruction": {
-    "prefix": "StripeFundingInstructionRetrieve",
-    "description": "Retrieve Funding Instruction",
-    "body": "var service = new FundingInstructionService();\nservice.Get(\"${1:fi_xxxxxxxxxxxxx}\");"
+  "Cancel Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCancel",
+    "description": "Cancel Identity Verification Session",
+    "body": "var service = new VerificationSessionService();\nservice.Cancel(\"${1:vs_xxxxxxxxxxxxx}\");"
   },
-  "Update Funding Instruction": {
-    "prefix": "StripeFundingInstructionUpdate",
-    "description": "Update Funding Instruction",
-    "body": "var options = new FundingInstructionUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new FundingInstructionService();\nservice.Update(\"${1:fi_xxxxxxxxxxxxx}\", options);"
+  "Create Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionCreate",
+    "description": "Create Identity Verification Session",
+    "body": "var options = new VerificationSessionCreateOptions\n{\n  Type = \"${1:document}\",\n};\nvar service = new VerificationSessionService();\nservice.Create(options);"
+  },
+  "List Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionList",
+    "description": "List Identity Verification Session",
+    "body": "var options = new VerificationSessionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationSessionService();\nStripeList<VerificationSession> verificationSessions = service.List(\n  options\n);"
+  },
+  "Redact Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRedact",
+    "description": "Redact Identity Verification Session",
+    "body": "var service = new VerificationSessionService();\nservice.Redact(\"${1:vs_xxxxxxxxxxxxx}\");"
+  },
+  "Retrieve Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionRetrieve",
+    "description": "Retrieve Identity Verification Session",
+    "body": "var service = new VerificationSessionService();\nservice.Get(\"${1:vs_xxxxxxxxxxxxx}\");"
+  },
+  "Update Identity Verification Session": {
+    "prefix": "StripeIdentityVerificationSessionUpdate",
+    "description": "Update Identity Verification Session",
+    "body": "var options = new VerificationSessionUpdateOptions\n{\n  Type = \"${2:id_number}\",\n};\nvar service = new VerificationSessionService();\nservice.Update(\"${1:vs_xxxxxxxxxxxxx}\", options);"
   },
   "Create Invoice": {
     "prefix": "StripeInvoiceCreate",
@@ -807,7 +827,7 @@
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
     "description": "Create Payment Method",
-    "body": "var options = new PaymentMethodCreateOptions\n{\n  Type = \"${1:card}\",\n  Card = new PaymentMethodCardOptions\n  {\n    Number = \"${2:4242424242424242}\",\n    ExpMonth = ${3:5},\n    ExpYear = ${4:2022},\n    Cvc = \"${5:314}\",\n  },\n};\nvar service = new PaymentMethodService();\nservice.Create(options);"
+    "body": "var options = new PaymentMethodCreateOptions\n{\n  Type = \"${1:card}\",\n  Card = new PaymentMethodCardOptions\n  {\n    Number = \"${2:4242424242424242}\",\n    ExpMonth = ${3:9},\n    ExpYear = ${4:2022},\n    Cvc = \"${5:314}\",\n  },\n};\nvar service = new PaymentMethodService();\nservice.Create(options);"
   },
   "Detach Payment Method": {
     "prefix": "StripePaymentMethodDetach",
@@ -948,6 +968,41 @@
     "prefix": "StripePromotionCodeUpdate",
     "description": "Update Promotion Code",
     "body": "var options = new PromotionCodeUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new PromotionCodeService();\nservice.Update(\"${1:promo_xxxxxxxxxxxxx}\", options);"
+  },
+  "Accept Quote Quote": {
+    "prefix": "StripeQuoteAcceptQuote",
+    "description": "Accept Quote Quote",
+    "body": "var service = new QuoteService();\nservice.AcceptQuote(\"${1:qt_xxxxxxxxxxxxx}\");"
+  },
+  "Cancel Quote Quote": {
+    "prefix": "StripeQuoteCancelQuote",
+    "description": "Cancel Quote Quote",
+    "body": "var service = new QuoteService();\nservice.CancelQuote(\"${1:qt_xxxxxxxxxxxxx}\");"
+  },
+  "Create Quote": {
+    "prefix": "StripeQuoteCreate",
+    "description": "Create Quote",
+    "body": "var options = new QuoteCreateOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  LineItems = new List<QuoteLineItemOptions>\n  {\n    new QuoteLineItemOptions\n    {\n      Price = \"price_xxxxxxxxxxxxx\",\n      Quantity = 2,\n    },\n  },\n};\nvar service = new QuoteService();\nservice.Create(options);"
+  },
+  "Finalize Quote Quote": {
+    "prefix": "StripeQuoteFinalizeQuote",
+    "description": "Finalize Quote Quote",
+    "body": "var service = new QuoteService();\nservice.FinalizeQuote(\"${1:qt_xxxxxxxxxxxxx}\");"
+  },
+  "List Quote": {
+    "prefix": "StripeQuoteList",
+    "description": "List Quote",
+    "body": "var options = new QuoteListOptions { Limit = ${1:3} };\nvar service = new QuoteService();\nStripeList<Quote> quotes = service.List(options);"
+  },
+  "Retrieve Quote": {
+    "prefix": "StripeQuoteRetrieve",
+    "description": "Retrieve Quote",
+    "body": "var service = new QuoteService();\nservice.Get(\"${1:qt_xxxxxxxxxxxxx}\");"
+  },
+  "Update Quote": {
+    "prefix": "StripeQuoteUpdate",
+    "description": "Update Quote",
+    "body": "var options = new QuoteUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new QuoteService();\nservice.Update(\"${1:qt_xxxxxxxxxxxxx}\", options);"
   },
   "List Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningList",
@@ -1199,11 +1254,6 @@
     "description": "Update Subscription Item",
     "body": "var options = new SubscriptionItemUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new SubscriptionItemService();\nservice.Update(\"${1:si_xxxxxxxxxxxxx}\", options);"
   },
-  "Create Subscription Item Usage Record": {
-    "prefix": "StripeSubscriptionItemUsageRecordCreate",
-    "description": "Create Subscription Item Usage Record",
-    "body": "var options = new UsageRecordCreateOptions\n{\n  Quantity = ${2:100},\n  Timestamp = ${3:1571252444},\n};\nvar service = new UsageRecordService();\nservice.Create(\"${1:si_xxxxxxxxxxxxx}\", options);"
-  },
   "List Subscription Item Usage Record Summary": {
     "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
     "description": "List Subscription Item Usage Record Summary",
@@ -1227,7 +1277,7 @@
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
     "description": "Create Subscription Schedule",
-    "body": "var options = new SubscriptionScheduleCreateOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  StartDate = ${2:1620753115},\n  EndBehavior = \"${3:release}\",\n  Phases = new List<SubscriptionSchedulePhaseOptions>\n  {\n    new SubscriptionSchedulePhaseOptions\n    {\n      Items = new List<SubscriptionSchedulePhaseItemOptions>\n      {\n        new SubscriptionSchedulePhaseItemOptions\n        {\n          Price = \"price_xxxxxxxxxxxxx\",\n          Quantity = 1,\n        },\n      },\n      Iterations = 12,\n    },\n  },\n};\nvar service = new SubscriptionScheduleService();\nservice.Create(options);"
+    "body": "var options = new SubscriptionScheduleCreateOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  StartDate = ${2:1633379417},\n  EndBehavior = \"${3:release}\",\n  Phases = new List<SubscriptionSchedulePhaseOptions>\n  {\n    new SubscriptionSchedulePhaseOptions\n    {\n      Items = new List<SubscriptionSchedulePhaseItemOptions>\n      {\n        new SubscriptionSchedulePhaseItemOptions\n        {\n          Price = \"price_xxxxxxxxxxxxx\",\n          Quantity = 1,\n        },\n      },\n      Iterations = 12,\n    },\n  },\n};\nvar service = new SubscriptionScheduleService();\nservice.Create(options);"
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
@@ -1253,6 +1303,16 @@
     "prefix": "StripeSubscriptionUpdate",
     "description": "Update Subscription",
     "body": "var options = new SubscriptionUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new SubscriptionService();\nservice.Update(\"${1:sub_xxxxxxxxxxxxx}\", options);"
+  },
+  "List Tax Code": {
+    "prefix": "StripeTaxCodeList",
+    "description": "List Tax Code",
+    "body": "var options = new TaxCodeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TaxCodeService();\nStripeList<TaxCode> taxCodes = service.List(\n  options\n);"
+  },
+  "Retrieve Tax Code": {
+    "prefix": "StripeTaxCodeRetrieve",
+    "description": "Retrieve Tax Code",
+    "body": "var service = new TaxCodeService();\nservice.Get(\"${1:txcd_xxxxxxxxxxxxx}\");"
   },
   "Create Tax Rate": {
     "prefix": "StripeTaxRateCreate",
