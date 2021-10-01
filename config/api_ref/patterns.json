@@ -500,102 +500,6 @@
     }
   },
   {
-    "url": "/products/create",
-    "regexps": {
-      "ruby": "Product\\.create\\(",
-      "go": "product\\.New\\(",
-      "python": "Product\\.create\\(",
-      "java": "Product\\.create\\(",
-      "node": "products\\.create\\(",
-      "php": "products->create\\("
-    }
-  },
-  {
-    "url": "/products/retrieve",
-    "regexps": {
-      "ruby": "Product\\.retrieve\\(",
-      "go": "product\\.Get\\(",
-      "python": "Product\\.retrieve\\(",
-      "java": "Product\\.retrieve\\(",
-      "node": "products\\.retrieve\\(",
-      "php": "products->retrieve\\("
-    }
-  },
-  {
-    "url": "/products/update",
-    "regexps": {
-      "ruby": "Product\\.update\\(",
-      "go": "product\\.Update\\(",
-      "python": "Product\\.modify\\(",
-      "node": "products\\.update\\(",
-      "php": "products->update\\("
-    }
-  },
-  {
-    "url": "/products/list",
-    "regexps": {
-      "ruby": "Product\\.list\\(",
-      "go": "product\\.List\\(",
-      "python": "Product\\.list\\(",
-      "java": "Product\\.list\\(",
-      "node": "products\\.list\\(",
-      "php": "products->all\\("
-    }
-  },
-  {
-    "url": "/products/delete",
-    "regexps": {
-      "ruby": "Product\\.delete\\(",
-      "go": "product\\.Del\\(",
-      "python": "Product\\.delete\\(",
-      "node": "products\\.del\\(",
-      "php": "products->delete\\("
-    }
-  },
-  {
-    "url": "/prices/create",
-    "regexps": {
-      "ruby": "Price\\.create\\(",
-      "go": "price\\.New\\(",
-      "python": "Price\\.create\\(",
-      "java": "Price\\.create\\(",
-      "node": "prices\\.create\\(",
-      "php": "prices->create\\("
-    }
-  },
-  {
-    "url": "/prices/retrieve",
-    "regexps": {
-      "ruby": "Price\\.retrieve\\(",
-      "go": "price\\.Get\\(",
-      "python": "Price\\.retrieve\\(",
-      "java": "Price\\.retrieve\\(",
-      "node": "prices\\.retrieve\\(",
-      "php": "prices->retrieve\\("
-    }
-  },
-  {
-    "url": "/prices/update",
-    "regexps": {
-      "ruby": "Price\\.update\\(",
-      "go": "price\\.Update\\(",
-      "python": "Price\\.modify\\(",
-      "node": "prices\\.update\\(",
-      "php": "prices->update\\("
-    }
-  },
-  {
-    "url": "/prices/list",
-    "regexps": {
-      "ruby": "Price\\.list\\(",
-      "go": "price\\.List\\(",
-      "python": "Price\\.list\\(",
-      "java": "Price\\.list\\(",
-      "node": "prices\\.list\\(",
-      "php": "prices->all\\("
-    }
-  },
-  {
     "url": "/refunds/create",
     "regexps": {
       "ruby": "Refund\\.create\\(",
@@ -941,47 +845,99 @@
     }
   },
   {
-    "url": "/checkout/sessions/create",
+    "url": "/products/create",
     "regexps": {
-      "ruby": "Checkout::Session\\.create\\(",
-      "go": "session\\.New\\(",
-      "python": "checkout\\.Session\\.create\\(",
-      "java": "Session\\.create\\(",
-      "node": "checkout\\.sessions\\.create\\(",
-      "php": "checkout->sessions->create\\("
+      "ruby": "Product\\.create\\(",
+      "go": "product\\.New\\(",
+      "python": "Product\\.create\\(",
+      "java": "Product\\.create\\(",
+      "node": "products\\.create\\(",
+      "php": "products->create\\("
     }
   },
   {
-    "url": "/checkout/sessions/retrieve",
+    "url": "/products/retrieve",
     "regexps": {
-      "ruby": "Checkout::Session\\.retrieve\\(",
-      "go": "session\\.Get\\(",
-      "python": "checkout\\.Session\\.retrieve\\(",
-      "java": "Session\\.retrieve\\(",
-      "node": "checkout\\.sessions\\.retrieve\\(",
-      "php": "checkout->sessions->retrieve\\("
+      "ruby": "Product\\.retrieve\\(",
+      "go": "product\\.Get\\(",
+      "python": "Product\\.retrieve\\(",
+      "java": "Product\\.retrieve\\(",
+      "node": "products\\.retrieve\\(",
+      "php": "products->retrieve\\("
     }
   },
   {
-    "url": "/checkout/sessions/list",
+    "url": "/products/update",
     "regexps": {
-      "ruby": "Checkout::Session\\.list\\(",
-      "go": "session\\.List\\(",
-      "python": "checkout\\.Session\\.list\\(",
-      "java": "Session\\.list\\(",
-      "node": "checkout\\.sessions\\.list\\(",
-      "php": "checkout->sessions->all\\("
+      "ruby": "Product\\.update\\(",
+      "go": "product\\.Update\\(",
+      "python": "Product\\.modify\\(",
+      "node": "products\\.update\\(",
+      "php": "products->update\\("
     }
   },
   {
-    "url": "/checkout/sessions/line_items",
+    "url": "/products/list",
     "regexps": {
-      "ruby": "Checkout::Session\\.list\\(",
-      "go": "session\\.List\\(",
-      "python": "checkout\\.Session\\.list\\(",
-      "java": "Session\\.list\\(",
-      "node": "checkout\\.sessions\\.list\\(",
-      "php": "checkout->sessions->all\\("
+      "ruby": "Product\\.list\\(",
+      "go": "product\\.List\\(",
+      "python": "Product\\.list\\(",
+      "java": "Product\\.list\\(",
+      "node": "products\\.list\\(",
+      "php": "products->all\\("
+    }
+  },
+  {
+    "url": "/products/delete",
+    "regexps": {
+      "ruby": "Product\\.delete\\(",
+      "go": "product\\.Del\\(",
+      "python": "Product\\.delete\\(",
+      "node": "products\\.del\\(",
+      "php": "products->delete\\("
+    }
+  },
+  {
+    "url": "/prices/create",
+    "regexps": {
+      "ruby": "Price\\.create\\(",
+      "go": "price\\.New\\(",
+      "python": "Price\\.create\\(",
+      "java": "Price\\.create\\(",
+      "node": "prices\\.create\\(",
+      "php": "prices->create\\("
+    }
+  },
+  {
+    "url": "/prices/retrieve",
+    "regexps": {
+      "ruby": "Price\\.retrieve\\(",
+      "go": "price\\.Get\\(",
+      "python": "Price\\.retrieve\\(",
+      "java": "Price\\.retrieve\\(",
+      "node": "prices\\.retrieve\\(",
+      "php": "prices->retrieve\\("
+    }
+  },
+  {
+    "url": "/prices/update",
+    "regexps": {
+      "ruby": "Price\\.update\\(",
+      "go": "price\\.Update\\(",
+      "python": "Price\\.modify\\(",
+      "node": "prices\\.update\\(",
+      "php": "prices->update\\("
+    }
+  },
+  {
+    "url": "/prices/list",
+    "regexps": {
+      "ruby": "Price\\.list\\(",
+      "go": "price\\.List\\(",
+      "python": "Price\\.list\\(",
+      "java": "Price\\.list\\(",
+      "node": "prices\\.list\\(",
+      "php": "prices->all\\("
     }
   },
   {
@@ -1035,6 +991,180 @@
       "java": "Coupon\\.list\\(",
       "node": "coupons\\.list\\(",
       "php": "coupons->all\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/create",
+    "regexps": {
+      "ruby": "PromotionCode\\.create\\(",
+      "go": "promotioncode\\.New\\(",
+      "python": "PromotionCode\\.create\\(",
+      "java": "PromotionCode\\.create\\(",
+      "node": "promotionCodes\\.create\\(",
+      "php": "promotionCodes->create\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/update",
+    "regexps": {
+      "ruby": "PromotionCode\\.update\\(",
+      "go": "promotioncode\\.Update\\(",
+      "python": "PromotionCode\\.modify\\(",
+      "node": "promotionCodes\\.update\\(",
+      "php": "promotionCodes->update\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/retrieve",
+    "regexps": {
+      "ruby": "PromotionCode\\.retrieve\\(",
+      "go": "promotioncode\\.Get\\(",
+      "python": "PromotionCode\\.retrieve\\(",
+      "java": "PromotionCode\\.retrieve\\(",
+      "node": "promotionCodes\\.retrieve\\(",
+      "php": "promotionCodes->retrieve\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/list",
+    "regexps": {
+      "ruby": "PromotionCode\\.list\\(",
+      "go": "promotioncode\\.List\\(",
+      "python": "PromotionCode\\.list\\(",
+      "java": "PromotionCode\\.list\\(",
+      "node": "promotionCodes\\.list\\(",
+      "php": "promotionCodes->all\\("
+    }
+  },
+  {
+    "url": "/discounts/delete",
+    "regexps": {
+      "ruby": "Customer\\.discount\\(",
+      "go": "customer\\.Discount\\(",
+      "python": "Customer\\.discount\\(",
+      "java": "Customer\\.discount\\(",
+      "node": "customers\\.discount\\(",
+      "php": "customers->discount\\("
+    }
+  },
+  {
+    "url": "/discounts/subscription_delete",
+    "regexps": {
+      "ruby": "Subscription\\.discount\\(",
+      "go": "sub\\.Discount\\(",
+      "python": "Subscription\\.discount\\(",
+      "java": "Subscription\\.discount\\(",
+      "node": "subscriptions\\.discount\\(",
+      "php": "subscriptions->discount\\("
+    }
+  },
+  {
+    "url": "/tax_codes/list",
+    "regexps": {
+      "ruby": "TaxCode\\.list\\(",
+      "go": "taxcode\\.List\\(",
+      "python": "TaxCode\\.list\\(",
+      "java": "TaxCode\\.list\\(",
+      "node": "taxCodes\\.list\\(",
+      "php": "taxCodes->all\\("
+    }
+  },
+  {
+    "url": "/tax_codes/retrieve",
+    "regexps": {
+      "ruby": "TaxCode\\.retrieve\\(",
+      "go": "taxcode\\.Get\\(",
+      "python": "TaxCode\\.retrieve\\(",
+      "java": "TaxCode\\.retrieve\\(",
+      "node": "taxCodes\\.retrieve\\(",
+      "php": "taxCodes->retrieve\\("
+    }
+  },
+  {
+    "url": "/tax_rates/create",
+    "regexps": {
+      "ruby": "TaxRate\\.create\\(",
+      "go": "taxrate\\.New\\(",
+      "python": "TaxRate\\.create\\(",
+      "java": "TaxRate\\.create\\(",
+      "node": "taxRates\\.create\\(",
+      "php": "taxRates->create\\("
+    }
+  },
+  {
+    "url": "/tax_rates/retrieve",
+    "regexps": {
+      "ruby": "TaxRate\\.retrieve\\(",
+      "go": "taxrate\\.Get\\(",
+      "python": "TaxRate\\.retrieve\\(",
+      "java": "TaxRate\\.retrieve\\(",
+      "node": "taxRates\\.retrieve\\(",
+      "php": "taxRates->retrieve\\("
+    }
+  },
+  {
+    "url": "/tax_rates/update",
+    "regexps": {
+      "ruby": "TaxRate\\.update\\(",
+      "go": "taxrate\\.Update\\(",
+      "python": "TaxRate\\.modify\\(",
+      "node": "taxRates\\.update\\(",
+      "php": "taxRates->update\\("
+    }
+  },
+  {
+    "url": "/tax_rates/list",
+    "regexps": {
+      "ruby": "TaxRate\\.list\\(",
+      "go": "taxrate\\.List\\(",
+      "python": "TaxRate\\.list\\(",
+      "java": "TaxRate\\.list\\(",
+      "node": "taxRates\\.list\\(",
+      "php": "taxRates->all\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/create",
+    "regexps": {
+      "ruby": "Checkout::Session\\.create\\(",
+      "go": "session\\.New\\(",
+      "python": "checkout\\.Session\\.create\\(",
+      "java": "Session\\.create\\(",
+      "node": "checkout\\.sessions\\.create\\(",
+      "php": "checkout->sessions->create\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/retrieve",
+    "regexps": {
+      "ruby": "Checkout::Session\\.retrieve\\(",
+      "go": "session\\.Get\\(",
+      "python": "checkout\\.Session\\.retrieve\\(",
+      "java": "Session\\.retrieve\\(",
+      "node": "checkout\\.sessions\\.retrieve\\(",
+      "php": "checkout->sessions->retrieve\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/list",
+    "regexps": {
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "java": "Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/line_items",
+    "regexps": {
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "java": "Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
     }
   },
   {
@@ -1253,28 +1383,6 @@
       "python": "Customer\\.list_tax_ids\\(",
       "node": "customers\\.listTaxIds\\(",
       "php": "customers->allTaxIds\\("
-    }
-  },
-  {
-    "url": "/discounts/delete",
-    "regexps": {
-      "ruby": "Customer\\.discount\\(",
-      "go": "customer\\.Discount\\(",
-      "python": "Customer\\.discount\\(",
-      "java": "Customer\\.discount\\(",
-      "node": "customers\\.discount\\(",
-      "php": "customers->discount\\("
-    }
-  },
-  {
-    "url": "/discounts/subscription_delete",
-    "regexps": {
-      "ruby": "Subscription\\.discount\\(",
-      "go": "sub\\.Discount\\(",
-      "python": "Subscription\\.discount\\(",
-      "java": "Subscription\\.discount\\(",
-      "node": "subscriptions\\.discount\\(",
-      "php": "subscriptions->discount\\("
     }
   },
   {
@@ -1517,46 +1625,102 @@
     }
   },
   {
-    "url": "/promotion_codes/create",
+    "url": "/quotes/create",
     "regexps": {
-      "ruby": "PromotionCode\\.create\\(",
-      "go": "promotioncode\\.New\\(",
-      "python": "PromotionCode\\.create\\(",
-      "java": "PromotionCode\\.create\\(",
-      "node": "promotionCodes\\.create\\(",
-      "php": "promotionCodes->create\\("
+      "ruby": "Quote\\.create\\(",
+      "go": "quote\\.New\\(",
+      "python": "Quote\\.create\\(",
+      "java": "Quote\\.create\\(",
+      "node": "quotes\\.create\\(",
+      "php": "quotes->create\\("
     }
   },
   {
-    "url": "/promotion_codes/update",
+    "url": "/quotes/retrieve",
     "regexps": {
-      "ruby": "PromotionCode\\.update\\(",
-      "go": "promotioncode\\.Update\\(",
-      "python": "PromotionCode\\.modify\\(",
-      "node": "promotionCodes\\.update\\(",
-      "php": "promotionCodes->update\\("
+      "ruby": "Quote\\.retrieve\\(",
+      "go": "quote\\.Get\\(",
+      "python": "Quote\\.retrieve\\(",
+      "java": "Quote\\.retrieve\\(",
+      "node": "quotes\\.retrieve\\(",
+      "php": "quotes->retrieve\\("
     }
   },
   {
-    "url": "/promotion_codes/retrieve",
+    "url": "/quotes/update",
     "regexps": {
-      "ruby": "PromotionCode\\.retrieve\\(",
-      "go": "promotioncode\\.Get\\(",
-      "python": "PromotionCode\\.retrieve\\(",
-      "java": "PromotionCode\\.retrieve\\(",
-      "node": "promotionCodes\\.retrieve\\(",
-      "php": "promotionCodes->retrieve\\("
+      "ruby": "Quote\\.update\\(",
+      "go": "quote\\.Update\\(",
+      "python": "Quote\\.modify\\(",
+      "node": "quotes\\.update\\(",
+      "php": "quotes->update\\("
     }
   },
   {
-    "url": "/promotion_codes/list",
+    "url": "/quotes/finalize",
     "regexps": {
-      "ruby": "PromotionCode\\.list\\(",
-      "go": "promotioncode\\.List\\(",
-      "python": "PromotionCode\\.list\\(",
-      "java": "PromotionCode\\.list\\(",
-      "node": "promotionCodes\\.list\\(",
-      "php": "promotionCodes->all\\("
+      "ruby": "Quote\\.finalize_quote\\(",
+      "go": "quote\\.FinalizeQuote\\(",
+      "python": "Quote\\.finalize_quote\\(",
+      "node": "quotes\\.finalizeQuote\\(",
+      "php": "quotes->finalizeQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/accept",
+    "regexps": {
+      "ruby": "Quote\\.accept_quote\\(",
+      "go": "quote\\.AcceptQuote\\(",
+      "python": "Quote\\.accept_quote\\(",
+      "node": "quotes\\.acceptQuote\\(",
+      "php": "quotes->acceptQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/cancel",
+    "regexps": {
+      "ruby": "Quote\\.cancel_quote\\(",
+      "go": "quote\\.CancelQuote\\(",
+      "python": "Quote\\.cancel_quote\\(",
+      "node": "quotes\\.cancelQuote\\(",
+      "php": "quotes->cancelQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/pdf",
+    "regexps": {}
+  },
+  {
+    "url": "/quotes/list",
+    "regexps": {
+      "ruby": "Quote\\.list\\(",
+      "go": "quote\\.List\\(",
+      "python": "Quote\\.list\\(",
+      "java": "Quote\\.list\\(",
+      "node": "quotes\\.list\\(",
+      "php": "quotes->all\\("
+    }
+  },
+  {
+    "url": "/quotes/line_items/list",
+    "regexps": {
+      "ruby": "Quote\\.custom\\(",
+      "go": "quote\\.Custom\\(",
+      "python": "Quote\\.custom\\(",
+      "java": "Quote\\.custom\\(",
+      "node": "quotes\\.custom\\(",
+      "php": "quotes->custom\\("
+    }
+  },
+  {
+    "url": "/quotes/line_items/upfront/list",
+    "regexps": {
+      "ruby": "Quote\\.custom\\(",
+      "go": "quote\\.Custom\\(",
+      "python": "Quote\\.custom\\(",
+      "java": "Quote\\.custom\\(",
+      "node": "quotes\\.custom\\(",
+      "php": "quotes->custom\\("
     }
   },
   {
@@ -1726,49 +1890,6 @@
       "java": "SubscriptionSchedule\\.list\\(",
       "node": "subscriptionSchedules\\.list\\(",
       "php": "subscriptionSchedules->all\\("
-    }
-  },
-  {
-    "url": "/tax_rates/create",
-    "regexps": {
-      "ruby": "TaxRate\\.create\\(",
-      "go": "taxrate\\.New\\(",
-      "python": "TaxRate\\.create\\(",
-      "java": "TaxRate\\.create\\(",
-      "node": "taxRates\\.create\\(",
-      "php": "taxRates->create\\("
-    }
-  },
-  {
-    "url": "/tax_rates/retrieve",
-    "regexps": {
-      "ruby": "TaxRate\\.retrieve\\(",
-      "go": "taxrate\\.Get\\(",
-      "python": "TaxRate\\.retrieve\\(",
-      "java": "TaxRate\\.retrieve\\(",
-      "node": "taxRates\\.retrieve\\(",
-      "php": "taxRates->retrieve\\("
-    }
-  },
-  {
-    "url": "/tax_rates/update",
-    "regexps": {
-      "ruby": "TaxRate\\.update\\(",
-      "go": "taxrate\\.Update\\(",
-      "python": "TaxRate\\.modify\\(",
-      "node": "taxRates\\.update\\(",
-      "php": "taxRates->update\\("
-    }
-  },
-  {
-    "url": "/tax_rates/list",
-    "regexps": {
-      "ruby": "TaxRate\\.list\\(",
-      "go": "taxrate\\.List\\(",
-      "python": "TaxRate\\.list\\(",
-      "java": "TaxRate\\.list\\(",
-      "node": "taxRates\\.list\\(",
-      "php": "taxRates->all\\("
     }
   },
   {
@@ -2766,7 +2887,7 @@
     }
   },
   {
-    "url": "/orders/create",
+    "url": "/orders_legacy/create",
     "regexps": {
       "ruby": "Order\\.create\\(",
       "go": "order\\.New\\(",
@@ -2777,7 +2898,7 @@
     }
   },
   {
-    "url": "/orders/retrieve",
+    "url": "/orders_legacy/retrieve",
     "regexps": {
       "ruby": "Order\\.retrieve\\(",
       "go": "order\\.Get\\(",
@@ -2788,7 +2909,7 @@
     }
   },
   {
-    "url": "/orders/update",
+    "url": "/orders_legacy/update",
     "regexps": {
       "ruby": "Order\\.update\\(",
       "go": "order\\.Update\\(",
@@ -2798,7 +2919,7 @@
     }
   },
   {
-    "url": "/orders/pay",
+    "url": "/orders_legacy/pay",
     "regexps": {
       "ruby": "Order\\.pay\\(",
       "go": "order\\.Pay\\(",
@@ -2808,7 +2929,7 @@
     }
   },
   {
-    "url": "/orders/list",
+    "url": "/orders_legacy/list",
     "regexps": {
       "ruby": "Order\\.list\\(",
       "go": "order\\.List\\(",
@@ -2819,7 +2940,7 @@
     }
   },
   {
-    "url": "/orders/return",
+    "url": "/orders_legacy/return",
     "regexps": {
       "ruby": "Order\\.custom\\(",
       "go": "order\\.Custom\\(",
@@ -2979,6 +3100,91 @@
       "java": "ReportType\\.list\\(",
       "node": "reporting\\.reportTypes\\.list\\(",
       "php": "reporting->reportTypes->all\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/create",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.create\\(",
+      "go": "verificationsession\\.New\\(",
+      "python": "identity\\.VerificationSession\\.create\\(",
+      "java": "VerificationSession\\.create\\(",
+      "node": "identity\\.verificationSessions\\.create\\(",
+      "php": "identity->verificationSessions->create\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/list",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.list\\(",
+      "go": "verificationsession\\.List\\(",
+      "python": "identity\\.VerificationSession\\.list\\(",
+      "java": "VerificationSession\\.list\\(",
+      "node": "identity\\.verificationSessions\\.list\\(",
+      "php": "identity->verificationSessions->all\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/retrieve",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.retrieve\\(",
+      "go": "verificationsession\\.Get\\(",
+      "python": "identity\\.VerificationSession\\.retrieve\\(",
+      "java": "VerificationSession\\.retrieve\\(",
+      "node": "identity\\.verificationSessions\\.retrieve\\(",
+      "php": "identity->verificationSessions->retrieve\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/update",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.update\\(",
+      "go": "verificationsession\\.Update\\(",
+      "python": "identity\\.VerificationSession\\.modify\\(",
+      "node": "identity\\.verificationSessions\\.update\\(",
+      "php": "identity->verificationSessions->update\\("
+    }
+  },
+  {
+    "url": "/verification_sessions/cancel",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.cancel\\(",
+      "go": "verificationsession\\.Cancel\\(",
+      "python": "identity\\.VerificationSession\\.cancel\\(",
+      "node": "identity\\.verificationSessions\\.cancel\\(",
+      "php": "identity->verificationSessions->cancel\\("
+    }
+  },
+  {
+    "url": "/verification_sessions/redact",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.redact\\(",
+      "go": "verificationsession\\.Redact\\(",
+      "python": "identity\\.VerificationSession\\.redact\\(",
+      "node": "identity\\.verificationSessions\\.redact\\(",
+      "php": "identity->verificationSessions->redact\\("
+    }
+  },
+  {
+    "url": "/identity/verification_reports/retrieve",
+    "regexps": {
+      "ruby": "Identity::VerificationReport\\.retrieve\\(",
+      "go": "verificationreport\\.Get\\(",
+      "python": "identity\\.VerificationReport\\.retrieve\\(",
+      "java": "VerificationReport\\.retrieve\\(",
+      "node": "identity\\.verificationReports\\.retrieve\\(",
+      "php": "identity->verificationReports->retrieve\\("
+    }
+  },
+  {
+    "url": "/identity/verification_reports/list",
+    "regexps": {
+      "ruby": "Identity::VerificationReport\\.list\\(",
+      "go": "verificationreport\\.List\\(",
+      "python": "identity\\.VerificationReport\\.list\\(",
+      "java": "VerificationReport\\.list\\(",
+      "node": "identity\\.verificationReports\\.list\\(",
+      "php": "identity->verificationReports->all\\("
     }
   },
   {
