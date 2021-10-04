@@ -16,7 +16,6 @@
       "ruby": "BalanceTransaction\\.retrieve\\(",
       "go": "balancetransaction\\.Get\\(",
       "python": "BalanceTransaction\\.retrieve\\(",
-      "java": "BalanceTransaction\\.retrieve\\(",
       "node": "balanceTransactions\\.retrieve\\(",
       "php": "balanceTransactions->retrieve\\("
     }
@@ -27,7 +26,6 @@
       "ruby": "BalanceTransaction\\.list\\(",
       "go": "balancetransaction\\.List\\(",
       "python": "BalanceTransaction\\.list\\(",
-      "java": "BalanceTransaction\\.list\\(",
       "node": "balanceTransactions\\.list\\(",
       "php": "balanceTransactions->all\\("
     }
@@ -38,7 +36,6 @@
       "ruby": "Charge\\.create\\(",
       "go": "charge\\.New\\(",
       "python": "Charge\\.create\\(",
-      "java": "Charge\\.create\\(",
       "node": "charges\\.create\\(",
       "php": "charges->create\\("
     }
@@ -49,7 +46,6 @@
       "ruby": "Charge\\.retrieve\\(",
       "go": "charge\\.Get\\(",
       "python": "Charge\\.retrieve\\(",
-      "java": "Charge\\.retrieve\\(",
       "node": "charges\\.retrieve\\(",
       "php": "charges->retrieve\\("
     }
@@ -80,7 +76,6 @@
       "ruby": "Charge\\.list\\(",
       "go": "charge\\.List\\(",
       "python": "Charge\\.list\\(",
-      "java": "Charge\\.list\\(",
       "node": "charges\\.list\\(",
       "php": "charges->all\\("
     }
@@ -91,7 +86,6 @@
       "ruby": "Customer\\.create\\(",
       "go": "customer\\.New\\(",
       "python": "Customer\\.create\\(",
-      "java": "Customer\\.create\\(",
       "node": "customers\\.create\\(",
       "php": "customers->create\\("
     }
@@ -102,7 +96,6 @@
       "ruby": "Customer\\.retrieve\\(",
       "go": "customer\\.Get\\(",
       "python": "Customer\\.retrieve\\(",
-      "java": "Customer\\.retrieve\\(",
       "node": "customers\\.retrieve\\(",
       "php": "customers->retrieve\\("
     }
@@ -133,7 +126,6 @@
       "ruby": "Customer\\.list\\(",
       "go": "customer\\.List\\(",
       "python": "Customer\\.list\\(",
-      "java": "Customer\\.list\\(",
       "node": "customers\\.list\\(",
       "php": "customers->all\\("
     }
@@ -144,7 +136,6 @@
       "ruby": "Dispute\\.retrieve\\(",
       "go": "dispute\\.Get\\(",
       "python": "Dispute\\.retrieve\\(",
-      "java": "Dispute\\.retrieve\\(",
       "node": "disputes\\.retrieve\\(",
       "php": "disputes->retrieve\\("
     }
@@ -175,7 +166,6 @@
       "ruby": "Dispute\\.list\\(",
       "go": "dispute\\.List\\(",
       "python": "Dispute\\.list\\(",
-      "java": "Dispute\\.list\\(",
       "node": "disputes\\.list\\(",
       "php": "disputes->all\\("
     }
@@ -186,7 +176,6 @@
       "ruby": "Event\\.retrieve\\(",
       "go": "event\\.Get\\(",
       "python": "Event\\.retrieve\\(",
-      "java": "Event\\.retrieve\\(",
       "node": "events\\.retrieve\\(",
       "php": "events->retrieve\\("
     }
@@ -197,7 +186,6 @@
       "ruby": "Event\\.list\\(",
       "go": "event\\.List\\(",
       "python": "Event\\.list\\(",
-      "java": "Event\\.list\\(",
       "node": "events\\.list\\(",
       "php": "events->all\\("
     }
@@ -219,7 +207,6 @@
       "ruby": "File\\.retrieve\\(",
       "go": "file\\.Get\\(",
       "python": "File\\.retrieve\\(",
-      "java": "File\\.retrieve\\(",
       "node": "files\\.retrieve\\(",
       "php": "files->retrieve\\("
     }
@@ -230,7 +217,6 @@
       "ruby": "File\\.list\\(",
       "go": "file\\.List\\(",
       "python": "File\\.list\\(",
-      "java": "File\\.list\\(",
       "node": "files\\.list\\(",
       "php": "files->all\\("
     }
@@ -241,7 +227,6 @@
       "ruby": "FileLink\\.create\\(",
       "go": "filelink\\.New\\(",
       "python": "FileLink\\.create\\(",
-      "java": "FileLink\\.create\\(",
       "node": "fileLinks\\.create\\(",
       "php": "fileLinks->create\\("
     }
@@ -252,7 +237,6 @@
       "ruby": "FileLink\\.retrieve\\(",
       "go": "filelink\\.Get\\(",
       "python": "FileLink\\.retrieve\\(",
-      "java": "FileLink\\.retrieve\\(",
       "node": "fileLinks\\.retrieve\\(",
       "php": "fileLinks->retrieve\\("
     }
@@ -273,7 +257,6 @@
       "ruby": "FileLink\\.list\\(",
       "go": "filelink\\.List\\(",
       "python": "FileLink\\.list\\(",
-      "java": "FileLink\\.list\\(",
       "node": "fileLinks\\.list\\(",
       "php": "fileLinks->all\\("
     }
@@ -284,7 +267,6 @@
       "ruby": "Mandate\\.retrieve\\(",
       "go": "mandate\\.Get\\(",
       "python": "Mandate\\.retrieve\\(",
-      "java": "Mandate\\.retrieve\\(",
       "node": "mandates\\.retrieve\\(",
       "php": "mandates->retrieve\\("
     }
@@ -295,7 +277,6 @@
       "ruby": "PaymentIntent\\.create\\(",
       "go": "paymentintent\\.New\\(",
       "python": "PaymentIntent\\.create\\(",
-      "java": "PaymentIntent\\.create\\(",
       "node": "paymentIntents\\.create\\(",
       "php": "paymentIntents->create\\("
     }
@@ -306,7 +287,6 @@
       "ruby": "PaymentIntent\\.retrieve\\(",
       "go": "paymentintent\\.Get\\(",
       "python": "PaymentIntent\\.retrieve\\(",
-      "java": "PaymentIntent\\.retrieve\\(",
       "node": "paymentIntents\\.retrieve\\(",
       "php": "paymentIntents->retrieve\\("
     }
@@ -357,7 +337,6 @@
       "ruby": "PaymentIntent\\.list\\(",
       "go": "paymentintent\\.List\\(",
       "python": "PaymentIntent\\.list\\(",
-      "java": "PaymentIntent\\.list\\(",
       "node": "paymentIntents\\.list\\(",
       "php": "paymentIntents->all\\("
     }
@@ -368,7 +347,6 @@
       "ruby": "SetupIntent\\.create\\(",
       "go": "setupintent\\.New\\(",
       "python": "SetupIntent\\.create\\(",
-      "java": "SetupIntent\\.create\\(",
       "node": "setupIntents\\.create\\(",
       "php": "setupIntents->create\\("
     }
@@ -379,7 +357,6 @@
       "ruby": "SetupIntent\\.retrieve\\(",
       "go": "setupintent\\.Get\\(",
       "python": "SetupIntent\\.retrieve\\(",
-      "java": "SetupIntent\\.retrieve\\(",
       "node": "setupIntents\\.retrieve\\(",
       "php": "setupIntents->retrieve\\("
     }
@@ -420,7 +397,6 @@
       "ruby": "SetupIntent\\.list\\(",
       "go": "setupintent\\.List\\(",
       "python": "SetupIntent\\.list\\(",
-      "java": "SetupIntent\\.list\\(",
       "node": "setupIntents\\.list\\(",
       "php": "setupIntents->all\\("
     }
@@ -431,7 +407,6 @@
       "ruby": "SetupAttempt\\.list\\(",
       "go": "setupattempt\\.List\\(",
       "python": "SetupAttempt\\.list\\(",
-      "java": "SetupAttempt\\.list\\(",
       "node": "setupAttempts\\.list\\(",
       "php": "setupAttempts->all\\("
     }
@@ -442,7 +417,6 @@
       "ruby": "Payout\\.create\\(",
       "go": "payout\\.New\\(",
       "python": "Payout\\.create\\(",
-      "java": "Payout\\.create\\(",
       "node": "payouts\\.create\\(",
       "php": "payouts->create\\("
     }
@@ -453,7 +427,6 @@
       "ruby": "Payout\\.retrieve\\(",
       "go": "payout\\.Get\\(",
       "python": "Payout\\.retrieve\\(",
-      "java": "Payout\\.retrieve\\(",
       "node": "payouts\\.retrieve\\(",
       "php": "payouts->retrieve\\("
     }
@@ -474,7 +447,6 @@
       "ruby": "Payout\\.list\\(",
       "go": "payout\\.List\\(",
       "python": "Payout\\.list\\(",
-      "java": "Payout\\.list\\(",
       "node": "payouts\\.list\\(",
       "php": "payouts->all\\("
     }
@@ -500,108 +472,11 @@
     }
   },
   {
-    "url": "/products/create",
-    "regexps": {
-      "ruby": "Product\\.create\\(",
-      "go": "product\\.New\\(",
-      "python": "Product\\.create\\(",
-      "java": "Product\\.create\\(",
-      "node": "products\\.create\\(",
-      "php": "products->create\\("
-    }
-  },
-  {
-    "url": "/products/retrieve",
-    "regexps": {
-      "ruby": "Product\\.retrieve\\(",
-      "go": "product\\.Get\\(",
-      "python": "Product\\.retrieve\\(",
-      "java": "Product\\.retrieve\\(",
-      "node": "products\\.retrieve\\(",
-      "php": "products->retrieve\\("
-    }
-  },
-  {
-    "url": "/products/update",
-    "regexps": {
-      "ruby": "Product\\.update\\(",
-      "go": "product\\.Update\\(",
-      "python": "Product\\.modify\\(",
-      "node": "products\\.update\\(",
-      "php": "products->update\\("
-    }
-  },
-  {
-    "url": "/products/list",
-    "regexps": {
-      "ruby": "Product\\.list\\(",
-      "go": "product\\.List\\(",
-      "python": "Product\\.list\\(",
-      "java": "Product\\.list\\(",
-      "node": "products\\.list\\(",
-      "php": "products->all\\("
-    }
-  },
-  {
-    "url": "/products/delete",
-    "regexps": {
-      "ruby": "Product\\.delete\\(",
-      "go": "product\\.Del\\(",
-      "python": "Product\\.delete\\(",
-      "node": "products\\.del\\(",
-      "php": "products->delete\\("
-    }
-  },
-  {
-    "url": "/prices/create",
-    "regexps": {
-      "ruby": "Price\\.create\\(",
-      "go": "price\\.New\\(",
-      "python": "Price\\.create\\(",
-      "java": "Price\\.create\\(",
-      "node": "prices\\.create\\(",
-      "php": "prices->create\\("
-    }
-  },
-  {
-    "url": "/prices/retrieve",
-    "regexps": {
-      "ruby": "Price\\.retrieve\\(",
-      "go": "price\\.Get\\(",
-      "python": "Price\\.retrieve\\(",
-      "java": "Price\\.retrieve\\(",
-      "node": "prices\\.retrieve\\(",
-      "php": "prices->retrieve\\("
-    }
-  },
-  {
-    "url": "/prices/update",
-    "regexps": {
-      "ruby": "Price\\.update\\(",
-      "go": "price\\.Update\\(",
-      "python": "Price\\.modify\\(",
-      "node": "prices\\.update\\(",
-      "php": "prices->update\\("
-    }
-  },
-  {
-    "url": "/prices/list",
-    "regexps": {
-      "ruby": "Price\\.list\\(",
-      "go": "price\\.List\\(",
-      "python": "Price\\.list\\(",
-      "java": "Price\\.list\\(",
-      "node": "prices\\.list\\(",
-      "php": "prices->all\\("
-    }
-  },
-  {
     "url": "/refunds/create",
     "regexps": {
       "ruby": "Refund\\.create\\(",
       "go": "refund\\.New\\(",
       "python": "Refund\\.create\\(",
-      "java": "Refund\\.create\\(",
       "node": "refunds\\.create\\(",
       "php": "refunds->create\\("
     }
@@ -612,7 +487,6 @@
       "ruby": "Refund\\.retrieve\\(",
       "go": "refund\\.Get\\(",
       "python": "Refund\\.retrieve\\(",
-      "java": "Refund\\.retrieve\\(",
       "node": "refunds\\.retrieve\\(",
       "php": "refunds->retrieve\\("
     }
@@ -633,7 +507,6 @@
       "ruby": "Refund\\.list\\(",
       "go": "refund\\.List\\(",
       "python": "Refund\\.list\\(",
-      "java": "Refund\\.list\\(",
       "node": "refunds\\.list\\(",
       "php": "refunds->all\\("
     }
@@ -644,7 +517,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -655,7 +527,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -666,7 +537,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -677,7 +547,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -688,7 +557,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -699,7 +567,6 @@
       "ruby": "Token\\.create\\(",
       "go": "token\\.New\\(",
       "python": "Token\\.create\\(",
-      "java": "Token\\.create\\(",
       "node": "tokens\\.create\\(",
       "php": "tokens->create\\("
     }
@@ -710,7 +577,6 @@
       "ruby": "Token\\.retrieve\\(",
       "go": "token\\.Get\\(",
       "python": "Token\\.retrieve\\(",
-      "java": "Token\\.retrieve\\(",
       "node": "tokens\\.retrieve\\(",
       "php": "tokens->retrieve\\("
     }
@@ -721,7 +587,6 @@
       "ruby": "PaymentMethod\\.create\\(",
       "go": "paymentmethod\\.New\\(",
       "python": "PaymentMethod\\.create\\(",
-      "java": "PaymentMethod\\.create\\(",
       "node": "paymentMethods\\.create\\(",
       "php": "paymentMethods->create\\("
     }
@@ -732,7 +597,6 @@
       "ruby": "PaymentMethod\\.retrieve\\(",
       "go": "paymentmethod\\.Get\\(",
       "python": "PaymentMethod\\.retrieve\\(",
-      "java": "PaymentMethod\\.retrieve\\(",
       "node": "paymentMethods\\.retrieve\\(",
       "php": "paymentMethods->retrieve\\("
     }
@@ -753,7 +617,6 @@
       "ruby": "PaymentMethod\\.list\\(",
       "go": "paymentmethod\\.List\\(",
       "python": "PaymentMethod\\.list\\(",
-      "java": "PaymentMethod\\.list\\(",
       "node": "paymentMethods\\.list\\(",
       "php": "paymentMethods->all\\("
     }
@@ -894,7 +757,6 @@
       "ruby": "Source\\.create\\(",
       "go": "source\\.New\\(",
       "python": "Source\\.create\\(",
-      "java": "Source\\.create\\(",
       "node": "sources\\.create\\(",
       "php": "sources->create\\("
     }
@@ -905,7 +767,6 @@
       "ruby": "Source\\.retrieve\\(",
       "go": "source\\.Get\\(",
       "python": "Source\\.retrieve\\(",
-      "java": "Source\\.retrieve\\(",
       "node": "sources\\.retrieve\\(",
       "php": "sources->retrieve\\("
     }
@@ -941,47 +802,93 @@
     }
   },
   {
-    "url": "/checkout/sessions/create",
+    "url": "/products/create",
     "regexps": {
-      "ruby": "Checkout::Session\\.create\\(",
-      "go": "session\\.New\\(",
-      "python": "checkout\\.Session\\.create\\(",
-      "java": "Session\\.create\\(",
-      "node": "checkout\\.sessions\\.create\\(",
-      "php": "checkout->sessions->create\\("
+      "ruby": "Product\\.create\\(",
+      "go": "product\\.New\\(",
+      "python": "Product\\.create\\(",
+      "node": "products\\.create\\(",
+      "php": "products->create\\("
     }
   },
   {
-    "url": "/checkout/sessions/retrieve",
+    "url": "/products/retrieve",
     "regexps": {
-      "ruby": "Checkout::Session\\.retrieve\\(",
-      "go": "session\\.Get\\(",
-      "python": "checkout\\.Session\\.retrieve\\(",
-      "java": "Session\\.retrieve\\(",
-      "node": "checkout\\.sessions\\.retrieve\\(",
-      "php": "checkout->sessions->retrieve\\("
+      "ruby": "Product\\.retrieve\\(",
+      "go": "product\\.Get\\(",
+      "python": "Product\\.retrieve\\(",
+      "node": "products\\.retrieve\\(",
+      "php": "products->retrieve\\("
     }
   },
   {
-    "url": "/checkout/sessions/list",
+    "url": "/products/update",
     "regexps": {
-      "ruby": "Checkout::Session\\.list\\(",
-      "go": "session\\.List\\(",
-      "python": "checkout\\.Session\\.list\\(",
-      "java": "Session\\.list\\(",
-      "node": "checkout\\.sessions\\.list\\(",
-      "php": "checkout->sessions->all\\("
+      "ruby": "Product\\.update\\(",
+      "go": "product\\.Update\\(",
+      "python": "Product\\.modify\\(",
+      "node": "products\\.update\\(",
+      "php": "products->update\\("
     }
   },
   {
-    "url": "/checkout/sessions/line_items",
+    "url": "/products/list",
     "regexps": {
-      "ruby": "Checkout::Session\\.list\\(",
-      "go": "session\\.List\\(",
-      "python": "checkout\\.Session\\.list\\(",
-      "java": "Session\\.list\\(",
-      "node": "checkout\\.sessions\\.list\\(",
-      "php": "checkout->sessions->all\\("
+      "ruby": "Product\\.list\\(",
+      "go": "product\\.List\\(",
+      "python": "Product\\.list\\(",
+      "node": "products\\.list\\(",
+      "php": "products->all\\("
+    }
+  },
+  {
+    "url": "/products/delete",
+    "regexps": {
+      "ruby": "Product\\.delete\\(",
+      "go": "product\\.Del\\(",
+      "python": "Product\\.delete\\(",
+      "node": "products\\.del\\(",
+      "php": "products->delete\\("
+    }
+  },
+  {
+    "url": "/prices/create",
+    "regexps": {
+      "ruby": "Price\\.create\\(",
+      "go": "price\\.New\\(",
+      "python": "Price\\.create\\(",
+      "node": "prices\\.create\\(",
+      "php": "prices->create\\("
+    }
+  },
+  {
+    "url": "/prices/retrieve",
+    "regexps": {
+      "ruby": "Price\\.retrieve\\(",
+      "go": "price\\.Get\\(",
+      "python": "Price\\.retrieve\\(",
+      "node": "prices\\.retrieve\\(",
+      "php": "prices->retrieve\\("
+    }
+  },
+  {
+    "url": "/prices/update",
+    "regexps": {
+      "ruby": "Price\\.update\\(",
+      "go": "price\\.Update\\(",
+      "python": "Price\\.modify\\(",
+      "node": "prices\\.update\\(",
+      "php": "prices->update\\("
+    }
+  },
+  {
+    "url": "/prices/list",
+    "regexps": {
+      "ruby": "Price\\.list\\(",
+      "go": "price\\.List\\(",
+      "python": "Price\\.list\\(",
+      "node": "prices\\.list\\(",
+      "php": "prices->all\\("
     }
   },
   {
@@ -990,7 +897,6 @@
       "ruby": "Coupon\\.create\\(",
       "go": "coupon\\.New\\(",
       "python": "Coupon\\.create\\(",
-      "java": "Coupon\\.create\\(",
       "node": "coupons\\.create\\(",
       "php": "coupons->create\\("
     }
@@ -1001,7 +907,6 @@
       "ruby": "Coupon\\.retrieve\\(",
       "go": "coupon\\.Get\\(",
       "python": "Coupon\\.retrieve\\(",
-      "java": "Coupon\\.retrieve\\(",
       "node": "coupons\\.retrieve\\(",
       "php": "coupons->retrieve\\("
     }
@@ -1032,9 +937,168 @@
       "ruby": "Coupon\\.list\\(",
       "go": "coupon\\.List\\(",
       "python": "Coupon\\.list\\(",
-      "java": "Coupon\\.list\\(",
       "node": "coupons\\.list\\(",
       "php": "coupons->all\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/create",
+    "regexps": {
+      "ruby": "PromotionCode\\.create\\(",
+      "go": "promotioncode\\.New\\(",
+      "python": "PromotionCode\\.create\\(",
+      "node": "promotionCodes\\.create\\(",
+      "php": "promotionCodes->create\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/update",
+    "regexps": {
+      "ruby": "PromotionCode\\.update\\(",
+      "go": "promotioncode\\.Update\\(",
+      "python": "PromotionCode\\.modify\\(",
+      "node": "promotionCodes\\.update\\(",
+      "php": "promotionCodes->update\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/retrieve",
+    "regexps": {
+      "ruby": "PromotionCode\\.retrieve\\(",
+      "go": "promotioncode\\.Get\\(",
+      "python": "PromotionCode\\.retrieve\\(",
+      "node": "promotionCodes\\.retrieve\\(",
+      "php": "promotionCodes->retrieve\\("
+    }
+  },
+  {
+    "url": "/promotion_codes/list",
+    "regexps": {
+      "ruby": "PromotionCode\\.list\\(",
+      "go": "promotioncode\\.List\\(",
+      "python": "PromotionCode\\.list\\(",
+      "node": "promotionCodes\\.list\\(",
+      "php": "promotionCodes->all\\("
+    }
+  },
+  {
+    "url": "/discounts/delete",
+    "regexps": {
+      "ruby": "Customer\\.discount\\(",
+      "go": "customer\\.Discount\\(",
+      "python": "Customer\\.discount\\(",
+      "node": "customers\\.discount\\(",
+      "php": "customers->discount\\("
+    }
+  },
+  {
+    "url": "/discounts/subscription_delete",
+    "regexps": {
+      "ruby": "Subscription\\.discount\\(",
+      "go": "sub\\.Discount\\(",
+      "python": "Subscription\\.discount\\(",
+      "node": "subscriptions\\.discount\\(",
+      "php": "subscriptions->discount\\("
+    }
+  },
+  {
+    "url": "/tax_codes/list",
+    "regexps": {
+      "ruby": "TaxCode\\.list\\(",
+      "go": "taxcode\\.List\\(",
+      "python": "TaxCode\\.list\\(",
+      "node": "taxCodes\\.list\\(",
+      "php": "taxCodes->all\\("
+    }
+  },
+  {
+    "url": "/tax_codes/retrieve",
+    "regexps": {
+      "ruby": "TaxCode\\.retrieve\\(",
+      "go": "taxcode\\.Get\\(",
+      "python": "TaxCode\\.retrieve\\(",
+      "node": "taxCodes\\.retrieve\\(",
+      "php": "taxCodes->retrieve\\("
+    }
+  },
+  {
+    "url": "/tax_rates/create",
+    "regexps": {
+      "ruby": "TaxRate\\.create\\(",
+      "go": "taxrate\\.New\\(",
+      "python": "TaxRate\\.create\\(",
+      "node": "taxRates\\.create\\(",
+      "php": "taxRates->create\\("
+    }
+  },
+  {
+    "url": "/tax_rates/retrieve",
+    "regexps": {
+      "ruby": "TaxRate\\.retrieve\\(",
+      "go": "taxrate\\.Get\\(",
+      "python": "TaxRate\\.retrieve\\(",
+      "node": "taxRates\\.retrieve\\(",
+      "php": "taxRates->retrieve\\("
+    }
+  },
+  {
+    "url": "/tax_rates/update",
+    "regexps": {
+      "ruby": "TaxRate\\.update\\(",
+      "go": "taxrate\\.Update\\(",
+      "python": "TaxRate\\.modify\\(",
+      "node": "taxRates\\.update\\(",
+      "php": "taxRates->update\\("
+    }
+  },
+  {
+    "url": "/tax_rates/list",
+    "regexps": {
+      "ruby": "TaxRate\\.list\\(",
+      "go": "taxrate\\.List\\(",
+      "python": "TaxRate\\.list\\(",
+      "node": "taxRates\\.list\\(",
+      "php": "taxRates->all\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/create",
+    "regexps": {
+      "ruby": "Checkout::Session\\.create\\(",
+      "go": "session\\.New\\(",
+      "python": "checkout\\.Session\\.create\\(",
+      "node": "checkout\\.sessions\\.create\\(",
+      "php": "checkout->sessions->create\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/retrieve",
+    "regexps": {
+      "ruby": "Checkout::Session\\.retrieve\\(",
+      "go": "session\\.Get\\(",
+      "python": "checkout\\.Session\\.retrieve\\(",
+      "node": "checkout\\.sessions\\.retrieve\\(",
+      "php": "checkout->sessions->retrieve\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/list",
+    "regexps": {
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
+    }
+  },
+  {
+    "url": "/checkout/sessions/line_items",
+    "regexps": {
+      "ruby": "Checkout::Session\\.list\\(",
+      "go": "session\\.List\\(",
+      "python": "checkout\\.Session\\.list\\(",
+      "node": "checkout\\.sessions\\.list\\(",
+      "php": "checkout->sessions->all\\("
     }
   },
   {
@@ -1043,7 +1107,6 @@
       "ruby": "CreditNote\\.preview\\(",
       "go": "creditnote\\.Preview\\(",
       "python": "CreditNote\\.preview\\(",
-      "java": "CreditNote\\.preview\\(",
       "node": "creditNotes\\.preview\\(",
       "php": "creditNotes->preview\\("
     }
@@ -1054,7 +1117,6 @@
       "ruby": "CreditNote\\.create\\(",
       "go": "creditnote\\.New\\(",
       "python": "CreditNote\\.create\\(",
-      "java": "CreditNote\\.create\\(",
       "node": "creditNotes\\.create\\(",
       "php": "creditNotes->create\\("
     }
@@ -1065,7 +1127,6 @@
       "ruby": "CreditNote\\.retrieve\\(",
       "go": "creditnote\\.Get\\(",
       "python": "CreditNote\\.retrieve\\(",
-      "java": "CreditNote\\.retrieve\\(",
       "node": "creditNotes\\.retrieve\\(",
       "php": "creditNotes->retrieve\\("
     }
@@ -1116,7 +1177,6 @@
       "ruby": "CreditNote\\.list\\(",
       "go": "creditnote\\.List\\(",
       "python": "CreditNote\\.list\\(",
-      "java": "CreditNote\\.list\\(",
       "node": "creditNotes\\.list\\(",
       "php": "creditNotes->all\\("
     }
@@ -1167,7 +1227,6 @@
       "ruby": "BillingPortal::Session\\.create\\(",
       "go": "session\\.New\\(",
       "python": "billing_portal\\.Session\\.create\\(",
-      "java": "Session\\.create\\(",
       "node": "billingPortal\\.sessions\\.create\\(",
       "php": "billingPortal->sessions->create\\("
     }
@@ -1178,7 +1237,6 @@
       "ruby": "BillingPortal::Configuration\\.create\\(",
       "go": "configuration\\.New\\(",
       "python": "billing_portal\\.Configuration\\.create\\(",
-      "java": "Configuration\\.create\\(",
       "node": "billingPortal\\.configurations\\.create\\(",
       "php": "billingPortal->configurations->create\\("
     }
@@ -1199,7 +1257,6 @@
       "ruby": "BillingPortal::Configuration\\.retrieve\\(",
       "go": "configuration\\.Get\\(",
       "python": "billing_portal\\.Configuration\\.retrieve\\(",
-      "java": "Configuration\\.retrieve\\(",
       "node": "billingPortal\\.configurations\\.retrieve\\(",
       "php": "billingPortal->configurations->retrieve\\("
     }
@@ -1210,7 +1267,6 @@
       "ruby": "BillingPortal::Configuration\\.list\\(",
       "go": "configuration\\.List\\(",
       "python": "billing_portal\\.Configuration\\.list\\(",
-      "java": "Configuration\\.list\\(",
       "node": "billingPortal\\.configurations\\.list\\(",
       "php": "billingPortal->configurations->all\\("
     }
@@ -1256,34 +1312,11 @@
     }
   },
   {
-    "url": "/discounts/delete",
-    "regexps": {
-      "ruby": "Customer\\.discount\\(",
-      "go": "customer\\.Discount\\(",
-      "python": "Customer\\.discount\\(",
-      "java": "Customer\\.discount\\(",
-      "node": "customers\\.discount\\(",
-      "php": "customers->discount\\("
-    }
-  },
-  {
-    "url": "/discounts/subscription_delete",
-    "regexps": {
-      "ruby": "Subscription\\.discount\\(",
-      "go": "sub\\.Discount\\(",
-      "python": "Subscription\\.discount\\(",
-      "java": "Subscription\\.discount\\(",
-      "node": "subscriptions\\.discount\\(",
-      "php": "subscriptions->discount\\("
-    }
-  },
-  {
     "url": "/invoices/create",
     "regexps": {
       "ruby": "Invoice\\.create\\(",
       "go": "invoice\\.New\\(",
       "python": "Invoice\\.create\\(",
-      "java": "Invoice\\.create\\(",
       "node": "invoices\\.create\\(",
       "php": "invoices->create\\("
     }
@@ -1294,7 +1327,6 @@
       "ruby": "Invoice\\.retrieve\\(",
       "go": "invoice\\.Get\\(",
       "python": "Invoice\\.retrieve\\(",
-      "java": "Invoice\\.retrieve\\(",
       "node": "invoices\\.retrieve\\(",
       "php": "invoices->retrieve\\("
     }
@@ -1375,7 +1407,6 @@
       "ruby": "Invoice\\.list\\(",
       "go": "invoice\\.List\\(",
       "python": "Invoice\\.list\\(",
-      "java": "Invoice\\.list\\(",
       "node": "invoices\\.list\\(",
       "php": "invoices->all\\("
     }
@@ -1405,7 +1436,6 @@
       "ruby": "Invoice\\.list\\(",
       "go": "invoice\\.List\\(",
       "python": "Invoice\\.list\\(",
-      "java": "Invoice\\.list\\(",
       "node": "invoices\\.list\\(",
       "php": "invoices->all\\("
     }
@@ -1416,7 +1446,6 @@
       "ruby": "InvoiceItem\\.create\\(",
       "go": "invoiceitem\\.New\\(",
       "python": "InvoiceItem\\.create\\(",
-      "java": "InvoiceItem\\.create\\(",
       "node": "invoiceItems\\.create\\(",
       "php": "invoiceItems->create\\("
     }
@@ -1427,7 +1456,6 @@
       "ruby": "InvoiceItem\\.retrieve\\(",
       "go": "invoiceitem\\.Get\\(",
       "python": "InvoiceItem\\.retrieve\\(",
-      "java": "InvoiceItem\\.retrieve\\(",
       "node": "invoiceItems\\.retrieve\\(",
       "php": "invoiceItems->retrieve\\("
     }
@@ -1458,7 +1486,6 @@
       "ruby": "InvoiceItem\\.list\\(",
       "go": "invoiceitem\\.List\\(",
       "python": "InvoiceItem\\.list\\(",
-      "java": "InvoiceItem\\.list\\(",
       "node": "invoiceItems\\.list\\(",
       "php": "invoiceItems->all\\("
     }
@@ -1469,7 +1496,6 @@
       "ruby": "Plan\\.create\\(",
       "go": "plan\\.New\\(",
       "python": "Plan\\.create\\(",
-      "java": "Plan\\.create\\(",
       "node": "plans\\.create\\(",
       "php": "plans->create\\("
     }
@@ -1480,7 +1506,6 @@
       "ruby": "Plan\\.retrieve\\(",
       "go": "plan\\.Get\\(",
       "python": "Plan\\.retrieve\\(",
-      "java": "Plan\\.retrieve\\(",
       "node": "plans\\.retrieve\\(",
       "php": "plans->retrieve\\("
     }
@@ -1511,52 +1536,102 @@
       "ruby": "Plan\\.list\\(",
       "go": "plan\\.List\\(",
       "python": "Plan\\.list\\(",
-      "java": "Plan\\.list\\(",
       "node": "plans\\.list\\(",
       "php": "plans->all\\("
     }
   },
   {
-    "url": "/promotion_codes/create",
+    "url": "/quotes/create",
     "regexps": {
-      "ruby": "PromotionCode\\.create\\(",
-      "go": "promotioncode\\.New\\(",
-      "python": "PromotionCode\\.create\\(",
-      "java": "PromotionCode\\.create\\(",
-      "node": "promotionCodes\\.create\\(",
-      "php": "promotionCodes->create\\("
+      "ruby": "Quote\\.create\\(",
+      "go": "quote\\.New\\(",
+      "python": "Quote\\.create\\(",
+      "node": "quotes\\.create\\(",
+      "php": "quotes->create\\("
     }
   },
   {
-    "url": "/promotion_codes/update",
+    "url": "/quotes/retrieve",
     "regexps": {
-      "ruby": "PromotionCode\\.update\\(",
-      "go": "promotioncode\\.Update\\(",
-      "python": "PromotionCode\\.modify\\(",
-      "node": "promotionCodes\\.update\\(",
-      "php": "promotionCodes->update\\("
+      "ruby": "Quote\\.retrieve\\(",
+      "go": "quote\\.Get\\(",
+      "python": "Quote\\.retrieve\\(",
+      "node": "quotes\\.retrieve\\(",
+      "php": "quotes->retrieve\\("
     }
   },
   {
-    "url": "/promotion_codes/retrieve",
+    "url": "/quotes/update",
     "regexps": {
-      "ruby": "PromotionCode\\.retrieve\\(",
-      "go": "promotioncode\\.Get\\(",
-      "python": "PromotionCode\\.retrieve\\(",
-      "java": "PromotionCode\\.retrieve\\(",
-      "node": "promotionCodes\\.retrieve\\(",
-      "php": "promotionCodes->retrieve\\("
+      "ruby": "Quote\\.update\\(",
+      "go": "quote\\.Update\\(",
+      "python": "Quote\\.modify\\(",
+      "node": "quotes\\.update\\(",
+      "php": "quotes->update\\("
     }
   },
   {
-    "url": "/promotion_codes/list",
+    "url": "/quotes/finalize",
     "regexps": {
-      "ruby": "PromotionCode\\.list\\(",
-      "go": "promotioncode\\.List\\(",
-      "python": "PromotionCode\\.list\\(",
-      "java": "PromotionCode\\.list\\(",
-      "node": "promotionCodes\\.list\\(",
-      "php": "promotionCodes->all\\("
+      "ruby": "Quote\\.finalize_quote\\(",
+      "go": "quote\\.FinalizeQuote\\(",
+      "python": "Quote\\.finalize_quote\\(",
+      "node": "quotes\\.finalizeQuote\\(",
+      "php": "quotes->finalizeQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/accept",
+    "regexps": {
+      "ruby": "Quote\\.accept_quote\\(",
+      "go": "quote\\.AcceptQuote\\(",
+      "python": "Quote\\.accept_quote\\(",
+      "node": "quotes\\.acceptQuote\\(",
+      "php": "quotes->acceptQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/cancel",
+    "regexps": {
+      "ruby": "Quote\\.cancel_quote\\(",
+      "go": "quote\\.CancelQuote\\(",
+      "python": "Quote\\.cancel_quote\\(",
+      "node": "quotes\\.cancelQuote\\(",
+      "php": "quotes->cancelQuote\\("
+    }
+  },
+  {
+    "url": "/quotes/pdf",
+    "regexps": {}
+  },
+  {
+    "url": "/quotes/list",
+    "regexps": {
+      "ruby": "Quote\\.list\\(",
+      "go": "quote\\.List\\(",
+      "python": "Quote\\.list\\(",
+      "node": "quotes\\.list\\(",
+      "php": "quotes->all\\("
+    }
+  },
+  {
+    "url": "/quotes/line_items/list",
+    "regexps": {
+      "ruby": "Quote\\.custom\\(",
+      "go": "quote\\.Custom\\(",
+      "python": "Quote\\.custom\\(",
+      "node": "quotes\\.custom\\(",
+      "php": "quotes->custom\\("
+    }
+  },
+  {
+    "url": "/quotes/line_items/upfront/list",
+    "regexps": {
+      "ruby": "Quote\\.custom\\(",
+      "go": "quote\\.Custom\\(",
+      "python": "Quote\\.custom\\(",
+      "node": "quotes\\.custom\\(",
+      "php": "quotes->custom\\("
     }
   },
   {
@@ -1565,7 +1640,6 @@
       "ruby": "Subscription\\.create\\(",
       "go": "sub\\.New\\(",
       "python": "Subscription\\.create\\(",
-      "java": "Subscription\\.create\\(",
       "node": "subscriptions\\.create\\(",
       "php": "subscriptions->create\\("
     }
@@ -1576,7 +1650,6 @@
       "ruby": "Subscription\\.retrieve\\(",
       "go": "sub\\.Get\\(",
       "python": "Subscription\\.retrieve\\(",
-      "java": "Subscription\\.retrieve\\(",
       "node": "subscriptions\\.retrieve\\(",
       "php": "subscriptions->retrieve\\("
     }
@@ -1607,7 +1680,6 @@
       "ruby": "Subscription\\.list\\(",
       "go": "sub\\.List\\(",
       "python": "Subscription\\.list\\(",
-      "java": "Subscription\\.list\\(",
       "node": "subscriptions\\.list\\(",
       "php": "subscriptions->all\\("
     }
@@ -1618,7 +1690,6 @@
       "ruby": "SubscriptionItem\\.create\\(",
       "go": "subitem\\.New\\(",
       "python": "SubscriptionItem\\.create\\(",
-      "java": "SubscriptionItem\\.create\\(",
       "node": "subscriptionItems\\.create\\(",
       "php": "subscriptionItems->create\\("
     }
@@ -1629,7 +1700,6 @@
       "ruby": "SubscriptionItem\\.retrieve\\(",
       "go": "subitem\\.Get\\(",
       "python": "SubscriptionItem\\.retrieve\\(",
-      "java": "SubscriptionItem\\.retrieve\\(",
       "node": "subscriptionItems\\.retrieve\\(",
       "php": "subscriptionItems->retrieve\\("
     }
@@ -1660,7 +1730,6 @@
       "ruby": "SubscriptionItem\\.list\\(",
       "go": "subitem\\.List\\(",
       "python": "SubscriptionItem\\.list\\(",
-      "java": "SubscriptionItem\\.list\\(",
       "node": "subscriptionItems\\.list\\(",
       "php": "subscriptionItems->all\\("
     }
@@ -1671,7 +1740,6 @@
       "ruby": "SubscriptionSchedule\\.create\\(",
       "go": "subschedule\\.New\\(",
       "python": "SubscriptionSchedule\\.create\\(",
-      "java": "SubscriptionSchedule\\.create\\(",
       "node": "subscriptionSchedules\\.create\\(",
       "php": "subscriptionSchedules->create\\("
     }
@@ -1682,7 +1750,6 @@
       "ruby": "SubscriptionSchedule\\.retrieve\\(",
       "go": "subschedule\\.Get\\(",
       "python": "SubscriptionSchedule\\.retrieve\\(",
-      "java": "SubscriptionSchedule\\.retrieve\\(",
       "node": "subscriptionSchedules\\.retrieve\\(",
       "php": "subscriptionSchedules->retrieve\\("
     }
@@ -1723,52 +1790,8 @@
       "ruby": "SubscriptionSchedule\\.list\\(",
       "go": "subschedule\\.List\\(",
       "python": "SubscriptionSchedule\\.list\\(",
-      "java": "SubscriptionSchedule\\.list\\(",
       "node": "subscriptionSchedules\\.list\\(",
       "php": "subscriptionSchedules->all\\("
-    }
-  },
-  {
-    "url": "/tax_rates/create",
-    "regexps": {
-      "ruby": "TaxRate\\.create\\(",
-      "go": "taxrate\\.New\\(",
-      "python": "TaxRate\\.create\\(",
-      "java": "TaxRate\\.create\\(",
-      "node": "taxRates\\.create\\(",
-      "php": "taxRates->create\\("
-    }
-  },
-  {
-    "url": "/tax_rates/retrieve",
-    "regexps": {
-      "ruby": "TaxRate\\.retrieve\\(",
-      "go": "taxrate\\.Get\\(",
-      "python": "TaxRate\\.retrieve\\(",
-      "java": "TaxRate\\.retrieve\\(",
-      "node": "taxRates\\.retrieve\\(",
-      "php": "taxRates->retrieve\\("
-    }
-  },
-  {
-    "url": "/tax_rates/update",
-    "regexps": {
-      "ruby": "TaxRate\\.update\\(",
-      "go": "taxrate\\.Update\\(",
-      "python": "TaxRate\\.modify\\(",
-      "node": "taxRates\\.update\\(",
-      "php": "taxRates->update\\("
-    }
-  },
-  {
-    "url": "/tax_rates/list",
-    "regexps": {
-      "ruby": "TaxRate\\.list\\(",
-      "go": "taxrate\\.List\\(",
-      "python": "TaxRate\\.list\\(",
-      "java": "TaxRate\\.list\\(",
-      "node": "taxRates\\.list\\(",
-      "php": "taxRates->all\\("
     }
   },
   {
@@ -1797,7 +1820,6 @@
       "ruby": "Account\\.create\\(",
       "go": "account\\.New\\(",
       "python": "Account\\.create\\(",
-      "java": "Account\\.create\\(",
       "node": "accounts\\.create\\(",
       "php": "accounts->create\\("
     }
@@ -1808,7 +1830,6 @@
       "ruby": "Account\\.retrieve\\(",
       "go": "account\\.GetByID\\(",
       "python": "Account\\.retrieve\\(",
-      "java": "Account\\.retrieve\\(",
       "node": "accounts\\.retrieve\\(",
       "php": "accounts->retrieve\\("
     }
@@ -1849,7 +1870,6 @@
       "ruby": "Account\\.list\\(",
       "go": "account\\.List\\(",
       "python": "Account\\.list\\(",
-      "java": "Account\\.list\\(",
       "node": "accounts\\.list\\(",
       "php": "accounts->all\\("
     }
@@ -1870,7 +1890,6 @@
       "ruby": "AccountLink\\.create\\(",
       "go": "accountlink\\.New\\(",
       "python": "AccountLink\\.create\\(",
-      "java": "AccountLink\\.create\\(",
       "node": "accountLinks\\.create\\(",
       "php": "accountLinks->create\\("
     }
@@ -1881,7 +1900,6 @@
       "ruby": "ApplicationFee\\.retrieve\\(",
       "go": "fee\\.Get\\(",
       "python": "ApplicationFee\\.retrieve\\(",
-      "java": "ApplicationFee\\.retrieve\\(",
       "node": "applicationFees\\.retrieve\\(",
       "php": "applicationFees->retrieve\\("
     }
@@ -1892,7 +1910,6 @@
       "ruby": "ApplicationFee\\.list\\(",
       "go": "fee\\.List\\(",
       "python": "ApplicationFee\\.list\\(",
-      "java": "ApplicationFee\\.list\\(",
       "node": "applicationFees\\.list\\(",
       "php": "applicationFees->all\\("
     }
@@ -1973,7 +1990,6 @@
       "ruby": "CountrySpec\\.list\\(",
       "go": "countryspec\\.List\\(",
       "python": "CountrySpec\\.list\\(",
-      "java": "CountrySpec\\.list\\(",
       "node": "countrySpecs\\.list\\(",
       "php": "countrySpecs->all\\("
     }
@@ -1984,7 +2000,6 @@
       "ruby": "CountrySpec\\.retrieve\\(",
       "go": "countryspec\\.Get\\(",
       "python": "CountrySpec\\.retrieve\\(",
-      "java": "CountrySpec\\.retrieve\\(",
       "node": "countrySpecs\\.retrieve\\(",
       "php": "countrySpecs->retrieve\\("
     }
@@ -2145,7 +2160,6 @@
       "ruby": "Topup\\.create\\(",
       "go": "topup\\.New\\(",
       "python": "Topup\\.create\\(",
-      "java": "Topup\\.create\\(",
       "node": "topups\\.create\\(",
       "php": "topups->create\\("
     }
@@ -2156,7 +2170,6 @@
       "ruby": "Topup\\.retrieve\\(",
       "go": "topup\\.Get\\(",
       "python": "Topup\\.retrieve\\(",
-      "java": "Topup\\.retrieve\\(",
       "node": "topups\\.retrieve\\(",
       "php": "topups->retrieve\\("
     }
@@ -2177,7 +2190,6 @@
       "ruby": "Topup\\.list\\(",
       "go": "topup\\.List\\(",
       "python": "Topup\\.list\\(",
-      "java": "Topup\\.list\\(",
       "node": "topups\\.list\\(",
       "php": "topups->all\\("
     }
@@ -2198,7 +2210,6 @@
       "ruby": "Transfer\\.create\\(",
       "go": "transfer\\.New\\(",
       "python": "Transfer\\.create\\(",
-      "java": "Transfer\\.create\\(",
       "node": "transfers\\.create\\(",
       "php": "transfers->create\\("
     }
@@ -2209,7 +2220,6 @@
       "ruby": "Transfer\\.retrieve\\(",
       "go": "transfer\\.Get\\(",
       "python": "Transfer\\.retrieve\\(",
-      "java": "Transfer\\.retrieve\\(",
       "node": "transfers\\.retrieve\\(",
       "php": "transfers->retrieve\\("
     }
@@ -2230,7 +2240,6 @@
       "ruby": "Transfer\\.list\\(",
       "go": "transfer\\.List\\(",
       "python": "Transfer\\.list\\(",
-      "java": "Transfer\\.list\\(",
       "node": "transfers\\.list\\(",
       "php": "transfers->all\\("
     }
@@ -2281,7 +2290,6 @@
       "ruby": "Radar::EarlyFraudWarning\\.retrieve\\(",
       "go": "earlyfraudwarning\\.Get\\(",
       "python": "radar\\.EarlyFraudWarning\\.retrieve\\(",
-      "java": "EarlyFraudWarning\\.retrieve\\(",
       "node": "radar\\.earlyFraudWarnings\\.retrieve\\(",
       "php": "radar->earlyFraudWarnings->retrieve\\("
     }
@@ -2292,7 +2300,6 @@
       "ruby": "Radar::EarlyFraudWarning\\.list\\(",
       "go": "earlyfraudwarning\\.List\\(",
       "python": "radar\\.EarlyFraudWarning\\.list\\(",
-      "java": "EarlyFraudWarning\\.list\\(",
       "node": "radar\\.earlyFraudWarnings\\.list\\(",
       "php": "radar->earlyFraudWarnings->all\\("
     }
@@ -2313,7 +2320,6 @@
       "ruby": "Review\\.retrieve\\(",
       "go": "review\\.Get\\(",
       "python": "Review\\.retrieve\\(",
-      "java": "Review\\.retrieve\\(",
       "node": "reviews\\.retrieve\\(",
       "php": "reviews->retrieve\\("
     }
@@ -2324,7 +2330,6 @@
       "ruby": "Review\\.list\\(",
       "go": "review\\.List\\(",
       "python": "Review\\.list\\(",
-      "java": "Review\\.list\\(",
       "node": "reviews\\.list\\(",
       "php": "reviews->all\\("
     }
@@ -2335,7 +2340,6 @@
       "ruby": "Radar::ValueList\\.create\\(",
       "go": "valuelist\\.New\\(",
       "python": "radar\\.ValueList\\.create\\(",
-      "java": "ValueList\\.create\\(",
       "node": "radar\\.valueLists\\.create\\(",
       "php": "radar->valueLists->create\\("
     }
@@ -2346,7 +2350,6 @@
       "ruby": "Radar::ValueList\\.retrieve\\(",
       "go": "valuelist\\.Get\\(",
       "python": "radar\\.ValueList\\.retrieve\\(",
-      "java": "ValueList\\.retrieve\\(",
       "node": "radar\\.valueLists\\.retrieve\\(",
       "php": "radar->valueLists->retrieve\\("
     }
@@ -2377,7 +2380,6 @@
       "ruby": "Radar::ValueList\\.list\\(",
       "go": "valuelist\\.List\\(",
       "python": "radar\\.ValueList\\.list\\(",
-      "java": "ValueList\\.list\\(",
       "node": "radar\\.valueLists\\.list\\(",
       "php": "radar->valueLists->all\\("
     }
@@ -2388,7 +2390,6 @@
       "ruby": "Radar::ValueListItem\\.create\\(",
       "go": "valuelistitem\\.New\\(",
       "python": "radar\\.ValueListItem\\.create\\(",
-      "java": "ValueListItem\\.create\\(",
       "node": "radar\\.valueListItems\\.create\\(",
       "php": "radar->valueListItems->create\\("
     }
@@ -2399,7 +2400,6 @@
       "ruby": "Radar::ValueListItem\\.retrieve\\(",
       "go": "valuelistitem\\.Get\\(",
       "python": "radar\\.ValueListItem\\.retrieve\\(",
-      "java": "ValueListItem\\.retrieve\\(",
       "node": "radar\\.valueListItems\\.retrieve\\(",
       "php": "radar->valueListItems->retrieve\\("
     }
@@ -2420,7 +2420,6 @@
       "ruby": "Radar::ValueListItem\\.list\\(",
       "go": "valuelistitem\\.List\\(",
       "python": "radar\\.ValueListItem\\.list\\(",
-      "java": "ValueListItem\\.list\\(",
       "node": "radar\\.valueListItems\\.list\\(",
       "php": "radar->valueListItems->all\\("
     }
@@ -2431,7 +2430,6 @@
       "ruby": "Issuing::Authorization\\.retrieve\\(",
       "go": "authorization\\.Get\\(",
       "python": "issuing\\.Authorization\\.retrieve\\(",
-      "java": "Authorization\\.retrieve\\(",
       "node": "issuing\\.authorizations\\.retrieve\\(",
       "php": "issuing->authorizations->retrieve\\("
     }
@@ -2472,7 +2470,6 @@
       "ruby": "Issuing::Authorization\\.list\\(",
       "go": "authorization\\.List\\(",
       "python": "issuing\\.Authorization\\.list\\(",
-      "java": "Authorization\\.list\\(",
       "node": "issuing\\.authorizations\\.list\\(",
       "php": "issuing->authorizations->all\\("
     }
@@ -2483,7 +2480,6 @@
       "ruby": "Issuing::Cardholder\\.create\\(",
       "go": "cardholder\\.New\\(",
       "python": "issuing\\.Cardholder\\.create\\(",
-      "java": "Cardholder\\.create\\(",
       "node": "issuing\\.cardholders\\.create\\(",
       "php": "issuing->cardholders->create\\("
     }
@@ -2494,7 +2490,6 @@
       "ruby": "Issuing::Cardholder\\.retrieve\\(",
       "go": "cardholder\\.Get\\(",
       "python": "issuing\\.Cardholder\\.retrieve\\(",
-      "java": "Cardholder\\.retrieve\\(",
       "node": "issuing\\.cardholders\\.retrieve\\(",
       "php": "issuing->cardholders->retrieve\\("
     }
@@ -2515,7 +2510,6 @@
       "ruby": "Issuing::Cardholder\\.list\\(",
       "go": "cardholder\\.List\\(",
       "python": "issuing\\.Cardholder\\.list\\(",
-      "java": "Cardholder\\.list\\(",
       "node": "issuing\\.cardholders\\.list\\(",
       "php": "issuing->cardholders->all\\("
     }
@@ -2526,7 +2520,6 @@
       "ruby": "Issuing::Card\\.create\\(",
       "go": "card\\.New\\(",
       "python": "issuing\\.Card\\.create\\(",
-      "java": "Card\\.create\\(",
       "node": "issuing\\.cards\\.create\\(",
       "php": "issuing->cards->create\\("
     }
@@ -2537,7 +2530,6 @@
       "ruby": "Issuing::Card\\.retrieve\\(",
       "go": "card\\.Get\\(",
       "python": "issuing\\.Card\\.retrieve\\(",
-      "java": "Card\\.retrieve\\(",
       "node": "issuing\\.cards\\.retrieve\\(",
       "php": "issuing->cards->retrieve\\("
     }
@@ -2558,7 +2550,6 @@
       "ruby": "Issuing::Card\\.list\\(",
       "go": "card\\.List\\(",
       "python": "issuing\\.Card\\.list\\(",
-      "java": "Card\\.list\\(",
       "node": "issuing\\.cards\\.list\\(",
       "php": "issuing->cards->all\\("
     }
@@ -2569,7 +2560,6 @@
       "ruby": "Issuing::Dispute\\.create\\(",
       "go": "dispute\\.New\\(",
       "python": "issuing\\.Dispute\\.create\\(",
-      "java": "Dispute\\.create\\(",
       "node": "issuing\\.disputes\\.create\\(",
       "php": "issuing->disputes->create\\("
     }
@@ -2590,7 +2580,6 @@
       "ruby": "Issuing::Dispute\\.retrieve\\(",
       "go": "dispute\\.Get\\(",
       "python": "issuing\\.Dispute\\.retrieve\\(",
-      "java": "Dispute\\.retrieve\\(",
       "node": "issuing\\.disputes\\.retrieve\\(",
       "php": "issuing->disputes->retrieve\\("
     }
@@ -2611,7 +2600,6 @@
       "ruby": "Issuing::Dispute\\.list\\(",
       "go": "dispute\\.List\\(",
       "python": "issuing\\.Dispute\\.list\\(",
-      "java": "Dispute\\.list\\(",
       "node": "issuing\\.disputes\\.list\\(",
       "php": "issuing->disputes->all\\("
     }
@@ -2622,7 +2610,6 @@
       "ruby": "Issuing::Transaction\\.retrieve\\(",
       "go": "transaction\\.Get\\(",
       "python": "issuing\\.Transaction\\.retrieve\\(",
-      "java": "Transaction\\.retrieve\\(",
       "node": "issuing\\.transactions\\.retrieve\\(",
       "php": "issuing->transactions->retrieve\\("
     }
@@ -2643,7 +2630,6 @@
       "ruby": "Issuing::Transaction\\.list\\(",
       "go": "transaction\\.List\\(",
       "python": "issuing\\.Transaction\\.list\\(",
-      "java": "Transaction\\.list\\(",
       "node": "issuing\\.transactions\\.list\\(",
       "php": "issuing->transactions->all\\("
     }
@@ -2654,7 +2640,6 @@
       "ruby": "Terminal::ConnectionToken\\.create\\(",
       "go": "connectiontoken\\.New\\(",
       "python": "terminal\\.ConnectionToken\\.create\\(",
-      "java": "ConnectionToken\\.create\\(",
       "node": "terminal\\.connectionTokens\\.create\\(",
       "php": "terminal->connectionTokens->create\\("
     }
@@ -2665,7 +2650,6 @@
       "ruby": "Terminal::Location\\.create\\(",
       "go": "location\\.New\\(",
       "python": "terminal\\.Location\\.create\\(",
-      "java": "Location\\.create\\(",
       "node": "terminal\\.locations\\.create\\(",
       "php": "terminal->locations->create\\("
     }
@@ -2676,7 +2660,6 @@
       "ruby": "Terminal::Location\\.retrieve\\(",
       "go": "location\\.Get\\(",
       "python": "terminal\\.Location\\.retrieve\\(",
-      "java": "Location\\.retrieve\\(",
       "node": "terminal\\.locations\\.retrieve\\(",
       "php": "terminal->locations->retrieve\\("
     }
@@ -2707,7 +2690,6 @@
       "ruby": "Terminal::Location\\.list\\(",
       "go": "location\\.List\\(",
       "python": "terminal\\.Location\\.list\\(",
-      "java": "Location\\.list\\(",
       "node": "terminal\\.locations\\.list\\(",
       "php": "terminal->locations->all\\("
     }
@@ -2718,7 +2700,6 @@
       "ruby": "Terminal::Reader\\.create\\(",
       "go": "reader\\.New\\(",
       "python": "terminal\\.Reader\\.create\\(",
-      "java": "Reader\\.create\\(",
       "node": "terminal\\.readers\\.create\\(",
       "php": "terminal->readers->create\\("
     }
@@ -2729,7 +2710,6 @@
       "ruby": "Terminal::Reader\\.retrieve\\(",
       "go": "reader\\.Get\\(",
       "python": "terminal\\.Reader\\.retrieve\\(",
-      "java": "Reader\\.retrieve\\(",
       "node": "terminal\\.readers\\.retrieve\\(",
       "php": "terminal->readers->retrieve\\("
     }
@@ -2760,35 +2740,32 @@
       "ruby": "Terminal::Reader\\.list\\(",
       "go": "reader\\.List\\(",
       "python": "terminal\\.Reader\\.list\\(",
-      "java": "Reader\\.list\\(",
       "node": "terminal\\.readers\\.list\\(",
       "php": "terminal->readers->all\\("
     }
   },
   {
-    "url": "/orders/create",
+    "url": "/orders_legacy/create",
     "regexps": {
       "ruby": "Order\\.create\\(",
       "go": "order\\.New\\(",
       "python": "Order\\.create\\(",
-      "java": "Order\\.create\\(",
       "node": "orders\\.create\\(",
       "php": "orders->create\\("
     }
   },
   {
-    "url": "/orders/retrieve",
+    "url": "/orders_legacy/retrieve",
     "regexps": {
       "ruby": "Order\\.retrieve\\(",
       "go": "order\\.Get\\(",
       "python": "Order\\.retrieve\\(",
-      "java": "Order\\.retrieve\\(",
       "node": "orders\\.retrieve\\(",
       "php": "orders->retrieve\\("
     }
   },
   {
-    "url": "/orders/update",
+    "url": "/orders_legacy/update",
     "regexps": {
       "ruby": "Order\\.update\\(",
       "go": "order\\.Update\\(",
@@ -2798,7 +2775,7 @@
     }
   },
   {
-    "url": "/orders/pay",
+    "url": "/orders_legacy/pay",
     "regexps": {
       "ruby": "Order\\.pay\\(",
       "go": "order\\.Pay\\(",
@@ -2808,23 +2785,21 @@
     }
   },
   {
-    "url": "/orders/list",
+    "url": "/orders_legacy/list",
     "regexps": {
       "ruby": "Order\\.list\\(",
       "go": "order\\.List\\(",
       "python": "Order\\.list\\(",
-      "java": "Order\\.list\\(",
       "node": "orders\\.list\\(",
       "php": "orders->all\\("
     }
   },
   {
-    "url": "/orders/return",
+    "url": "/orders_legacy/return",
     "regexps": {
       "ruby": "Order\\.custom\\(",
       "go": "order\\.Custom\\(",
       "python": "Order\\.custom\\(",
-      "java": "Order\\.custom\\(",
       "node": "orders\\.custom\\(",
       "php": "orders->custom\\("
     }
@@ -2835,7 +2810,6 @@
       "ruby": "OrderReturn\\.retrieve\\(",
       "go": "orderreturn\\.Get\\(",
       "python": "OrderReturn\\.retrieve\\(",
-      "java": "OrderReturn\\.retrieve\\(",
       "node": "orderReturns\\.retrieve\\(",
       "php": "orderReturns->retrieve\\("
     }
@@ -2846,7 +2820,6 @@
       "ruby": "OrderReturn\\.list\\(",
       "go": "orderreturn\\.List\\(",
       "python": "OrderReturn\\.list\\(",
-      "java": "OrderReturn\\.list\\(",
       "node": "orderReturns\\.list\\(",
       "php": "orderReturns->all\\("
     }
@@ -2857,7 +2830,6 @@
       "ruby": "SKU\\.create\\(",
       "go": "sku\\.New\\(",
       "python": "SKU\\.create\\(",
-      "java": "Sku\\.create\\(",
       "node": "skus\\.create\\(",
       "php": "skus->create\\("
     }
@@ -2868,7 +2840,6 @@
       "ruby": "SKU\\.retrieve\\(",
       "go": "sku\\.Get\\(",
       "python": "SKU\\.retrieve\\(",
-      "java": "Sku\\.retrieve\\(",
       "node": "skus\\.retrieve\\(",
       "php": "skus->retrieve\\("
     }
@@ -2889,7 +2860,6 @@
       "ruby": "SKU\\.list\\(",
       "go": "sku\\.List\\(",
       "python": "SKU\\.list\\(",
-      "java": "Sku\\.list\\(",
       "node": "skus\\.list\\(",
       "php": "skus->all\\("
     }
@@ -2910,7 +2880,6 @@
       "ruby": "Sigma::ScheduledQueryRun\\.retrieve\\(",
       "go": "scheduledqueryrun\\.Get\\(",
       "python": "sigma\\.ScheduledQueryRun\\.retrieve\\(",
-      "java": "ScheduledQueryRun\\.retrieve\\(",
       "node": "sigma\\.scheduledQueryRuns\\.retrieve\\(",
       "php": "sigma->scheduledQueryRuns->retrieve\\("
     }
@@ -2921,7 +2890,6 @@
       "ruby": "Sigma::ScheduledQueryRun\\.list\\(",
       "go": "scheduledqueryrun\\.List\\(",
       "python": "sigma\\.ScheduledQueryRun\\.list\\(",
-      "java": "ScheduledQueryRun\\.list\\(",
       "node": "sigma\\.scheduledQueryRuns\\.list\\(",
       "php": "sigma->scheduledQueryRuns->all\\("
     }
@@ -2932,7 +2900,6 @@
       "ruby": "Reporting::ReportRun\\.create\\(",
       "go": "reportrun\\.New\\(",
       "python": "reporting\\.ReportRun\\.create\\(",
-      "java": "ReportRun\\.create\\(",
       "node": "reporting\\.reportRuns\\.create\\(",
       "php": "reporting->reportRuns->create\\("
     }
@@ -2943,7 +2910,6 @@
       "ruby": "Reporting::ReportRun\\.retrieve\\(",
       "go": "reportrun\\.Get\\(",
       "python": "reporting\\.ReportRun\\.retrieve\\(",
-      "java": "ReportRun\\.retrieve\\(",
       "node": "reporting\\.reportRuns\\.retrieve\\(",
       "php": "reporting->reportRuns->retrieve\\("
     }
@@ -2954,7 +2920,6 @@
       "ruby": "Reporting::ReportRun\\.list\\(",
       "go": "reportrun\\.List\\(",
       "python": "reporting\\.ReportRun\\.list\\(",
-      "java": "ReportRun\\.list\\(",
       "node": "reporting\\.reportRuns\\.list\\(",
       "php": "reporting->reportRuns->all\\("
     }
@@ -2965,7 +2930,6 @@
       "ruby": "Reporting::ReportType\\.retrieve\\(",
       "go": "reporttype\\.Get\\(",
       "python": "reporting\\.ReportType\\.retrieve\\(",
-      "java": "ReportType\\.retrieve\\(",
       "node": "reporting\\.reportTypes\\.retrieve\\(",
       "php": "reporting->reportTypes->retrieve\\("
     }
@@ -2976,9 +2940,88 @@
       "ruby": "Reporting::ReportType\\.list\\(",
       "go": "reporttype\\.List\\(",
       "python": "reporting\\.ReportType\\.list\\(",
-      "java": "ReportType\\.list\\(",
       "node": "reporting\\.reportTypes\\.list\\(",
       "php": "reporting->reportTypes->all\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/create",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.create\\(",
+      "go": "verificationsession\\.New\\(",
+      "python": "identity\\.VerificationSession\\.create\\(",
+      "node": "identity\\.verificationSessions\\.create\\(",
+      "php": "identity->verificationSessions->create\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/list",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.list\\(",
+      "go": "verificationsession\\.List\\(",
+      "python": "identity\\.VerificationSession\\.list\\(",
+      "node": "identity\\.verificationSessions\\.list\\(",
+      "php": "identity->verificationSessions->all\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/retrieve",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.retrieve\\(",
+      "go": "verificationsession\\.Get\\(",
+      "python": "identity\\.VerificationSession\\.retrieve\\(",
+      "node": "identity\\.verificationSessions\\.retrieve\\(",
+      "php": "identity->verificationSessions->retrieve\\("
+    }
+  },
+  {
+    "url": "/identity/verification_sessions/update",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.update\\(",
+      "go": "verificationsession\\.Update\\(",
+      "python": "identity\\.VerificationSession\\.modify\\(",
+      "node": "identity\\.verificationSessions\\.update\\(",
+      "php": "identity->verificationSessions->update\\("
+    }
+  },
+  {
+    "url": "/verification_sessions/cancel",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.cancel\\(",
+      "go": "verificationsession\\.Cancel\\(",
+      "python": "identity\\.VerificationSession\\.cancel\\(",
+      "node": "identity\\.verificationSessions\\.cancel\\(",
+      "php": "identity->verificationSessions->cancel\\("
+    }
+  },
+  {
+    "url": "/verification_sessions/redact",
+    "regexps": {
+      "ruby": "Identity::VerificationSession\\.redact\\(",
+      "go": "verificationsession\\.Redact\\(",
+      "python": "identity\\.VerificationSession\\.redact\\(",
+      "node": "identity\\.verificationSessions\\.redact\\(",
+      "php": "identity->verificationSessions->redact\\("
+    }
+  },
+  {
+    "url": "/identity/verification_reports/retrieve",
+    "regexps": {
+      "ruby": "Identity::VerificationReport\\.retrieve\\(",
+      "go": "verificationreport\\.Get\\(",
+      "python": "identity\\.VerificationReport\\.retrieve\\(",
+      "node": "identity\\.verificationReports\\.retrieve\\(",
+      "php": "identity->verificationReports->retrieve\\("
+    }
+  },
+  {
+    "url": "/identity/verification_reports/list",
+    "regexps": {
+      "ruby": "Identity::VerificationReport\\.list\\(",
+      "go": "verificationreport\\.List\\(",
+      "python": "identity\\.VerificationReport\\.list\\(",
+      "node": "identity\\.verificationReports\\.list\\(",
+      "php": "identity->verificationReports->all\\("
     }
   },
   {
@@ -2987,7 +3030,6 @@
       "ruby": "WebhookEndpoint\\.create\\(",
       "go": "webhookendpoint\\.New\\(",
       "python": "WebhookEndpoint\\.create\\(",
-      "java": "WebhookEndpoint\\.create\\(",
       "node": "webhookEndpoints\\.create\\(",
       "php": "webhookEndpoints->create\\("
     }
@@ -2998,7 +3040,6 @@
       "ruby": "WebhookEndpoint\\.retrieve\\(",
       "go": "webhookendpoint\\.Get\\(",
       "python": "WebhookEndpoint\\.retrieve\\(",
-      "java": "WebhookEndpoint\\.retrieve\\(",
       "node": "webhookEndpoints\\.retrieve\\(",
       "php": "webhookEndpoints->retrieve\\("
     }
@@ -3019,7 +3060,6 @@
       "ruby": "WebhookEndpoint\\.list\\(",
       "go": "webhookendpoint\\.List\\(",
       "python": "WebhookEndpoint\\.list\\(",
-      "java": "WebhookEndpoint\\.list\\(",
       "node": "webhookEndpoints\\.list\\(",
       "php": "webhookEndpoints->all\\("
     }
