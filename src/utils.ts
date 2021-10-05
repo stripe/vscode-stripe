@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+const extensionId = 'stripe.vscode-stripe';
+
 export enum OSType {
   macOSintel = 'macOSintel',
   macOSarm = 'macOSarm',
@@ -8,8 +10,15 @@ export enum OSType {
   windows = 'windows',
 }
 
+export function getUserAgent() {
+  const extension = vscode.extensions.getExtension(extensionId);
+  return extension
+    ? `${extension.id}/${extension.packageJSON?.version} vscode/${vscode.version}`
+    : '';
+}
+
 export function getExtensionInfo() {
-  const extension = vscode.extensions.getExtension('stripe.vscode-stripe');
+  const extension = vscode.extensions.getExtension(extensionId);
   if (extension) {
     return extension.packageJSON;
   }

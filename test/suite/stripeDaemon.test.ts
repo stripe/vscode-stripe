@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
+import * as vscode from 'vscode';
 import {EventEmitter, Readable, Writable} from 'stream';
 import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../stripeClient';
@@ -60,7 +61,32 @@ suite('StripeDaemon', () => {
       Object.setPrototypeOf(StripeCLIClient, constructorStub);
 
       await stripeDaemon.setupClient();
+      console.log(constructorStub.args[0][2].channelOverride.options['grpc.primary_user_agent']);
       assert.strictEqual(constructorStub.args[0][0], '[::1]:12345');
+    });
+
+    test('sends coorrect channel options', async () => {
+      const stripeDaemon = getStripeDaemonWithExecaProxy(
+        '{"host": "::1", "port": 12345}',
+        <any>stripeClient,
+      );
+
+      const constructorStub = sandbox.stub();
+      Object.setPrototypeOf(StripeCLIClient, constructorStub);
+
+      // mock out extensionId
+      const mockExtension = <vscode.Extension<any>>{
+        id: 'my-extension',
+        packageJSON: {version: 1},
+      };
+      sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
+
+      await stripeDaemon.setupClient();
+
+      const userAgent =
+        constructorStub.args[0][2].channelOverride.options['grpc.primary_user_agent'];
+      console.log(userAgent);
+      assert.strictEqual(userAgent.startsWith('my-extension/1 vscode/'), true);
     });
 
     test('rejects with SyntaxError when stdout is invalid json', async () => {
