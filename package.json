@@ -421,7 +421,8 @@
     "webpack-prod:extension": "webpack --mode production --config ./webpack.config.js && webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
     "webpack-prod:language-server": "webpack --mode production --config ./src/stripeLanguageServer/webpack.config.js",
     "webpack-prod": "npm run webpack-prod:extension && npm run webpack-prod:language-server",
-    "publish:dotnet-server": "dotnet publish src/stripeDotnetLanguageServer/stripe.LanguageServer/ -o ./dist/stripeDotnetLanguageServer"
+    "publish:dotnet-server": "dotnet publish src/stripeDotnetLanguageServer/stripe.LanguageServer/ -o ./dist/stripeDotnetLanguageServer",
+    "java-server": "node ./out/src/stripeJavaLanguageServer/extractServer.js"
   },
   "devDependencies": {
     "@types/byline": "^4.2.33",
@@ -461,13 +462,17 @@
     "os-name": "^3.1.0",
     "proxyquire": "^2.1.3",
     "remark-gfm": "^1.0.0",
+    "superagent": "*",
+    "tar-fs": "*",
     "toml": "^3.0.0",
     "uuid": "^8.3.2",
     "vscode-languageclient": "^6.1.3",
     "vscode-languageserver": "^6.1.1",
-    "vscode-languageserver-textdocument": "^1.0.1"
+    "vscode-languageserver-textdocument": "^1.0.1",
+    "zlib": "*"
   },
   "extensionDependencies": [
-    "ms-dotnettools.vscode-dotnet-runtime"
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "yaozheng.vscode-pde"
   ]
 }
