@@ -65,7 +65,7 @@ suite('StripeDaemon', () => {
       assert.strictEqual(constructorStub.args[0][0], '[::1]:12345');
     });
 
-    test('sends coorrect channel options', async () => {
+    test('sends correct channel options', async () => {
       const stripeDaemon = getStripeDaemonWithExecaProxy(
         '{"host": "::1", "port": 12345}',
         <any>stripeClient,
@@ -85,7 +85,8 @@ suite('StripeDaemon', () => {
 
       const userAgent =
         constructorStub.args[0][2].channelOverride.options['grpc.primary_user_agent'];
-      console.log(userAgent);
+
+      // Note I could not mock out the module that's used within the utils class so we are just asserting for a startsWith
       assert.strictEqual(userAgent.startsWith('my-extension/1 vscode/'), true);
     });
 

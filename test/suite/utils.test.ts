@@ -42,7 +42,6 @@ suite('Utils', () => {
     test('getUserAgent returns blank when getExtension returns nothing', () => {
       sandbox.stub(vscode.extensions, 'getExtension').returns(undefined);
       const userAgent = module.getUserAgent();
-      console.log(userAgent);
       assert.strictEqual(userAgent, '');
     });
 
@@ -52,7 +51,6 @@ suite('Utils', () => {
       };
       sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
       const userAgent = module.getUserAgent();
-      console.log(userAgent);
       assert.strictEqual(userAgent, 'my-extension/undefined vscode/2');
     });
 
@@ -63,7 +61,6 @@ suite('Utils', () => {
       };
       sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
       const userAgent = module.getUserAgent();
-      console.log(userAgent);
       assert.strictEqual(userAgent, 'my-extension/undefined vscode/2');
     });
   });
