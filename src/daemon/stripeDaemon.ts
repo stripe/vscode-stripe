@@ -7,6 +7,7 @@ import {StripeCLIClient} from '../rpc/commands_grpc_pb';
 import {StripeClient} from '../stripeClient';
 import {Writable} from 'stream';
 import execa from 'execa';
+import {getUserAgent} from '../utils';
 
 /**
  * StripeDaemon handles starting and restarting the Stripe daemon gRPC server and creating the
@@ -42,21 +43,31 @@ export class StripeDaemon {
    * exist, start a new one and return a new client.
    */
   setupClient = async (): Promise<StripeCLIClient> => {
+    const userAgent = getUserAgent();
+
     // If there is no daemon process or config, restart everything and return a new client
     if (!this.config || !this.daemonProcess) {
       this.stripeCLIClient?.close();
       this.config = await this.restartDaemon();
       const address = `[${this.config.host}]:${this.config.port}`;
+      const channel = new grpc.Channel(address, grpc.credentials.createInsecure(), {
+        'grpc.primary_user_agent': userAgent,
+      });
       return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
         interceptors: [authOutboundInterceptor, errorInboundInterceptor],
+        channelOverride: channel,
       });
     }
 
     // If the daemon exists but there is no client, return a new client
     if (!this.stripeCLIClient) {
       const address = `[${this.config.host}]:${this.config.port}`;
+      const channel = new grpc.Channel(address, grpc.credentials.createInsecure(), {
+        'grpc.primary_user_agent': userAgent,
+      });
       return new StripeCLIClient(address, grpc.credentials.createInsecure(), {
         interceptors: [authOutboundInterceptor, errorInboundInterceptor],
+        channelOverride: channel,
       });
     }
 

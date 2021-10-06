@@ -2,6 +2,10 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
+const proxyquire = require('proxyquire');
+const modulePath = '../../src/utils';
+
+const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('Utils', () => {
   let sandbox: sinon.SinonSandbox;
@@ -12,6 +16,53 @@ suite('Utils', () => {
 
   teardown(() => {
     sandbox.restore();
+  });
+
+  suite('getUserAgent', () => {
+    let module: {getUserAgent: () => any};
+
+    setup(() => {
+      module = setupProxies({
+        vscode: {
+          version: 2,
+        },
+      });
+    });
+
+    test('getUserAgent returns user agent', () => {
+      const mockExtension = <vscode.Extension<any>>{
+        id: 'my-extension',
+        packageJSON: {version: 1},
+      };
+      sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
+      const userAgent = module.getUserAgent();
+      assert.strictEqual(userAgent, 'my-extension/1 vscode/2');
+    });
+
+    test('getUserAgent returns blank when getExtension returns nothing', () => {
+      sandbox.stub(vscode.extensions, 'getExtension').returns(undefined);
+      const userAgent = module.getUserAgent();
+      assert.strictEqual(userAgent, '');
+    });
+
+    test('getUserAgent does not error when packgeJSON does not exist', () => {
+      const mockExtension = <vscode.Extension<any>>{
+        id: 'my-extension',
+      };
+      sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
+      const userAgent = module.getUserAgent();
+      assert.strictEqual(userAgent, 'my-extension/undefined vscode/2');
+    });
+
+    test('getUserAgent does not error when packgeJSON does not contain version', () => {
+      const mockExtension = <vscode.Extension<any>>{
+        id: 'my-extension',
+        packageJSON: {},
+      };
+      sandbox.stub(vscode.extensions, 'getExtension').returns(mockExtension);
+      const userAgent = module.getUserAgent();
+      assert.strictEqual(userAgent, 'my-extension/undefined vscode/2');
+    });
   });
 
   suite('showQuickPick', () => {
