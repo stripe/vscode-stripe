@@ -1,20 +1,19 @@
-'use strict';
-
 import * as net from 'net';
-import {ClientErrorHandler, OutputInfoCollector, getJavaConfig} from './extension';
-import {ExtensionAPI, ClientStatus} from './extension.api';
-import {DidChangeConfigurationNotification, LanguageClientOptions} from 'vscode-languageclient';
-import {LanguageClient, ServerOptions, StreamInfo} from 'vscode-languageclient/node';
+import {ClientStatus, JDKInfo, SYNTAXLS_CLIENT_PORT, StatusNotification} from './javaClient';
+import {
+  CloseAction,
+  ErrorAction,
+  LanguageClient,
+  LanguageClientOptions,
+  ServerOptions,
+  StreamInfo,
+} from 'vscode-languageclient/node';
 import {apiManager} from './apiManager';
-import {logger} from './log';
-import {StatusNotification} from './protocol';
-import {ServerMode} from './settings';
-import {JDKInfo, SYNTAXLS_CLIENT_PORT} from './javaClient';
 
 const extensionName = 'Language Support for Java (Syntax Server)';
 
 export class SyntaxLanguageClient {
-  private languageClient: LanguageClient;
+  private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;
 
   public initialize(
@@ -23,24 +22,15 @@ export class SyntaxLanguageClient {
     serverOptions?: ServerOptions,
   ) {
     const newClientOptions: LanguageClientOptions = Object.assign({}, clientOptions, {
-      middleware: {
-        workspace: {
-          didChangeConfiguration: () => {
-            this.languageClient.sendNotification(DidChangeConfigurationNotification.type, {
-              settings: {
-                java: getJavaConfig(jdkInfo.javaHome),
-              },
-            });
-          },
+      errorHandler: {
+        error: (error: string, message: string) => {
+          console.log(message);
+          console.log(error);
+
+          return ErrorAction.Continue;
         },
+        closed: () => CloseAction.DoNotRestart,
       },
-      errorHandler: new ClientErrorHandler(extensionName),
-      initializationFailedHandler: (error: any) => {
-        logger.error(`Failed to initialize ${extensionName} due to ${error && error.toString()}`);
-        return true;
-      },
-      outputChannel: new OutputInfoCollector(extensionName),
-      outputChannelName: extensionName,
     });
 
     const lsPort = process.env[SYNTAXLS_CLIENT_PORT];
@@ -64,20 +54,22 @@ export class SyntaxLanguageClient {
       );
 
       this.languageClient.onReady().then(() => {
-        this.languageClient.onNotification(StatusNotification.type, (report: {type: any}) => {
-          switch (report.type) {
-            case 'Started':
-              this.status = ClientStatus.Started;
-              apiManager.updateStatus(ClientStatus.Started);
-              break;
-            case 'Error':
-              this.status = ClientStatus.Error;
-              apiManager.updateStatus(ClientStatus.Error);
-              break;
-            default:
-              break;
-          }
-        });
+        if (this.languageClient) {
+          this.languageClient.onNotification(StatusNotification.type, (report: {type: any}) => {
+            switch (report.type) {
+              case 'Started':
+                this.status = ClientStatus.Started;
+                apiManager.updateStatus(ClientStatus.Started);
+                break;
+              case 'Error':
+                this.status = ClientStatus.Error;
+                apiManager.updateStatus(ClientStatus.Error);
+                break;
+              default:
+                break;
+            }
+          });
+        }
       });
     }
 
@@ -95,7 +87,6 @@ export class SyntaxLanguageClient {
     this.status = ClientStatus.Stopping;
     if (this.languageClient) {
       this.languageClient.stop();
-      this.languageClient = null;
     }
   }
 
@@ -103,7 +94,7 @@ export class SyntaxLanguageClient {
     return !!this.languageClient && this.status !== ClientStatus.Stopping;
   }
 
-  public getClient(): LanguageClient {
+  public getClient(): LanguageClient | undefined {
     return this.languageClient;
   }
 }

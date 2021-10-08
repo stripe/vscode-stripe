@@ -16,7 +16,7 @@ import {
   window,
   workspace,
 } from 'vscode';
-import {Executable, ExecutableOptions} from 'vscode-languageclient/node';
+import {Executable, ExecutableOptions, NotificationType} from 'vscode-languageclient/node';
 
 const expandHomeDir = require('expand-home-dir');
 
@@ -34,6 +34,12 @@ export interface JDKInfo {
   javaVersion: number;
 }
 
+
+export interface StatusReport {
+  message: string;
+  type: string;
+}
+
 export enum ClientStatus {
   Uninitialized = 'Uninitialized',
   Initialized = 'Initialized',
@@ -41,6 +47,10 @@ export enum ClientStatus {
   Started = 'Started',
   Error = 'Error',
   Stopping = 'Stopping',
+}
+
+export namespace StatusNotification {
+  export const type = new NotificationType<StatusReport>('language/status');
 }
 
 export function getJavaConfiguration(): WorkspaceConfiguration {
