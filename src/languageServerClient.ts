@@ -7,6 +7,7 @@ import {
   JDKInfo,
   JDTLS_CLIENT_PORT,
   SYNTAXLS_CLIENT_PORT,
+  ServerMode,
   ensureNoBuildToolConflicts,
   getJavaFilePathOfTextDocument,
   getJavaSDKInfo,
@@ -24,7 +25,6 @@ import {
   Trace,
 } from 'vscode-languageclient/node';
 import {
-  EventEmitter,
   ExtensionContext,
   OutputChannel,
   RelativePattern,
@@ -37,21 +37,16 @@ import {OSType, getOSType} from './utils';
 import {StandardLanguageClient} from './stripeJavaLanguageClient/standardLanguageClient';
 import {SyntaxLanguageClient} from './stripeJavaLanguageClient/syntaxLanguageClient';
 import {Telemetry} from './telemetry';
-import {apiManager} from './stripeJavaLanguageClient/apiManager';
-
+import {registerClientProviders} from './stripeJavaLanguageClient/providerDispatcher';
 
 const REQUIRED_DOTNET_RUNTIME_VERSION = '5.0';
 const REQUIRED_JDK_VERSION = 11;
 
-enum ServerMode {
-  STANDARD = 'Standard',
-  LIGHTWEIGHT = 'LightWeight',
-  HYBRID = 'Hybrid',
-}
-
 const syntaxClient: SyntaxLanguageClient = new SyntaxLanguageClient();
 const standardClient: StandardLanguageClient = new StandardLanguageClient();
-const jdtEventEmitter = new EventEmitter<Uri>();
+
+export let javaServerMode =
+  workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
 
 export class StripeLanguageClient {
   static async activate(
@@ -226,21 +221,19 @@ export class StripeLanguageClient {
     const workspacePath = path.resolve(storagePath + '/jdt_ws');
     const syntaxServerWorkspacePath = path.resolve(storagePath + '/ss_ws');
 
-    let serverMode =
-      workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
     const isWorkspaceTrusted = (workspace as any).isTrusted; // TODO: use workspace.isTrusted directly when other clients catch up to adopt 1.56.0
     if (isWorkspaceTrusted !== undefined && !isWorkspaceTrusted) {
       // keep compatibility for old engines < 1.56.0
-      serverMode = ServerMode.LIGHTWEIGHT;
+      javaServerMode = ServerMode.LIGHTWEIGHT;
     }
-    commands.executeCommand('setContext', 'java:serverMode', serverMode);
+    commands.executeCommand('setContext', 'java:serverMode', javaServerMode);
     const isDebugModeByClientPort =
       !!process.env[SYNTAXLS_CLIENT_PORT] || !!process.env[JDTLS_CLIENT_PORT];
     const requireSyntaxServer =
-      serverMode !== ServerMode.STANDARD &&
+      javaServerMode !== ServerMode.STANDARD &&
       (!isDebugModeByClientPort || !!process.env[SYNTAXLS_CLIENT_PORT]);
     const requireStandardServer =
-      serverMode !== ServerMode.LIGHTWEIGHT &&
+      javaServerMode !== ServerMode.LIGHTWEIGHT &&
       (!isDebugModeByClientPort || !!process.env[JDTLS_CLIENT_PORT]);
 
     const triggerFiles = getTriggerFiles();
@@ -273,16 +266,17 @@ export class StripeLanguageClient {
       },
     };
 
-    apiManager.initialize(jdkInfo, serverMode);
-
     if (requireSyntaxServer) {
-      syntaxClient.initialize(
+      this.startSyntaxServer(
+        context,
         jdkInfo,
         clientOptions,
-        prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true),
+        syntaxServerWorkspacePath,
+        outputChannel,
       );
-      syntaxClient.start();
     }
+
+    registerClientProviders(context);
 
     if (requireStandardServer) {
       await this.startStandardServer(context, jdkInfo, clientOptions, workspacePath, outputChannel);
@@ -404,9 +398,24 @@ export class StripeLanguageClient {
     return openedJavaFiles;
   }
 
+  static startSyntaxServer(
+    context: ExtensionContext,
+    jdkInfo: JDKInfo,
+    clientOptions: LanguageClientOptions,
+    syntaxServerWorkspacePath: string,
+    outputChannel: OutputChannel,
+  ) {
+    syntaxClient.initialize(
+      outputChannel,
+      clientOptions,
+      prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true),
+    );
+    syntaxClient.start();
+  }
+
   static async startStandardServer(
     context: ExtensionContext,
-    requirements: JDKInfo,
+    jdkInfo: JDKInfo,
     clientOptions: LanguageClientOptions,
     workspacePath: string,
     outputChannel: OutputChannel,
@@ -420,18 +429,30 @@ export class StripeLanguageClient {
       return;
     }
 
-    if (apiManager.getApiInstance().serverMode === ServerMode.LIGHTWEIGHT) {
+    if (javaServerMode === ServerMode.LIGHTWEIGHT) {
       // Before standard server is ready, we are in hybrid.
-      apiManager.getApiInstance().serverMode = ServerMode.HYBRID;
-      apiManager.fireDidServerModeChange(ServerMode.HYBRID);
+      javaServerMode = ServerMode.HYBRID;
     }
-    await standardClient.initialize(
-      context,
-      requirements,
-      clientOptions,
-      workspacePath,
-      jdtEventEmitter,
-    );
+
+    await standardClient.initialize(context, jdkInfo, clientOptions, workspacePath, outputChannel);
     standardClient.start();
   }
+}
+
+export async function getActiveJavaLanguageClient(): Promise<LanguageClient | undefined> {
+  let languageClient: LanguageClient | undefined;
+
+  if (javaServerMode === ServerMode.STANDARD) {
+    languageClient = standardClient.getClient();
+  } else {
+    languageClient = syntaxClient.getClient();
+  }
+
+  if (!languageClient) {
+    return undefined;
+  }
+
+  await languageClient.onReady();
+
+  return languageClient;
 }

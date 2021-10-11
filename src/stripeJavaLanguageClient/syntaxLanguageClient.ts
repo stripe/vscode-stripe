@@ -1,5 +1,5 @@
 import * as net from 'net';
-import {ClientStatus, JDKInfo, SYNTAXLS_CLIENT_PORT, StatusNotification} from './javaClient';
+import {ClientStatus, EXTENSION_NAME_SYNTAX, SYNTAXLS_CLIENT_PORT, StatusNotification} from './javaClient';
 import {
   CloseAction,
   ErrorAction,
@@ -8,16 +8,14 @@ import {
   ServerOptions,
   StreamInfo,
 } from 'vscode-languageclient/node';
-import {apiManager} from './apiManager';
-
-const extensionName = 'Language Support for Java (Syntax Server)';
+import {OutputChannel} from 'vscode';
 
 export class SyntaxLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;
 
   public initialize(
-    jdkInfo: JDKInfo,
+    outputChannel: OutputChannel,
     clientOptions: LanguageClientOptions,
     serverOptions?: ServerOptions,
   ) {
@@ -48,7 +46,7 @@ export class SyntaxLanguageClient {
     if (serverOptions) {
       this.languageClient = new LanguageClient(
         'java',
-        extensionName,
+        EXTENSION_NAME_SYNTAX,
         serverOptions,
         newClientOptions,
       );
@@ -59,11 +57,9 @@ export class SyntaxLanguageClient {
             switch (report.type) {
               case 'Started':
                 this.status = ClientStatus.Started;
-                apiManager.updateStatus(ClientStatus.Started);
                 break;
               case 'Error':
                 this.status = ClientStatus.Error;
-                apiManager.updateStatus(ClientStatus.Error);
                 break;
               default:
                 break;
@@ -74,6 +70,7 @@ export class SyntaxLanguageClient {
     }
 
     this.status = ClientStatus.Initialized;
+    outputChannel.appendLine('Java language service (syntax) is running.');
   }
 
   public start(): void {

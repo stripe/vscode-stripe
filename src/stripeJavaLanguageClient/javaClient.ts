@@ -16,7 +16,14 @@ import {
   window,
   workspace,
 } from 'vscode';
-import {Executable, ExecutableOptions, NotificationType} from 'vscode-languageclient/node';
+import {
+  Executable,
+  ExecutableOptions,
+  Location,
+  NotificationType,
+  RequestType,
+  TextDocumentPositionParams,
+} from 'vscode-languageclient/node';
 
 const expandHomeDir = require('expand-home-dir');
 
@@ -25,15 +32,18 @@ const JAVAC_FILENAME = 'javac' + (isWindows ? '.exe' : '');
 const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
 
 export const ACTIVE_BUILD_TOOL_STATE = 'java.activeBuildTool';
+export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
+export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
+export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
 export const IS_WORKSPACE_JDK_ALLOWED = 'java.ls.isJdkAllowed';
-export const SYNTAXLS_CLIENT_PORT = 'SYNTAXLS_CLIENT_PORT';
 export const JDTLS_CLIENT_PORT = 'JDTLS_CLIENT_PORT';
+export const SYNTAXLS_CLIENT_PORT = 'SYNTAXLS_CLIENT_PORT';
+export const SERVER_PORT = 'SERVER_PORT';
 
 export interface JDKInfo {
   javaHome: string;
   javaVersion: number;
 }
-
 
 export interface StatusReport {
   message: string;
@@ -49,9 +59,44 @@ export enum ClientStatus {
   Stopping = 'Stopping',
 }
 
+export enum ServerMode {
+  STANDARD = 'Standard',
+  LIGHTWEIGHT = 'LightWeight',
+  HYBRID = 'Hybrid',
+}
 export namespace StatusNotification {
   export const type = new NotificationType<StatusReport>('language/status');
 }
+
+export interface FindLinksParams {
+  type: string;
+  position: TextDocumentPositionParams;
+}
+
+export interface LinkLocation extends Location {
+  displayName: string;
+  kind: string;
+}
+
+export namespace FindLinks {
+  export const type = new RequestType<FindLinksParams, LinkLocation[], void>('java/findLinks');
+}
+
+// export function getJavaConfig(javaHome: string) {
+//   const origConfig = getJavaConfiguration();
+//   const javaConfig = JSON.parse(JSON.stringify(origConfig));
+//   javaConfig.home = javaHome;
+//   // Since source & output path are project specific settings. To avoid pollute other project,
+//   // we avoid reading the value from the global scope.
+//   javaConfig.project.outputPath = origConfig.inspect<string>('project.outputPath')?.workspaceValue;
+//   javaConfig.project.sourcePaths =
+//     origConfig.inspect<string[]>('project.sourcePaths')?.workspaceValue;
+
+//   const editorConfig = workspace.getConfiguration('editor');
+//   javaConfig.format.insertSpaces = editorConfig.get('insertSpaces');
+//   javaConfig.format.tabSize = editorConfig.get('tabSize');
+//   return javaConfig;
+// }
 
 export function getJavaConfiguration(): WorkspaceConfiguration {
   return workspace.getConfiguration('java');
@@ -324,13 +369,13 @@ function resolveConfiguration(context: ExtensionContext, configDir: string) {
   return configuration;
 }
 
-function ensureExists(folder: string) {
+export function ensureExists(folder: string) {
   if (!fs.existsSync(folder)) {
     fs.mkdirSync(folder);
   }
 }
 
-function deleteDirectory(dir: string) {
+export function deleteDirectory(dir: string) {
   if (fs.existsSync(dir)) {
     fs.readdirSync(dir).forEach((child) => {
       const entry = path.join(dir, child);
@@ -344,7 +389,7 @@ function deleteDirectory(dir: string) {
   }
 }
 
-function getTimestamp(file: string) {
+export function getTimestamp(file: string) {
   if (!fs.existsSync(file)) {
     return -1;
   }
@@ -612,3 +657,17 @@ export async function getTriggerFiles(): Promise<string[]> {
 
   return openedJavaFiles;
 }
+
+export function getJavaEncoding(): string {
+  const config = workspace.getConfiguration();
+  const languageConfig: any = config.get('[java]');
+  let javaEncoding = null;
+  if (languageConfig) {
+    javaEncoding = languageConfig['files.encoding'];
+  }
+  if (!javaEncoding) {
+    javaEncoding = config.get<string>('files.encoding', 'UTF-8');
+  }
+  return javaEncoding;
+}
+
