@@ -15,7 +15,7 @@ import {
   isPrefix,
   makeRandomHexString,
   prepareExecutable,
-} from './stripeJavaLanguageClient/javaClient';
+} from './stripeJavaLanguageClient/utils';
 import {
   CloseAction,
   ErrorAction,

@@ -1,7 +1,6 @@
-import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT} from './javaClient';
+import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT} from './utils';
 import {ExtensionContext, OutputChannel} from 'vscode';
 import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
-
 import {awaitServerConnection, prepareExecutable} from './javaServerStarter';
 import {LanguageClientOptions} from 'vscode-languageclient';
 

@@ -3,8 +3,7 @@ import * as fs from 'fs';
 import * as glob from 'glob';
 import * as net from 'net';
 import * as path from 'path';
-import {DEBUG_VSCODE_JAVA, JDKInfo, deleteDirectory, ensureExists, getJavaEncoding, getTimestamp} from './javaClient';
-
+import {DEBUG_VSCODE_JAVA, JDKInfo, deleteDirectory, ensureExists, getJavaEncoding, getTimestamp} from './utils';
 import {Executable, ExecutableOptions, StreamInfo} from 'vscode-languageclient/node';
 import {ExtensionContext, OutputChannel} from 'vscode';
 

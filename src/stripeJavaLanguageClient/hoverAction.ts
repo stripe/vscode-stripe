@@ -12,7 +12,7 @@ import {
   TextDocument,
 } from 'vscode';
 import {HoverRequest, TextDocumentPositionParams} from 'vscode-languageclient';
-import {FindLinks} from './javaClient';
+import {FindLinks} from './utils';
 import {LanguageClient} from 'vscode-languageclient/node';
 import {Commands as javaCommands} from './commands';
 

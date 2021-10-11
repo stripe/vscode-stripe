@@ -1,5 +1,5 @@
 import * as net from 'net';
-import {ClientStatus, EXTENSION_NAME_SYNTAX, SYNTAXLS_CLIENT_PORT, StatusNotification} from './javaClient';
+import {ClientStatus, EXTENSION_NAME_SYNTAX, SYNTAXLS_CLIENT_PORT, StatusNotification} from './utils';
 import {
   CloseAction,
   ErrorAction,

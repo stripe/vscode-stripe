@@ -10,7 +10,7 @@ import {
 import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
 import {HoverRequest} from 'vscode-languageclient';
 import {LanguageClient} from 'vscode-languageclient/node';
-import {ServerMode} from './javaClient';
+import {ServerMode} from './utils';
 import {createClientHoverProvider} from './hoverAction';
 
 export interface ProviderHandle {
