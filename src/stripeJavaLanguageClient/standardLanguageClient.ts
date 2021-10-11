@@ -1,8 +1,7 @@
 import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT} from './utils';
 import {ExtensionContext, OutputChannel} from 'vscode';
-import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
+import {LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
 import {awaitServerConnection, prepareExecutable} from './javaServerStarter';
-import {LanguageClientOptions} from 'vscode-languageclient';
 
 export class StandardLanguageClient {
   private languageClient: LanguageClient | undefined;

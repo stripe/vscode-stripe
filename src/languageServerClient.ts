@@ -23,7 +23,7 @@ import {
   LanguageClientOptions,
   ServerOptions,
   Trace,
-} from 'vscode-languageclient/node';
+} from 'vscode-languageclient';
 import {
   ExtensionContext,
   OutputChannel,

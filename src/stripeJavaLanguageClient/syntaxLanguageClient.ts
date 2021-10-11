@@ -7,7 +7,7 @@ import {
   LanguageClientOptions,
   ServerOptions,
   StreamInfo,
-} from 'vscode-languageclient/node';
+} from 'vscode-languageclient';
 import {OutputChannel} from 'vscode';
 
 export class SyntaxLanguageClient {

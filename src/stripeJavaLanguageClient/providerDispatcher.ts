@@ -7,9 +7,8 @@ import {
   TextDocument,
   languages,
 } from 'vscode';
+import {HoverRequest, LanguageClient} from 'vscode-languageclient';
 import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
-import {HoverRequest} from 'vscode-languageclient';
-import {LanguageClient} from 'vscode-languageclient/node';
 import {ServerMode} from './utils';
 import {createClientHoverProvider} from './hoverAction';
 

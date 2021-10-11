@@ -23,7 +23,7 @@ import {
   NotificationType,
   RequestType,
   TextDocumentPositionParams,
-} from 'vscode-languageclient/node';
+} from 'vscode-languageclient';
 
 const expandHomeDir = require('expand-home-dir');
 

@@ -4,12 +4,13 @@ import * as glob from 'glob';
 import * as net from 'net';
 import * as path from 'path';
 import {DEBUG_VSCODE_JAVA, JDKInfo, deleteDirectory, ensureExists, getJavaEncoding, getTimestamp} from './utils';
-import {Executable, ExecutableOptions, StreamInfo} from 'vscode-languageclient/node';
+import {Executable, ExecutableOptions, StreamInfo} from 'vscode-languageclient';
 import {ExtensionContext, OutputChannel} from 'vscode';
 
 
 declare var v8debug: any;
 const DEBUG = typeof v8debug === 'object' || startedInDebugMode();
+const javaServerPath = '../out/src/stripeJavaLanguageServer';
 
 export function prepareExecutable(
   jdkInfo: JDKInfo,
@@ -55,8 +56,6 @@ function prepareParams(
   if (DEBUG) {
     const port = isSyntaxServer ? 1045 : 1044;
     params.push(`-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${port},quiet=y`);
-    // suspend=y is the default. Use this form if you need to debug the server startup code:
-    //  params.push('-agentlib:jdwp=transport=dt_socket,server=y,address=1044');
   }
   if (jdkInfo.javaVersion > 8) {
     params.push(
@@ -73,6 +72,7 @@ function prepareParams(
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
   );
+
   if (DEBUG) {
     params.push('-Dlog.level=ALL');
   }
@@ -80,10 +80,11 @@ function prepareParams(
   const encodingKey = '-Dfile.encoding=';
   params.push(encodingKey + getJavaEncoding());
 
-  const serverHome: string = path.resolve(__dirname, '../server');
+  const serverHome: string = path.resolve(__dirname, javaServerPath);
   const launchersFound: Array<string> = glob.sync('**/plugins/org.eclipse.equinox.launcher_*.jar', {
     cwd: serverHome,
   });
+
   if (launchersFound.length) {
     params.push('-jar');
     params.push(path.resolve(serverHome, launchersFound[0]));
@@ -129,7 +130,7 @@ function resolveConfiguration(context: ExtensionContext, configDir: string) {
   ensureExists(configuration);
   const configIniName = 'config.ini';
   const configIni = path.resolve(configuration, configIniName);
-  const ini = path.resolve(__dirname, '../server', configDir, configIniName);
+  const ini = path.resolve(__dirname, javaServerPath, configDir, configIniName);
   if (!fs.existsSync(configIni)) {
     fs.copyFileSync(ini, configIni);
   } else {
