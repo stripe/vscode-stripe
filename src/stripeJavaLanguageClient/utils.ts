@@ -65,6 +65,7 @@ export enum ServerMode {
   LIGHTWEIGHT = 'LightWeight',
   HYBRID = 'Hybrid',
 }
+
 export namespace StatusNotification {
   export const type = new NotificationType<StatusReport>('language/status');
 }

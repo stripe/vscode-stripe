@@ -453,7 +453,6 @@ export async function getActiveJavaLanguageClient(): Promise<LanguageClient | un
   }
 
   await languageClient.onReady();
-
   return languageClient;
 }
 

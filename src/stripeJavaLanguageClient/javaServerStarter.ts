@@ -1,3 +1,4 @@
+/* eslint-disable no-warning-comments */
 /* eslint-disable no-sync */
 import * as fs from 'fs';
 import * as glob from 'glob';
@@ -10,7 +11,7 @@ import {ExtensionContext, OutputChannel} from 'vscode';
 
 declare var v8debug: any;
 const DEBUG = typeof v8debug === 'object' || startedInDebugMode();
-const javaServerPath = '../out/src/stripeJavaLanguageServer';
+const javaServerPath = '../out/src/stripeJavaLanguageServer'; // TODO: need to move to dist folders at release
 
 export function prepareExecutable(
   jdkInfo: JDKInfo,

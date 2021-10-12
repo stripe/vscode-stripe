@@ -476,6 +476,7 @@
     "zlib": "*"
   },
   "extensionDependencies": [
-    "ms-dotnettools.vscode-dotnet-runtime"
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "vscjava.vscode-java-pack"
   ]
 }
