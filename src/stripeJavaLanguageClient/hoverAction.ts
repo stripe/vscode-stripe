@@ -11,8 +11,8 @@ import {
   ProviderResult,
   TextDocument,
 } from 'vscode';
-import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-languageclient';
 import {FindLinks, getJavaApiDocLink} from './utils';
+import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-languageclient';
 import {Commands as javaCommands} from './commands';
 
 export type provideHoverCommandFn = (params: TextDocumentPositionParams, token: CancellationToken) => ProviderResult<Command[] | undefined>;
@@ -94,12 +94,13 @@ class JavaHoverProvider implements HoverProvider {
       const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
       if (hoverResponse &&
           hoverResponse.contents &&
-          Array.isArray(hoverResponse.contents) &&
-          hoverResponse.contents[0].value.includes('com.stripe.model')) {
-        const stripeMethod = hoverResponse.contents[0].value;
-        const stripeNamespace = stripeMethod.split(' ')[1].split('(')[0];
-        const url = getJavaApiDocLink(stripeNamespace);
-        return new Hover([new MarkdownString('[Stripe API Reference](' + url + ')')], undefined);
+          Array.isArray(hoverResponse.contents)) {
+        const stripeMethod = Object.entries(hoverResponse.contents[0]).filter((item) => item[0] === 'value' && item[1].includes('com.stripe.model'));
+        if (stripeMethod.length > 0) {
+          const stripeNamespace = stripeMethod[0][1].split(' ')[1].split('(')[0];
+          const url = getJavaApiDocLink(stripeNamespace);
+          return new Hover([new MarkdownString('See this method in the [Stripe API Reference](' + url + ')')], undefined);
+        }
       }
 
       const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
