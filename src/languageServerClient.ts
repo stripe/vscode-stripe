@@ -456,3 +456,8 @@ export async function getActiveJavaLanguageClient(): Promise<LanguageClient | un
 
   return languageClient;
 }
+
+export function updateServerMode(serverMode: ServerMode) {
+  javaServerMode = serverMode;
+  console.log('server mode changed to ' + serverMode);
+}

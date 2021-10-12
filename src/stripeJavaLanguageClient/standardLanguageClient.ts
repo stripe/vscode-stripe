@@ -1,19 +1,20 @@
-import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT} from './utils';
+import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT, ServerMode, StatusNotification, StatusReport} from './utils';
 import {ExtensionContext, OutputChannel} from 'vscode';
 import {LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
 import {awaitServerConnection, prepareExecutable} from './javaServerStarter';
+import {updateServerMode} from '../languageServerClient';
 
 export class StandardLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;
 
-  public async initialize(
+  public initialize(
     context: ExtensionContext,
     jdkInfo: JDKInfo,
     clientOptions: LanguageClientOptions,
     workspacePath: string,
     outputChannel: OutputChannel,
-  ): Promise<void> {
+  ) {
     if (this.status !== ClientStatus.Uninitialized) {
       return;
     }
@@ -21,20 +22,43 @@ export class StandardLanguageClient {
     let serverOptions;
     const port = process.env[SERVER_PORT];
     if (!port) {
-        serverOptions = prepareExecutable(
-            jdkInfo,
-            workspacePath,
-            context,
-            false,
-            outputChannel,
-        );
+      serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false, outputChannel);
     } else {
       // used during development
       serverOptions = awaitServerConnection.bind(null, port);
     }
 
-    this.languageClient = new LanguageClient('java', EXTENSION_NAME_STANDARD, serverOptions as ServerOptions, clientOptions);
-    await this.languageClient.onReady();
+    this.languageClient = new LanguageClient(
+      'java',
+      EXTENSION_NAME_STANDARD,
+      serverOptions as ServerOptions,
+      clientOptions,
+    );
+
+    this.languageClient.onReady().then(() => {
+      if (!this.languageClient) {
+        return;
+      }
+
+      this.languageClient.onNotification(StatusNotification.type, (report: StatusReport) => {
+        switch (report.type) {
+          case 'ServiceReady':
+            updateServerMode(ServerMode.STANDARD);
+            break;
+          case 'Started':
+            this.status = ClientStatus.Started;
+            break;
+          case 'Error':
+            this.status = ClientStatus.Error;
+            break;
+          case 'Starting':
+          case 'Message':
+            // message goes to progress report instead
+            break;
+        }
+      });
+    });
+
     this.status = ClientStatus.Initialized;
     outputChannel.appendLine('Java language service (standard) is running.');
   }
@@ -61,4 +85,3 @@ export class StandardLanguageClient {
     return this.status;
   }
 }
-

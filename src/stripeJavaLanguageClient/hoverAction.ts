@@ -12,7 +12,7 @@ import {
   TextDocument,
 } from 'vscode';
 import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-languageclient';
-import {FindLinks} from './utils';
+import {FindLinks, getJavaApiDocLink} from './utils';
 import {Commands as javaCommands} from './commands';
 
 export type provideHoverCommandFn = (params: TextDocumentPositionParams, token: CancellationToken) => ProviderResult<Command[] | undefined>;
@@ -90,36 +90,40 @@ class JavaHoverProvider implements HoverProvider {
     };
 
     // Fetch the javadoc from Java language server.
-    const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
-    if (hoverResponse &&
-        hoverResponse.contents &&
-        Array.isArray(hoverResponse.contents) &&
-        hoverResponse.contents[0].toString().includes('com.stripe.model')) {
-      const apiKey = hoverResponse.contents[0].toString();
-      let url = 'https://stripe.com/docs/api';
-      url = url + '/' + apiKey;
-      return new Hover([new MarkdownString('[Stripe API Reference](' + url + ')')], undefined);
-    }
+    try {
+      const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
+      if (hoverResponse &&
+          hoverResponse.contents &&
+          Array.isArray(hoverResponse.contents) &&
+          hoverResponse.contents[0].value.includes('com.stripe.model')) {
+        const stripeMethod = hoverResponse.contents[0].value;
+        const stripeNamespace = stripeMethod.split(' ')[1].split('(')[0];
+        const url = getJavaApiDocLink(stripeNamespace);
+        return new Hover([new MarkdownString('[Stripe API Reference](' + url + ')')], undefined);
+      }
 
-    const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
+      const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
 
-    // Fetch the contributed hover commands from third party extensions.
-    const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
-    if (!contributedCommands.length) {
-      return serverHover;
-    }
+      // Fetch the contributed hover commands from third party extensions.
+      const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
+      if (!contributedCommands.length) {
+        return serverHover;
+      }
 
-    const contributed = new MarkdownString(
-      contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
-    );
-    contributed.isTrusted = true;
-    let contents: MarkedString[] = [contributed];
-    let range;
-    if (serverHover && serverHover.contents) {
-      contents = contents.concat(serverHover.contents);
-      range = serverHover.range;
+      const contributed = new MarkdownString(
+        contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
+      );
+      contributed.isTrusted = true;
+      let contents: MarkedString[] = [contributed];
+      let range;
+      if (serverHover && serverHover.contents) {
+        contents = contents.concat(serverHover.contents);
+        range = serverHover.range;
+      }
+      return new Hover(contents, range);
+    } catch (e) {
+      console.log(e);
     }
-    return new Hover(contents, range);
   }
 
   private async getContributedHoverCommands(

@@ -53,10 +53,12 @@ function prepareParams(
   isSyntaxServer: boolean,
 ): string[] {
   const params: string[] = [];
+
   if (DEBUG) {
-    const port = isSyntaxServer ? 1045 : 1044;
+    const port = isSyntaxServer ? 1047 : 1046;
     params.push(`-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${port},quiet=y`);
   }
+
   if (jdkInfo.javaVersion > 8) {
     params.push(
       '--add-modules=ALL-SYSTEM',
@@ -105,7 +107,7 @@ function prepareParams(
     console.log(
       `Starting jdt.ls ${isSyntaxServer ? '(syntax)' : '(standard)'} from vscode-java sources`,
     );
-    params.push(path.resolve(__dirname, '../server', configDir));
+    params.push(path.resolve(__dirname, javaServerPath, configDir));
   } else {
     params.push(resolveConfiguration(context, configDir));
   }

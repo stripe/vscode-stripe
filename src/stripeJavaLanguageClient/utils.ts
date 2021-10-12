@@ -24,6 +24,7 @@ import {
   RequestType,
   TextDocumentPositionParams,
 } from 'vscode-languageclient';
+import javaPatterns from '../../config/api_ref/patterns_java.json';
 
 const expandHomeDir = require('expand-home-dir');
 
@@ -655,3 +656,9 @@ export function getJavaEncoding(): string {
   return javaEncoding;
 }
 
+export function getJavaApiDocLink(namespace: string) {
+  const baseUrl = 'https://stripe.com/docs/api';
+  const patterns = Object.entries(javaPatterns);
+  const apiUrl = patterns.filter((item) => item[0] === namespace)[0][1];
+  return baseUrl + apiUrl;
+}
