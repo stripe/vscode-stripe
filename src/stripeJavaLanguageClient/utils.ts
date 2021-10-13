@@ -2,7 +2,6 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
-import * as glob from 'glob';
 import * as path from 'path';
 import {
   ConfigurationTarget,
@@ -17,8 +16,6 @@ import {
   workspace,
 } from 'vscode';
 import {
-  Executable,
-  ExecutableOptions,
   Location,
   NotificationType,
   RequestType,
@@ -102,7 +99,7 @@ export async function ensureNoBuildToolConflicts(
       if (!(await hasBuildToolConflicts())) {
         return true;
       }
-      outputChannel.appendLine('Build tool conflicts are detected in workspace.');
+      outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
       return false;
     }
   }
@@ -242,117 +239,6 @@ function parseToStringGlob(patterns: string[]): string {
   }
 
   return `{${patterns.join(',')}}`;
-}
-
-export function prepareExecutable(
-  requirements: JDKInfo,
-  workspacePath: string,
-  context: ExtensionContext,
-  isSyntaxServer: boolean,
-): Executable {
-  const executable: Executable = Object.create(null);
-  const options: ExecutableOptions = Object.create(null);
-  options.env = Object.assign({syntaxserver: isSyntaxServer}, process.env);
-  executable.options = options;
-  executable.command = path.resolve(requirements.javaHome + '/bin/java');
-  executable.args = prepareParams(requirements, workspacePath, context, isSyntaxServer);
-  return executable;
-}
-
-function prepareParams(
-  requirements: JDKInfo,
-  workspacePath: string,
-  context: ExtensionContext,
-  isSyntaxServer: boolean,
-): string[] {
-  const params: string[] = [];
-  const inDebugMode = startedInDebugMode();
-  if (inDebugMode) {
-    const port = isSyntaxServer ? 1045 : 1044;
-    params.push(`-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${port},quiet=y`);
-  }
-
-  if (requirements.javaVersion > 8) {
-    params.push(
-      '--add-modules=ALL-SYSTEM',
-      '--add-opens',
-      'java.base/java.util=ALL-UNNAMED',
-      '--add-opens',
-      'java.base/java.lang=ALL-UNNAMED',
-    );
-  }
-
-  params.push(
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
-  );
-  if (inDebugMode) {
-    params.push('-Dlog.level=ALL');
-  }
-
-  const serverHome: string = path.resolve(__dirname, '../server');
-  const launchersFound: Array<string> = glob.sync('**/plugins/org.eclipse.equinox.launcher_*.jar', {
-    cwd: serverHome,
-  });
-  if (launchersFound.length) {
-    params.push('-jar');
-    params.push(path.resolve(serverHome, launchersFound[0]));
-  } else {
-    return [];
-  }
-
-  // select configuration directory according to OS
-  let configDir = isSyntaxServer ? 'config_ss_win' : 'config_win';
-  if (process.platform === 'darwin') {
-    configDir = isSyntaxServer ? 'config_ss_mac' : 'config_mac';
-  } else if (process.platform === 'linux') {
-    configDir = isSyntaxServer ? 'config_ss_linux' : 'config_linux';
-  }
-  params.push('-configuration');
-  params.push(resolveConfiguration(context, configDir));
-  params.push('-data');
-  params.push(workspacePath);
-  return params;
-}
-
-function startedInDebugMode(): boolean {
-  const args = (process as any).execArgv as string[];
-  if (args) {
-    // See https://nodejs.org/en/docs/guides/debugging-getting-started/
-    return args.some((arg) => /^--inspect/.test(arg) || /^--debug/.test(arg));
-  }
-  return false;
-}
-
-function resolveConfiguration(context: ExtensionContext, configDir: string) {
-  ensureExists(context.globalStoragePath);
-  const extensionPath = path.resolve(context.extensionPath, 'package.json');
-  const packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
-  let version;
-  if (packageFile) {
-    version = packageFile.version;
-  } else {
-    version = '0.0.0';
-  }
-  let configuration = path.resolve(context.globalStoragePath, version);
-  ensureExists(configuration);
-  configuration = path.resolve(configuration, configDir);
-  ensureExists(configuration);
-  const configIniName = 'config.ini';
-  const configIni = path.resolve(configuration, configIniName);
-  const ini = path.resolve(__dirname, '../server', configDir, configIniName);
-  if (!fs.existsSync(configIni)) {
-    fs.copyFileSync(ini, configIni);
-  } else {
-    const configIniTime = getTimestamp(configIni);
-    const iniTime = getTimestamp(ini);
-    if (iniTime > configIniTime) {
-      deleteDirectory(configuration);
-      resolveConfiguration(context, configDir);
-    }
-  }
-  return configuration;
 }
 
 export function ensureExists(folder: string) {

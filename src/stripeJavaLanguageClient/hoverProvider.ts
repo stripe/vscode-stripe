@@ -3,6 +3,7 @@
 import {
   CancellationToken,
   Command,
+  ExtensionContext,
   Hover,
   HoverProvider,
   MarkdownString,
@@ -10,14 +11,26 @@ import {
   Position,
   ProviderResult,
   TextDocument,
+  languages,
 } from 'vscode';
-import {FindLinks, getJavaApiDocLink} from './utils';
+import {FindLinks, ServerMode, getJavaApiDocLink} from './utils';
 import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-languageclient';
+import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
 import {Commands as javaCommands} from './commands';
 
 export type provideHoverCommandFn = (params: TextDocumentPositionParams, token: CancellationToken) => ProviderResult<Command[] | undefined>;
+const hoverCommandRegistry: provideHoverCommandFn[] = [];
 
-export function createClientHoverProvider(languageClient: LanguageClient): JavaHoverProvider {
+export function registerHoverProvider(context: ExtensionContext) {
+  const hoverProvider = new ClientHoverProvider();
+  context.subscriptions.push(languages.registerHoverProvider('java', hoverProvider));
+}
+
+function registerHoverCommand(callback: provideHoverCommandFn): void {
+  hoverCommandRegistry.push(callback);
+}
+
+function createClientHoverProvider(languageClient: LanguageClient): JavaHoverProvider {
   const hoverProvider: JavaHoverProvider = new JavaHoverProvider(languageClient);
   registerHoverCommand(async (params: TextDocumentPositionParams, token: CancellationToken) => {
     const command = await provideHoverCommand(languageClient, params, token);
@@ -25,6 +38,10 @@ export function createClientHoverProvider(languageClient: LanguageClient): JavaH
   });
 
   return hoverProvider;
+}
+
+function encodeBase64(text: string): string {
+  return Buffer.from(text).toString('base64');
 }
 
 async function provideHoverCommand(
@@ -65,13 +82,34 @@ async function provideHoverCommand(
   }
 }
 
-function encodeBase64(text: string): string {
-  return Buffer.from(text).toString('base64');
-}
+class ClientHoverProvider implements HoverProvider {
+  private delegateProvider: any;
 
-const hoverCommandRegistry: provideHoverCommandFn[] = [];
-export function registerHoverCommand(callback: provideHoverCommandFn): void {
-  hoverCommandRegistry.push(callback);
+  async provideHover(
+    document: TextDocument,
+    position: Position,
+    token: CancellationToken,
+  ): Promise<Hover | undefined> {
+    const languageClient: LanguageClient | undefined = await getActiveJavaLanguageClient();
+
+    if (!languageClient) {
+      return undefined;
+    }
+
+    if (javaServerMode === ServerMode.STANDARD) {
+      if (!this.delegateProvider) {
+        this.delegateProvider = createClientHoverProvider(languageClient);
+      }
+      return this.delegateProvider.provideHover(document, position, token);
+    } else {
+      const params = {
+        textDocument: languageClient.code2ProtocolConverter.asTextDocumentIdentifier(document),
+        position: languageClient.code2ProtocolConverter.asPosition(position),
+      };
+      const hoverResponse = await languageClient.sendRequest(HoverRequest.type, params, token);
+      return languageClient.protocol2CodeConverter.asHover(hoverResponse);
+    }
+  }
 }
 
 class JavaHoverProvider implements HoverProvider {

@@ -14,10 +14,10 @@ import {
   getTriggerFiles,
   isPrefix,
   makeRandomHexString,
-  prepareExecutable,
 } from './stripeJavaLanguageClient/utils';
 import {
   CloseAction,
+  Emitter,
   ErrorAction,
   LanguageClient,
   LanguageClientOptions,
@@ -34,16 +34,19 @@ import {
   workspace,
 } from 'vscode';
 import {OSType, getOSType} from './utils';
+import {Commands} from './stripeJavaLanguageClient/commands';
 import {StandardLanguageClient} from './stripeJavaLanguageClient/standardLanguageClient';
 import {SyntaxLanguageClient} from './stripeJavaLanguageClient/syntaxLanguageClient';
 import {Telemetry} from './telemetry';
-import {registerClientProviders} from './stripeJavaLanguageClient/providerDispatcher';
+import {prepareExecutable} from './stripeJavaLanguageClient/javaServerStarter';
+import {registerHoverProvider} from './stripeJavaLanguageClient/hoverProvider';
 
 const REQUIRED_DOTNET_RUNTIME_VERSION = '5.0';
 const REQUIRED_JDK_VERSION = 11;
 
 const syntaxClient: SyntaxLanguageClient = new SyntaxLanguageClient();
 const standardClient: StandardLanguageClient = new StandardLanguageClient();
+const onDidServerModeChangeEmitter: Emitter<ServerMode> = new Emitter<ServerMode>();
 
 export let javaServerMode =
   workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
@@ -276,7 +279,17 @@ export class StripeLanguageClient {
       );
     }
 
-    registerClientProviders(context);
+    // handle server mode changes from syntax to standard
+    this.registerSwitchJavaServerModeCommand(context, jdkInfo, clientOptions, workspacePath, outputChannel);
+    onDidServerModeChangeEmitter.event((event: ServerMode) => {
+      if (event === ServerMode.STANDARD) {
+        syntaxClient.stop();
+      }
+      commands.executeCommand('setContext', 'java:serverMode', event);
+    });
+
+    // register hover provider
+    registerHoverProvider(context);
 
     if (requireStandardServer) {
       await this.startStandardServer(context, jdkInfo, clientOptions, workspacePath, outputChannel);
@@ -408,7 +421,7 @@ export class StripeLanguageClient {
     syntaxClient.initialize(
       outputChannel,
       clientOptions,
-      prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true),
+      prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true, outputChannel),
     );
     syntaxClient.start();
   }
@@ -436,6 +449,61 @@ export class StripeLanguageClient {
 
     await standardClient.initialize(context, jdkInfo, clientOptions, workspacePath, outputChannel);
     standardClient.start();
+  }
+
+  static registerSwitchJavaServerModeCommand(
+    context: ExtensionContext,
+    jdkInfo: JDKInfo,
+    clientOptions: LanguageClientOptions,
+    workspacePath: string,
+    outputChannel: OutputChannel,
+  ) {
+    /**
+     * Command to switch the server mode. Currently it only supports switch from lightweight to standard.
+     * @param force force to switch server mode without asking
+     */
+    commands.registerCommand(
+      Commands.SWITCH_SERVER_MODE,
+      async (switchTo: ServerMode, force: boolean = false) => {
+        const isWorkspaceTrusted = (workspace as any).isTrusted;
+        if (isWorkspaceTrusted !== undefined && !isWorkspaceTrusted) {
+          // keep compatibility for old engines < 1.56.0
+          const button = 'Manage Workspace Trust';
+          const choice = await window.showInformationMessage(
+            'For security concern, Java language server cannot be switched to Standard mode in untrusted workspaces.',
+            button,
+          );
+          if (choice === button) {
+            commands.executeCommand('workbench.action.manageTrust');
+          }
+          return;
+        }
+
+        const clientStatus: ClientStatus = standardClient.getClientStatus();
+        if (clientStatus === ClientStatus.Starting || clientStatus === ClientStatus.Started) {
+          return;
+        }
+
+        if (javaServerMode === switchTo || javaServerMode === ServerMode.STANDARD) {
+          return;
+        }
+
+        let choice: string;
+        if (force) {
+          choice = 'Yes';
+        } else {
+          choice = await window.showInformationMessage(
+            'Are you sure you want to switch the Java language server to Standard mode?',
+            'Yes',
+            'No',
+          ) || 'No';
+        }
+
+        if (choice === 'Yes') {
+          await this.startStandardServer(context, jdkInfo, clientOptions, workspacePath, outputChannel);
+        }
+      },
+    );
   }
 }
 
