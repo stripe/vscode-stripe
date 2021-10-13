@@ -23,7 +23,8 @@
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "preLaunchTask": "Build all",
       "env": {
-        "EXTENSION_MODE": "development"
+        "EXTENSION_MODE": "development",
+        "DEBUG_VSCODE_JAVA":"true"
       }
     },
     {
