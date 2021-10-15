@@ -9,6 +9,7 @@ import {
   ServerMode,
   getJavaFilePathOfTextDocument,
   getJavaSDKInfo,
+  getJavaServerLaunchMode,
   hasNoBuildToolConflicts,
   isPrefix,
   makeRandomHexString,
@@ -46,8 +47,7 @@ const syntaxClient: SyntaxLanguageClient = new SyntaxLanguageClient();
 const standardClient: StandardLanguageClient = new StandardLanguageClient();
 const onDidServerModeChangeEmitter: Emitter<ServerMode> = new Emitter<ServerMode>();
 
-export let javaServerMode =
-  workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
+export let javaServerMode = getJavaServerLaunchMode();
 
 export class StripeLanguageClient {
   static async activate(
@@ -437,13 +437,17 @@ export class StripeLanguageClient {
     outputChannel.appendLine('Java language service (standard) is running.');
   }
 
-  static registerSwitchJavaServerModeCommand(
+  static async registerSwitchJavaServerModeCommand(
     context: ExtensionContext,
     jdkInfo: JDKInfo,
     clientOptions: LanguageClientOptions,
     workspacePath: string,
     outputChannel: OutputChannel,
   ) {
+    if ((await commands.getCommands()).includes(Commands.SWITCH_SERVER_MODE)) {
+      return;
+    }
+
     /**
      * Command to switch the server mode. Currently it only supports switch from lightweight to standard.
      * @param force force to switch server mode without asking

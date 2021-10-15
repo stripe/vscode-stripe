@@ -10,7 +10,7 @@ export class StandardLanguageClient {
     clientOptions: LanguageClientOptions,
     serverOptions: ServerOptions,
   ) {
-    if (this.status !== ClientStatus.Uninitialized) {
+    if (!serverOptions || this.status !== ClientStatus.Uninitialized) {
       return;
     }
 

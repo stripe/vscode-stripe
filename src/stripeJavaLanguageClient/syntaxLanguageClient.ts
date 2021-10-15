@@ -9,6 +9,10 @@ export class SyntaxLanguageClient {
     clientOptions: LanguageClientOptions,
     serverOptions: ServerOptions,
   ) {
+    if (!serverOptions) {
+      return;
+    }
+    
     const newClientOptions: LanguageClientOptions = Object.assign({}, clientOptions, {
       errorHandler: {
         error: (error: string, message: string) => {

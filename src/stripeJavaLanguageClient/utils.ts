@@ -81,6 +81,10 @@ export function getJavaConfiguration(): WorkspaceConfiguration {
   return workspace.getConfiguration('java');
 }
 
+export function getJavaServerLaunchMode(): ServerMode {
+  return workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
+}
+
 export async function hasNoBuildToolConflicts(
   context: ExtensionContext,
 ): Promise<boolean> {
