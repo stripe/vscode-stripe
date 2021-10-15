@@ -255,7 +255,6 @@ suite('languageServerClient', function () {
 
     test('hybrid mode starts correct servers with correct workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.HYBRID);
-      sandbox.stub(javaClientUtils, 'getJavaEncoding').returns('utf8');
       sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
       const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
 
@@ -267,7 +266,7 @@ suite('languageServerClient', function () {
         telemetry,
       );
 
-      assert.strictEqual(connectToServerSpy.calledTwice, true);
+      assert.strictEqual(connectToServerSpy.callCount, 2);
 
       let isSyntaxServer = true;
       assert.deepStrictEqual(connectToServerSpy.calledWith(sinon.match.any, sinon.match('ss_ws'), sinon.match.any, isSyntaxServer), true);
@@ -278,8 +277,6 @@ suite('languageServerClient', function () {
 
     test('syntax mode starts syntax servers with syntax workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.LIGHTWEIGHT);
-      sandbox.stub(javaClientUtils, 'getJavaEncoding').returns('utf8');
-      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
       const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
 
       await module.StripeLanguageClient.activateJavaServer(
@@ -298,7 +295,6 @@ suite('languageServerClient', function () {
 
     test('standard mode starts standard servers with standard workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.STANDARD);
-      sandbox.stub(javaClientUtils, 'getJavaEncoding').returns('utf8');
       sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
       const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
 

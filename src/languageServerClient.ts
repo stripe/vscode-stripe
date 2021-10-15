@@ -47,7 +47,7 @@ const syntaxClient: SyntaxLanguageClient = new SyntaxLanguageClient();
 const standardClient: StandardLanguageClient = new StandardLanguageClient();
 const onDidServerModeChangeEmitter: Emitter<ServerMode> = new Emitter<ServerMode>();
 
-export let javaServerMode = getJavaServerLaunchMode();
+export let javaServerMode: ServerMode;
 
 export class StripeLanguageClient {
   static async activate(
@@ -64,6 +64,7 @@ export class StripeLanguageClient {
       return;
     }
 
+    // start the java server if this is a java project
     const javaFiles = await this.getJavaProjectFiles();
     if (javaFiles.length > 0) {
       const jdkInfo = await getJavaSDKInfo(context, outputChannel);
@@ -77,6 +78,7 @@ export class StripeLanguageClient {
       return;
     }
 
+    // start the universal server for all other languages
     this.activateUniversalServer(context, outputChannel, serverOptions, telemetry);
   }
 
@@ -224,6 +226,7 @@ export class StripeLanguageClient {
 
     console.log(workspacePath);
 
+    javaServerMode = getJavaServerLaunchMode();
     commands.executeCommand('setContext', 'java:serverMode', javaServerMode);
     const requireSyntaxServer = javaServerMode !== ServerMode.STANDARD;
     const requireStandardServer = javaServerMode !== ServerMode.LIGHTWEIGHT;
