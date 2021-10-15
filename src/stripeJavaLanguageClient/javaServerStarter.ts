@@ -2,11 +2,10 @@
 /* eslint-disable no-sync */
 import * as fs from 'fs';
 import * as glob from 'glob';
-import * as net from 'net';
 import * as path from 'path';
 import {DEBUG_VSCODE_JAVA, JDKInfo, deleteDirectory, ensureExists, getJavaEncoding, getTimestamp} from './utils';
-import {Executable, ExecutableOptions, StreamInfo} from 'vscode-languageclient';
-import {ExtensionContext, OutputChannel} from 'vscode';
+import {Executable, ExecutableOptions} from 'vscode-languageclient';
+import {ExtensionContext} from 'vscode';
 
 
 declare var v8debug: any;
@@ -18,7 +17,6 @@ export function prepareExecutable(
   workspacePath: string,
   context: ExtensionContext,
   isSyntaxServer: boolean,
-  outputChannel: OutputChannel,
 ): Executable {
   const executable: Executable = Object.create(null);
   const options: ExecutableOptions = Object.create(null);
@@ -26,25 +24,8 @@ export function prepareExecutable(
   executable.options = options;
   executable.command = path.resolve(jdkInfo.javaHome + '/bin/java');
   executable.args = prepareParams(jdkInfo, workspacePath, context, isSyntaxServer);
-  outputChannel.appendLine(`Starting Java server with: ${executable.command} ${executable.args.join(' ')}`);
+  console.log(`Starting Java server with: ${executable.command} ${executable.args.join(' ')}`);
   return executable;
-}
-
-export function awaitServerConnection(port: string, outputChannel: OutputChannel): Thenable<StreamInfo> {
-  const addr = parseInt(port, 10);
-  return new Promise((res, rej) => {
-    const server = net.createServer((stream) => {
-      server.close();
-      outputChannel.appendLine('JDT LS connection established on port ' + addr);
-      res({reader: stream, writer: stream});
-    });
-    server.on('error', rej);
-    server.listen(addr, () => {
-      server.removeListener('error', rej);
-      outputChannel.appendLine('Awaiting JDT LS connection on port ' + addr);
-    });
-    return server;
-  });
 }
 
 function prepareParams(

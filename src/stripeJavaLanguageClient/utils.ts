@@ -7,7 +7,6 @@ import {
   ConfigurationTarget,
   ExtensionContext,
   OutputChannel,
-  RelativePattern,
   TextDocument,
   Uri,
   WorkspaceConfiguration,
@@ -34,9 +33,6 @@ export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
 export const IS_WORKSPACE_JDK_ALLOWED = 'java.ls.isJdkAllowed';
-export const JDTLS_CLIENT_PORT = 'JDTLS_CLIENT_PORT';
-export const SYNTAXLS_CLIENT_PORT = 'SYNTAXLS_CLIENT_PORT';
-export const SERVER_PORT = 'SERVER_PORT';
 
 export interface JDKInfo {
   javaHome: string;
@@ -85,9 +81,8 @@ export function getJavaConfiguration(): WorkspaceConfiguration {
   return workspace.getConfiguration('java');
 }
 
-export async function ensureNoBuildToolConflicts(
+export async function hasNoBuildToolConflicts(
   context: ExtensionContext,
-  outputChannel: OutputChannel,
 ): Promise<boolean> {
   const isMavenEnabled: boolean =
     getJavaConfiguration().get<boolean>('import.maven.enabled') || false;
@@ -99,7 +94,6 @@ export async function ensureNoBuildToolConflicts(
       if (!(await hasBuildToolConflicts())) {
         return true;
       }
-      outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
       return false;
     }
   }
@@ -458,76 +452,6 @@ function getKey(prefix: string, storagePath: any, value: any) {
   } else {
     return `${prefix}::${value}`;
   }
-}
-
-export async function getTriggerFiles(): Promise<string[]> {
-  const openedJavaFiles = [];
-  let activeJavaFile = '';
-  if (window.activeTextEditor) {
-    activeJavaFile = getJavaFilePathOfTextDocument(window.activeTextEditor.document) || '';
-    if (activeJavaFile) {
-      openedJavaFiles.push(Uri.file(activeJavaFile).toString());
-    }
-  }
-
-  if (!workspace.workspaceFolders) {
-    return openedJavaFiles;
-  }
-
-  await Promise.all(
-    workspace.workspaceFolders.map(async (rootFolder) => {
-      if (rootFolder.uri.scheme !== 'file') {
-        return;
-      }
-
-      const rootPath = path.normalize(rootFolder.uri.fsPath);
-      if (isPrefix(rootPath, activeJavaFile)) {
-        return;
-      }
-
-      for (const textEditor of window.visibleTextEditors) {
-        const javaFileInTextEditor = getJavaFilePathOfTextDocument(textEditor.document) || '';
-        if (isPrefix(rootPath, javaFileInTextEditor)) {
-          openedJavaFiles.push(Uri.file(javaFileInTextEditor).toString());
-          return;
-        }
-      }
-
-      for (const textDocument of workspace.textDocuments) {
-        const javaFileInTextDocument = getJavaFilePathOfTextDocument(textDocument) || '';
-        if (isPrefix(rootPath, javaFileInTextDocument)) {
-          openedJavaFiles.push(Uri.file(javaFileInTextDocument).toString());
-          return;
-        }
-      }
-
-      const javaFilesUnderRoot: Uri[] = await workspace.findFiles(
-        new RelativePattern(rootFolder, '*.java'),
-        undefined,
-        1,
-      );
-      for (const javaFile of javaFilesUnderRoot) {
-        if (isPrefix(rootPath, javaFile.fsPath)) {
-          openedJavaFiles.push(javaFile.toString());
-          return;
-        }
-      }
-
-      const javaFilesInCommonPlaces: Uri[] = await workspace.findFiles(
-        new RelativePattern(rootFolder, '{src, test}/**/*.java'),
-        undefined,
-        1,
-      );
-      for (const javaFile of javaFilesInCommonPlaces) {
-        if (isPrefix(rootPath, javaFile.fsPath)) {
-          openedJavaFiles.push(javaFile.toString());
-          return;
-        }
-      }
-    }),
-  );
-
-  return openedJavaFiles;
 }
 
 export function getJavaEncoding(): string {

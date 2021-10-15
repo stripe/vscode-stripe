@@ -122,43 +122,56 @@ class JavaHoverProvider implements HoverProvider {
     position: Position,
     token: CancellationToken,
   ): Promise<Hover | undefined> {
+    let contents: MarkedString[] = [];
+    let range;
+
     const params = {
       textDocument: this.languageClient.code2ProtocolConverter.asTextDocumentIdentifier(document),
       position: this.languageClient.code2ProtocolConverter.asPosition(position),
     };
 
-    // Fetch the javadoc from Java language server.
     try {
+      // get javs doc convent from server
       const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
+
+      // parse for stripe api hover content
+      let stripeApiHoverContent;
       if (hoverResponse &&
-          hoverResponse.contents &&
-          Array.isArray(hoverResponse.contents)) {
-        const stripeMethod = Object.entries(hoverResponse.contents[0]).filter((item) => item[0] === 'value' && item[1].includes('com.stripe.model'));
-        if (stripeMethod.length > 0) {
-          const stripeNamespace = stripeMethod[0][1].split(' ')[1].split('(')[0];
-          const url = getJavaApiDocLink(stripeNamespace);
-          return new Hover([new MarkdownString('See this method in the [Stripe API Reference](' + url + ')')], undefined);
+        hoverResponse.contents &&
+        Array.isArray(hoverResponse.contents)) {
+        const stripeFullClassPath = Object.entries(hoverResponse.contents[0])
+          .filter((item) => item[0] === 'value')
+          .filter((item) => item[1].includes('com.stripe.model'));
+        if (stripeFullClassPath.length > 0) {
+          const stripeMethod = stripeFullClassPath[0][1].split(' ')[1].split('(')[0];
+          const url = getJavaApiDocLink(stripeMethod);
+          stripeApiHoverContent = new MarkdownString('See this method in the [Stripe API Reference](' + url + ')');
+          stripeApiHoverContent.isTrusted = true;
         }
       }
 
-      const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
-
-      // Fetch the contributed hover commands from third party extensions.
-      const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
-      if (!contributedCommands.length) {
-        return serverHover;
+      if (stripeApiHoverContent) {
+        contents = contents.concat([stripeApiHoverContent] as MarkedString[]);
       }
 
-      const contributed = new MarkdownString(
-        contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
-      );
-      contributed.isTrusted = true;
-      let contents: MarkedString[] = [contributed];
-      let range;
+      // get contributed hover commands from third party extensions.
+      const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
+
+      if (contributedCommands.length > 0) {
+        const contributedContent = new MarkdownString(
+          contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
+        );
+        contributedContent.isTrusted = true;
+        contents = contents.concat([contributedContent] as MarkedString[]);
+      }
+
+      // combine all hover contents with java docs from server
+      const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
       if (serverHover && serverHover.contents) {
         contents = contents.concat(serverHover.contents);
         range = serverHover.range;
       }
+
       return new Hover(contents, range);
     } catch (e) {
       console.log(e);
