@@ -267,6 +267,7 @@ export function getTimestamp(file: string) {
   return stat.mtimeMs;
 }
 
+// see https://github.com/redhat-developer/vscode-java/blob/master/src/extension.ts
 export function makeRandomHexString(length: number) {
   const chars = [
     '0',
@@ -394,6 +395,7 @@ async function getJavaVersion(javaHome: string): Promise<number | undefined> {
 
 /**
  * Get version by checking file JAVA_HOME/release
+ * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
  */
 async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
   const releaseFile = path.join(javaHome, 'release');
@@ -415,6 +417,7 @@ async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
 
 /**
  * Get version by parsing `JAVA_HOME/bin/java -version`
+ * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
  */
 function checkVersionByCLI(javaHome: string): Promise<number> {
   return new Promise((resolve, reject) => {

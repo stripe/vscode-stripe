@@ -1,6 +1,10 @@
 import {ClientStatus, EXTENSION_NAME_SYNTAX, StatusNotification} from './utils';
 import {CloseAction, ErrorAction, LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
 
+/**
+ * Syntax java client based off generic language client
+ * Inspired by https://github.com/redhat-developer/vscode-java/blob/master/src/syntaxLanguageClient.ts
+ */
 export class SyntaxLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;

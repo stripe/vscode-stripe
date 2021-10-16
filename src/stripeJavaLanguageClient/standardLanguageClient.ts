@@ -2,6 +2,10 @@ import {ClientStatus, EXTENSION_NAME_STANDARD, ServerMode, StatusNotification, S
 import {LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
 import {updateServerMode} from '../languageServerClient';
 
+/**
+ * Standard java client based off generic language client
+ * Inspired by https://github.com/redhat-developer/vscode-java/blob/master/src/standardLanguageClient.ts
+ */
 export class StandardLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;

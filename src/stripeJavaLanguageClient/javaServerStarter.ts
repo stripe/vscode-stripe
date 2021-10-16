@@ -1,5 +1,8 @@
 /* eslint-disable no-warning-comments */
 /* eslint-disable no-sync */
+/**
+ * Inspired by https://github.com/redhat-developer/vscode-java/blob/master/src/javaServerStarter.ts
+ */
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
@@ -28,6 +31,10 @@ export function prepareExecutable(
   return executable;
 }
 
+/**
+ * See https://www.eclipse.org/community/eclipse_newsletter/2017/may/article4.php
+ * for required paramters to run the Eclipse JDT server
+ */
 function prepareParams(
   jdkInfo: JDKInfo,
   workspacePath: string,
