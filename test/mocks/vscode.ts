@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import {LanguageClientOptions, Executable, ExecutableOptions, ServerOptions} from 'vscode-languageclient';
+import {Executable, ExecutableOptions, LanguageClientOptions} from 'vscode-languageclient';
 
 export class TestMemento implements vscode.Memento {
   storage: Map<string, any>;

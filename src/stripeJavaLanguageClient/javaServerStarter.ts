@@ -10,7 +10,6 @@ import {DEBUG_VSCODE_JAVA, JDKInfo, deleteDirectory, ensureExists, getJavaEncodi
 import {Executable, ExecutableOptions} from 'vscode-languageclient';
 import {ExtensionContext} from 'vscode';
 
-
 declare var v8debug: any;
 const DEBUG = typeof v8debug === 'object' || startedInDebugMode();
 const javaServerPath = '../out/src/stripeJavaLanguageServer'; // TODO: need to move to dist folders at release
