@@ -224,8 +224,6 @@ export class StripeLanguageClient {
     const workspacePath = path.resolve(storagePath + '/jdt_ws');
     const syntaxServerWorkspacePath = path.resolve(storagePath + '/ss_ws');
 
-    console.log(workspacePath);
-
     javaServerMode = getJavaServerLaunchMode();
     commands.executeCommand('setContext', 'java:serverMode', javaServerMode);
     const requireSyntaxServer = javaServerMode !== ServerMode.STANDARD;

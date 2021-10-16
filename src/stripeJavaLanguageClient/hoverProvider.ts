@@ -18,7 +18,10 @@ import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-l
 import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
 import {Commands as javaCommands} from './commands';
 
-export type provideHoverCommandFn = (params: TextDocumentPositionParams, token: CancellationToken) => ProviderResult<Command[] | undefined>;
+export type provideHoverCommandFn = (
+  params: TextDocumentPositionParams,
+  token: CancellationToken,
+) => ProviderResult<Command[] | undefined>;
 const hoverCommandRegistry: provideHoverCommandFn[] = [];
 
 export function registerHoverProvider(context: ExtensionContext) {
@@ -112,7 +115,7 @@ class ClientHoverProvider implements HoverProvider {
   }
 }
 
-class JavaHoverProvider implements HoverProvider {
+export class JavaHoverProvider implements HoverProvider {
   constructor(readonly languageClient: LanguageClient) {
     this.languageClient = languageClient;
   }
@@ -130,55 +133,53 @@ class JavaHoverProvider implements HoverProvider {
       position: this.languageClient.code2ProtocolConverter.asPosition(position),
     };
 
-    try {
-      // get javs doc convent from server
-      const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
+    // get javs doc convent from server
+    const hoverResponse = await this.languageClient.sendRequest(HoverRequest.type, params, token);
 
-      // parse for stripe api hover content
-      let stripeApiHoverContent;
-      if (hoverResponse &&
-        hoverResponse.contents &&
-        Array.isArray(hoverResponse.contents)) {
-        const stripeFullClassPath = Object.entries(hoverResponse.contents[0])
-          .filter((item) => item[0] === 'value')
-          .filter((item) => item[1].includes('com.stripe.model'));
-        if (stripeFullClassPath.length > 0) {
-          const stripeMethod = stripeFullClassPath[0][1].split(' ')[1].split('(')[0];
-          const url = getJavaApiDocLink(stripeMethod);
-          stripeApiHoverContent = new MarkdownString('See this method in the [Stripe API Reference](' + url + ')');
+    // parse for stripe api hover content
+    let stripeApiHoverContent;
+    if (hoverResponse && hoverResponse.contents && Array.isArray(hoverResponse.contents)) {
+      const stripeFullClassPath = Object.entries(hoverResponse.contents[0])
+        .filter((item) => item[0] === 'value')
+        .filter((item) => item[1].includes('com.stripe.model'));
+      if (stripeFullClassPath.length > 0) {
+        const stripeMethod = stripeFullClassPath[0][1].split(' ')[1].split('(')[0];
+        const url = getJavaApiDocLink(stripeMethod);
+        if (url) {
+          stripeApiHoverContent = new MarkdownString(
+            'See this method in the [Stripe API Reference](' + url + ')',
+          );
           stripeApiHoverContent.isTrusted = true;
         }
       }
-
-      if (stripeApiHoverContent) {
-        contents = contents.concat([stripeApiHoverContent] as MarkedString[]);
-      }
-
-      // get contributed hover commands from third party extensions.
-      const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
-
-      if (contributedCommands.length > 0) {
-        const contributedContent = new MarkdownString(
-          contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
-        );
-        contributedContent.isTrusted = true;
-        contents = contents.concat([contributedContent] as MarkedString[]);
-      }
-
-      // combine all hover contents with java docs from server
-      const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
-      if (serverHover && serverHover.contents) {
-        contents = contents.concat(serverHover.contents);
-        range = serverHover.range;
-      }
-
-      return new Hover(contents, range);
-    } catch (e) {
-      console.log(e);
     }
+
+    if (!!stripeApiHoverContent) {
+      contents = contents.concat([stripeApiHoverContent] as MarkedString[]);
+    }
+
+    // get contributed hover commands from third party extensions.
+    const contributedCommands: Command[] = await this.getContributedHoverCommands(params, token);
+
+    if (contributedCommands.length > 0) {
+      const contributedContent = new MarkdownString(
+        contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
+      );
+      contributedContent.isTrusted = true;
+      contents = contents.concat([contributedContent] as MarkedString[]);
+    }
+
+    // combine all hover contents with java docs from server
+    const serverHover = this.languageClient.protocol2CodeConverter.asHover(hoverResponse);
+    if (serverHover && serverHover.contents) {
+      contents = contents.concat(serverHover.contents);
+      range = serverHover.range;
+    }
+
+    return new Hover(contents, range);
   }
 
-  private async getContributedHoverCommands(
+  async getContributedHoverCommands(
     params: TextDocumentPositionParams,
     token: CancellationToken,
   ): Promise<Command[]> {

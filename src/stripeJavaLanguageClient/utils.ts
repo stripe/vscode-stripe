@@ -471,9 +471,13 @@ export function getJavaEncoding(): string {
   return javaEncoding;
 }
 
-export function getJavaApiDocLink(namespace: string) {
+export function getJavaApiDocLink(namespace: string): string {
   const baseUrl = 'https://stripe.com/docs/api';
   const patterns = Object.entries(javaPatterns);
-  const apiUrl = patterns.filter((item) => item[0] === namespace)[0][1];
-  return baseUrl + apiUrl;
-}
+  const found = patterns.filter((item) => item[0] === namespace);
+  if (found) {
+    const apiUrl = found[0][1];
+    return baseUrl + apiUrl;
+  }
+  return '';
+ }
