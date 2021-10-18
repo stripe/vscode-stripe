@@ -133,7 +133,6 @@ suite('JavaServerStarter', () => {
       assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
       assert.strictEqual(exec.args?.includes('-jar'), true);
       assert.strictEqual(exec.args?.includes('-configuration'), true);
-      assert.strictEqual(exec.args && exec.args[12].includes('out/src/stripeJavaLanguageServer'), true);
       assert.strictEqual(exec.args?.includes('-data'), true);
       assert.strictEqual(exec.args?.includes(workspacePath), true);
     });
