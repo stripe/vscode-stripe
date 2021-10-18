@@ -17,7 +17,7 @@ const getServerResponse = (isClientSdk: boolean): any => {
   };
 };
 
-suite('javaHoverProvider', () => {
+suite('JavaHoverProvider', () => {
   let sandbox: sinon.SinonSandbox;
 
   setup(() => {

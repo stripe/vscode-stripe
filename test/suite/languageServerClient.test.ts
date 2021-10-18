@@ -251,7 +251,7 @@ suite('languageServerClient', function () {
 
   suite('activateJavaServer', () => {
     const module = setupProxies({'vscode-languageclient': vscodeStub});
-    const jdkInfo = {javaHome: 'path/to/java', javaVersion: 11};
+    const jdkInfo = {javaHome: '/path/to/java', javaVersion: 11};
 
     test('hybrid mode starts correct servers with correct workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.HYBRID);

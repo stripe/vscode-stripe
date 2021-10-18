@@ -2,6 +2,7 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
+import * as glob from 'glob';
 import * as path from 'path';
 import {
   ConfigurationTarget,
@@ -484,3 +485,26 @@ export function getJavaApiDocLink(namespace: string): string {
   }
   return '';
  }
+
+ export function getServerLauncher(serverHome: string): Array<string> {
+  return glob.sync('**/plugins/org.eclipse.equinox.launcher_*.jar', {
+    cwd: serverHome,
+  });
+}
+
+export function checkPathExists(filepath: string) {
+  return fs.existsSync(filepath);
+}
+
+export function startedInDebugMode(): boolean {
+  const args = (process as any).execArgv as string[];
+  if (args) {
+    // See https://nodejs.org/en/docs/guides/debugging-getting-started/
+    return args.some((arg) => /^--inspect/.test(arg) || /^--debug/.test(arg));
+  }
+  return false;
+}
+
+export function startedFromSources(): boolean {
+  return process.env[DEBUG_VSCODE_JAVA] === 'true';
+}
