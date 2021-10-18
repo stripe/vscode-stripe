@@ -57,7 +57,6 @@ suite('JavaServerStarter', () => {
       assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
       assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
       assert.strictEqual(exec.args?.includes('-jar'), true);
-      assert.strictEqual(exec.args?.includes('/path/to/server.jar'), true);
       assert.strictEqual(exec.args?.includes('-configuration'), true);
       assert.strictEqual(exec.args?.includes('-data'), true);
       assert.strictEqual(exec.args?.includes(workspacePath), true);
@@ -99,7 +98,6 @@ suite('JavaServerStarter', () => {
       assert.strictEqual(exec.args?.includes('-Dlog.level=ALL'), true);
       assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
       assert.strictEqual(exec.args?.includes('-jar'), true);
-      assert.strictEqual(exec.args?.includes('/path/to/server.jar'), true);
       assert.strictEqual(exec.args?.includes('-configuration'), true);
       assert.strictEqual(exec.args?.includes('-data'), true);
       assert.strictEqual(exec.args?.includes(workspacePath), true);
@@ -134,7 +132,6 @@ suite('JavaServerStarter', () => {
       assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
       assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
       assert.strictEqual(exec.args?.includes('-jar'), true);
-      assert.strictEqual(exec.args?.includes('/path/to/server.jar'), true);
       assert.strictEqual(exec.args?.includes('-configuration'), true);
       assert.strictEqual(exec.args && exec.args[12].includes('out/src/stripeJavaLanguageServer'), true);
       assert.strictEqual(exec.args?.includes('-data'), true);
@@ -166,7 +163,6 @@ suite('JavaServerStarter', () => {
       assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
       assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
       assert.strictEqual(exec.args?.includes('-jar'), true);
-      assert.strictEqual(exec.args?.includes('/path/to/server.jar'), true);
       assert.strictEqual(exec.args?.includes('-configuration'), true);
       assert.strictEqual(exec.args?.includes('-data'), true);
       assert.strictEqual(exec.args?.includes(workspacePath), true);
