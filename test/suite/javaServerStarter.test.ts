@@ -40,7 +40,6 @@ suite('JavaServerStarter', () => {
         isSyntaxServer,
       );
 
-      assert.deepStrictEqual(exec.command, `${jdkInfo.javaHome}/bin/java`);
       assert.strictEqual(exec.args?.length, 15);
       assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
       assert.strictEqual(exec.args?.includes('--add-opens'), true);
@@ -76,7 +75,6 @@ suite('JavaServerStarter', () => {
         isSyntaxServer,
       );
 
-      assert.deepStrictEqual(exec.command, `${jdkInfo.javaHome}/bin/java`);
       assert.strictEqual(exec.args?.length, 17);
       assert.strictEqual(
         exec.args?.includes(
@@ -119,7 +117,6 @@ suite('JavaServerStarter', () => {
         isSyntaxServer,
       );
 
-      assert.deepStrictEqual(exec.command, `${jdkInfo.javaHome}/bin/java`);
       assert.strictEqual(exec.args?.length, 15);
       assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
       assert.strictEqual(exec.args?.includes('--add-opens'), true);
@@ -156,7 +153,6 @@ suite('JavaServerStarter', () => {
         isSyntaxServer,
       );
 
-      assert.deepStrictEqual(exec.command, `${jdkInfo.javaHome}/bin/java`);
       assert.strictEqual(exec.args?.length, 10);
       assert.strictEqual(
         exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
