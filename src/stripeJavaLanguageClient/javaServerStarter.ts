@@ -121,18 +121,22 @@ export function prepareParams(
 
 export function resolveConfiguration(context: ExtensionContext, configDir: string): string {
   ensureExists(context.globalStoragePath);
-  const extensionPath = path.resolve(context.extensionPath, 'package.json');
-  const packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
-  let version;
-  if (packageFile) {
-    version = packageFile.version;
-  } else {
-    version = '0.0.0';
+  let version = '0.0.0';
+  try {
+    const extensionPath = path.resolve(context.extensionPath, 'package.json');
+    const packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+    if (packageFile) {
+      version = packageFile.version;
+    }
+  } catch {
+    console.log('Cannot locate package.json');
   }
+
   let configuration = path.resolve(context.globalStoragePath, version);
   ensureExists(configuration);
   configuration = path.resolve(configuration, configDir);
   ensureExists(configuration);
+
   const configIniName = 'config.ini';
   const configIni = path.resolve(configuration, configIniName);
   const ini = path.resolve(__dirname, javaServerPath, configDir, configIniName);
@@ -146,6 +150,7 @@ export function resolveConfiguration(context: ExtensionContext, configDir: strin
       resolveConfiguration(context, configDir);
     }
   }
+
   return configuration;
 }
 
