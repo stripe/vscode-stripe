@@ -72,6 +72,7 @@ export class StripeLanguageClient {
         outputChannel.appendLine(
           `Minimum JDK version required is ${REQUIRED_JDK_VERSION}. Please update the java.home setup in VSCode user settings.`,
         );
+        telemetry.sendEvent('doesNotMeetRequiredJdkVersion');
         return;
       }
       this.activateJavaServer(context, jdkInfo, outputChannel, javaFiles, telemetry);
@@ -258,15 +259,30 @@ export class StripeLanguageClient {
     };
 
     if (requireSyntaxServer) {
-      this.startSyntaxServer(
-        clientOptions,
-        prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true),
-        outputChannel,
-      );
+      const serverOptions = prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true);
+      if (typeof serverOptions === 'string') {
+        outputChannel.appendLine(serverOptions);
+        telemetry.sendEvent('syntaxJavaServerFailedToStart');
+      } else {
+        this.startSyntaxServer(
+          clientOptions,
+          serverOptions,
+          outputChannel,
+          telemetry,
+        );
+      }
     }
 
     // handle server mode changes from syntax to standard
-    this.registerSwitchJavaServerModeCommand(context, jdkInfo, clientOptions, workspacePath, outputChannel);
+    this.registerSwitchJavaServerModeCommand(
+      context,
+      jdkInfo,
+      clientOptions,
+      workspacePath,
+      outputChannel,
+      telemetry
+    );
+
     onDidServerModeChangeEmitter.event((event: ServerMode) => {
       if (event === ServerMode.STANDARD) {
         syntaxClient.stop();
@@ -278,15 +294,20 @@ export class StripeLanguageClient {
     registerHoverProvider(context);
 
     if (requireStandardServer) {
-      await this.startStandardServer(
-        context,
-        clientOptions,
-        prepareExecutable(jdkInfo, workspacePath, context, false),
-        outputChannel,
-      );
+      const serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false);
+      if (typeof serverOptions === 'string') {
+        outputChannel.appendLine(serverOptions);
+        telemetry.sendEvent('standardJavaServerFailedToStart');
+      } else {
+        await this.startStandardServer(
+          context,
+          clientOptions,
+          serverOptions,
+          outputChannel,
+          telemetry,
+        );
+      }
     }
-
-    outputChannel.appendLine('Establishing connection with Java lang service');
   }
 
   /**
@@ -406,10 +427,12 @@ export class StripeLanguageClient {
     clientOptions: LanguageClientOptions,
     serverOptions: ServerOptions,
     outputChannel: OutputChannel,
+    telemetry: Telemetry,
   ) {
     await syntaxClient.initialize(clientOptions, serverOptions);
     syntaxClient.start();
     outputChannel.appendLine('Java language service (syntax) is running.');
+    telemetry.sendEvent('syntaxJavaServerStarted');
   }
 
   static async startStandardServer(
@@ -417,6 +440,7 @@ export class StripeLanguageClient {
     clientOptions: LanguageClientOptions,
     serverOptions: ServerOptions,
     outputChannel: OutputChannel,
+    telemetry: Telemetry,
   ) {
     if (standardClient.getClientStatus() !== ClientStatus.Uninitialized) {
       return;
@@ -425,6 +449,7 @@ export class StripeLanguageClient {
     const checkConflicts: boolean = await hasNoBuildToolConflicts(context);
     if (!checkConflicts) {
       outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
+      telemetry.sendEvent('standardJavaServerHasBuildToolConflict');
       return;
     }
 
@@ -436,6 +461,7 @@ export class StripeLanguageClient {
     await standardClient.initialize(clientOptions, serverOptions);
     standardClient.start();
     outputChannel.appendLine('Java language service (standard) is running.');
+    telemetry.sendEvent('standardJavaServerStarted');
   }
 
   static async registerSwitchJavaServerModeCommand(
@@ -444,6 +470,7 @@ export class StripeLanguageClient {
     clientOptions: LanguageClientOptions,
     workspacePath: string,
     outputChannel: OutputChannel,
+    telemetry: Telemetry,
   ) {
     if ((await commands.getCommands()).includes(Commands.SWITCH_SERVER_MODE)) {
       return;
@@ -491,12 +518,19 @@ export class StripeLanguageClient {
         }
 
         if (choice === 'Yes') {
-          await this.startStandardServer(
-            context,
-            clientOptions,
-            prepareExecutable(jdkInfo, workspacePath, context, false),
-            outputChannel,
-          );
+          const serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false);
+          if (typeof serverOptions === 'string') {
+            outputChannel.appendLine(serverOptions);
+            telemetry.sendEvent('failedToSwitchToStandardMode');
+          } else {
+            await this.startStandardServer(
+              context,
+              clientOptions,
+              serverOptions,
+              outputChannel,
+              telemetry,
+            );
+          }
         }
       },
     );

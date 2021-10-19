@@ -26,13 +26,20 @@ export function prepareExecutable(
   workspacePath: string,
   context: ExtensionContext,
   isSyntaxServer: boolean,
-): Executable {
+): Executable | string {
   const executable: Executable = Object.create(null);
   const options: ExecutableOptions = Object.create(null);
   options.env = Object.assign({syntaxserver: isSyntaxServer}, process.env);
   executable.options = options;
   executable.command = path.resolve(jdkInfo.javaHome + '/bin/java');
-  executable.args = prepareParams(jdkInfo, workspacePath, context, isSyntaxServer);
+
+  const serverJarParams = prepareParams(jdkInfo, workspacePath, context, isSyntaxServer);
+  if (typeof serverJarParams === 'string') {
+    const serverType = isSyntaxServer ? 'Syntax' : 'Standard';
+    return `Failed to start ${serverType} Java server. ${serverJarParams}`;
+  }
+
+  executable.args = serverJarParams;
   console.log(`Starting Java server with: ${executable.command} ${executable.args.join(' ')}`);
   return executable;
 }
@@ -46,7 +53,7 @@ export function prepareParams(
   workspacePath: string,
   context: ExtensionContext,
   isSyntaxServer: boolean,
-): string[] {
+): string[] | string {
   const params: string[] = [];
   const inDebug = startedInDebugMode();
 
@@ -85,8 +92,7 @@ export function prepareParams(
     params.push('-jar');
     params.push(path.resolve(serverHome, launchersFound[0]));
   } else {
-    console.log('Server jar not found');
-    return [];
+   return 'Server jar not found';
   }
 
   // select configuration directory according to OS
@@ -109,7 +115,7 @@ export function prepareParams(
     if (config) {
       params.push(config);
     } else {
-      console.log('Failed to get server configuration file.');
+      return 'Failed to get server configuration file.';
     }
   }
 
