@@ -45,7 +45,7 @@ try {
           const latestVersion = data.split('-').slice(-1)[0].split('.')[0].slice(0, 8);
           if (downloadedVersion < latestVersion) {
             console.log('Local JDT server version is not latest. Remove local copy and download latest.');
-            fs.unlinkSync(tarPath);
+            fs.unlinkSync(tarFile);
             downloadAndUntarLatestServerFile();
           } else {
             // the tarred plugins do not have a reliable way to verify versions or ensure not tampered
@@ -80,6 +80,8 @@ function untarServerFile() {
   console.log('Untar started...');
 
   fs.createReadStream(tarFile).pipe(zlib.createGunzip()).pipe(tar.extract(extractTo));
+  // remove the downloaded tar file to minimize extension size
+  fs.unlinkSync(tarFile);
 
   console.log('Untar finished.');
 }
