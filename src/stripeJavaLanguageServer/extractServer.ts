@@ -51,6 +51,7 @@ try {
             // we will always untar the server tar to overwrite existing plugins
             untarServerFile();
           }
+          fs.unlinkSync(latestText);
         });
       });
   } else {
