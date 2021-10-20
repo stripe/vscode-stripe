@@ -20,7 +20,8 @@ import {
 } from './utils';
 import {Telemetry} from '../telemetry';
 
-export const javaServerPath = '../out/src/stripeJavaLanguageServer'; // TODO: need to move to dist folders at release
+// javaServerPath has to match 'extractedTo' in src/stripeJavaLanguageServer/extractServer.ts
+export const javaServerPath = '../dist/stripeJavaLanguageServer';
 
 export function prepareExecutable(
   jdkInfo: JDKInfo,
