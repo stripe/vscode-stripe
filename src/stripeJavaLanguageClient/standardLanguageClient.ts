@@ -1,37 +1,27 @@
-import {ClientStatus, EXTENSION_NAME_STANDARD, JDKInfo, SERVER_PORT, ServerMode, StatusNotification, StatusReport} from './utils';
-import {ExtensionContext, OutputChannel} from 'vscode';
+import {ClientStatus, EXTENSION_NAME_STANDARD, ServerMode, StatusNotification, StatusReport} from './utils';
 import {LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
-import {awaitServerConnection, prepareExecutable} from './javaServerStarter';
 import {updateServerMode} from '../languageServerClient';
 
+/**
+ * Standard java client based off generic language client
+ * Inspired by https://github.com/redhat-developer/vscode-java/blob/master/src/standardLanguageClient.ts
+ */
 export class StandardLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;
 
   public initialize(
-    context: ExtensionContext,
-    jdkInfo: JDKInfo,
     clientOptions: LanguageClientOptions,
-    workspacePath: string,
-    outputChannel: OutputChannel,
+    serverOptions: ServerOptions,
   ) {
-    if (this.status !== ClientStatus.Uninitialized) {
+    if (!serverOptions || this.status !== ClientStatus.Uninitialized) {
       return;
-    }
-
-    let serverOptions;
-    const port = process.env[SERVER_PORT];
-    if (!port) {
-      serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false, outputChannel);
-    } else {
-      // used during development
-      serverOptions = awaitServerConnection.bind(null, port);
     }
 
     this.languageClient = new LanguageClient(
       'java',
       EXTENSION_NAME_STANDARD,
-      serverOptions as ServerOptions,
+      serverOptions,
       clientOptions,
     );
 
@@ -60,7 +50,6 @@ export class StandardLanguageClient {
     });
 
     this.status = ClientStatus.Initialized;
-    outputChannel.appendLine('Java language service (standard) is running.');
   }
 
   public start(): void {

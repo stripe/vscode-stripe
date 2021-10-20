@@ -1,4 +1,6 @@
 import * as assert from 'assert';
+import * as javaClientUtils from '../../src/stripeJavaLanguageClient/utils';
+import * as javaServerStarter from '../../src/stripeJavaLanguageClient/javaServerStarter';
 import * as sinon from 'sinon';
 import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
@@ -11,6 +13,16 @@ const proxyquire = require('proxyquire');
 const modulePath = '../../src/languageServerClient';
 
 const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
+const activeTextEditor = (fileExt: string): any => {
+  return {
+    document: {
+      uri: {
+        scheme: 'file',
+        fsPath: `test.${fileExt}`
+      }
+    }
+  };
+};
 
 class TestLanguageClient extends BaseLanguageClient {
   constructor() {
@@ -234,6 +246,90 @@ suite('languageServerClient', function () {
 
       const projectFiles = await StripeLanguageClient.getDotnetProjectFiles();
       assert.deepStrictEqual(projectFiles, [slnFile.fsPath]);
+    });
+  });
+
+  suite('activateJavaServer', () => {
+    const module = setupProxies({'vscode-languageclient': vscodeStub});
+    const jdkInfo = {javaHome: '/path/to/java', javaVersion: 11};
+
+    test('hybrid mode starts correct servers with correct workspace paths', async () => {
+      sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.HYBRID);
+      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
+      const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
+
+      await module.StripeLanguageClient.activateJavaServer(
+        extensionContext,
+        jdkInfo,
+        <any>outputChannel,
+        ['file.java'],
+        telemetry,
+      );
+
+      assert.strictEqual(connectToServerSpy.callCount, 2);
+
+      let isSyntaxServer = true;
+      assert.deepStrictEqual(connectToServerSpy.calledWith(sinon.match.any, sinon.match('ss_ws'), sinon.match.any, isSyntaxServer), true);
+
+      isSyntaxServer = false;
+      assert.deepStrictEqual(connectToServerSpy.calledWith(sinon.match.any, sinon.match('jdt_ws'), sinon.match.any, isSyntaxServer), true);
+    });
+
+    test('syntax mode starts syntax servers with syntax workspace paths', async () => {
+      sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.LIGHTWEIGHT);
+      const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
+
+      await module.StripeLanguageClient.activateJavaServer(
+        extensionContext,
+        jdkInfo,
+        <any>outputChannel,
+        ['file.java'],
+        telemetry,
+      );
+
+      assert.strictEqual(connectToServerSpy.callCount, 1);
+
+      const isSyntaxServer = true;
+      assert.deepStrictEqual(connectToServerSpy.calledWith(sinon.match.any, sinon.match('ss_ws'), sinon.match.any, isSyntaxServer), true);
+    });
+
+    test('standard mode starts standard servers with standard workspace paths', async () => {
+      sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.STANDARD);
+      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
+      const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
+
+      await module.StripeLanguageClient.activateJavaServer(
+        extensionContext,
+        jdkInfo,
+        <any>outputChannel,
+        ['file.java'],
+        telemetry,
+      );
+
+      assert.strictEqual(connectToServerSpy.callCount, 1);
+
+      const isSyntaxServer = false;
+      assert.deepStrictEqual(connectToServerSpy.calledWith(sinon.match.any, sinon.match('jdt_ws'), sinon.match.any, isSyntaxServer), true);
+    });
+  });
+
+  suite('getJavaProjectFiles', () => {
+    test('returns empty when no active text editor open', async () => {
+      sandbox.stub(vscode.window, 'activeTextEditor').value(undefined);
+      const projectFiles = await StripeLanguageClient.getJavaProjectFiles();
+      assert.deepStrictEqual(projectFiles, []);
+    });
+
+    test('returns empty when active open document does not end with .java', async () => {
+      sandbox.stub(vscode.window, 'activeTextEditor').value(activeTextEditor('random'));
+      const projectFiles = await StripeLanguageClient.getJavaProjectFiles();
+      assert.deepStrictEqual(projectFiles, []);
+    });
+
+    test('returns java file when active open document end with .java', async () => {
+      sandbox.stub(vscode.window, 'activeTextEditor').value(activeTextEditor('java'));
+      const projectFiles = await StripeLanguageClient.getJavaProjectFiles();
+      assert.deepStrictEqual(projectFiles, ['file:///test.java']);
     });
   });
 });

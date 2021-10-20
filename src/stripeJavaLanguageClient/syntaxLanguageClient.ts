@@ -1,24 +1,22 @@
-import * as net from 'net';
-import {ClientStatus, EXTENSION_NAME_SYNTAX, SYNTAXLS_CLIENT_PORT, StatusNotification} from './utils';
-import {
-  CloseAction,
-  ErrorAction,
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-  StreamInfo,
-} from 'vscode-languageclient';
-import {OutputChannel} from 'vscode';
+import {ClientStatus, EXTENSION_NAME_SYNTAX, StatusNotification} from './utils';
+import {CloseAction, ErrorAction, LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
 
+/**
+ * Syntax java client based off generic language client
+ * Inspired by https://github.com/redhat-developer/vscode-java/blob/master/src/syntaxLanguageClient.ts
+ */
 export class SyntaxLanguageClient {
   private languageClient: LanguageClient | undefined;
   private status: ClientStatus = ClientStatus.Uninitialized;
 
   public initialize(
-    outputChannel: OutputChannel,
     clientOptions: LanguageClientOptions,
-    serverOptions?: ServerOptions,
+    serverOptions: ServerOptions,
   ) {
+    if (!serverOptions) {
+      return;
+    }
+
     const newClientOptions: LanguageClientOptions = Object.assign({}, clientOptions, {
       errorHandler: {
         error: (error: string, message: string) => {
@@ -31,46 +29,31 @@ export class SyntaxLanguageClient {
       },
     });
 
-    const lsPort = process.env[SYNTAXLS_CLIENT_PORT];
-    if (!serverOptions && lsPort) {
-      serverOptions = () => {
-        const socket = net.connect(lsPort);
-        const result: StreamInfo = {
-          writer: socket,
-          reader: socket,
-        };
-        return Promise.resolve(result);
-      };
-    }
+    this.languageClient = new LanguageClient(
+      'java',
+      EXTENSION_NAME_SYNTAX,
+      serverOptions,
+      newClientOptions,
+    );
 
-    if (serverOptions) {
-      this.languageClient = new LanguageClient(
-        'java',
-        EXTENSION_NAME_SYNTAX,
-        serverOptions,
-        newClientOptions,
-      );
-
-      this.languageClient.onReady().then(() => {
-        if (this.languageClient) {
-          this.languageClient.onNotification(StatusNotification.type, (report: {type: any}) => {
-            switch (report.type) {
-              case 'Started':
-                this.status = ClientStatus.Started;
-                break;
-              case 'Error':
-                this.status = ClientStatus.Error;
-                break;
-              default:
-                break;
-            }
-          });
-        }
-      });
-    }
+    this.languageClient.onReady().then(() => {
+      if (this.languageClient) {
+        this.languageClient.onNotification(StatusNotification.type, (report: {type: any}) => {
+          switch (report.type) {
+            case 'Started':
+              this.status = ClientStatus.Started;
+              break;
+            case 'Error':
+              this.status = ClientStatus.Error;
+              break;
+            default:
+              break;
+          }
+        });
+      }
+    });
 
     this.status = ClientStatus.Initialized;
-    outputChannel.appendLine('Java language service (syntax) is running.');
   }
 
   public start(): void {

@@ -2,12 +2,12 @@
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
+import * as glob from 'glob';
 import * as path from 'path';
 import {
   ConfigurationTarget,
   ExtensionContext,
   OutputChannel,
-  RelativePattern,
   TextDocument,
   Uri,
   WorkspaceConfiguration,
@@ -34,9 +34,6 @@ export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
 export const IS_WORKSPACE_JDK_ALLOWED = 'java.ls.isJdkAllowed';
-export const JDTLS_CLIENT_PORT = 'JDTLS_CLIENT_PORT';
-export const SYNTAXLS_CLIENT_PORT = 'SYNTAXLS_CLIENT_PORT';
-export const SERVER_PORT = 'SERVER_PORT';
 
 export interface JDKInfo {
   javaHome: string;
@@ -85,9 +82,12 @@ export function getJavaConfiguration(): WorkspaceConfiguration {
   return workspace.getConfiguration('java');
 }
 
-export async function ensureNoBuildToolConflicts(
+export function getJavaServerLaunchMode(): ServerMode {
+  return workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
+}
+
+export async function hasNoBuildToolConflicts(
   context: ExtensionContext,
-  outputChannel: OutputChannel,
 ): Promise<boolean> {
   const isMavenEnabled: boolean =
     getJavaConfiguration().get<boolean>('import.maven.enabled') || false;
@@ -99,7 +99,6 @@ export async function ensureNoBuildToolConflicts(
       if (!(await hasBuildToolConflicts())) {
         return true;
       }
-      outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
       return false;
     }
   }
@@ -269,6 +268,7 @@ export function getTimestamp(file: string) {
   return stat.mtimeMs;
 }
 
+// see https://github.com/redhat-developer/vscode-java/blob/master/src/extension.ts
 export function makeRandomHexString(length: number) {
   const chars = [
     '0',
@@ -396,6 +396,7 @@ async function getJavaVersion(javaHome: string): Promise<number | undefined> {
 
 /**
  * Get version by checking file JAVA_HOME/release
+ * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
  */
 async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
   const releaseFile = path.join(javaHome, 'release');
@@ -417,6 +418,7 @@ async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
 
 /**
  * Get version by parsing `JAVA_HOME/bin/java -version`
+ * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
  */
 function checkVersionByCLI(javaHome: string): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -460,76 +462,6 @@ function getKey(prefix: string, storagePath: any, value: any) {
   }
 }
 
-export async function getTriggerFiles(): Promise<string[]> {
-  const openedJavaFiles = [];
-  let activeJavaFile = '';
-  if (window.activeTextEditor) {
-    activeJavaFile = getJavaFilePathOfTextDocument(window.activeTextEditor.document) || '';
-    if (activeJavaFile) {
-      openedJavaFiles.push(Uri.file(activeJavaFile).toString());
-    }
-  }
-
-  if (!workspace.workspaceFolders) {
-    return openedJavaFiles;
-  }
-
-  await Promise.all(
-    workspace.workspaceFolders.map(async (rootFolder) => {
-      if (rootFolder.uri.scheme !== 'file') {
-        return;
-      }
-
-      const rootPath = path.normalize(rootFolder.uri.fsPath);
-      if (isPrefix(rootPath, activeJavaFile)) {
-        return;
-      }
-
-      for (const textEditor of window.visibleTextEditors) {
-        const javaFileInTextEditor = getJavaFilePathOfTextDocument(textEditor.document) || '';
-        if (isPrefix(rootPath, javaFileInTextEditor)) {
-          openedJavaFiles.push(Uri.file(javaFileInTextEditor).toString());
-          return;
-        }
-      }
-
-      for (const textDocument of workspace.textDocuments) {
-        const javaFileInTextDocument = getJavaFilePathOfTextDocument(textDocument) || '';
-        if (isPrefix(rootPath, javaFileInTextDocument)) {
-          openedJavaFiles.push(Uri.file(javaFileInTextDocument).toString());
-          return;
-        }
-      }
-
-      const javaFilesUnderRoot: Uri[] = await workspace.findFiles(
-        new RelativePattern(rootFolder, '*.java'),
-        undefined,
-        1,
-      );
-      for (const javaFile of javaFilesUnderRoot) {
-        if (isPrefix(rootPath, javaFile.fsPath)) {
-          openedJavaFiles.push(javaFile.toString());
-          return;
-        }
-      }
-
-      const javaFilesInCommonPlaces: Uri[] = await workspace.findFiles(
-        new RelativePattern(rootFolder, '{src, test}/**/*.java'),
-        undefined,
-        1,
-      );
-      for (const javaFile of javaFilesInCommonPlaces) {
-        if (isPrefix(rootPath, javaFile.fsPath)) {
-          openedJavaFiles.push(javaFile.toString());
-          return;
-        }
-      }
-    }),
-  );
-
-  return openedJavaFiles;
-}
-
 export function getJavaEncoding(): string {
   const config = workspace.getConfiguration();
   const languageConfig: any = config.get('[java]');
@@ -543,9 +475,36 @@ export function getJavaEncoding(): string {
   return javaEncoding;
 }
 
-export function getJavaApiDocLink(namespace: string) {
+export function getJavaApiDocLink(namespace: string): string {
   const baseUrl = 'https://stripe.com/docs/api';
   const patterns = Object.entries(javaPatterns);
-  const apiUrl = patterns.filter((item) => item[0] === namespace)[0][1];
-  return baseUrl + apiUrl;
+  const found = patterns.filter((item) => item[0] === namespace);
+  if (found) {
+    const apiUrl = found[0][1];
+    return baseUrl + apiUrl;
+  }
+  return '';
+ }
+
+ export function getServerLauncher(serverHome: string): Array<string> {
+  return glob.sync('**/plugins/org.eclipse.equinox.launcher_*.jar', {
+    cwd: serverHome,
+  });
+}
+
+export function checkPathExists(filepath: string) {
+  return fs.existsSync(filepath);
+}
+
+export function startedInDebugMode(): boolean {
+  const args = (process as any).execArgv as string[];
+  if (args) {
+    // See https://nodejs.org/en/docs/guides/debugging-getting-started/
+    return args.some((arg) => /^--inspect/.test(arg) || /^--debug/.test(arg));
+  }
+  return false;
+}
+
+export function startedFromSources(): boolean {
+  return process.env[DEBUG_VSCODE_JAVA] === 'true';
 }
