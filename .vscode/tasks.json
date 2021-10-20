@@ -36,10 +36,16 @@
       "type": "npm",
       "script": "publish:dotnet-server",
       "isBackground": true
-  },
+    },
+    {
+      "label": "build java server",
+      "type": "npm",
+      "script": "java-server",
+      "isBackground": true
+    },
     {
       "label": "Build all",
-      "dependsOn": ["Build language server", "build dotnet server", "Build extension"]
+      "dependsOn": ["Build language server", "build dotnet server", "build java server", "Build extension"]
     }
   ]
 }

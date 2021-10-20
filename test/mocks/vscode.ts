@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import {Executable, ExecutableOptions, LanguageClientOptions} from 'vscode-languageclient';
 
 export class TestMemento implements vscode.Memento {
   storage: Map<string, any>;
@@ -29,4 +30,22 @@ export const mocks = {
     globalStoragePath: '',
     logPath: '',
   },
+
+  javaClientOptions: <LanguageClientOptions>{
+    documentSelector: [{scheme: 'file', language: 'java'}],
+    synchronize: {
+      configurationSection: ['java', 'editor.insertSpaces', 'editor.tabSize'],
+    },
+    revealOutputChannelOn: 4,
+  },
 };
+
+export function getMockJavaServerOptions(): Executable {
+  const executable: Executable = Object.create(null);
+  const options: ExecutableOptions = Object.create(null);
+  options.env = Object.assign({syntaxserver: false}, process.env);
+  executable.options = options;
+  executable.command = '/path/to/java/home/bin/java';
+  executable.args = [];
+  return executable;
+}
