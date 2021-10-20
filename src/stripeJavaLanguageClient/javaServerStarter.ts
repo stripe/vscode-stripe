@@ -6,6 +6,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {Executable, ExecutableOptions} from 'vscode-languageclient';
+import {ExtensionContext, OutputChannel} from 'vscode';
 import {
   JDKInfo,
   checkPathExists,
@@ -17,7 +18,7 @@ import {
   startedFromSources,
   startedInDebugMode,
 } from './utils';
-import {ExtensionContext} from 'vscode';
+import {Telemetry} from '../telemetry';
 
 export const javaServerPath = '../out/src/stripeJavaLanguageServer'; // TODO: need to move to dist folders at release
 
@@ -26,22 +27,22 @@ export function prepareExecutable(
   workspacePath: string,
   context: ExtensionContext,
   isSyntaxServer: boolean,
-): Executable | string {
-  const executable: Executable = Object.create(null);
-  const options: ExecutableOptions = Object.create(null);
-  options.env = Object.assign({syntaxserver: isSyntaxServer}, process.env);
-  executable.options = options;
-  executable.command = path.resolve(jdkInfo.javaHome + '/bin/java');
-
-  const serverJarParams = prepareParams(jdkInfo, workspacePath, context, isSyntaxServer);
-  if (typeof serverJarParams === 'string') {
+  outputChannel: OutputChannel,
+  telemetry: Telemetry,
+): Executable {
+  try {
+    const executable: Executable = Object.create(null);
+    const options: ExecutableOptions = Object.create(null);
+    options.env = Object.assign({syntaxserver: isSyntaxServer}, process.env);
+    executable.options = options;
+    executable.command = path.resolve(jdkInfo.javaHome + '/bin/java');
+    executable.args = prepareParams(jdkInfo, workspacePath, context, isSyntaxServer, outputChannel, telemetry);
+    console.log(`Starting Java server with: ${executable.command} ${executable.args.join(' ')}`);
+    return executable;
+  } catch (e) {
     const serverType = isSyntaxServer ? 'Syntax' : 'Standard';
-    return `Failed to start ${serverType} Java server. ${serverJarParams}`;
+    throw new Error(`Failed to start Java ${serverType} server. ${e}`);
   }
-
-  executable.args = serverJarParams;
-  console.log(`Starting Java server with: ${executable.command} ${executable.args.join(' ')}`);
-  return executable;
 }
 
 /**
@@ -53,7 +54,9 @@ export function prepareParams(
   workspacePath: string,
   context: ExtensionContext,
   isSyntaxServer: boolean,
-): string[] | string {
+  outputChannel: OutputChannel,
+  telemetry: Telemetry,
+): string[] {
   const params: string[] = [];
   const inDebug = startedInDebugMode();
 
@@ -92,7 +95,7 @@ export function prepareParams(
     params.push('-jar');
     params.push(path.resolve(serverHome, launchersFound[0]));
   } else {
-   return 'Server jar not found';
+   throw new Error('Server jar not found');
   }
 
   // select configuration directory according to OS
@@ -105,17 +108,14 @@ export function prepareParams(
 
   params.push('-configuration');
   if (startedFromSources()) {
-    // Dev Mode: keep the config.ini in the installation location
-    console.log(
-      `Starting jdt.ls ${isSyntaxServer ? '(syntax)' : '(standard)'} from vscode-java sources`,
-    );
+    // dev mode
     params.push(path.resolve(__dirname, javaServerPath, configDir));
   } else {
-    const config = resolveConfiguration(context, configDir);
+    const config = resolveConfiguration(context, configDir, outputChannel, telemetry);
     if (config) {
       params.push(config);
     } else {
-      return 'Failed to get server configuration file.';
+      throw new Error('Failed to get server configuration file.');
     }
   }
 
@@ -125,7 +125,12 @@ export function prepareParams(
   return params;
 }
 
-export function resolveConfiguration(context: ExtensionContext, configDir: string): string {
+export function resolveConfiguration(
+  context: ExtensionContext,
+  configDir: string,
+  outputChannel: OutputChannel,
+  telemetry: Telemetry
+): string {
   ensureExists(context.globalStoragePath);
   let version = '0.0.0';
   try {
@@ -135,7 +140,8 @@ export function resolveConfiguration(context: ExtensionContext, configDir: strin
       version = packageFile.version;
     }
   } catch {
-    console.log('Cannot locate package.json');
+    outputChannel.appendLine('Cannot locate package.json to parse for extension version. Default to 0.0.0');
+    telemetry.sendEvent('cannotParseForExtensionVersion');
   }
 
   let configuration = path.resolve(context.globalStoragePath, version);
@@ -153,7 +159,7 @@ export function resolveConfiguration(context: ExtensionContext, configDir: strin
     const iniTime = getTimestamp(ini);
     if (iniTime > configIniTime) {
       deleteDirectory(configuration);
-      resolveConfiguration(context, configDir);
+      resolveConfiguration(context, configDir, outputChannel, telemetry);
     }
   }
 

@@ -2,6 +2,8 @@ import * as assert from 'assert';
 import * as javaClientUtils from '../../src/stripeJavaLanguageClient/utils';
 import * as javaServerStarter from '../../src/stripeJavaLanguageClient/javaServerStarter';
 import * as sinon from 'sinon';
+import * as vscode from 'vscode';
+import {NoOpTelemetry, Telemetry} from '../../src/telemetry';
 import {mocks} from '../mocks/vscode';
 
 suite('JavaServerStarter', () => {
@@ -19,6 +21,8 @@ suite('JavaServerStarter', () => {
     const isSyntaxServer = true;
     const workspacePath = '/path/to/workspace';
     const extensionContext = {...mocks.extensionContextMock};
+    const outputChannel: Partial<vscode.OutputChannel> = {appendLine: (value: string) => {}, show: () => {}};
+    const telemetry: Telemetry = new NoOpTelemetry();
 
     setup(() => {
       sandbox.stub(javaClientUtils, 'getJavaEncoding').returns('utf8');
@@ -38,32 +42,30 @@ suite('JavaServerStarter', () => {
         workspacePath,
         extensionContext,
         isSyntaxServer,
+        <any>outputChannel,
+        telemetry,
       );
 
-      if (typeof exec === 'string') {
-        throw new assert.AssertionError();
-      } else {
-        assert.strictEqual(exec.args?.length, 15);
-        assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
-        assert.strictEqual(exec.args?.includes('--add-opens'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
-        assert.strictEqual(exec.args?.includes('-jar'), true);
-        assert.strictEqual(exec.args?.includes('-configuration'), true);
-        assert.strictEqual(exec.args?.includes('-data'), true);
-        assert.strictEqual(exec.args?.includes(workspacePath), true);
-      }
+      assert.strictEqual(exec.args?.length, 15);
+      assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
+      assert.strictEqual(exec.args?.includes('--add-opens'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
+      assert.strictEqual(exec.args?.includes('-jar'), true);
+      assert.strictEqual(exec.args?.includes('-configuration'), true);
+      assert.strictEqual(exec.args?.includes('-data'), true);
+      assert.strictEqual(exec.args?.includes(workspacePath), true);
     });
 
     test('get params for jdk version > 8, in debug mode', () => {
@@ -76,39 +78,37 @@ suite('JavaServerStarter', () => {
         workspacePath,
         extensionContext,
         isSyntaxServer,
+        <any>outputChannel,
+        telemetry,
       );
 
-      if (typeof exec === 'string') {
-        throw new assert.AssertionError();
-      } else {
-        assert.strictEqual(exec.args?.length, 17);
-        assert.strictEqual(
-          exec.args?.includes(
-            '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1047,quiet=y',
-          ),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
-        assert.strictEqual(exec.args?.includes('--add-opens'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(exec.args?.includes('-Dlog.level=ALL'), true);
-        assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
-        assert.strictEqual(exec.args?.includes('-jar'), true);
-        assert.strictEqual(exec.args?.includes('-configuration'), true);
-        assert.strictEqual(exec.args?.includes('-data'), true);
-        assert.strictEqual(exec.args?.includes(workspacePath), true);
-      }
+      assert.strictEqual(exec.args?.length, 17);
+      assert.strictEqual(
+        exec.args?.includes(
+          '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1047,quiet=y',
+        ),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
+      assert.strictEqual(exec.args?.includes('--add-opens'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(exec.args?.includes('-Dlog.level=ALL'), true);
+      assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
+      assert.strictEqual(exec.args?.includes('-jar'), true);
+      assert.strictEqual(exec.args?.includes('-configuration'), true);
+      assert.strictEqual(exec.args?.includes('-data'), true);
+      assert.strictEqual(exec.args?.includes(workspacePath), true);
     });
 
     test('get params for jdk version > 8, in dev mode', () => {
@@ -121,32 +121,30 @@ suite('JavaServerStarter', () => {
         workspacePath,
         extensionContext,
         isSyntaxServer,
+        <any>outputChannel,
+        telemetry,
       );
 
-      if (typeof exec === 'string') {
-        throw new assert.AssertionError();
-      } else {
-        assert.strictEqual(exec.args?.length, 15);
-        assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
-        assert.strictEqual(exec.args?.includes('--add-opens'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
-        assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
-        assert.strictEqual(exec.args?.includes('-jar'), true);
-        assert.strictEqual(exec.args?.includes('-configuration'), true);
-        assert.strictEqual(exec.args?.includes('-data'), true);
-        assert.strictEqual(exec.args?.includes(workspacePath), true);
-      }
+      assert.strictEqual(exec.args?.length, 15);
+      assert.strictEqual(exec.args?.includes('--add-modules=ALL-SYSTEM'), true);
+      assert.strictEqual(exec.args?.includes('--add-opens'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.util=ALL-UNNAMED'), true);
+      assert.strictEqual(exec.args?.includes('java.base/java.lang=ALL-UNNAMED'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
+      assert.strictEqual(exec.args?.includes('-jar'), true);
+      assert.strictEqual(exec.args?.includes('-configuration'), true);
+      assert.strictEqual(exec.args?.includes('-data'), true);
+      assert.strictEqual(exec.args?.includes(workspacePath), true);
     });
 
     test('get params for jdk version < 8, not in debug or dev mode', () => {
@@ -159,28 +157,26 @@ suite('JavaServerStarter', () => {
         workspacePath,
         extensionContext,
         isSyntaxServer,
+        <any>outputChannel,
+        telemetry,
       );
 
-      if (typeof exec === 'string') {
-        throw new assert.AssertionError();
-      } else {
-        assert.strictEqual(exec.args?.length, 10);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(
-          exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
-          true,
-        );
-        assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
-        assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
-        assert.strictEqual(exec.args?.includes('-jar'), true);
-        assert.strictEqual(exec.args?.includes('-configuration'), true);
-        assert.strictEqual(exec.args?.includes('-data'), true);
-        assert.strictEqual(exec.args?.includes(workspacePath), true);
-      }
+      assert.strictEqual(exec.args?.length, 10);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.application=org.eclipse.jdt.ls.core.id1'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(
+        exec.args?.includes('-Declipse.product=org.eclipse.jdt.ls.core.product'),
+        true,
+      );
+      assert.strictEqual(exec.args?.includes('-Dosgi.bundles.defaultStartLevel=4'), true);
+      assert.strictEqual(exec.args?.includes('-Dfile.encoding=utf8'), true);
+      assert.strictEqual(exec.args?.includes('-jar'), true);
+      assert.strictEqual(exec.args?.includes('-configuration'), true);
+      assert.strictEqual(exec.args?.includes('-data'), true);
+      assert.strictEqual(exec.args?.includes(workspacePath), true);
     });
   });
 });

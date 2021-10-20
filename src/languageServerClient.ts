@@ -259,17 +259,16 @@ export class StripeLanguageClient {
     };
 
     if (requireSyntaxServer) {
-      const serverOptions = prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true);
-      if (typeof serverOptions === 'string') {
-        outputChannel.appendLine(serverOptions);
-        telemetry.sendEvent('syntaxJavaServerFailedToStart');
-      } else {
-        this.startSyntaxServer(
+      try {
+        await this.startSyntaxServer(
           clientOptions,
-          serverOptions,
+          prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true, outputChannel, telemetry),
           outputChannel,
           telemetry,
         );
+      } catch (e) {
+        outputChannel.appendLine(`${e}`);
+        telemetry.sendEvent('syntaxJavaServerFailedToStart');
       }
     }
 
@@ -294,18 +293,17 @@ export class StripeLanguageClient {
     registerHoverProvider(context);
 
     if (requireStandardServer) {
-      const serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false);
-      if (typeof serverOptions === 'string') {
-        outputChannel.appendLine(serverOptions);
-        telemetry.sendEvent('standardJavaServerFailedToStart');
-      } else {
+      try {
         await this.startStandardServer(
           context,
           clientOptions,
-          serverOptions,
+          prepareExecutable(jdkInfo, workspacePath, context, false, outputChannel, telemetry),
           outputChannel,
           telemetry,
         );
+      } catch (e) {
+        outputChannel.appendLine(`${e}`);
+        telemetry.sendEvent('standardJavaServerFailedToStart');
       }
     }
   }
@@ -460,6 +458,7 @@ export class StripeLanguageClient {
 
     await standardClient.initialize(clientOptions, serverOptions);
     standardClient.start();
+
     outputChannel.appendLine('Java language service (standard) is running.');
     telemetry.sendEvent('standardJavaServerStarted');
   }
@@ -518,18 +517,19 @@ export class StripeLanguageClient {
         }
 
         if (choice === 'Yes') {
-          const serverOptions = prepareExecutable(jdkInfo, workspacePath, context, false);
-          if (typeof serverOptions === 'string') {
-            outputChannel.appendLine(serverOptions);
-            telemetry.sendEvent('failedToSwitchToStandardMode');
-          } else {
-            await this.startStandardServer(
+          telemetry.sendEvent('switchToStandardMode');
+
+          try {
+            this.startStandardServer(
               context,
               clientOptions,
-              serverOptions,
+              prepareExecutable(jdkInfo, workspacePath, context, false, outputChannel, telemetry),
               outputChannel,
               telemetry,
             );
+          } catch (e) {
+            outputChannel.appendLine(`${e}`);
+            telemetry.sendEvent('failedToSwitchToStandardMode');
           }
         }
       },
