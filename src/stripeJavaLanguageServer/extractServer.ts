@@ -17,7 +17,7 @@ const latestText = 'latest.txt';
 const tarPath = `./${tarFile}`;
 const source = `${href}/${tarFile}`;
 
-const extractTo = './out/src/stripeJavaLanguageServer';
+const extractTo = './dist/stripeJavaLanguageServer';
 
 try {
   if (fs.existsSync(tarPath)) {
