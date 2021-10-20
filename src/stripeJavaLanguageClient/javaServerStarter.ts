@@ -20,7 +20,7 @@ import {
 } from './utils';
 import {Telemetry} from '../telemetry';
 
-// javaServerPath has to match the extractedTo variable in src/stripeJavaLanguageServer/extractServer.ts
+// javaServerPath has to match 'extractedTo' in src/stripeJavaLanguageServer/extractServer.ts
 export const javaServerPath = '../dist/stripeJavaLanguageServer';
 
 export function prepareExecutable(

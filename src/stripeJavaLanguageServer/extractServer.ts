@@ -17,6 +17,7 @@ const latestText = 'latest.txt';
 const tarPath = `./${tarFile}`;
 const source = `${href}/${tarFile}`;
 
+// extractedTo has to match 'javaServerPath' in src/stripeJavaLanguageClient/javaServerStarter.ts
 const extractTo = './dist/stripeJavaLanguageServer';
 
 try {
