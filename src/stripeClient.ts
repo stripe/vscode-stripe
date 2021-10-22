@@ -3,7 +3,6 @@
 import * as path from 'path';
 import * as toml from 'toml';
 import * as vscode from 'vscode';
-import {ChildProcess, spawn} from 'child_process';
 import {OSType, getOSType} from './utils';
 import {setCliVersion, setStripeAccountId} from './stripeWorkspaceState';
 import {Telemetry} from './telemetry';
@@ -18,22 +17,14 @@ const MIN_CLI_VERSION = 'v1.5.13';
 // The minimum version for of the CLI to that has the `stripe daemon` command.
 const MIN_CLI_VERSION_FOR_DAEMON = 'v1.6.0';
 
-export enum CLICommand {
-  Trigger,
-}
-
-const cliCommandToArgsMap: Map<CLICommand, string[]> = new Map([[CLICommand.Trigger, ['trigger']]]);
-
 export class StripeClient {
   telemetry: Telemetry;
   private cliPath: Promise<string | null>;
-  cliProcesses: Map<CLICommand, ChildProcess>;
   private extensionContext: vscode.ExtensionContext;
 
   constructor(telemetry: Telemetry, extensionContext: vscode.ExtensionContext) {
     this.telemetry = telemetry;
     this.cliPath = StripeClient.detectInstallation(telemetry);
-    this.cliProcesses = new Map<CLICommand, ChildProcess>();
     this.extensionContext = extensionContext;
     vscode.workspace.onDidChangeConfiguration(this.handleDidChangeConfiguration, this);
   }
@@ -167,55 +158,6 @@ export class StripeClient {
       return false;
     }
   }
-
-  async getOrCreateCLIProcess(
-    cliCommand: CLICommand,
-    flags: string[] = [],
-  ): Promise<ChildProcess | null> {
-    const existingCLIProcess = this.cliProcesses.get(cliCommand);
-    if (existingCLIProcess) {
-      return existingCLIProcess;
-    }
-
-    const cliPath = await this.getCLIPath();
-    if (!cliPath) {
-      return null;
-    }
-
-    const isAuthenticated = await this.isAuthenticated();
-    if (!isAuthenticated) {
-      await this.promptLogin();
-      return null;
-    }
-
-    const commandArgs = cliCommandToArgsMap.get(cliCommand);
-    if (!commandArgs) {
-      return null;
-    }
-
-    const projectName = vscode.workspace.getConfiguration('stripe').get('projectName', null);
-
-    const allFlags = [...(projectName ? ['--project-name', projectName] : []), ...flags];
-
-    const newCLIProcess = spawn(cliPath, [...commandArgs, ...allFlags]);
-    this.cliProcesses.set(cliCommand, newCLIProcess);
-
-    newCLIProcess.on('exit', () => this.cleanupCLIProcess(cliCommand));
-    newCLIProcess.on('error', () => this.cleanupCLIProcess(cliCommand));
-
-    return newCLIProcess;
-  }
-
-  endCLIProcess(cliCommand: CLICommand): void {
-    const cliProcess = this.cliProcesses.get(cliCommand);
-    if (cliProcess) {
-      cliProcess.kill();
-    }
-  }
-
-  private cleanupCLIProcess = (cliCommand: CLICommand) => {
-    this.cliProcesses.delete(cliCommand);
-  };
 
   /**
    * Prompts the user to update the version of the stripe CLI if it's lower than the min recommended version.
