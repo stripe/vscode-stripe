@@ -146,7 +146,7 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openTelemetryInfo', stripeCommands.openTelemetryInfo],
     [
       'stripe.openTriggerEvent',
-      () => stripeCommands.openTriggerEvent(context, stripeClient, stripeDaemon, stripeOutputChannel),
+      () => stripeCommands.openTriggerEvent(context, stripeDaemon, stripeOutputChannel),
     ],
     ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
