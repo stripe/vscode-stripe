@@ -1,14 +1,11 @@
 import * as assert from 'assert';
 import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
-import {CLICommand, StripeClient} from '../../src/stripeClient';
-import {Readable, Writable} from 'stream';
 import {TestMemento, mocks} from '../mocks/vscode';
 import {getCliVersion, getStripeAccountId} from '../../src/stripeWorkspaceState';
 import sinon, {stubObject} from 'ts-sinon';
-import {EventEmitter} from 'events';
 import {NoOpTelemetry} from '../../src/telemetry';
-import childProcess from 'child_process';
+import {StripeClient} from '../../src/stripeClient';
 import path from 'path';
 
 const fs = require('fs');
@@ -281,72 +278,6 @@ suite('stripeClient', () => {
       await stripeClient.isAuthenticated();
 
       assert.strictEqual(getStripeAccountId(extensionContext), 'acct_myProject');
-    });
-  });
-
-  suite('CLI processes', () => {
-    let spawnStub: sinon.SinonStub;
-    let cliProcessStub: childProcess.ChildProcess;
-
-    setup(() => {
-      cliProcessStub = <childProcess.ChildProcess>new EventEmitter();
-      cliProcessStub.stdin = new Writable();
-      cliProcessStub.stdout = <Readable>new EventEmitter();
-      cliProcessStub.stderr = <Readable>new EventEmitter();
-      cliProcessStub.kill = () => {};
-      spawnStub = sandbox.stub(childProcess, 'spawn').returns(cliProcessStub);
-      sandbox.stub(StripeClient, 'detectInstallation').resolves('path/to/stripe');
-    });
-
-    test('spawns a child process with stripe trigger', async () => {
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeTriggerProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.Trigger);
-      assert.strictEqual(spawnStub.callCount, 1);
-      assert.deepStrictEqual(spawnStub.args[0], ['path/to/stripe', ['trigger']]);
-      assert.ok(stripeTriggerProcess);
-    });
-
-    test('passes flags to spawn', async () => {
-      const flags = ['--stripe-account', 'acct_123'];
-      const stripeClient = getStripeClient();
-      sandbox.stub(stripeClient, 'checkCLIVersion');
-      sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-      const stripeTriggerProcess = await stripeClient.getOrCreateCLIProcess(
-        CLICommand.Trigger,
-        flags,
-      );
-      assert.strictEqual(spawnStub.callCount, 1);
-      assert.deepStrictEqual(spawnStub.args[0], [
-        'path/to/stripe',
-        ['trigger', '--stripe-account', 'acct_123'],
-      ]);
-      assert.ok(stripeTriggerProcess);
-    });
-
-    suite('on child process events', () => {
-      ['exit', 'error'].forEach((event) => {
-        test(`on ${event}, removes child process`, async () => {
-          const stripeClient = getStripeClient();
-          sandbox.stub(stripeClient, 'checkCLIVersion');
-          sandbox.stub(stripeClient, 'isAuthenticated').resolves(true);
-          const stripeLogsTailProcess = await stripeClient.getOrCreateCLIProcess(
-            CLICommand.Trigger,
-          );
-          if (!stripeLogsTailProcess) {
-            throw new assert.AssertionError();
-          }
-
-          assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.Trigger), true);
-          const spy = sandbox.spy();
-          stripeLogsTailProcess.on(event, spy);
-          stripeLogsTailProcess.emit(event);
-          assert.strictEqual(spawnStub.callCount, 1);
-          assert.strictEqual(spy.callCount, 1);
-          assert.strictEqual(stripeClient.cliProcesses.has(CLICommand.Trigger), false);
-        });
-      });
     });
   });
 });
