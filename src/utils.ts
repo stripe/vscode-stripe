@@ -66,6 +66,7 @@ export function showQuickPickWithItems(
     input.onDidAccept(() => {
       const value = input.selectedItems[0].label;
       resolve(value);
+      input.hide();
     });
 
     input.show();
