@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OUT_DIR=./src/rpc
-PROTO_DIR="/Users/etsai/stripe/stripe-cli/rpc"
+PROTO_DIR="$(go env GOPATH)/src/github.com/stripe/stripe-cli/rpc"
 PROTOC="$(npm bin)/grpc_tools_node_protoc"
 PROTOC_GEN_TS="$(npm bin)/protoc-gen-ts"
 
