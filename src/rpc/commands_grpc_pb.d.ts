@@ -4,7 +4,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 import * as commands_pb from "./commands_pb";
 import * as events_resend_pb from "./events_resend_pb";
 import * as listen_pb from "./listen_pb";

@@ -134,8 +134,6 @@ export namespace ListenResponse {
             setUrl(value: string): Data;
             getEventId(): string;
             setEventId(value: string): Data;
-            getBody(): string;
-            setBody(value: string): Data;
 
             serializeBinary(): Uint8Array;
             toObject(includeInstance?: boolean): Data.AsObject;
@@ -153,7 +151,6 @@ export namespace ListenResponse {
                 httpMethod: ListenResponse.EndpointResponse.Data.HttpMethod,
                 url: string,
                 eventId: string,
-                body: string,
             }
 
             export enum HttpMethod {
