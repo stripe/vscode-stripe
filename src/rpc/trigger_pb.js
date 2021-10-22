@@ -28,7 +28,7 @@ goog.exportSymbol('proto.rpc.TriggerResponse', null, global);
  * @constructor
  */
 proto.rpc.TriggerRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.rpc.TriggerRequest.repeatedFields_, null);
 };
 goog.inherits(proto.rpc.TriggerRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -59,6 +59,13 @@ if (goog.DEBUG && !COMPILED) {
    */
   proto.rpc.TriggerResponse.displayName = 'proto.rpc.TriggerResponse';
 }
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.rpc.TriggerRequest.repeatedFields_ = [3,4,5,6];
 
 
 
@@ -92,7 +99,11 @@ proto.rpc.TriggerRequest.prototype.toObject = function(opt_includeInstance) {
 proto.rpc.TriggerRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     event: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    stripeAccount: jspb.Message.getFieldWithDefault(msg, 2, "")
+    stripeAccount: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    skipList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    overrideList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    addList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
+    removeList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -137,6 +148,22 @@ proto.rpc.TriggerRequest.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setStripeAccount(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSkip(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addOverride(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addAdd(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addRemove(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -180,6 +207,34 @@ proto.rpc.TriggerRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getSkipList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getOverrideList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getAddList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
+      f
+    );
+  }
+  f = message.getRemoveList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      6,
+      f
+    );
+  }
 };
 
 
@@ -216,6 +271,154 @@ proto.rpc.TriggerRequest.prototype.getStripeAccount = function() {
  */
 proto.rpc.TriggerRequest.prototype.setStripeAccount = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string skip = 3;
+ * @return {!Array<string>}
+ */
+proto.rpc.TriggerRequest.prototype.getSkipList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.setSkipList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.addSkip = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.clearSkipList = function() {
+  return this.setSkipList([]);
+};
+
+
+/**
+ * repeated string override = 4;
+ * @return {!Array<string>}
+ */
+proto.rpc.TriggerRequest.prototype.getOverrideList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.setOverrideList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.addOverride = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.clearOverrideList = function() {
+  return this.setOverrideList([]);
+};
+
+
+/**
+ * repeated string add = 5;
+ * @return {!Array<string>}
+ */
+proto.rpc.TriggerRequest.prototype.getAddList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.setAddList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.addAdd = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.clearAddList = function() {
+  return this.setAddList([]);
+};
+
+
+/**
+ * repeated string remove = 6;
+ * @return {!Array<string>}
+ */
+proto.rpc.TriggerRequest.prototype.getRemoveList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.setRemoveList = function(value) {
+  return jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.addRemove = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.clearRemoveList = function() {
+  return this.setRemoveList([]);
 };
 
 

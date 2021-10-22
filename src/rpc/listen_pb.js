@@ -908,8 +908,7 @@ proto.rpc.ListenResponse.EndpointResponse.Data.toObject = function(includeInstan
     status: jspb.Message.getFieldWithDefault(msg, 1, 0),
     httpMethod: jspb.Message.getFieldWithDefault(msg, 2, 0),
     url: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    eventId: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    body: jspb.Message.getFieldWithDefault(msg, 5, "")
+    eventId: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -961,10 +960,6 @@ proto.rpc.ListenResponse.EndpointResponse.Data.deserializeBinaryFromReader = fun
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setEventId(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setBody(value);
       break;
     default:
       reader.skipField();
@@ -1020,13 +1015,6 @@ proto.rpc.ListenResponse.EndpointResponse.Data.serializeBinaryToWriter = functio
   if (f.length > 0) {
     writer.writeString(
       4,
-      f
-    );
-  }
-  f = message.getBody();
-  if (f.length > 0) {
-    writer.writeString(
-      5,
       f
     );
   }
@@ -1112,24 +1100,6 @@ proto.rpc.ListenResponse.EndpointResponse.Data.prototype.getEventId = function()
  */
 proto.rpc.ListenResponse.EndpointResponse.Data.prototype.setEventId = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-/**
- * optional string body = 5;
- * @return {string}
- */
-proto.rpc.ListenResponse.EndpointResponse.Data.prototype.getBody = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.rpc.ListenResponse.EndpointResponse.Data} returns this
- */
-proto.rpc.ListenResponse.EndpointResponse.Data.prototype.setBody = function(value) {
-  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
