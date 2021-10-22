@@ -1,6 +1,5 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
-import {CLICommand, StripeClient} from './stripeClient';
 import {
   getConnectWebhookEndpoint,
   getRecentEvents,
@@ -19,6 +18,7 @@ import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
 import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
+import {TriggerRequest} from './rpc/trigger_pb';
 import {TriggersListRequest} from './rpc/triggers_list_pb';
 
 export class Commands {
@@ -286,7 +286,6 @@ export class Commands {
 
   openTriggerEvent = async (
     extensionContext: vscode.ExtensionContext,
-    stripeClient: StripeClient,
     stripeDaemon: StripeDaemon,
     stripeOutputChannel: vscode.OutputChannel,
   ) => {
@@ -296,7 +295,11 @@ export class Commands {
     const supportedTriggersList = await new Promise<string[]>((resolve, reject) => {
       daemonClient.triggersList(new TriggersListRequest(), (error, response) => {
         if (error) {
-          stripeOutputChannel.append('Warning: Failed to retrieve supported triggered event list dynamically: ' + error + '\n');
+          stripeOutputChannel.append(
+            'Warning: Failed to retrieve supported triggered event list dynamically: ' +
+              error +
+              '\n',
+          );
           resolve(this.supportedEvents);
         } else if (response) {
           resolve(response.getEventsList());
@@ -307,19 +310,21 @@ export class Commands {
     const events = this.buildTriggerEventsList(supportedTriggersList, extensionContext);
     const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
     if (eventName) {
-      const triggerProcess = await stripeClient.getOrCreateCLIProcess(CLICommand.Trigger, [
-        eventName,
-      ]);
-
-      if (!triggerProcess) {
-        vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}`);
-        return;
-      }
-
-      triggerProcess.stdout.on('data', (chunk) => {
-        stripeOutputChannel.append(chunk.toString());
-      });
       stripeOutputChannel.show();
+      stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
+
+      const triggerRequest = new TriggerRequest();
+      triggerRequest.setEvent(eventName);
+      daemonClient.trigger(triggerRequest, (error, response) => {
+        if (error) {
+          vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}. ${error.details}`);
+        } else if (response) {
+          response
+            .getRequestsList()
+            .forEach((f) => stripeOutputChannel.append(`Ran fixture: ${f}\n`));
+          stripeOutputChannel.append('Trigger succeeded! Check dashboard for event details.\n');
+        }
+      });
 
       recordEvent(extensionContext, eventName);
     }
