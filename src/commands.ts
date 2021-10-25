@@ -1,6 +1,13 @@
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {
+  camelToSnakeCase,
+  getExtensionInfo,
+  openNewTextEditorWithContents,
+  recursivelyRenameKeys,
+  showQuickPickWithItems,
+} from './utils';
+import {
   getConnectWebhookEndpoint,
   getRecentEvents,
   getWebhookEndpoint,
@@ -8,8 +15,9 @@ import {
   setConnectWebhookEndpoint,
   setWebhookEndpoint,
 } from './stripeWorkspaceState';
-import {getExtensionInfo, openNewTextEditorWithContents, showQuickPickWithItems} from './utils';
+
 import osName = require('os-name');
+import {EventsResendRequest} from './rpc/events_resend_pb';
 import {FixtureRequest} from './rpc/fixtures_pb';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeEventsViewProvider} from './stripeEventsView';
@@ -296,10 +304,8 @@ export class Commands {
     const supportedTriggersList = await new Promise<string[]>((resolve, reject) => {
       daemonClient.triggersList(new TriggersListRequest(), (error, response) => {
         if (error) {
-          stripeOutputChannel.append(
-            'Warning: Failed to retrieve supported triggered event list dynamically: ' +
-              error +
-              '\n',
+          stripeOutputChannel.appendLine(
+            'Warning: Failed to retrieve supported triggered event list dynamically: ' + error,
           );
           resolve(this.supportedEvents);
         } else if (response) {
@@ -339,7 +345,7 @@ export class Commands {
 
         recordEvent(extensionContext, eventName);
         stripeOutputChannel.show();
-        stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
+        stripeOutputChannel.appendLine(`Triggering event ${eventName}...\n`);
       }
     }
   };
@@ -382,8 +388,8 @@ export class Commands {
         } else if (response) {
           response
             .getRequestsList()
-            .forEach((f) => stripeOutputChannel.append(`Ran fixture: ${f}\n`));
-          stripeOutputChannel.append('Trigger succeeded! Check dashboard for event details.\n');
+            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
+          stripeOutputChannel.appendLine('Trigger succeeded! Check dashboard for event details.');
         }
       });
 
@@ -460,9 +466,42 @@ export class Commands {
     );
   };
 
-  resendEvent = (stripeTreeItem: StripeTreeItem) => {
+  resendEvent = async (
+    stripeTreeItem: StripeTreeItem,
+    stripeDaemon: StripeDaemon,
+    stripeOutputChannel: vscode.OutputChannel,
+  ) => {
     this.telemetry.sendEvent('resendEvent');
-    this.terminal.execute('events', ['resend', stripeTreeItem.metadata.id]);
+
+    const daemonClient = await stripeDaemon.setupClient();
+    const eventId = stripeTreeItem.metadata.id;
+    const resendRequest = new EventsResendRequest();
+    resendRequest.setEventId(eventId);
+
+    stripeOutputChannel.appendLine(`Resending Event: ${eventId}...`);
+    stripeOutputChannel.show();
+
+    daemonClient.eventsResend(resendRequest, (error, response) => {
+      if (error) {
+        vscode.window.showErrorMessage(`Failed to resend event: ${eventId}. ${error.details}`);
+      } else if (response) {
+        const event = response.getStripeEvent();
+
+        if (event) {
+          // Unfortunately these steps are necessary for correct rendering
+          const stripeEventObj = {
+            ...event.toObject(),
+            data: event.getData()?.toJavaScript(),
+          };
+          const snakeCaseStripeEventObj = recursivelyRenameKeys(stripeEventObj, camelToSnakeCase);
+          stripeOutputChannel.appendLine(JSON.stringify(snakeCaseStripeEventObj, undefined, 2));
+        } else {
+          // This shouldn't happen but we will log and record telemetry in case it does.
+          this.telemetry.sendEvent('noResponseFromResendEvent');
+          stripeOutputChannel.appendLine('Error: Did not get event back from server.');
+        }
+      }
+    });
   };
 
   createStripeSample = async (stripeSamples: StripeSamples) => {
