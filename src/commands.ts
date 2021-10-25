@@ -8,8 +8,9 @@ import {
   setConnectWebhookEndpoint,
   setWebhookEndpoint,
 } from './stripeWorkspaceState';
-import {getExtensionInfo, showQuickPickWithItems} from './utils';
+import {getExtensionInfo, openNewTextEditorWithContents, showQuickPickWithItems} from './utils';
 import osName = require('os-name');
+import {FixtureRequest} from './rpc/fixtures_pb';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeEventsViewProvider} from './stripeEventsView';
 import {StripeLogsViewProvider} from './stripeLogsView';
@@ -310,11 +311,71 @@ export class Commands {
     const events = this.buildTriggerEventsList(supportedTriggersList, extensionContext);
     const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
     if (eventName) {
-      stripeOutputChannel.show();
-      stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
+      const useDefault = await vscode.window.showInputBox({prompt: 'Use default fixture?', placeHolder: ''});
+      if (useDefault === undefined) {
+        const fixtureRequest = new FixtureRequest();
+        fixtureRequest.setEvent(eventName);
+        daemonClient.fixture(fixtureRequest, (error, response) => {
+          if (error) {
+            vscode.window.showErrorMessage(`Failed to get default fixture for event ${eventName}. ${error.details}`);
+          } else if (response) {
+            const defaultFixture = response.getFixture();
+            openNewTextEditorWithContents(defaultFixture);
+          }
+        });
+      } else {
+        const triggerRequest = new TriggerRequest();
+        triggerRequest.setEvent(eventName);
+        daemonClient.trigger(triggerRequest, (error, response) => {
+          if (error) {
+            vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}. ${error.details}`);
+          } else if (response) {
+            response
+              .getRequestsList()
+              .forEach((f) => stripeOutputChannel.append(`Ran fixture: ${f}\n`));
+            stripeOutputChannel.append('Trigger succeeded! Check dashboard for event details.\n');
+          }
+        });
 
+        recordEvent(extensionContext, eventName);
+        stripeOutputChannel.show();
+        stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
+      }
+    }
+  };
+
+  openTriggerCustomizedEvent = async (
+    extensionContext: vscode.ExtensionContext,
+    stripeDaemon: StripeDaemon,
+    stripeOutputChannel: vscode.OutputChannel,
+  ) => {
+    this.telemetry.sendEvent('openTriggerCustomizedEvent');
+    const daemonClient = await stripeDaemon.setupClient();
+
+    const supportedTriggersList = await new Promise<string[]>((resolve, reject) => {
+      daemonClient.triggersList(new TriggersListRequest(), (error, response) => {
+        if (error) {
+          stripeOutputChannel.append(
+            'Warning: Failed to retrieve supported triggered event list dynamically: ' +
+              error +
+              '\n',
+          );
+          resolve(this.supportedEvents);
+        } else if (response) {
+          resolve(response.getEventsList());
+        }
+      });
+    });
+
+    const events = this.buildTriggerEventsList(supportedTriggersList, extensionContext);
+    const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
+    if (eventName) {
       const triggerRequest = new TriggerRequest();
       triggerRequest.setEvent(eventName);
+
+      const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
+      triggerRequest.setRaw(content);
+
       daemonClient.trigger(triggerRequest, (error, response) => {
         if (error) {
           vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}. ${error.details}`);
@@ -326,7 +387,8 @@ export class Commands {
         }
       });
 
-      recordEvent(extensionContext, eventName);
+      stripeOutputChannel.show();
+      stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
     }
   };
 

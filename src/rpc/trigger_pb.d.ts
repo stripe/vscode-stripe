@@ -27,6 +27,8 @@ export class TriggerRequest extends jspb.Message {
     getRemoveList(): Array<string>;
     setRemoveList(value: Array<string>): TriggerRequest;
     addRemove(value: string, index?: number): string;
+    getRaw(): string;
+    setRaw(value: string): TriggerRequest;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): TriggerRequest.AsObject;
@@ -46,6 +48,7 @@ export namespace TriggerRequest {
         overrideList: Array<string>,
         addList: Array<string>,
         removeList: Array<string>,
+        raw: string,
     }
 }
 

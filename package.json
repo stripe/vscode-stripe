@@ -48,6 +48,7 @@
     "onCommand:stripe.openDashboardWebhooks",
     "onCommand:stripe.openEventDetails",
     "onCommand:stripe.openTriggerEvent",
+    "onCommand:stripe.openTriggerCustomizedEvent",
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",
     "onCommand:stripe.openSurvey",
@@ -186,7 +187,12 @@
       {
         "category": "Stripe",
         "command": "stripe.openTriggerEvent",
-        "title": "Trigger a new event"
+        "title": "Trigger a new default event"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.openTriggerCustomizedEvent",
+        "title": "Trigger a new customized event"
       },
       {
         "category": "Stripe",

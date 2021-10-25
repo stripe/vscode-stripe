@@ -119,3 +119,20 @@ export function recursivelyRenameKeys(object: Object, rename: (str: string) => s
   }
   return object;
 }
+
+export function openNewTextEditorWithContents(contents: string) {
+  var setting: vscode.Uri = vscode.Uri.parse('untitled:fixture.json');
+  vscode.workspace.openTextDocument(setting).then(
+    (a: vscode.TextDocument) => {
+      vscode.window.showTextDocument(a, 1, false).then((e) => {
+        e.edit((edit) => {
+          edit.insert(new vscode.Position(0, 0), contents);
+        });
+      });
+    },
+    (error: any) => {
+      console.error(error);
+      debugger;
+    },
+  );
+}

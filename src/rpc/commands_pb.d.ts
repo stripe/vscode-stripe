@@ -6,6 +6,7 @@
 
 import * as jspb from "google-protobuf";
 import * as events_resend_pb from "./events_resend_pb";
+import * as fixtures_pb from "./fixtures_pb";
 import * as listen_pb from "./listen_pb";
 import * as login_pb from "./login_pb";
 import * as login_status_pb from "./login_status_pb";
