@@ -337,14 +337,12 @@ export class Commands {
         } else if (response) {
           response
             .getRequestsList()
-            .forEach((f) => stripeOutputChannel.append(`Ran fixture: ${f}\n`));
-          stripeOutputChannel.append('Trigger succeeded! Check dashboard for event details.\n');
+            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}\n`));
+          stripeOutputChannel.appendLine('Trigger succeeded! Check dashboard for event details.\n');
         }
       });
 
       recordEvent(extensionContext, eventName);
-      stripeOutputChannel.show();
-      stripeOutputChannel.appendLine(`Triggering event ${eventName}...\n`);
     }
   };
 
@@ -375,11 +373,9 @@ export class Commands {
         } else if (response) {
           const defaultFixture = response.getFixture();
           openNewTextEditorWithContents(defaultFixture);
+          stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.\n`);
         }
       });
-
-      stripeOutputChannel.show();
-      stripeOutputChannel.append(`Fixture template for ${eventName} loaded.\n`);
     }
   };
 
@@ -412,12 +408,9 @@ export class Commands {
           response
             .getRequestsList()
             .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
-          stripeOutputChannel.appendLine('Trigger succeeded! Check dashboard for event details.');
+          stripeOutputChannel.appendLine(`Trigger ${eventName} succeeded! Check dashboard for event details.`);
         }
       });
-
-      stripeOutputChannel.show();
-      stripeOutputChannel.append(`Triggering event ${eventName}...\n`);
 
       // TO-DO:
       // DX-6884: store recently used customized fixture for later use
