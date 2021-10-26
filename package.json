@@ -48,6 +48,7 @@
     "onCommand:stripe.openDashboardWebhooks",
     "onCommand:stripe.openEventDetails",
     "onCommand:stripe.openTriggerEvent",
+    "onCommand:stripe.openCreateCustomizedEvent",
     "onCommand:stripe.openTriggerCustomizedEvent",
     "onCommand:stripe.openReportIssue",
     "onCommand:stripe.openDocs",

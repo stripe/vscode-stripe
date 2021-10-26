@@ -149,6 +149,10 @@ export function activate(this: any, context: ExtensionContext) {
       () => stripeCommands.openTriggerEvent(context, stripeDaemon, stripeOutputChannel),
     ],
     [
+      'stripe.openCreateCustomizedEvent',
+      () => stripeCommands.openCreateCustomizedEvent(context, stripeDaemon, stripeOutputChannel),
+    ],
+    [
       'stripe.openTriggerCustomizedEvent',
       () => stripeCommands.openTriggerCustomizedEvent(context, stripeDaemon, stripeOutputChannel),
     ],
