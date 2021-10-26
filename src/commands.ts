@@ -106,11 +106,7 @@ export class Commands {
     const supportedTriggersList = await new Promise<string[]>((resolve, reject) => {
       daemonClient.triggersList(new TriggersListRequest(), (error: any, response: any) => {
         if (error) {
-          stripeOutputChannel.append(
-            'Warning: Failed to retrieve supported triggered event list dynamically: ' +
-              error +
-              '\n',
-          );
+          stripeOutputChannel.appendLine(`Warning: Failed to retrieve supported triggered event list dynamically: ${error}`);
           resolve(this.supportedEvents);
         } else if (response) {
           resolve(response.getEventsList());
@@ -329,6 +325,9 @@ export class Commands {
     const eventName = await showQuickPickWithItems('Enter event name to trigger', events);
 
     if (eventName) {
+      stripeOutputChannel.show();
+      stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
+
       const triggerRequest = new TriggerRequest();
       triggerRequest.setEvent(eventName);
       daemonClient.trigger(triggerRequest, (error, response) => {
@@ -337,8 +336,8 @@ export class Commands {
         } else if (response) {
           response
             .getRequestsList()
-            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}\n`));
-          stripeOutputChannel.appendLine('Trigger succeeded! Check dashboard for event details.\n');
+            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
+          stripeOutputChannel.appendLine('Trigger succeeded! Check dashboard for event details.');
         }
       });
 
@@ -373,7 +372,7 @@ export class Commands {
         } else if (response) {
           const defaultFixture = response.getFixture();
           openNewTextEditorWithContents(defaultFixture);
-          stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.\n`);
+          stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
         }
       });
     }
@@ -389,6 +388,9 @@ export class Commands {
     const eventName = await vscode.window.showInputBox({prompt: 'Enter a customized fixture name', value: 'customized_fixture'});
 
     if (eventName) {
+      stripeOutputChannel.show();
+      stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
+
       const triggerRequest = new TriggerRequest();
       triggerRequest.setEvent(eventName);
 
