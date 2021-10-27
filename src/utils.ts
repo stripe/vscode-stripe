@@ -165,9 +165,8 @@ function validateFixture(fixture: any, pos: number): string {
 
 export function validateFixtureEvent(contents: string): string {
   const fixtureObj = JSON.parse(contents);
-  let isValid = 'fixtures' in fixtureObj;
 
-  if (!isValid) {
+  if (!('fixtures' in fixtureObj)) {
     return '"Fixtures" property is missing.';
   }
 
@@ -175,7 +174,7 @@ export function validateFixtureEvent(contents: string): string {
     let pos = 0;
     fixtureObj.fixtures.forEach((fixture: any) => {
       const err = validateFixture(fixture, pos);
-      pos = pos + 1;
+      pos += 1;
       if (err) {
         throw new Error(err);
       }
