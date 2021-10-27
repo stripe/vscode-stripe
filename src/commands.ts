@@ -6,6 +6,7 @@ import {
   openNewTextEditorWithContents,
   recursivelyRenameKeys,
   showQuickPickWithItems,
+  validateFixtureEvent,
 } from './utils';
 import {
   getConnectWebhookEndpoint,
@@ -438,6 +439,12 @@ export class Commands {
 
     // grabs the fixture content on the active editor
     const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
+    const err = validateFixtureEvent(content);
+
+    if (err) {
+      await vscode.window.showErrorMessage(`Invalid fixture format: ${err}`);
+      return;
+    }
 
     stripeOutputChannel.show();
     stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
