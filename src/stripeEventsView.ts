@@ -62,9 +62,21 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
 
   buildTree(): Promise<StripeTreeItem[]> {
     const eventsItem = this.buildEventsTree();
-    const triggerEventItem = new StripeTreeItem('Trigger new event', {
+    const triggerEventItem = new StripeTreeItem('Trigger new default event', {
       commandString: 'openTriggerEvent',
       iconPath: new vscode.ThemeIcon('add'),
+    });
+
+    const createCustomizedEventItem = new StripeTreeItem('Create new customized event', {
+      commandString: 'openCreateCustomizedEvent',
+      iconPath: new vscode.ThemeIcon('edit'),
+      tooltip: 'Create a customized event fixture'
+    });
+
+    const triggerCustomizedEventItem = new StripeTreeItem('Trigger customized event', {
+      commandString: 'openTriggerCustomizedEvent',
+      iconPath: new vscode.ThemeIcon('file-code'),
+      tooltip: 'Trigger event using a saved fixture or from currently active editor tab.'
     });
 
     const webhooksListenItem = new StripeTreeItem('Forward events to your local machine', {
@@ -73,10 +85,11 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
       tooltip: "Forward webhook events from Stripe's API to your local machine.",
     });
 
-    const items = [triggerEventItem, webhooksListenItem, ...eventsItem];
+    const items = [triggerEventItem, createCustomizedEventItem, triggerCustomizedEventItem, webhooksListenItem, ...eventsItem];
 
     return Promise.resolve(items);
   }
+
   async createReadableStream(): Promise<ClientReadableStream<ListenResponse> | undefined> {
     try {
       const daemonClient = await this.stripeDaemon.setupClient();

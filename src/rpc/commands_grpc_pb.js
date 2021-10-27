@@ -3,6 +3,7 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var events_resend_pb = require('./events_resend_pb.js');
+var fixtures_pb = require('./fixtures_pb.js');
 var listen_pb = require('./listen_pb.js');
 var login_pb = require('./login_pb.js');
 var login_status_pb = require('./login_status_pb.js');
@@ -34,6 +35,28 @@ function serialize_rpc_EventsResendResponse(arg) {
 
 function deserialize_rpc_EventsResendResponse(buffer_arg) {
   return events_resend_pb.EventsResendResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_FixtureRequest(arg) {
+  if (!(arg instanceof fixtures_pb.FixtureRequest)) {
+    throw new Error('Expected argument of type rpc.FixtureRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_FixtureRequest(buffer_arg) {
+  return fixtures_pb.FixtureRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_FixtureResponse(arg) {
+  if (!(arg instanceof fixtures_pb.FixtureResponse)) {
+    throw new Error('Expected argument of type rpc.FixtureResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_FixtureResponse(buffer_arg) {
+  return fixtures_pb.FixtureResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_rpc_ListenRequest(arg) {
@@ -269,6 +292,18 @@ eventsResend: {
     requestDeserialize: deserialize_rpc_EventsResendRequest,
     responseSerialize: serialize_rpc_EventsResendResponse,
     responseDeserialize: deserialize_rpc_EventsResendResponse,
+  },
+  // Retrieve the default fixture of given triggering event.
+fixture: {
+    path: '/rpc.StripeCLI/Fixture',
+    requestStream: false,
+    responseStream: false,
+    requestType: fixtures_pb.FixtureRequest,
+    responseType: fixtures_pb.FixtureResponse,
+    requestSerialize: serialize_rpc_FixtureRequest,
+    requestDeserialize: deserialize_rpc_FixtureRequest,
+    responseSerialize: serialize_rpc_FixtureResponse,
+    responseDeserialize: deserialize_rpc_FixtureResponse,
   },
   // Receive webhook events from the Stripe API to your local machine. Like `stripe listen`.
 listen: {

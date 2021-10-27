@@ -69,6 +69,38 @@ suite('commands', function () {
     sandbox.restore();
   });
 
+  suite('getSupportedEventsList', () => {
+    let stripeOutputChannel: Partial<vscode.OutputChannel>;
+
+    setup(() => {
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+      stripeOutputChannel = {appendLine: (value: string) => {}, show: () => {}};
+    });
+
+    test('uses fallback events list if fails to retrieve list through grpc', async () => {
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'An unknown error occurred',
+      };
+
+      sandbox
+        .stub(daemonClient, 'triggersList')
+        .value(
+          (
+            req: TriggersListRequest,
+            callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
+          ) => {
+            callback(<any>err, new TriggersListResponse());
+          },
+        );
+
+      const fallbackEventsList = ['fall', 'back', 'list'];
+      const commands = new Commands(telemetry, terminal, extensionContext, fallbackEventsList);
+      const eventsList = await commands.getSupportedEventsList(<any>daemonClient, <any>stripeOutputChannel);
+      assert.deepStrictEqual(eventsList, fallbackEventsList);
+    });
+  });
+
   suite('openTriggerEvent', () => {
     let stripeOutputChannel: Partial<vscode.OutputChannel>;
 
@@ -116,37 +148,6 @@ suite('commands', function () {
 
       assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerEvent']);
       assert.deepStrictEqual(eventsInState, supportedEvents);
-    });
-
-    test('uses fallback events list if fails to retrieve list through grpc', async () => {
-      const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
-      const err: Partial<grpc.ServiceError> = {
-        code: grpc.status.UNKNOWN,
-        details: 'An unknown error occurred',
-      };
-
-      sandbox
-        .stub(daemonClient, 'triggersList')
-        .value(
-          (
-            req: TriggersListRequest,
-            callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
-          ) => {
-            callback(<any>err, new TriggersListResponse());
-          },
-        );
-
-      const fallbackEventsList = ['fall', 'back', 'list'];
-      const commands = new Commands(telemetry, terminal, extensionContext, fallbackEventsList);
-      commands.openTriggerEvent(extensionContext, <any>stripeDaemon, <any>stripeOutputChannel);
-
-      // Pick the first item on the list.
-      await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-      const eventsInState = stripeState.getRecentEvents(extensionContext);
-
-      assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerEvent']);
-      assert.deepStrictEqual(eventsInState[0], 'fall');
     });
 
     test('writes stripe trigger output to output channel', async () => {
