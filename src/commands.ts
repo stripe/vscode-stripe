@@ -389,12 +389,12 @@ export class Commands {
               openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
               stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
             }
-      
+
             const fileUri = vscode.Uri.file(`${fixtureFileUri[0].fsPath}/${fixtureName}`);
             await vscode.workspace.fs.writeFile(fileUri, new TextEncoder().encode(fixtureTemplate));
             vscode.window.showTextDocument(fileUri, {preview: false});
             stripeOutputChannel.appendLine(`Fixture saved: ${fileUri.path}`);
-          
+
           } else {
             openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
             stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
