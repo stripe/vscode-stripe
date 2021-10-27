@@ -381,7 +381,7 @@ export class Commands {
               canSelectMany: false,
               defaultUri: undefined,
               openLabel: 'Save Fixture',
-            }) ||[];
+            }) || [];
 
             if (fixtureFileUri.length === 0) {
               // user did not select a directory to save the fixture
