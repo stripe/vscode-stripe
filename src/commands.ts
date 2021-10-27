@@ -383,7 +383,7 @@ export class Commands {
               openLabel: 'Save Fixture',
             }) ||[];
 
-            if (fixtureFileUri.length == 0) {
+            if (fixtureFileUri.length === 0) {
               // user did not select a directory to save the fixture
               // display fixture in edtor as not saved
               openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
