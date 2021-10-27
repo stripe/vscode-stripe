@@ -164,24 +164,28 @@ function validateFixture(fixture: any, pos: number): string {
 }
 
 export function validateFixtureEvent(contents: string): string {
-  const fixtureObj = JSON.parse(contents);
-
-  if (!('fixtures' in fixtureObj)) {
-    return '"Fixtures" property is missing.';
-  }
-
   try {
-    let pos = 0;
-    fixtureObj.fixtures.forEach((fixture: any) => {
-      const err = validateFixture(fixture, pos);
-      pos += 1;
-      if (err) {
-        throw new Error(err);
-      }
-    });
-  } catch (e: any) {
-    return e.message.replace('Error:', '');
-  }
+    const fixtureObj = JSON.parse(contents);
 
-  return '';
+    if (!('fixtures' in fixtureObj)) {
+      return '"Fixtures" property is missing.';
+    }
+
+    try {
+      let pos = 0;
+      fixtureObj.fixtures.forEach((fixture: any) => {
+        const err = validateFixture(fixture, pos);
+        pos += 1;
+        if (err) {
+          throw new Error(err);
+        }
+      });
+    } catch (e: any) {
+      return e.message.replace('Error:', '');
+    }
+
+    return '';
+  } catch (e: any) {
+    return `Failed to parse the JSON file. ${e.message}`;
+  }
 }
