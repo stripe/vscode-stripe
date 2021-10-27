@@ -372,19 +372,29 @@ export class Commands {
         } else if (response) {
           const fixtureTemplate = response.getFixture();
 
-          const fixtureName = await vscode.window.showInputBox({prompt: 'Save fixture as:', value: 'customized_fixture.json'});
+          const fixtureName = await vscode.window.showInputBox({prompt: 'Enter name to save fixture as. If canceled, then fixture will not be saved.', value: 'customized_fixture.json'});
           if (fixtureName) {
-            const wsPath = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.fsPath;
-            if (!!wsPath) {
-              const fileUri = vscode.Uri.file(`${wsPath}/fixtures/${fixtureName}`);
-              await vscode.workspace.fs.writeFile(fileUri, new TextEncoder().encode(fixtureTemplate));
-              vscode.window.showTextDocument(fileUri, {preview: false});
-              stripeOutputChannel.appendLine(`Fixture saved: ${fileUri.path}`);
-            } else {
-              stripeOutputChannel.appendLine('No workspace available. Cannot save fixture.');
+            // prompt user the directory to save fixture
+            const fixtureFileUri = await vscode.window.showOpenDialog({
+              canSelectFiles: false,
+              canSelectFolders: true,
+              canSelectMany: false,
+              defaultUri: undefined,
+              openLabel: 'Save Fixture',
+            }) ||[];
+
+            if (fixtureFileUri.length == 0) {
+              // user did not select a directory to save the fixture
+              // display fixture in edtor as not saved
               openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
               stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
             }
+      
+            const fileUri = vscode.Uri.file(`${fixtureFileUri[0].fsPath}/${fixtureName}`);
+            await vscode.workspace.fs.writeFile(fileUri, new TextEncoder().encode(fixtureTemplate));
+            vscode.window.showTextDocument(fileUri, {preview: false});
+            stripeOutputChannel.appendLine(`Fixture saved: ${fileUri.path}`);
+          
           } else {
             openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
             stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
@@ -401,7 +411,7 @@ export class Commands {
   ) => {
     this.telemetry.sendEvent('openTriggerCustomizedEvent');
     const daemonClient = await stripeDaemon.setupClient();
-    let eventName = '';
+    let eventName = 'with customized fixture';
 
     const useSaved = await vscode.window.showInputBox({
       prompt: 'Would you like to run a previously saved fixture? If no, then the currently active editor file will be executed. Enter N if you do not have one saved.',
@@ -409,31 +419,24 @@ export class Commands {
     }) || 'N';
 
     if (useSaved.toLowerCase() === 'y') {
-      const wsPath = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.fsPath;
-      if (!!wsPath) {
-        const fixtureDirUri = vscode.Uri.file(`${wsPath}/fixtures/`);
-        const fixtureFileUri = await vscode.window.showOpenDialog({
-          canSelectFiles: true,
-          canSelectFolders: false,
-          canSelectMany: false,
-          defaultUri: fixtureDirUri,
-          openLabel: 'Run Fixture',
-        });
+      const fixtureFileUri = await vscode.window.showOpenDialog({
+        canSelectFiles: true,
+        canSelectFolders: false,
+        canSelectMany: false,
+        defaultUri: undefined,
+        openLabel: 'Run Fixture',
+      });
 
-        if (!fixtureFileUri) {
-          return;
-        }
-
-        vscode.workspace.openTextDocument(fixtureFileUri[0]);
-        eventName = fixtureFileUri[0].fsPath.replace(/^.*[\\\/]/, '');
-      } else {
-        stripeOutputChannel.appendLine('No workspace available. Cannot find saved fixture.');
+      if (!fixtureFileUri) {
         return;
       }
-    } else {
-      eventName = await vscode.window.showInputBox({prompt: 'Enter a fixture name for the currently active editor', value: 'customized_fixture'}) || 'customized_fixture';
+
+      // open the selected fixture on active editor
+      vscode.workspace.openTextDocument(fixtureFileUri[0]).then((doc) => {vscode.window.showTextDocument(doc, {preview: false});});
+      eventName = fixtureFileUri[0].fsPath.replace(/^.*[\\\/]/, '');
     }
 
+    // grabs the fixture content on the active editor
     const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
 
     stripeOutputChannel.show();
@@ -450,18 +453,15 @@ export class Commands {
           // 12: UNIMPLEMENTED
           vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
         } else {
-          vscode.window.showErrorMessage(`Failed to trigger event: ${eventName}. ${error.details}`);
+          vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
         }
       } else if (response) {
         response
           .getRequestsList()
           .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
-        stripeOutputChannel.appendLine(`Trigger ${eventName} succeeded! Check dashboard for event details.`);
+        stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
       }
     });
-
-    // TO-DO:
-    // DX-6884: store recently used customized fixture for later use
   };
 
   buildTriggerEventsList = (
