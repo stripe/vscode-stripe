@@ -73,10 +73,10 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
       tooltip: 'Create a customized event fixture'
     });
 
-    const triggerCustomizedEventItem = new StripeTreeItem('Trigger customized event in editor', {
+    const triggerCustomizedEventItem = new StripeTreeItem('Trigger customized event', {
       commandString: 'openTriggerCustomizedEvent',
       iconPath: new vscode.ThemeIcon('file-code'),
-      tooltip: 'Trigger event using the currently opened fixture file in the active editor tab.'
+      tooltip: 'Trigger event using a saved fixture or from currently active editor tab.'
     });
 
     const webhooksListenItem = new StripeTreeItem('Forward events to your local machine', {

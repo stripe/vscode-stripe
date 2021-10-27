@@ -120,8 +120,8 @@ export function recursivelyRenameKeys(object: Object, rename: (str: string) => s
   return object;
 }
 
-export function openNewTextEditorWithContents(contents: string) {
-  var fixtureFile: vscode.Uri = vscode.Uri.parse('untitled:fixture.json');
+export function openNewTextEditorWithContents(contents: string, filename: string) {
+  var fixtureFile: vscode.Uri = vscode.Uri.parse(`untitled:${filename}`);
   vscode.workspace
     .openTextDocument(fixtureFile)
     .then((doc: vscode.TextDocument) => vscode.languages.setTextDocumentLanguage(doc, 'json'))
