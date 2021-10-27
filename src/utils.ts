@@ -1,4 +1,3 @@
-import {interfaces} from 'mocha';
 import * as vscode from 'vscode';
 
 const extensionId = 'stripe.vscode-stripe';
