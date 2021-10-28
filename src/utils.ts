@@ -125,10 +125,9 @@ export function openNewTextEditorWithContents(contents: string, filename: string
   vscode.workspace
     .openTextDocument(fixtureFile)
     .then((doc: vscode.TextDocument) => vscode.languages.setTextDocumentLanguage(doc, 'json'))
-    .then((doc: vscode.TextDocument) => {
-      vscode.window
-        .showTextDocument(doc, 1, false)
-        .then((e) => {
+    .then(
+      (doc: vscode.TextDocument) => {
+        vscode.window.showTextDocument(doc, 1, false).then((e) => {
           e.edit((edit) => {
             edit.insert(new vscode.Position(0, 0), contents);
           });
@@ -139,4 +138,54 @@ export function openNewTextEditorWithContents(contents: string, filename: string
         debugger;
       },
     );
+}
+
+function validateFixtureProperty(property: string, fixture: any, pos: number): string {
+  if (!(property in fixture)) {
+    return `Property "${property}" missing at fixture position ${pos}.`;
+  }
+  return '';
+}
+
+function validateFixture(fixture: any, pos: number): string {
+  const properties = ['name', 'path', 'method', 'params'];
+
+  try {
+    properties.forEach((prop: string) => {
+      const err = validateFixtureProperty(prop, fixture, pos);
+      if (err) {
+        throw new Error(err);
+      }
+    });
+  } catch (e: any) {
+    return e.message;
+  }
+  return '';
+}
+
+export function validateFixtureEvent(contents: string): string {
+  try {
+    const fixtureObj = JSON.parse(contents);
+
+    if (!('fixtures' in fixtureObj)) {
+      return '"Fixtures" property is missing.';
+    }
+
+    try {
+      let pos = 0;
+      fixtureObj.fixtures.forEach((fixture: any) => {
+        const err = validateFixture(fixture, pos);
+        pos += 1;
+        if (err) {
+          throw new Error(err);
+        }
+      });
+    } catch (e: any) {
+      return e.message.replace('Error:', '');
+    }
+
+    return '';
+  } catch (e: any) {
+    return `Failed to parse the JSON file. ${e.message}`;
+  }
 }
