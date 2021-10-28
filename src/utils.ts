@@ -140,6 +140,11 @@ export function openNewTextEditorWithContents(contents: string, filename: string
     );
 }
 
+export async function saveFileAndShowInEditor(content: string, fileUri: vscode.Uri) {
+  await vscode.workspace.fs.writeFile(fileUri, new TextEncoder().encode(content));
+  vscode.workspace.openTextDocument(fileUri).then((doc) => {vscode.window.showTextDocument(doc, {preview: false});});
+}
+
 function validateFixtureProperty(property: string, fixture: any, pos: number): string {
   if (!(property in fixture)) {
     return `Property "${property}" missing at fixture position ${pos}.`;
