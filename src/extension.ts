@@ -154,7 +154,7 @@ export function activate(this: any, context: ExtensionContext) {
     ],
     [
       'stripe.openTriggerCustomizedEvent',
-      () => stripeCommands.openTriggerCustomizedEvent(context, stripeDaemon, stripeOutputChannel),
+      () => stripeCommands.openTriggerCustomizedEvent(stripeDaemon, stripeOutputChannel),
     ],
     ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],

@@ -173,7 +173,7 @@ export function validateFixtureEvent(contents: string): string {
     const fixtureObj = JSON.parse(contents);
 
     if (!('fixtures' in fixtureObj)) {
-      return '"Fixtures" property is missing.';
+      return '"fixtures" property is missing.';
     }
 
     try {
@@ -191,6 +191,6 @@ export function validateFixtureEvent(contents: string): string {
 
     return '';
   } catch (e: any) {
-    return `Failed to parse the JSON file. ${e.message}`;
+    return `Failed to parse the JSON file. ${e.message}.`;
   }
 }

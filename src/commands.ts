@@ -373,26 +373,16 @@ export class Commands {
           }
         } else if (response) {
           const fixtureTemplate = response.getFixture();
-
-          vscode.window.showSaveDialog({
-            saveLabel: 'Save Fixture',
-          }).then((fileUri: vscode.Uri | undefined) => {
-            stripeOutputChannel.show();
-            if (fileUri) {
-              saveFileAndShowInEditor(fixtureTemplate, fileUri);
-              stripeOutputChannel.appendLine(`Fixture saved: ${fileUri.path}`);
-            } else {
-              openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
-              stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
-            }
-          });
+          openNewTextEditorWithContents(fixtureTemplate, 'customized_fixture.stripe.json');
+          
+          stripeOutputChannel.show();
+          stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
         }
       });
     }
   };
 
   openTriggerCustomizedEvent = async (
-    extensionContext: vscode.ExtensionContext,
     stripeDaemon: StripeDaemon,
     stripeOutputChannel: vscode.OutputChannel,
   ) => {
@@ -427,33 +417,33 @@ export class Commands {
       const err = validateFixtureEvent(content);
 
       if (err) {
-        await vscode.window.showErrorMessage(`Invalid fixture format: ${err}`);
-        return;
-      }
+        this.telemetry.sendEvent('invalidCustomizedFixture');
+        vscode.window.showErrorMessage(`Invalid fixture format. ${err}`);
+      } else {
+        stripeOutputChannel.show();
+        stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
 
-      stripeOutputChannel.show();
-      stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
+        const triggerRequest = new TriggerRequest();
+        triggerRequest.setEvent(eventName);
+        triggerRequest.setRaw(content);
 
-      const triggerRequest = new TriggerRequest();
-      triggerRequest.setEvent(eventName);
-      triggerRequest.setRaw(content);
-
-      daemonClient.trigger(triggerRequest, (error, response) => {
-        if (error) {
-          if (error.code === 12) {
-            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-            // 12: UNIMPLEMENTED
-            vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
-          } else {
-            vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
+        daemonClient.trigger(triggerRequest, (error, response) => {
+          if (error) {
+            if (error.code === 12) {
+              // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+              // 12: UNIMPLEMENTED
+              vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
+            } else {
+              vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
+            }
+          } else if (response) {
+            response
+              .getRequestsList()
+              .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
+            stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
           }
-        } else if (response) {
-          response
-            .getRequestsList()
-            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
-          stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
-        }
-      });
+        });
+      }
     });
   };
 

@@ -336,4 +336,41 @@ suite('commands', function () {
       assert.deepStrictEqual(windowSpy.args[0], [`Failed to resend event: 1234. ${erroMessage}`]);
     });
   });
+
+  suite('openTriggerCustomizedEvent', () => {
+    let stripeOutputChannel: Partial<vscode.OutputChannel>;
+
+    setup(() => {
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+      stripeOutputChannel = {appendLine: (value: string) => {}, show: () => {}};
+
+      const mockTriggerResponse = new TriggerResponse();
+      mockTriggerResponse.setRequestsList(['fixture_1', 'fixture_2']);
+      sandbox
+        .stub(daemonClient, 'trigger')
+        .value(
+          (
+            req: TriggerRequest,
+            callback: (error: grpc.ServiceError | null, res: TriggerResponse) => void,
+          ) => {
+            callback(null, mockTriggerResponse);
+          },
+        );
+    });
+
+    test('executes customized event', async () => {
+      const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
+
+      const infoMessage: any = 'Open and execute saved fixture'; // type any is to allow `showInformationMessage` stubbing
+      sandbox.stub(vscode.window, 'showInformationMessage').resolves(infoMessage);
+      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.file('/path/fixture.json')]);
+      sandbox.stub(vscode.workspace, 'openTextDocument').resolves();
+      sandbox.stub(vscode.window, 'showTextDocument').resolves();
+      
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      commands.openTriggerCustomizedEvent(<any>stripeDaemon, <any>stripeOutputChannel);
+
+      assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerCustomizedEvent']);
+    });
+  });
 });
