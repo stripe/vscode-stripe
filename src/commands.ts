@@ -5,7 +5,6 @@ import {
   getExtensionInfo,
   openNewTextEditorWithContents,
   recursivelyRenameKeys,
-  saveFileAndShowInEditor,
   showQuickPickWithItems,
   validateFixtureEvent,
 } from './utils';
@@ -362,7 +361,7 @@ export class Commands {
     if (eventName) {
       const fixtureRequest = new FixtureRequest();
       fixtureRequest.setEvent(eventName);
-      daemonClient.fixture(fixtureRequest, async (error, response) => {
+      daemonClient.fixture(fixtureRequest, (error, response) => {
         if (error) {
           if (error.code === 12) {
             // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
@@ -402,16 +401,16 @@ export class Commands {
           defaultUri: undefined,
           openLabel: 'Run Fixture',
         });
-  
+
         if (!fixtureFileUri) {
           return;
         }
-  
+
         // open the selected fixture on active editor
         vscode.workspace.openTextDocument(fixtureFileUri[0]).then((doc) => {vscode.window.showTextDocument(doc, {preview: false});});
         eventName = fixtureFileUri[0].fsPath.replace(/^.*[\\\/]/, '');
       }
-    
+
       // grabs the fixture content on the active editor
       const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
       const err = validateFixtureEvent(content);

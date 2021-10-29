@@ -358,7 +358,7 @@ suite('commands', function () {
         );
     });
 
-    test('executes customized event', async () => {
+    test('executes customized event', () => {
       const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
 
       const infoMessage: any = 'Open and execute saved fixture'; // type any is to allow `showInformationMessage` stubbing
@@ -366,7 +366,7 @@ suite('commands', function () {
       sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.file('/path/fixture.json')]);
       sandbox.stub(vscode.workspace, 'openTextDocument').resolves();
       sandbox.stub(vscode.window, 'showTextDocument').resolves();
-      
+
       const commands = new Commands(telemetry, terminal, extensionContext);
       commands.openTriggerCustomizedEvent(<any>stripeDaemon, <any>stripeOutputChannel);
 
