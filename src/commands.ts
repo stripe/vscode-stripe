@@ -418,31 +418,32 @@ export class Commands {
       if (err) {
         this.telemetry.sendEvent('invalidCustomizedFixture');
         vscode.window.showErrorMessage(`Invalid fixture format. ${err}`);
-      } else {
-        stripeOutputChannel.show();
-        stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
+        return;
+      } 
 
-        const triggerRequest = new TriggerRequest();
-        triggerRequest.setEvent(eventName);
-        triggerRequest.setRaw(content);
+      stripeOutputChannel.show();
+      stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
 
-        daemonClient.trigger(triggerRequest, (error, response) => {
-          if (error) {
-            if (error.code === 12) {
-              // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-              // 12: UNIMPLEMENTED
-              vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
-            } else {
-              vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
-            }
-          } else if (response) {
-            response
-              .getRequestsList()
-              .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
-            stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
+      const triggerRequest = new TriggerRequest();
+      triggerRequest.setEvent(eventName);
+      triggerRequest.setRaw(content);
+
+      daemonClient.trigger(triggerRequest, (error, response) => {
+        if (error) {
+          if (error.code === 12) {
+            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+            // 12: UNIMPLEMENTED
+            vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
+          } else {
+            vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
           }
-        });
-      }
+        } else if (response) {
+          response
+            .getRequestsList()
+            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
+          stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
+        }
+      });
     });
   };
 
