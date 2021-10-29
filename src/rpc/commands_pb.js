@@ -17,6 +17,8 @@ var global = Function('return this')();
 
 var events_resend_pb = require('./events_resend_pb.js');
 goog.object.extend(proto, events_resend_pb);
+var fixtures_pb = require('./fixtures_pb.js');
+goog.object.extend(proto, fixtures_pb);
 var listen_pb = require('./listen_pb.js');
 goog.object.extend(proto, listen_pb);
 var login_pb = require('./login_pb.js');

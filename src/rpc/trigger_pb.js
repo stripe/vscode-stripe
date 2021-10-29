@@ -103,7 +103,8 @@ proto.rpc.TriggerRequest.toObject = function(includeInstance, msg) {
     skipList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
     overrideList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
     addList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
-    removeList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
+    removeList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f,
+    raw: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -163,6 +164,10 @@ proto.rpc.TriggerRequest.deserializeBinaryFromReader = function(msg, reader) {
     case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.addRemove(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRaw(value);
       break;
     default:
       reader.skipField();
@@ -232,6 +237,13 @@ proto.rpc.TriggerRequest.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeRepeatedString(
       6,
+      f
+    );
+  }
+  f = message.getRaw();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -419,6 +431,24 @@ proto.rpc.TriggerRequest.prototype.addRemove = function(value, opt_index) {
  */
 proto.rpc.TriggerRequest.prototype.clearRemoveList = function() {
   return this.setRemoveList([]);
+};
+
+
+/**
+ * optional string raw = 7;
+ * @return {string}
+ */
+proto.rpc.TriggerRequest.prototype.getRaw = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rpc.TriggerRequest} returns this
+ */
+proto.rpc.TriggerRequest.prototype.setRaw = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

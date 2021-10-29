@@ -7,6 +7,7 @@
 import * as grpc from "@grpc/grpc-js";
 import * as commands_pb from "./commands_pb";
 import * as events_resend_pb from "./events_resend_pb";
+import * as fixtures_pb from "./fixtures_pb";
 import * as listen_pb from "./listen_pb";
 import * as login_pb from "./login_pb";
 import * as login_status_pb from "./login_status_pb";
@@ -20,6 +21,7 @@ import * as version_pb from "./version_pb";
 
 interface IStripeCLIService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     eventsResend: IStripeCLIService_IEventsResend;
+    fixture: IStripeCLIService_IFixture;
     listen: IStripeCLIService_IListen;
     login: IStripeCLIService_ILogin;
     loginStatus: IStripeCLIService_ILoginStatus;
@@ -40,6 +42,15 @@ interface IStripeCLIService_IEventsResend extends grpc.MethodDefinition<events_r
     requestDeserialize: grpc.deserialize<events_resend_pb.EventsResendRequest>;
     responseSerialize: grpc.serialize<events_resend_pb.EventsResendResponse>;
     responseDeserialize: grpc.deserialize<events_resend_pb.EventsResendResponse>;
+}
+interface IStripeCLIService_IFixture extends grpc.MethodDefinition<fixtures_pb.FixtureRequest, fixtures_pb.FixtureResponse> {
+    path: "/rpc.StripeCLI/Fixture";
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<fixtures_pb.FixtureRequest>;
+    requestDeserialize: grpc.deserialize<fixtures_pb.FixtureRequest>;
+    responseSerialize: grpc.serialize<fixtures_pb.FixtureResponse>;
+    responseDeserialize: grpc.deserialize<fixtures_pb.FixtureResponse>;
 }
 interface IStripeCLIService_IListen extends grpc.MethodDefinition<listen_pb.ListenRequest, listen_pb.ListenResponse> {
     path: "/rpc.StripeCLI/Listen";
@@ -136,6 +147,7 @@ export const StripeCLIService: IStripeCLIService;
 
 export interface IStripeCLIServer {
     eventsResend: grpc.handleUnaryCall<events_resend_pb.EventsResendRequest, events_resend_pb.EventsResendResponse>;
+    fixture: grpc.handleUnaryCall<fixtures_pb.FixtureRequest, fixtures_pb.FixtureResponse>;
     listen: grpc.handleServerStreamingCall<listen_pb.ListenRequest, listen_pb.ListenResponse>;
     login: grpc.handleUnaryCall<login_pb.LoginRequest, login_pb.LoginResponse>;
     loginStatus: grpc.handleUnaryCall<login_status_pb.LoginStatusRequest, login_status_pb.LoginStatusResponse>;
@@ -152,6 +164,9 @@ export interface IStripeCLIClient {
     eventsResend(request: events_resend_pb.EventsResendRequest, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
     eventsResend(request: events_resend_pb.EventsResendRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
     eventsResend(request: events_resend_pb.EventsResendRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
+    fixture(request: fixtures_pb.FixtureRequest, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
+    fixture(request: fixtures_pb.FixtureRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
+    fixture(request: fixtures_pb.FixtureRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
     listen(request: listen_pb.ListenRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<listen_pb.ListenResponse>;
     listen(request: listen_pb.ListenRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<listen_pb.ListenResponse>;
     login(request: login_pb.LoginRequest, callback: (error: grpc.ServiceError | null, response: login_pb.LoginResponse) => void): grpc.ClientUnaryCall;
@@ -187,6 +202,9 @@ export class StripeCLIClient extends grpc.Client implements IStripeCLIClient {
     public eventsResend(request: events_resend_pb.EventsResendRequest, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
     public eventsResend(request: events_resend_pb.EventsResendRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
     public eventsResend(request: events_resend_pb.EventsResendRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: events_resend_pb.EventsResendResponse) => void): grpc.ClientUnaryCall;
+    public fixture(request: fixtures_pb.FixtureRequest, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
+    public fixture(request: fixtures_pb.FixtureRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
+    public fixture(request: fixtures_pb.FixtureRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: fixtures_pb.FixtureResponse) => void): grpc.ClientUnaryCall;
     public listen(request: listen_pb.ListenRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<listen_pb.ListenResponse>;
     public listen(request: listen_pb.ListenRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<listen_pb.ListenResponse>;
     public login(request: login_pb.LoginRequest, callback: (error: grpc.ServiceError | null, response: login_pb.LoginResponse) => void): grpc.ClientUnaryCall;

@@ -200,4 +200,192 @@ suite('Utils', () => {
       );
     });
   });
+
+  suite('vaiidateFixtureEvent', () => {
+    test('valid fixture event returns no error', () => {
+        const content = `
+          {
+            "fixtures": [
+              {
+                "name": "customer",
+                "path": "/v1/customers",
+                "method": "post",
+                "params": {
+                  "description": "(created by Stripe CLI)",
+                  "source": "tok_visa"
+                }
+              }
+            ]
+          }
+        `;
+        assert.strictEqual(utils.validateFixtureEvent(content), '');
+    });
+
+    test('valid fixture event with extra properties returns no error', () => {
+      const content = `
+        {
+          "_meta": {
+            "template_version": 0
+          },
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post",
+              "params": {
+                "description": "(created by Stripe CLI)",
+                "source": "tok_visa"
+              }
+            }
+          ]
+        }
+      `;
+      assert.strictEqual(utils.validateFixtureEvent(content), '');
+    });
+
+    test('valid fixture event with multiple fixtures returns no error', () => {
+      const content = `
+        {
+          "_meta": {
+            "template_version": 0
+          },
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post",
+              "params": {
+                "description": "(created by Stripe CLI)",
+                "source": "tok_visa"
+              }
+            },
+            {
+              "name": "invoiceitem",
+              "path": "/v1/invoiceitems",
+              "method": "post",
+              "params": {
+                "amount": 2000,
+                "currency": "usd",
+                "customer": "cust_123",
+                "description": "(created by Stripe CLI)"
+              }
+            }
+          ]
+        }
+      `;
+      assert.strictEqual(utils.validateFixtureEvent(content), '');
+    });
+
+    test('fixture missing name property returns correct error message', () => {
+      const content = `
+        {
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post",
+              "params": {
+                "description": "(created by Stripe CLI)",
+                "source": "tok_visa"
+              }
+            },
+            {
+              "path": "/v1/invoiceitems",
+              "method": "post",
+              "params": {
+                "amount": 2000,
+                "currency": "usd",
+                "customer": "cust_123",
+                "description": "(created by Stripe CLI)"
+              }
+            }
+          ]
+        }
+      `;
+      assert.strictEqual(
+        utils.validateFixtureEvent(content),
+        'Property "name" missing at fixture position 1.'
+      );
+    });
+
+    test('fixture missing path property returns correct error message', () => {
+      const content = `
+        {
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post",
+              "params": {
+                "description": "(created by Stripe CLI)",
+                "source": "tok_visa"
+              }
+            },
+            {
+              "name": "invoiceitem",
+              "method": "post",
+              "params": {
+                "amount": 2000,
+                "currency": "usd",
+                "customer": "cust_123",
+                "description": "(created by Stripe CLI)"
+              }
+            }
+          ]
+        }
+      `;
+      assert.strictEqual(
+        utils.validateFixtureEvent(content),
+        'Property "path" missing at fixture position 1.'
+      );
+    });
+
+    test('fixture missing method property returns correct error message', () => {
+      const content = `
+        {
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post",
+              "params": {
+                "description": "(created by Stripe CLI)",
+                "source": "tok_visa"
+              }
+            },
+            {
+              "name": "invoiceitem",
+              "path": "/v1/invoiceitems",
+              "params": {
+                "amount": 2000,
+                "currency": "usd",
+                "customer": "cust_123",
+                "description": "(created by Stripe CLI)"
+              }
+            }
+          ]
+        }
+      `;
+      assert.strictEqual(
+        utils.validateFixtureEvent(content),
+        'Property "method" missing at fixture position 1.'
+      );
+    });
+
+    test('invalid JSON format returns correct error message', () => {
+      const content = `
+        {
+          "fixtures": [
+            {
+              "name": "customer",
+              "path": "/v1/customers",
+              "method": "post"
+              }
+      `;
+      assert.strictEqual(
+        utils.validateFixtureEvent(content).indexOf('Failed to parse the JSON file.'),
+        0
+      );
+  });
+  });
 });
