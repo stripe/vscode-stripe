@@ -419,7 +419,7 @@ export class Commands {
         this.telemetry.sendEvent('invalidCustomizedFixture');
         vscode.window.showErrorMessage(`Invalid fixture format. ${err}`);
         return;
-      } 
+      }
 
       stripeOutputChannel.show();
       stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
