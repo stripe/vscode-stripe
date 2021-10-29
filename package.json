@@ -412,6 +412,12 @@
         "language": "ruby",
         "path": "./config/snippets/ruby.json"
       }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "/stripe.fixture.json",
+        "url": "./schemas/stripe.fixture.schema.json"
+      }
     ]
   },
   "scripts": {

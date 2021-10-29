@@ -153,7 +153,7 @@ function validateFixtureProperty(property: string, fixture: any, pos: number): s
 }
 
 function validateFixture(fixture: any, pos: number): string {
-  const properties = ['name', 'path', 'method', 'params'];
+  const properties = ['name', 'path', 'method'];
 
   try {
     properties.forEach((prop: string) => {

@@ -372,33 +372,6 @@ suite('Utils', () => {
       );
     });
 
-    test('fixture missing params property returns correct error message', () => {
-      const content = `
-        {
-          "fixtures": [
-            {
-              "name": "customer",
-              "path": "/v1/customers",
-              "method": "post",
-              "params": {
-                "description": "(created by Stripe CLI)",
-                "source": "tok_visa"
-              }
-            },
-            {
-              "name": "invoiceitem",
-              "path": "/v1/invoiceitems",
-              "method": "post"
-            }
-          ]
-        }
-      `;
-      assert.strictEqual(
-        utils.validateFixtureEvent(content),
-        'Property "params" missing at fixture position 1.'
-      );
-    });
-
     test('invalid JSON format returns correct error message', () => {
       const content = `
         {

@@ -373,8 +373,8 @@ export class Commands {
           }
         } else if (response) {
           const fixtureTemplate = response.getFixture();
-          openNewTextEditorWithContents(fixtureTemplate, 'customized_fixture.stripe.json');
-          
+          openNewTextEditorWithContents(fixtureTemplate, 'stripe.fixture.json');
+
           stripeOutputChannel.show();
           stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
         }
