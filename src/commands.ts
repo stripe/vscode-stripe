@@ -361,7 +361,7 @@ export class Commands {
     if (eventName) {
       const fixtureRequest = new FixtureRequest();
       fixtureRequest.setEvent(eventName);
-      daemonClient.fixture(fixtureRequest, async (error, response) => {
+      daemonClient.fixture(fixtureRequest, (error, response) => {
         if (error) {
           if (error.code === 12) {
             // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
@@ -372,41 +372,16 @@ export class Commands {
           }
         } else if (response) {
           const fixtureTemplate = response.getFixture();
+          openNewTextEditorWithContents(fixtureTemplate, 'stripe.fixture.json');
 
-          const fixtureName = await vscode.window.showInputBox({prompt: 'Enter name to save fixture as. If canceled, then fixture will not be saved.', value: 'customized_fixture.json'});
-          if (fixtureName) {
-            // prompt user the directory to save fixture
-            const fixtureFileUri = await vscode.window.showOpenDialog({
-              canSelectFiles: false,
-              canSelectFolders: true,
-              canSelectMany: false,
-              defaultUri: undefined,
-              openLabel: 'Save Fixture',
-            }) || [];
-
-            if (fixtureFileUri.length === 0) {
-              // user did not select a directory to save the fixture
-              // display fixture in edtor as not saved
-              openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
-              stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
-            }
-
-            const fileUri = vscode.Uri.file(`${fixtureFileUri[0].fsPath}/${fixtureName}`);
-            await vscode.workspace.fs.writeFile(fileUri, new TextEncoder().encode(fixtureTemplate));
-            vscode.window.showTextDocument(fileUri, {preview: false});
-            stripeOutputChannel.appendLine(`Fixture saved: ${fileUri.path}`);
-
-          } else {
-            openNewTextEditorWithContents(fixtureTemplate, 'fixture.json');
-            stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
-          }
+          stripeOutputChannel.show();
+          stripeOutputChannel.appendLine(`Fixture template for ${eventName} loaded.`);
         }
       });
     }
   };
 
   openTriggerCustomizedEvent = async (
-    extensionContext: vscode.ExtensionContext,
     stripeDaemon: StripeDaemon,
     stripeOutputChannel: vscode.OutputChannel,
   ) => {
@@ -414,60 +389,61 @@ export class Commands {
     const daemonClient = await stripeDaemon.setupClient();
     let eventName = 'with customized fixture';
 
-    const useSaved = await vscode.window.showInputBox({
-      prompt: 'Would you like to run a previously saved fixture? If no, then the currently active editor file will be executed. Enter N if you do not have one saved.',
-      value: 'Y/N',
-    }) || 'N';
+    await vscode.window.showInformationMessage(
+      'Run previously saved fixture or one time use fixture on the active editor tab?',
+      ...['Open and execute saved fixture', 'Execute one time fixture']
+    ).then(async (option) => {
+      if (option === 'Open and execute saved fixture') {
+        const fixtureFileUri = await vscode.window.showOpenDialog({
+          canSelectFiles: true,
+          canSelectFolders: false,
+          canSelectMany: false,
+          defaultUri: undefined,
+          openLabel: 'Run Fixture',
+        });
 
-    if (useSaved.toLowerCase() === 'y') {
-      const fixtureFileUri = await vscode.window.showOpenDialog({
-        canSelectFiles: true,
-        canSelectFolders: false,
-        canSelectMany: false,
-        defaultUri: undefined,
-        openLabel: 'Run Fixture',
-      });
+        if (!fixtureFileUri) {
+          return;
+        }
 
-      if (!fixtureFileUri) {
+        // open the selected fixture on active editor
+        vscode.workspace.openTextDocument(fixtureFileUri[0]).then((doc) => {vscode.window.showTextDocument(doc, {preview: false});});
+        eventName = fixtureFileUri[0].fsPath.replace(/^.*[\\\/]/, '');
+      }
+
+      // grabs the fixture content on the active editor
+      const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
+      const err = validateFixtureEvent(content);
+
+      if (err) {
+        this.telemetry.sendEvent('invalidCustomizedFixture');
+        vscode.window.showErrorMessage(`Invalid fixture format. ${err}`);
         return;
       }
 
-      // open the selected fixture on active editor
-      vscode.workspace.openTextDocument(fixtureFileUri[0]).then((doc) => {vscode.window.showTextDocument(doc, {preview: false});});
-      eventName = fixtureFileUri[0].fsPath.replace(/^.*[\\\/]/, '');
-    }
+      stripeOutputChannel.show();
+      stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
 
-    // grabs the fixture content on the active editor
-    const content = vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText() || '';
-    const err = validateFixtureEvent(content);
+      const triggerRequest = new TriggerRequest();
+      triggerRequest.setEvent(eventName);
+      triggerRequest.setRaw(content);
 
-    if (err) {
-      await vscode.window.showErrorMessage(`Invalid fixture format: ${err}`);
-      return;
-    }
-
-    stripeOutputChannel.show();
-    stripeOutputChannel.appendLine(`Triggering event ${eventName}...`);
-
-    const triggerRequest = new TriggerRequest();
-    triggerRequest.setEvent(eventName);
-    triggerRequest.setRaw(content);
-
-    daemonClient.trigger(triggerRequest, (error, response) => {
-      if (error) {
-        if (error.code === 12) {
-          // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-          // 12: UNIMPLEMENTED
-          vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
-        } else {
-          vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
+      daemonClient.trigger(triggerRequest, (error, response) => {
+        if (error) {
+          if (error.code === 12) {
+            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+            // 12: UNIMPLEMENTED
+            vscode.window.showErrorMessage('Please upgrade your Stripe CLI to the latest version to use this feature.');
+          } else {
+            vscode.window.showErrorMessage(`Failed to trigger event ${eventName}. ${error.details}`);
+          }
+        } else if (response) {
+          response
+            .getRequestsList()
+            .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
+          stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
         }
-      } else if (response) {
-        response
-          .getRequestsList()
-          .forEach((f) => stripeOutputChannel.appendLine(`Ran fixture: ${f}`));
-        stripeOutputChannel.appendLine(`Triggering ${eventName} succeeded! Check dashboard for event details.`);
-      }
+      });
     });
   };
 
