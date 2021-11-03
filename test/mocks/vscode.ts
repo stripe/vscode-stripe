@@ -1,11 +1,20 @@
 import * as vscode from 'vscode';
-import {Executable, ExecutableOptions, LanguageClientOptions} from 'vscode-languageclient';
+import {Executable, ExecutableOptions} from 'vscode-languageclient/node';
+import {LanguageClientOptions} from 'vscode-languageclient';
 
 export class TestMemento implements vscode.Memento {
   storage: Map<string, any>;
 
   constructor() {
     this.storage = new Map();
+  }
+
+  keys(): readonly string[] {
+    throw new Error('Method not implemented.');
+  }
+
+  public setKeysForSync(keys: readonly string[]): any {
+    throw new Error('Method not implemented.');
   }
 
   public get(key: string, defaultValue?: any): any {
@@ -20,7 +29,7 @@ export class TestMemento implements vscode.Memento {
 }
 
 export const mocks = {
-  extensionContextMock: <vscode.ExtensionContext>{
+  extensionContextMock: <vscode.ExtensionContext><unknown>{
     subscriptions: [],
     workspaceState: new TestMemento(),
     globalState: new TestMemento(),

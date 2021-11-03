@@ -10,7 +10,7 @@ import {
 } from 'vscode';
 import {EVENT_ID_REGEXP, LOG_ID_REGEXP} from './resourceIDs';
 import {NoOpTelemetry, StripeAnalyticsServiceTelemetry} from './telemetry';
-import {ServerOptions, TransportKind} from 'vscode-languageclient';
+import {ServerOptions, TransportKind} from 'vscode-languageclient/node';
 import {
   initializeStripeWorkspaceState,
   retrieveEventDetails,

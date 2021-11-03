@@ -38,7 +38,7 @@ export class StripeSamples {
   selectAndCloneSample = async () => {
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
-    } catch (e) {
+    } catch (e: any) {
       if (e.name === 'NoDaemonCommandError') {
         this.stripeClient.promptUpdateForDaemon();
       }
@@ -85,7 +85,7 @@ export class StripeSamples {
         : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
 
       await this.promptOpenFolder(postInstallMessage, clonePath);
-    } catch (e) {
+    } catch (e: any) {
       vscode.window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
   };

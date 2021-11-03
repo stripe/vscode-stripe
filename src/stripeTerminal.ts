@@ -37,7 +37,7 @@ export class StripeTerminal {
       const terminal = await this.createTerminal();
       terminal.sendText(commandString);
       terminal.show();
-    } catch (e) {
+    } catch (e: any) {
       vscode.window.showErrorMessage(e.message);
     }
   }

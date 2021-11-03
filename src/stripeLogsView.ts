@@ -40,7 +40,7 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
       const daemonClient = await this.stripeDaemon.setupClient();
       const logsTailStream = daemonClient.logsTail(new LogsTailRequest());
       return logsTailStream;
-    } catch (e) {
+    } catch (e: any) {
       if (e.name === 'NoDaemonCommandError') {
         this.stripeClient.promptUpdateForDaemon();
       }

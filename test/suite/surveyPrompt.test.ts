@@ -9,7 +9,7 @@ import sinon from 'sinon';
 suite('surveyPrompt', () => {
   let sandbox: sinon.SinonSandbox;
   let extensionContext: vscode.ExtensionContext;
-  let globalState: vscode.Memento;
+  let globalState: vscode.Memento & {setKeysForSync(keys: readonly string[]): void};
 
   setup(() => {
     sandbox = sinon.createSandbox();

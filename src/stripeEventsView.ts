@@ -95,7 +95,7 @@ export class StripeEventsViewProvider extends StreamingViewDataProvider<ListenRe
       const daemonClient = await this.stripeDaemon.setupClient();
       const listenStream = daemonClient.listen(new ListenRequest());
       return listenStream;
-    } catch (e) {
+    } catch (e: any) {
       if (e.name === 'NoDaemonCommandError') {
         this.stripeClient.promptUpdateForDaemon();
       }
