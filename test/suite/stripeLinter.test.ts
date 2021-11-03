@@ -32,7 +32,7 @@ suite('StripeLinter', () => {
 
       const diagnostics = vscode.languages.getDiagnostics(doc.uri);
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.callCount, 0);
+      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', sinon.match.any), false);
       assert.strictEqual(diagnostics.length, 0);
     });
 
@@ -54,7 +54,7 @@ suite('StripeLinter', () => {
 
       const diagnostics = vscode.languages.getDiagnostics(doc.uri);
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.callCount, 0);
+      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', sinon.match.any), false);
       assert.strictEqual(diagnostics.length, 0);
     });
 
@@ -71,11 +71,7 @@ suite('StripeLinter', () => {
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.calledOnce, true);
-      assert.deepStrictEqual(telemetrySpy.args[0], [
-        'diagnostics.show',
-        vscode.DiagnosticSeverity.Error,
-      ]);
+      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', vscode.DiagnosticSeverity.Error), true);
       assert.strictEqual(diagnostics.length, 1);
     });
 
@@ -92,7 +88,7 @@ suite('StripeLinter', () => {
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.callCount, 0);
+      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', sinon.match.any), false);
       assert.strictEqual(diagnostics.length, 0);
     });
 
@@ -109,7 +105,7 @@ suite('StripeLinter', () => {
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.callCount, 0);
+      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', sinon.match.any), false);
       assert.strictEqual(diagnostics.length, 0);
     });
   });
