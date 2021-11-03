@@ -8,7 +8,7 @@ export class StripeTreeViewDataProvider implements TreeDataProvider<TreeItem> {
 
   public refresh() {
     this.treeItems = null;
-    this._onDidChangeTreeData.fire();
+    this._onDidChangeTreeData.fire(null);
   }
 
   public getTreeItem(element: TreeItem): TreeItem {

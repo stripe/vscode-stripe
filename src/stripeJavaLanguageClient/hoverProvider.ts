@@ -14,9 +14,10 @@ import {
   languages,
 } from 'vscode';
 import {FindLinks, ServerMode, getJavaApiDocLink} from './utils';
-import {HoverRequest, LanguageClient, TextDocumentPositionParams} from 'vscode-languageclient';
+import {HoverRequest, TextDocumentPositionParams} from 'vscode-languageclient';
 import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
 import {Commands as javaCommands} from './commands';
+import {LanguageClient} from 'vscode-languageclient/node';
 
 export type provideHoverCommandFn = (
   params: TextDocumentPositionParams,
@@ -125,7 +126,7 @@ export class JavaHoverProvider implements HoverProvider {
     position: Position,
     token: CancellationToken,
   ): Promise<Hover | undefined> {
-    let contents: MarkedString[] = [];
+    let contents: any[] = [];
     let range;
 
     const params = {
@@ -155,7 +156,7 @@ export class JavaHoverProvider implements HoverProvider {
     }
 
     if (!!stripeApiHoverContent) {
-      contents = contents.concat([stripeApiHoverContent] as MarkedString[]);
+      contents = contents.concat([stripeApiHoverContent]);
     }
 
     // get contributed hover commands from third party extensions.
@@ -166,7 +167,7 @@ export class JavaHoverProvider implements HoverProvider {
         contributedCommands.map((command) => this.convertCommandToMarkdown(command)).join(' | '),
       );
       contributedContent.isTrusted = true;
-      contents = contents.concat([contributedContent] as MarkedString[]);
+      contents = contents.concat([contributedContent]);
     }
 
     // combine all hover contents with java docs from server

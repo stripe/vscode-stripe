@@ -5,7 +5,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import {Executable, ExecutableOptions} from 'vscode-languageclient';
+import {Executable, ExecutableOptions} from 'vscode-languageclient/node';
 import {ExtensionContext, OutputChannel} from 'vscode';
 import {
   JDKInfo,

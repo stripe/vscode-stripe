@@ -41,7 +41,7 @@ export abstract class StreamingViewDataProvider<
       this.setViewState(ViewState.Loading);
       try {
         await this.setupStreams();
-      } catch (e) {
+      } catch (e: any) {
         window.showErrorMessage(e.message);
         this.stopStreaming();
       }

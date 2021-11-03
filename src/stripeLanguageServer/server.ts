@@ -5,10 +5,10 @@ import {
   ProposedFeatures,
   TextDocumentSyncKind,
   TextDocuments,
-  createConnection,
 } from 'vscode-languageserver';
 import {getLangUrlParamFromLanguageId, getStripeApiReferenceUrl} from './utils';
 import {TextDocument} from 'vscode-languageserver-textdocument';
+import {createConnection} from 'vscode-languageserver/node';
 import {stripeMethodList} from './patterns';
 
 const connection = createConnection(ProposedFeatures.all);

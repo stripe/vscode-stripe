@@ -3,7 +3,7 @@ import * as javaClientUtils from '../../src/stripeJavaLanguageClient/utils';
 import {CancellationToken, MarkdownString, Position, TextDocument} from 'vscode';
 import {getMockJavaServerOptions, mocks} from '../mocks/vscode';
 import {JavaHoverProvider} from '../../src/stripeJavaLanguageClient/hoverProvider';
-import {LanguageClient} from 'vscode-languageclient';
+import {LanguageClient} from 'vscode-languageclient/node';
 import sinon from 'ts-sinon';
 
 const getServerResponse = (isClientSdk: boolean): any => {

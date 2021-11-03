@@ -25,6 +25,9 @@ const activeTextEditor = (fileExt: string): any => {
 };
 
 class TestLanguageClient extends BaseLanguageClient {
+  protected getLocale(): string {
+    throw new Error('Method not implemented.');
+  }
   constructor() {
     super('foo', 'foo', {});
   }
@@ -63,7 +66,7 @@ suite('languageServerClient', function () {
   });
 
   suite('activateDotNetServer', () => {
-    const module = setupProxies({'vscode-languageclient': vscodeStub});
+    const module = setupProxies({'vscode-languageclient/node': vscodeStub});
     const dotnetPath = '/my/executable/path';
     let telemetrySpy: sinon.SinonSpy;
 

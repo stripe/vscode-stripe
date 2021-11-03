@@ -1,5 +1,6 @@
 import {ClientStatus, EXTENSION_NAME_STANDARD, ServerMode, StatusNotification, StatusReport} from './utils';
-import {LanguageClient, LanguageClientOptions, ServerOptions} from 'vscode-languageclient';
+import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
+import {LanguageClientOptions} from 'vscode-languageclient';
 import {updateServerMode} from '../languageServerClient';
 
 /**

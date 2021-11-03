@@ -18,11 +18,10 @@ import {
   CloseAction,
   Emitter,
   ErrorAction,
-  LanguageClient,
   LanguageClientOptions,
-  ServerOptions,
   Trace,
 } from 'vscode-languageclient';
+import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {
   ExtensionContext,
   OutputChannel,

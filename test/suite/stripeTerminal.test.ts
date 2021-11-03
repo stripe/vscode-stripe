@@ -8,15 +8,15 @@ suite('stripeTerminal', function () {
 
   let sandbox: sinon.SinonSandbox;
 
-  const terminalStub = <vscode.Terminal>{
+  const terminalStub = <vscode.Terminal><unknown>{
     name: 'Stubbed Terminal',
     processId: Promise.resolve(undefined),
     creationOptions: {},
     exitStatus: undefined,
-    sendText: (text: string, addNewLine?: boolean) => {},
-    show: (preserveFocus?: boolean) => {},
-    hide: () => {},
-    dispose: () => {},
+    sendText: (text: string, addNewLine?: boolean) => { },
+    show: (preserveFocus?: boolean) => { },
+    hide: () => { },
+    dispose: () => { },
   };
 
   setup(() => {
