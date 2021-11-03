@@ -7,7 +7,6 @@ import {
   Hover,
   HoverProvider,
   MarkdownString,
-  MarkedString,
   Position,
   ProviderResult,
   TextDocument,
@@ -16,8 +15,8 @@ import {
 import {FindLinks, ServerMode, getJavaApiDocLink} from './utils';
 import {HoverRequest, TextDocumentPositionParams} from 'vscode-languageclient';
 import {getActiveJavaLanguageClient, javaServerMode} from '../languageServerClient';
-import {Commands as javaCommands} from './commands';
 import {LanguageClient} from 'vscode-languageclient/node';
+import {Commands as javaCommands} from './commands';
 
 export type provideHoverCommandFn = (
   params: TextDocumentPositionParams,

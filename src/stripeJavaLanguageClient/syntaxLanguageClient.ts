@@ -1,6 +1,6 @@
 import {ClientStatus, EXTENSION_NAME_SYNTAX, StatusNotification} from './utils';
-import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {CloseAction, ErrorAction, LanguageClientOptions} from 'vscode-languageclient';
+import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 
 /**
  * Syntax java client based off generic language client

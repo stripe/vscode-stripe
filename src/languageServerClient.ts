@@ -21,7 +21,6 @@ import {
   LanguageClientOptions,
   Trace,
 } from 'vscode-languageclient';
-import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {
   ExtensionContext,
   OutputChannel,
@@ -31,6 +30,7 @@ import {
   window,
   workspace,
 } from 'vscode';
+import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {OSType, getOSType} from './utils';
 import {Commands} from './stripeJavaLanguageClient/commands';
 import {StandardLanguageClient} from './stripeJavaLanguageClient/standardLanguageClient';
