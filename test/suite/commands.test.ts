@@ -15,10 +15,16 @@ import {StripeEvent} from '../../src/rpc/common_pb';
 import {StripeTreeItem} from '../../src/stripeTreeItem';
 import {SurveyPrompt} from '../../src/surveyPrompt';
 import {mocks} from '../mocks/vscode';
+import osName from 'os-name';
 
 const proxyquire = require('proxyquire');
 const modulePath = '../../src/commands';
 const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
+const osNameStub = {
+  osName(): string {
+    return 'testOS';
+  },
+};
 
 suite('commands', function () {
   this.timeout(20000);
@@ -96,7 +102,10 @@ suite('commands', function () {
 
       const fallbackEventsList = ['fall', 'back', 'list'];
       const commands = new Commands(telemetry, terminal, extensionContext, fallbackEventsList);
-      const eventsList = await commands.getSupportedEventsList(<any>daemonClient, <any>stripeOutputChannel);
+      const eventsList = await commands.getSupportedEventsList(
+        <any>daemonClient,
+        <any>stripeOutputChannel,
+      );
       assert.deepStrictEqual(eventsList, fallbackEventsList);
     });
   });
@@ -222,11 +231,11 @@ suite('commands', function () {
   });
 
   suite('openSurvey', () => {
+    // stub out osName
+    const module = setupProxies({'os-name': osNameStub});
+
     test('openSurvey saves survey prompt settings', () => {
       sandbox.stub(vscode.env, 'openExternal');
-      // stub out osName
-      const osName = sandbox.stub().returns('testOS');
-      const module = setupProxies({'os-name': osName});
 
       const surveyPrompt = new SurveyPrompt(extensionContext);
       const promptSpy = sandbox.spy(surveyPrompt, 'updateSurveySettings');
@@ -363,7 +372,9 @@ suite('commands', function () {
 
       const infoMessage: any = 'Open and execute saved fixture'; // type any is to allow `showInformationMessage` stubbing
       sandbox.stub(vscode.window, 'showInformationMessage').resolves(infoMessage);
-      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.file('/path/fixture.json')]);
+      sandbox
+        .stub(vscode.window, 'showOpenDialog')
+        .resolves([vscode.Uri.file('/path/fixture.json')]);
       sandbox.stub(vscode.workspace, 'openTextDocument').resolves();
       sandbox.stub(vscode.window, 'showTextDocument').resolves();
 
