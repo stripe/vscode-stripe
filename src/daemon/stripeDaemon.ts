@@ -130,7 +130,7 @@ export class StripeDaemon {
     });
   };
 
-  private restartDaemon = async (): Promise<DaemonConfig> => {
+  restartDaemon = async (): Promise<DaemonConfig> => {
     this.daemonProcess?.kill();
     this.config = await this.startDaemon(this.config?.port); // restart on same port
     return this.config;

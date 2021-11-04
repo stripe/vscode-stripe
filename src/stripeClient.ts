@@ -98,7 +98,7 @@ export class StripeClient {
   }
 
   async promptLogin() {
-    const actionText = 'Run `stripe login` in the terminal to login';
+    const actionText = 'Login to the CLI';
     const returnValue = await vscode.window.showErrorMessage(
       'You need to login with the Stripe CLI for this project before you can continue',
       {},
