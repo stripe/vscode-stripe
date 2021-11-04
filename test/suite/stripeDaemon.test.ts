@@ -36,7 +36,7 @@ suite('StripeDaemon', () => {
       },
     });
     daemonProcessStub.stderr = new Readable({read: () => {}});
-    daemonProcessStub.kill = () => {};
+    daemonProcessStub.kill = () => true;
 
     const module = setupProxies({execa: () => daemonProcessStub});
     return new module.StripeDaemon(stripeClient);

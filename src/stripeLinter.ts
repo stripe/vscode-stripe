@@ -43,7 +43,7 @@ export class StripeLinter {
         this.telemetry.sendEvent('linter.perf.git-check-ignore-duration', entry.duration);
       });
     });
-    this.perfObserver.observe({entryTypes: ['measure'], buffered: true});
+    this.perfObserver.observe({entryTypes: ['measure']});
   }
 
   async activate() {

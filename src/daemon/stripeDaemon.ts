@@ -114,14 +114,19 @@ export class StripeDaemon {
         } catch (e) {
           reject(e);
         } finally {
-          // We can stop listening after reading the config.
-          daemonProcess.stdout.removeAllListeners();
+          if (daemonProcess.stdout) {
+            // We can stop listening after reading the config.
+            daemonProcess.stdout.removeAllListeners();
+          }
           callback();
         }
       };
 
       const stdoutStream = new Writable({write, decodeStrings: false});
-      daemonProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(stdoutStream);
+
+      if (daemonProcess.stdout) {
+        daemonProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(stdoutStream);
+      }
     });
   };
 
