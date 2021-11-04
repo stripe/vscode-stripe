@@ -5,6 +5,8 @@ import * as stripeState from '../../src/stripeWorkspaceState';
 import * as vscode from 'vscode';
 
 import {EventsResendRequest, EventsResendResponse} from '../../src/rpc/events_resend_pb';
+import {LoginRequest, LoginResponse} from '../../src/rpc/login_pb';
+import {LoginStatusRequest, LoginStatusResponse} from '../../src/rpc/login_status_pb';
 import {TriggerRequest, TriggerResponse} from '../../src/rpc/trigger_pb';
 import {TriggersListRequest, TriggersListResponse} from '../../src/rpc/triggers_list_pb';
 import {Commands} from '../../src/commands';
@@ -34,29 +36,40 @@ suite('commands', function () {
 
   const stripeDaemon = <Partial<StripeDaemon>>{
     setupClient: () => {},
+    restartDaemon: () => {},
   };
 
   const supportedEvents = ['a'];
   const daemonClient = <Partial<StripeCLIClient>>{
+    eventsResend: (
+      req: EventsResendRequest,
+      callback: (error: grpc.ServiceError | null, res: EventsResendResponse) => void,
+    ) => {
+      callback(null, new EventsResendResponse());
+    },
+    login: (
+      req: LoginRequest,
+      callback: (error: grpc.ServiceError | null, res: LoginResponse) => void,
+    ) => {
+      callback(null, new LoginResponse());
+    },
+    loginStatus: (
+      req: LoginStatusRequest,
+      callback: (error: grpc.ServiceError | null, res: LoginStatusResponse) => void,
+    ) => {
+      callback(null, new LoginStatusResponse());
+    },
     triggersList: (
       req: TriggersListRequest,
       callback: (error: grpc.ServiceError | null, res: TriggersListResponse) => void,
     ) => {
       callback(null, new TriggersListResponse());
     },
-
     trigger: (
       req: TriggerRequest,
       callback: (error: grpc.ServiceError | null, res: TriggerResponse) => void,
     ) => {
       callback(null, new TriggerResponse());
-    },
-
-    eventsResend: (
-      req: EventsResendRequest,
-      callback: (error: grpc.ServiceError | null, res: EventsResendResponse) => void,
-    ) => {
-      callback(null, new EventsResendResponse());
     },
   };
 
@@ -67,6 +80,102 @@ suite('commands', function () {
 
   teardown(() => {
     sandbox.restore();
+  });
+
+  suite('startLogin', () => {
+    setup(() => {
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+    });
+
+    test('login success', async () => {
+      const informationSpy = sandbox.spy(vscode.window, 'showInformationMessage');
+      const restartStub = sandbox.stub(stripeDaemon, 'restartDaemon');
+
+      sandbox
+        .stub(daemonClient, 'loginStatus')
+        .value(
+          (
+            req: LoginStatusRequest,
+            callback: (error: grpc.ServiceError | null, res: LoginStatusResponse) => void,
+          ) => {
+            callback(null, new LoginStatusResponse());
+          },
+        );
+
+      sandbox
+        .stub(daemonClient, 'login')
+        .value(
+          (
+            req: LoginRequest,
+            callback: (error: grpc.ServiceError | null, res: LoginResponse) => void,
+          ) => {
+            callback(null, new LoginResponse());
+          },
+        );
+
+      const commands = new Commands(telemetry, terminal, extensionContext);
+
+      await commands.confirmLogin(<any>stripeDaemon);
+
+      // assert restart daemon was called
+      assert.strictEqual(restartStub.calledOnce, true);
+      // asswer shows success message
+      assert.deepStrictEqual(informationSpy.args[0], [
+        'Successfully logged into your Stripe Account!',
+      ]);
+    });
+
+    test('shows error when login request fails.', async () => {
+      const errorSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'An unknown error occurred',
+      };
+
+      sandbox
+        .stub(daemonClient, 'login')
+        .value(
+          (
+            req: LoginRequest,
+            callback: (error: grpc.ServiceError | null, res: LoginResponse) => void,
+          ) => {
+            callback(<any>err, new LoginResponse());
+          },
+        );
+
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      await commands.startLogin(<any>stripeDaemon);
+
+      // assert information message
+      assert.deepStrictEqual(errorSpy.args[0], [`Failed to login. ${err.details}`]);
+    });
+
+    test('shows error when login confirmation fails', async () => {
+      const errorSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'An unknown error occurred',
+      };
+
+      sandbox
+        .stub(daemonClient, 'loginStatus')
+        .value(
+          (
+            req: LoginStatusRequest,
+            callback: (error: grpc.ServiceError | null, res: LoginStatusResponse) => void,
+          ) => {
+            callback(<any>err, new LoginStatusResponse());
+          },
+        );
+
+      const commands = new Commands(telemetry, terminal, extensionContext);
+      await commands.confirmLogin(<any>stripeDaemon);
+
+      // assert information message
+      assert.deepStrictEqual(errorSpy.args[0], [`Failed to login. ${err.details}`]);
+    });
   });
 
   suite('getSupportedEventsList', () => {
@@ -96,7 +205,10 @@ suite('commands', function () {
 
       const fallbackEventsList = ['fall', 'back', 'list'];
       const commands = new Commands(telemetry, terminal, extensionContext, fallbackEventsList);
-      const eventsList = await commands.getSupportedEventsList(<any>daemonClient, <any>stripeOutputChannel);
+      const eventsList = await commands.getSupportedEventsList(
+        <any>daemonClient,
+        <any>stripeOutputChannel,
+      );
       assert.deepStrictEqual(eventsList, fallbackEventsList);
     });
   });
@@ -363,7 +475,9 @@ suite('commands', function () {
 
       const infoMessage: any = 'Open and execute saved fixture'; // type any is to allow `showInformationMessage` stubbing
       sandbox.stub(vscode.window, 'showInformationMessage').resolves(infoMessage);
-      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.file('/path/fixture.json')]);
+      sandbox
+        .stub(vscode.window, 'showOpenDialog')
+        .resolves([vscode.Uri.file('/path/fixture.json')]);
       sandbox.stub(vscode.workspace, 'openTextDocument').resolves();
       sandbox.stub(vscode.window, 'showTextDocument').resolves();
 

@@ -248,23 +248,6 @@ export class Commands {
     this.telemetry.sendEvent('login');
     const daemonClient = await stripeDaemon.setupClient();
 
-    const blah = (progress: vscode.Progress<any>) => {
-      return new Promise<void>((resolve, reject) => {
-        daemonClient.loginStatus(new LoginStatusRequest(), async (error, response) => {
-          if (error) {
-            vscode.window.showErrorMessage(`Failed to login. ${error.details}`);
-            reject(error);
-          } else if (response) {
-            progress.report({});
-            // we need to restart the daemon to pick up new config changes.
-            await stripeDaemon.restartDaemon();
-            vscode.window.showInformationMessage('Successfully logged into your Stripe Account!');
-            resolve();
-          }
-        });
-      });
-    };
-
     daemonClient.login(new LoginRequest(), async (error, response) => {
       if (error) {
         vscode.window.showErrorMessage(`Failed to login. ${error.details}`);
@@ -273,7 +256,6 @@ export class Commands {
         await vscode.window
           .showInformationMessage(
             `Your pairing code is ${pairingCode}. \n This pairing code verifies your authentication with Stripe.`,
-            // {modal: true},
             ...['Authenticate from Dashboard'],
           )
           .then((option) => {
@@ -285,13 +267,28 @@ export class Commands {
                   location: vscode.ProgressLocation.Notification,
                   title: `Your pairing code is ${pairingCode}. Waiting for confirmation...`,
                 },
-                async (progress) => {
-                  await blah(progress);
-                },
+                () => this.confirmLogin(stripeDaemon),
               );
             }
           });
       }
+    });
+  };
+
+  confirmLogin = async (stripeDaemon: StripeDaemon) => {
+    const daemonClient = await stripeDaemon.setupClient();
+    return new Promise<void>((resolve, reject) => {
+      daemonClient.loginStatus(new LoginStatusRequest(), async (error, response) => {
+        if (error) {
+          vscode.window.showErrorMessage(`Failed to login. ${error.details}`);
+          resolve();
+        } else if (response) {
+          // we need to restart the daemon to pick up new config changes.
+          await stripeDaemon.restartDaemon();
+          vscode.window.showInformationMessage('Successfully logged into your Stripe Account!');
+          resolve();
+        }
+      });
     });
   };
 
