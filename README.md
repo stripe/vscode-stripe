@@ -57,7 +57,7 @@ The Stripe VS Code Extension collects basic telemetry in order to improve this e
 | compare-versions                   | Compare semver version strings to find greater, equal or lesser.                                                             | 4.0.1   |   1.4k |     MIT    |
 | execa                              | Process execution for humans                                                                                                 | 5.1.1   |  25.4k |     MIT    |
 | expand-home-dir                    | Expand ~/                                                                                                                    | 0.0.3   |   342B |     BSD    |
-| find-java-home                     | Find JAVA_HOME on any system                                                                                                 | 1.1.0   |  12.8k | Apache-2.0 |
+| find-java-home                     | Find JAVA_HOME on any system                                                                                                 | 1.2.2   |  12.8k | Apache-2.0 |
 | fs-extra                           | fs-extra contains methods that aren't included in the vanilla Node.js fs package. Such as recursive mkdir, copy, and remove. | 10.0.0  |  31.7k |     MIT    |
 | moment                             | Parse, validate, manipulate, and display dates                                                                               | 2.29.1  | 289.7k |     MIT    |
 | os-name                            | Get the name of the current operating system. Example: macOS Sierra                                                          | 3.1.0   |  27.2k |     MIT    |
