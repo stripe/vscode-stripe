@@ -17,6 +17,7 @@ import {
   setWebhookEndpoint,
 } from './stripeWorkspaceState';
 
+import osName = require('os-name');
 import {EventsResendRequest} from './rpc/events_resend_pb';
 import {FixtureRequest} from './rpc/fixtures_pb';
 import {StripeCLIClient} from './rpc/commands_grpc_pb';
@@ -30,7 +31,6 @@ import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
 import {TriggerRequest} from './rpc/trigger_pb';
 import {TriggersListRequest} from './rpc/triggers_list_pb';
-import osName from 'os-name';
 
 export class Commands {
   telemetry: Telemetry;

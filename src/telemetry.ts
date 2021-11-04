@@ -3,8 +3,9 @@ import * as queryString from 'querystring';
 import * as vscode from 'vscode';
 import {getCliVersion, getStripeAccountId} from './stripeWorkspaceState';
 import {getExtensionInfo} from './utils';
-import osName from 'os-name';
 import {v4 as uuidv4} from 'uuid';
+
+const osName = require('os-name');
 
 export const areAllTelemetryConfigsEnabled = () => {
   // respect both the overall and Stripe-specific telemetry configs
