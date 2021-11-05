@@ -256,7 +256,7 @@ export class Commands {
         await vscode.window
           .showInformationMessage(
             `Your pairing code is ${pairingCode}. \n This pairing code verifies your authentication with Stripe.`,
-            ...['Authenticate from Dashboard'],
+            ...['Authenticate from Dashboard', 'Cancel'],
           )
           .then((option) => {
             if (option === 'Authenticate from Dashboard') {
