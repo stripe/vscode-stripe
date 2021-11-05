@@ -76,6 +76,15 @@ export class StripeDaemon {
   };
 
   /**
+   * Kill the existing daemon process it if exists and start another one.
+   */
+  restartDaemon = async (): Promise<DaemonConfig> => {
+    this.daemonProcess?.kill();
+    this.config = await this.startDaemon(this.config?.port); // restart on same port
+    return this.config;
+  };
+
+  /**
    * Start the Stripe daemon process and parse its stdout to get the gRPC server config. Throws
    * MalformedConfigError, NoDaemonCommandError, or SyntaxError if the server can't be started.
    */
@@ -128,11 +137,5 @@ export class StripeDaemon {
         daemonProcess.stdout.setEncoding('utf8').pipe(new LineStream()).pipe(stdoutStream);
       }
     });
-  };
-
-  private restartDaemon = async (): Promise<DaemonConfig> => {
-    this.daemonProcess?.kill();
-    this.config = await this.startDaemon(this.config?.port); // restart on same port
-    return this.config;
   };
 }

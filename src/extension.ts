@@ -129,7 +129,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
     ['stripe.createStripeSample', () => stripeCommands.createStripeSample(stripeSamples)],
-    ['stripe.login', stripeCommands.startLogin],
+    ['stripe.login', () => stripeCommands.startLogin(stripeDaemon)],
     ['stripe.openCLI', stripeCommands.openCLI],
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
     ['stripe.openDashboardEvent', stripeCommands.openDashboardEvent],
