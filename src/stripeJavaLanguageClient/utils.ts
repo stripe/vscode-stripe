@@ -34,6 +34,7 @@ export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
 export const IS_WORKSPACE_JDK_ALLOWED = 'java.ls.isJdkAllowed';
+export const STRIPE_JAVA_HOME = 'stripe.java.home';
 
 export interface JDKInfo {
   javaHome: string;
@@ -322,9 +323,12 @@ export async function getJavaSDKInfo(
 ): Promise<JDKInfo> {
   let source: string;
   let javaVersion: number = 0;
-  let javaHome = (await checkJavaPreferences(context)) || '';
+  // get java.home from vscode settings config first
+  let javaHome = await getJavaHomeFromConfig() || '';
+  let sdkInfo = {javaVersion, javaHome};
+
   if (javaHome) {
-    source = `java.home variable defined in ${env.appName} settings`;
+    source = `${STRIPE_JAVA_HOME} variable defined in ${env.appName} settings`;
     javaHome = expandHomeDir(javaHome);
     if (!(await fse.pathExists(javaHome))) {
       outputChannel.appendLine(
@@ -340,50 +344,67 @@ export async function getJavaSDKInfo(
       outputChannel.appendLine(msg);
     }
     javaVersion = (await getJavaVersion(javaHome)) || 0;
+    sdkInfo = {javaHome, javaVersion};
+  } else {
+    // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
+    sdkInfo = getJavaHomeFromEnvironment();
   }
-  return {javaHome, javaVersion};
+
+  // update vscode java.home workspace value for fast access next time
+  updateJavaHomeWorkspaceConfig(context, sdkInfo.javaHome);
+
+  return sdkInfo;
 }
 
-async function checkJavaPreferences(context: ExtensionContext) {
+function getJavaHomeFromConfig() {
+  const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
+  // workspace value takes precedence over global value
+  const javaHome = inspect?.workspaceValue || inspect?.globalValue || '';
+  return javaHome;
+}
+
+function getJavaHomeFromEnvironment(): JDKInfo {
+  // TO-DO: DX6965
+  return {javaHome: '', javaVersion: 0};
+}
+
+async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome: string) {
+  if (!javaHome) {
+    return;
+  }
+
   const allow = 'Allow';
   const disallow = 'Disallow';
-  let inspect = workspace.getConfiguration().inspect<string>('java.home');
-  let javaHome = inspect && inspect.workspaceValue;
-  let isVerified = javaHome === undefined || javaHome === null;
-  if (isVerified) {
-    javaHome = getJavaConfiguration().get('home');
-  }
+
   const key = getKey(IS_WORKSPACE_JDK_ALLOWED, context.storagePath, javaHome);
   const globalState = context.globalState;
-  if (!isVerified) {
-    isVerified = globalState.get(key) || false;
-    if (isVerified === undefined) {
-      await window
-        .showErrorMessage(
-          `Do you allow this workspace to set the java.home variable? \n java.home: ${javaHome}`,
-          disallow,
-          allow,
-        )
-        .then(async (selection) => {
-          if (selection === allow) {
-            globalState.update(key, true);
-          } else if (selection === disallow) {
-            globalState.update(key, false);
-            await workspace
-              .getConfiguration()
-              .update('java.home', undefined, ConfigurationTarget.Workspace);
-          }
-        });
-      isVerified = globalState.get(key) || false;
+  const allowWorkspaceEdit = globalState.get(key);
+
+  if (allowWorkspaceEdit === undefined) {
+    await window.showErrorMessage(
+      `Do you allow this workspace to set the ${STRIPE_JAVA_HOME} variable? \n ${STRIPE_JAVA_HOME}: ${javaHome}`,
+      disallow,
+      allow,
+    )
+    .then(async (selection) => {
+      if (selection === allow) {
+        globalState.update(key, true);
+        await workspace
+          .getConfiguration()
+          .update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Workspace);
+      } else if (selection === disallow) {
+        globalState.update(key, false);
+        await workspace
+          .getConfiguration()
+          .update(STRIPE_JAVA_HOME, undefined, ConfigurationTarget.Workspace);
+      }
+    });
+  } else if (allowWorkspaceEdit) {
+    const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
+    if (inspect?.workspaceValue !== javaHome) {
+      await workspace.getConfiguration().update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Workspace);
     }
   }
-
-  if (!isVerified) {
-    inspect = workspace.getConfiguration().inspect<string>('java.home');
-    javaHome = inspect && inspect.globalValue;
-  }
-
-  return javaHome;
 }
 
 async function getJavaVersion(javaHome: string): Promise<number | undefined> {
