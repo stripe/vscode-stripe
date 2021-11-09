@@ -92,7 +92,8 @@
         },
         "stripe.java.home": {
           "type": "string", 
-          "description": "Java home path of the JDK for Java language support"
+          "description": "Java home path of the JDK for Java language support",
+          "scope": "machine"
         }
       }
     },
