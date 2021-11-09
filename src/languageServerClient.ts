@@ -1,5 +1,4 @@
 /* eslint-disable no-warning-comments */
-
 import * as os from 'os';
 import * as path from 'path';
 import {
@@ -12,11 +11,6 @@ import {
   isPrefix,
   makeRandomHexString,
 } from './stripeJavaLanguageClient/utils';
-import {
-  JDKInfo,
-  STRIPE_JAVA_HOME,
-  getJavaSDKInfo
-} from './stripeJavaLanguageClient/javaRuntimesUtils';
 import {
   CloseAction,
   Emitter,
@@ -33,10 +27,15 @@ import {
   window,
   workspace,
 } from 'vscode';
+import {
+  JDKInfo,
+  REQUIRED_JDK_VERSION,
+  STRIPE_JAVA_HOME,
+  getJavaSDKInfo
+} from './stripeJavaLanguageClient/javaRuntimesUtils';
 import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {OSType, getOSType} from './utils';
 import {Commands} from './stripeJavaLanguageClient/commands';
-import {REQUIRED_JDK_VERSION} from './stripeJavaLanguageClient/javaRuntimesUtils';
 import {StandardLanguageClient} from './stripeJavaLanguageClient/standardLanguageClient';
 import {SyntaxLanguageClient} from './stripeJavaLanguageClient/syntaxLanguageClient';
 import {Telemetry} from './telemetry';

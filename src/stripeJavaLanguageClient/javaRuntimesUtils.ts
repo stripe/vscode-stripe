@@ -1,3 +1,7 @@
+/* eslint-disable max-depth */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-sync */
+
 import * as _ from 'lodash';
 import * as cp from 'child_process';
 import * as fse from 'fs-extra';
