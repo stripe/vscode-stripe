@@ -5,7 +5,9 @@ import {Git} from '../../src/git';
 import {NoOpTelemetry} from '../../src/telemetry';
 import {StripeLinter} from '../../src/stripeLinter';
 
-suite('StripeLinter', () => {
+suite('StripeLinter', function () {
+  this.timeout(20000);
+
   let sandbox: sinon.SinonSandbox;
   const telemetry = new NoOpTelemetry();
   const git = new Git();
@@ -71,7 +73,10 @@ suite('StripeLinter', () => {
       const diagnostics: vscode.Diagnostic[] = vscode.languages.getDiagnostics(document.uri);
 
       assert.strictEqual(isIgnoredStub.calledOnce, true);
-      assert.strictEqual(telemetrySpy.calledWith('diagnostics.show', vscode.DiagnosticSeverity.Error), true);
+      assert.strictEqual(
+        telemetrySpy.calledWith('diagnostics.show', vscode.DiagnosticSeverity.Error),
+        true,
+      );
       assert.strictEqual(diagnostics.length, 1);
     });
 
