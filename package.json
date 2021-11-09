@@ -89,6 +89,10 @@
           "default": true,
           "markdownDescription": "Specifies whether to enable Stripe telemetry (even if enabled still abides by the overall `#telemetry.enableTelemetry#` setting)",
           "scope": "window"
+        },
+        "stripe.java.home": {
+          "type": "string", 
+          "description": "Java home path of the JDK for Java language support"
         }
       }
     },

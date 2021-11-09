@@ -6,6 +6,7 @@ import {
   ACTIVE_BUILD_TOOL_STATE,
   ClientStatus,
   JDKInfo,
+  STRIPE_JAVA_HOME,
   ServerMode,
   getJavaFilePathOfTextDocument,
   getJavaSDKInfo,
@@ -69,7 +70,7 @@ export class StripeLanguageClient {
       const jdkInfo = await getJavaSDKInfo(context, outputChannel);
       if (jdkInfo.javaVersion < REQUIRED_JDK_VERSION) {
         outputChannel.appendLine(
-          `Minimum JDK version required is ${REQUIRED_JDK_VERSION}. Please update the java.home setup in VSCode user settings.`,
+          `Minimum JDK version required for Java API Reference at code hover is ${REQUIRED_JDK_VERSION}. Please update the ${STRIPE_JAVA_HOME} variable in user settings.`,
         );
         telemetry.sendEvent('doesNotMeetRequiredJdkVersion');
         return;
