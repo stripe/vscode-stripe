@@ -347,7 +347,7 @@ export async function getJavaSDKInfo(
     sdkInfo = {javaHome, javaVersion};
   } else {
     // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
-    sdkInfo = await getJavaHomeFromEnvironment();
+    sdkInfo = getJavaHomeFromEnvironment();
   }
 
   // update vscode java.home workspace value for fast access next time
@@ -356,15 +356,15 @@ export async function getJavaSDKInfo(
   return sdkInfo;
 }
 
-async function getJavaHomeFromConfig() {
+function getJavaHomeFromConfig() {
   const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
   // workspace value takes precedence over global value
   const javaHome = inspect?.workspaceValue || inspect?.globalValue || '';
   return javaHome;
 }
 
-async function getJavaHomeFromEnvironment(): Promise<JDKInfo> {
-  // TODO: DX6965
+function getJavaHomeFromEnvironment(): JDKInfo {
+  // TO-DO: DX6965
   return {javaHome: '', javaVersion: 0};
 }
 
@@ -401,7 +401,7 @@ async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome
     });
   } else if (allowWorkspaceEdit) {
     const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
-    if (inspect?.workspaceValue != javaHome) {
+    if (inspect?.workspaceValue !== javaHome) {
       await workspace.getConfiguration().update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Workspace);
     }
   }
