@@ -89,6 +89,11 @@
           "default": true,
           "markdownDescription": "Specifies whether to enable Stripe telemetry (even if enabled still abides by the overall `#telemetry.enableTelemetry#` setting)",
           "scope": "window"
+        },
+        "stripe.java.home": {
+          "type": "string", 
+          "description": "Java home path of the JDK for Java language support",
+          "scope": "machine"
         }
       }
     },
@@ -465,7 +470,7 @@
     "ts-sinon": "^2.0.2",
     "typescript": "^4.3.5",
     "vscode-test": "^1.6.1",
-    "webpack": "^5.51.1",
+    "webpack": "^5.62.2",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
