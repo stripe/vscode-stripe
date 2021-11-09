@@ -1,18 +1,13 @@
 /* eslint-disable no-sync */
-import * as cp from 'child_process';
 import * as fs from 'fs';
-import * as fse from 'fs-extra';
 import * as glob from 'glob';
 import * as path from 'path';
 import {
-  ConfigurationTarget,
   ExtensionContext,
-  OutputChannel,
   TextDocument,
   Uri,
   WorkspaceConfiguration,
-  env,
-  window,
+
   workspace,
 } from 'vscode';
 import {
@@ -23,23 +18,10 @@ import {
 } from 'vscode-languageclient';
 import javaPatterns from '../../config/api_ref/patterns_java.json';
 
-const expandHomeDir = require('expand-home-dir');
-
-const isWindows: boolean = process.platform.indexOf('win') === 0;
-const JAVAC_FILENAME = 'javac' + (isWindows ? '.exe' : '');
-const JAVA_FILENAME = 'java' + (isWindows ? '.exe' : '');
-
 export const ACTIVE_BUILD_TOOL_STATE = 'java.activeBuildTool';
 export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
-export const IS_WORKSPACE_JDK_ALLOWED = 'java.ls.isJdkAllowed';
-export const STRIPE_JAVA_HOME = 'stripe.java.home';
-
-export interface JDKInfo {
-  javaHome: string;
-  javaVersion: number;
-}
 
 export interface StatusReport {
   message: string;
@@ -315,172 +297,6 @@ export function isPrefix(parentPath: string, childPath: string): boolean {
   }
   const relative = path.relative(parentPath, childPath);
   return !!relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-}
-
-export async function getJavaSDKInfo(
-  context: ExtensionContext,
-  outputChannel: OutputChannel,
-): Promise<JDKInfo> {
-  let source: string;
-  let javaVersion: number = 0;
-  // get java.home from vscode settings config first
-  let javaHome = await getJavaHomeFromConfig() || '';
-  let sdkInfo = {javaVersion, javaHome};
-
-  if (javaHome) {
-    source = `${STRIPE_JAVA_HOME} variable defined in ${env.appName} settings`;
-    javaHome = expandHomeDir(javaHome);
-    if (!(await fse.pathExists(javaHome))) {
-      outputChannel.appendLine(
-        `The ${source} points to a missing or inaccessible folder (${javaHome})`,
-      );
-    } else if (!(await fse.pathExists(path.resolve(javaHome, 'bin', JAVAC_FILENAME)))) {
-      let msg: string;
-      if (await fse.pathExists(path.resolve(javaHome, JAVAC_FILENAME))) {
-        msg = `'bin' should be removed from the ${source} (${javaHome})`;
-      } else {
-        msg = `The ${source} (${javaHome}) does not point to a JDK.`;
-      }
-      outputChannel.appendLine(msg);
-    }
-    javaVersion = (await getJavaVersion(javaHome)) || 0;
-    sdkInfo = {javaHome, javaVersion};
-  } else {
-    // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
-    sdkInfo = getJavaHomeFromEnvironment();
-  }
-
-  // update vscode java.home workspace value for fast access next time
-  updateJavaHomeWorkspaceConfig(context, sdkInfo.javaHome);
-
-  return sdkInfo;
-}
-
-function getJavaHomeFromConfig() {
-  const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
-  // workspace value takes precedence over global value
-  const javaHome = inspect?.workspaceValue || inspect?.globalValue || '';
-  return javaHome;
-}
-
-function getJavaHomeFromEnvironment(): JDKInfo {
-  // TO-DO: DX6965
-  return {javaHome: '', javaVersion: 0};
-}
-
-async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome: string) {
-  if (!javaHome) {
-    return;
-  }
-
-  const allow = 'Allow';
-  const disallow = 'Disallow';
-
-  const key = getKey(IS_WORKSPACE_JDK_ALLOWED, context.storagePath, javaHome);
-  const globalState = context.globalState;
-  const allowWorkspaceEdit = globalState.get(key);
-
-  if (allowWorkspaceEdit === undefined) {
-    await window.showErrorMessage(
-      `Do you allow this workspace to set the ${STRIPE_JAVA_HOME} variable? \n ${STRIPE_JAVA_HOME}: ${javaHome}`,
-      disallow,
-      allow,
-    )
-    .then(async (selection) => {
-      if (selection === allow) {
-        globalState.update(key, true);
-        await workspace
-          .getConfiguration()
-          .update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Workspace);
-      } else if (selection === disallow) {
-        globalState.update(key, false);
-        await workspace
-          .getConfiguration()
-          .update(STRIPE_JAVA_HOME, undefined, ConfigurationTarget.Workspace);
-      }
-    });
-  } else if (allowWorkspaceEdit) {
-    const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
-    if (inspect?.workspaceValue !== javaHome) {
-      await workspace.getConfiguration().update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Workspace);
-    }
-  }
-}
-
-async function getJavaVersion(javaHome: string): Promise<number | undefined> {
-  let javaVersion = await checkVersionInReleaseFile(javaHome);
-  if (!javaVersion) {
-    javaVersion = await checkVersionByCLI(javaHome);
-  }
-  return javaVersion;
-}
-
-/**
- * Get version by checking file JAVA_HOME/release
- * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
- */
-async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
-  const releaseFile = path.join(javaHome, 'release');
-
-  try {
-    const content = await fse.readFile(releaseFile);
-    const regexp = /^JAVA_VERSION="(.*)"/gm;
-    const match = regexp.exec(content.toString());
-    if (!match) {
-      return 0;
-    }
-    const majorVersion = parseMajorVersion(match[1]);
-    return majorVersion;
-  } catch (error) {
-    // ignore
-  }
-  return 0;
-}
-
-/**
- * Get version by parsing `JAVA_HOME/bin/java -version`
- * see https://github.com/redhat-developer/vscode-java/blob/master/src/requirements.ts
- */
-function checkVersionByCLI(javaHome: string): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const javaBin = path.join(javaHome, 'bin', JAVA_FILENAME);
-    cp.execFile(javaBin, ['-version'], {}, (error: any, stdout: any, stderr: string) => {
-      const regexp = /version "(.*)"/g;
-      const match = regexp.exec(stderr);
-      if (!match) {
-        return resolve(0);
-      }
-      const javaVersion = parseMajorVersion(match[1]);
-      resolve(javaVersion);
-    });
-  });
-}
-
-function parseMajorVersion(version: string): number {
-  if (!version) {
-    return 0;
-  }
-  // Ignore '1.' prefix for legacy Java versions
-  if (version.startsWith('1.')) {
-    version = version.substring(2);
-  }
-  // look into the interesting bits now
-  const regexp = /\d+/g;
-  const match = regexp.exec(version);
-  let javaVersion = 0;
-  if (match) {
-    javaVersion = parseInt(match[0], 10);
-  }
-  return javaVersion;
-}
-
-function getKey(prefix: string, storagePath: any, value: any) {
-  const workspacePath = path.resolve(storagePath + '/jdt_ws');
-  if (workspace.name !== undefined) {
-    return `${prefix}::${workspacePath}::${value}`;
-  } else {
-    return `${prefix}::${value}`;
-  }
 }
 
 export function getJavaEncoding(): string {
