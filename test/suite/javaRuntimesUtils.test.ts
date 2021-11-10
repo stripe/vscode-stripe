@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import * as sinon from 'sinon';
 import * as javaRuntimeUtils from '../../src/stripeJavaLanguageClient/javaRuntimesUtils';
+import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import {mocks} from '../mocks/vscode';
 
@@ -34,7 +34,7 @@ suite('JavaRuntimeUtils', () => {
       extensionContext = {...mocks.extensionContextMock};
     });
 
-    test('java home defined in config and jdk version meets requirement; expect user prompted to update user settings', async () => {
+    test('java home defined in config and jdk version meets requirement; expect user not prompted to update user settings', async () => {
       sandbox
         .stub(vscode.workspace, 'getConfiguration')
         .returns(<any>{get: () => '/path/to/java/home'});
@@ -48,19 +48,13 @@ suite('JavaRuntimeUtils', () => {
       });
       await module.getJavaSDKInfo(extensionContext, <any>outputChannel);
       assert.strictEqual(
-        updateWarningStub.calledWith(
-          sinon.match(
-            `Do you allow Stripe extention to set the ${javaRuntimeUtils.STRIPE_JAVA_HOME} variable?`,
-          ),
-          'Disallow',
-          'Allow',
-        ),
+        updateWarningStub.notCalled,
         true,
-        'Should prompt to update stripe.java.home',
+        'Should not prompt to update stripe.java.home',
       );
     });
 
-    test('java home defined in config and jdk version does meet requirement; expect user prompted to check other JDK versions', async () => {
+    test('java home defined in config and installed JDK version does meet requirement; expect user prompted to check other JDK versions', async () => {
       sandbox
         .stub(vscode.workspace, 'getConfiguration')
         .returns(<any>{get: () => '/path/to/java/home'});
@@ -92,7 +86,7 @@ suite('JavaRuntimeUtils', () => {
       );
     });
 
-    test('java home not defined in config and installed jdk version meets requirement; expect auto-detect other JDK versions and update user settings', async () => {
+    test('java home not defined in config and installed JDK version meets requirement; expect auto-detect other JDK versions and update user settings', async () => {
       sandbox.stub(vscode.workspace, 'getConfiguration').returns(<any>{get: () => ''});
       const updateWarningStub = sandbox
         .stub(vscode.window, 'showWarningMessage' as any)
@@ -124,7 +118,7 @@ suite('JavaRuntimeUtils', () => {
       );
     });
 
-    test('java home not defined in config and installed jdk version does meet requirement; expect auto-detect other JDK versions and does not update user settings', async () => {
+    test('java home not defined in config and installed JDK version does meet requirement; expect auto-detect other JDK versions and does not update user settings', async () => {
       sandbox.stub(vscode.workspace, 'getConfiguration').returns(<any>{get: () => ''});
       const updateWarningStub = sandbox
         .stub(vscode.window, 'showWarningMessage' as any)

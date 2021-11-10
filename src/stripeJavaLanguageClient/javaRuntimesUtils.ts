@@ -69,14 +69,23 @@ export async function getJavaSDKInfo(
         Do you want to check other installed JDK versions?`, ...['Yes', 'No'])
         .then(async (option) => {
           if (option === 'Yes') {
-            sdkInfo = await getJavaHomeFromEnvironment();
+            sdkInfo = await autoDetectInstalledJDKsAndUpdateConfig(context);
           }
-        });
+        }
+      );
+    } else {
+      // do nothing. stripe.java.home defined and meets requriement
     }
   } else {
-    // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
-    sdkInfo = await getJavaHomeFromEnvironment();
+    sdkInfo = await autoDetectInstalledJDKsAndUpdateConfig(context);
   }
+
+  return sdkInfo;
+}
+
+async function autoDetectInstalledJDKsAndUpdateConfig(context: ExtensionContext): Promise<JDKInfo> {
+  // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
+  const sdkInfo = await getJavaHomeFromEnvironment();
 
   // update vscode java.home workspace value for fast access next time
   if (sdkInfo.javaVersion >= REQUIRED_JDK_VERSION) {
