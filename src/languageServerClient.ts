@@ -1,15 +1,11 @@
 /* eslint-disable no-warning-comments */
-
 import * as os from 'os';
 import * as path from 'path';
 import {
   ACTIVE_BUILD_TOOL_STATE,
   ClientStatus,
-  JDKInfo,
-  STRIPE_JAVA_HOME,
   ServerMode,
   getJavaFilePathOfTextDocument,
-  getJavaSDKInfo,
   getJavaServerLaunchMode,
   hasNoBuildToolConflicts,
   isPrefix,
@@ -31,6 +27,12 @@ import {
   window,
   workspace,
 } from 'vscode';
+import {
+  JDKInfo,
+  REQUIRED_JDK_VERSION,
+  STRIPE_JAVA_HOME,
+  getJavaSDKInfo
+} from './stripeJavaLanguageClient/javaRuntimesUtils';
 import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {OSType, getOSType} from './utils';
 import {Commands} from './stripeJavaLanguageClient/commands';
@@ -41,7 +43,6 @@ import {prepareExecutable} from './stripeJavaLanguageClient/javaServerStarter';
 import {registerHoverProvider} from './stripeJavaLanguageClient/hoverProvider';
 
 const REQUIRED_DOTNET_RUNTIME_VERSION = '5.0';
-const REQUIRED_JDK_VERSION = 11;
 
 const syntaxClient: SyntaxLanguageClient = new SyntaxLanguageClient();
 const standardClient: StandardLanguageClient = new StandardLanguageClient();

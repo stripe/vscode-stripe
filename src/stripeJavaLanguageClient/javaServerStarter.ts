@@ -8,7 +8,6 @@ import * as path from 'path';
 import {Executable, ExecutableOptions} from 'vscode-languageclient/node';
 import {ExtensionContext, OutputChannel} from 'vscode';
 import {
-  JDKInfo,
   checkPathExists,
   deleteDirectory,
   ensureExists,
@@ -18,6 +17,7 @@ import {
   startedFromSources,
   startedInDebugMode,
 } from './utils';
+import {JDKInfo} from './javaRuntimesUtils';
 import {Telemetry} from '../telemetry';
 
 // javaServerPath has to match 'extractedTo' in src/stripeJavaLanguageServer/extractServer.ts

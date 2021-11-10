@@ -50,27 +50,28 @@ The Stripe VS Code Extension collects basic telemetry in order to improve this e
 
 ## Third-Party Notices
 
-| Name                               | Description                                                                                                                  | Version |   Size |   License  |
-| :--------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- | :------ | -----: | :--------: |
-| @grpc/grpc-js                      | gRPC Library for Node - pure JS implementation                                                                               | 1.4.2   | 245.6k | Apache-2.0 |
-| byline                             | simple line-by-line stream reader                                                                                            | 5.0.0   |   1.8k |     MIT    |
-| compare-versions                   | Compare semver version strings to find greater, equal or lesser.                                                             | 4.0.1   |   1.4k |     MIT    |
-| execa                              | Process execution for humans                                                                                                 | 5.1.1   |  25.4k |     MIT    |
-| expand-home-dir                    | Expand ~/                                                                                                                    | 0.0.3   |   342B |     BSD    |
-| find-java-home                     | Find JAVA_HOME on any system                                                                                                 | 1.2.2   |  12.8k | Apache-2.0 |
-| fs-extra                           | fs-extra contains methods that aren't included in the vanilla Node.js fs package. Such as recursive mkdir, copy, and remove. | 10.0.0  |  31.7k |     MIT    |
-| moment                             | Parse, validate, manipulate, and display dates                                                                               | 2.29.1  | 289.7k |     MIT    |
-| os-name                            | Get the name of the current operating system. Example: macOS Sierra                                                          | 3.1.0   |  27.2k |     MIT    |
-| proxyquire                         | Proxies nodejs require in order to allow overriding dependencies during testing.                                             | 2.1.3   |    16k |     MIT    |
-| remark-gfm                         | remark plugin to support GFM (autolink literals, strikethrough, tables, tasklists)                                           | 1.0.0   |  34.3k |     MIT    |
-| superagent                         | elegant & feature rich browser / node HTTP with a fluent API                                                                 | 6.1.0   |  32.8k |     MIT    |
-| tar-fs                             | filesystem bindings for tar-stream                                                                                           | 2.1.1   |  60.5k |     MIT    |
-| toml                               | TOML parser for Node.js (parses TOML spec v0.4.0)                                                                            | 3.0.0   |  27.5k |     MIT    |
-| uuid                               | RFC4122 (v1, v4, and v5) UUIDs                                                                                               | 8.3.2   |   8.1k |     MIT    |
-| vscode-languageclient              | VSCode Language client implementation                                                                                        | 7.0.0   | 215.3k |     MIT    |
-| vscode-languageserver              | Language server implementation for node                                                                                      | 7.0.0   | 121.9k |     MIT    |
-| vscode-languageserver-textdocument | A simple text document implementation for Node LSP servers                                                                   | 1.0.2   |     4k |     MIT    |
-| zlib                               | Simple, synchronous deflate/inflate for buffers                                                                              | 1.0.5   |   210B |     BSD    |
+| Name                               | Description                                                                                                                  | Version |   Size |    License   |
+| :--------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- | :------ | -----: | :----------: |
+| @grpc/grpc-js                      | gRPC Library for Node - pure JS implementation                                                                               | 1.4.2   | 245.6k |  Apache-2.0  |
+| byline                             | simple line-by-line stream reader                                                                                            | 5.0.0   |   1.8k |      MIT     |
+| compare-versions                   | Compare semver version strings to find greater, equal or lesser.                                                             | 4.0.1   |   1.4k |      MIT     |
+| execa                              | Process execution for humans                                                                                                 | 5.1.1   |  25.4k |      MIT     |
+| expand-home-dir                    | Expand ~/                                                                                                                    | 0.0.3   |   342B |      BSD     |
+| find-java-home                     | Find JAVA_HOME on any system                                                                                                 | 1.2.2   |  12.8k |  Apache-2.0  |
+| fs-extra                           | fs-extra contains methods that aren't included in the vanilla Node.js fs package. Such as recursive mkdir, copy, and remove. | 10.0.0  |  31.7k |      MIT     |
+| moment                             | Parse, validate, manipulate, and display dates                                                                               | 2.29.1  | 289.7k |      MIT     |
+| os-name                            | Get the name of the current operating system. Example: macOS Sierra                                                          | 3.1.0   |  27.2k |      MIT     |
+| proxyquire                         | Proxies nodejs require in order to allow overriding dependencies during testing.                                             | 2.1.3   |    16k |      MIT     |
+| remark-gfm                         | remark plugin to support GFM (autolink literals, strikethrough, tables, tasklists)                                           | 1.0.0   |  34.3k |      MIT     |
+| superagent                         | elegant & feature rich browser / node HTTP with a fluent API                                                                 | 6.1.0   |  32.8k |      MIT     |
+| tar-fs                             | filesystem bindings for tar-stream                                                                                           | 2.1.1   |  60.5k |      MIT     |
+| toml                               | TOML parser for Node.js (parses TOML spec v0.4.0)                                                                            | 3.0.0   |  27.5k |      MIT     |
+| uuid                               | RFC4122 (v1, v4, and v5) UUIDs                                                                                               | 8.3.2   |   8.1k |      MIT     |
+| vscode-languageclient              | VSCode Language client implementation                                                                                        | 7.0.0   | 215.3k |      MIT     |
+| vscode-languageserver              | Language server implementation for node                                                                                      | 7.0.0   | 121.9k |      MIT     |
+| vscode-languageserver-textdocument | A simple text document implementation for Node LSP servers                                                                   | 1.0.2   |     4k |      MIT     |
+| winreg-utf8                        | provides access to the windows registry through the REG tool, with additional unicode support.                               | 0.1.1   |   7.7k | BSD-2-Clause |
+| zlib                               | Simple, synchronous deflate/inflate for buffers                                                                              | 1.0.5   |   210B |      BSD     |
 
 ## Code of Conduct
 
