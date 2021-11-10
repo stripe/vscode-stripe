@@ -41,7 +41,7 @@ export async function getJavaSDKInfo(
   let source: string;
   let javaVersion: number = 0;
   // get java.home from vscode settings config first
-  let javaHome = (await getJavaHomeFromConfig()) || '';
+  let javaHome = workspace.getConfiguration().get<string>(STRIPE_JAVA_HOME) || '';
   let sdkInfo = {javaVersion, javaHome};
 
   if (javaHome) {
@@ -60,8 +60,19 @@ export async function getJavaSDKInfo(
       }
       outputChannel.appendLine(msg);
     }
-    javaVersion = (await getJavaVersion(javaHome)) || 0;
+    javaVersion = await getJavaVersion(javaHome) || 0;
     sdkInfo = {javaHome, javaVersion};
+
+    if (javaVersion < REQUIRED_JDK_VERSION) {
+      await window.showInformationMessage(
+        `The JDK version specified in your user settings does not meet the minimum required version ${REQUIRED_JDK_VERSION}. \
+        Do you want to check other installed JDK versions?`, ...['Yes', 'No'])
+        .then(async (option) => {
+          if (option === 'Yes') {
+            sdkInfo = await getJavaHomeFromEnvironment();
+          }
+        });
+    }
   } else {
     // java.home not defined, search valid JDKs from env.JAVA_HOME, env.PATH, Registry(Window), Common directories
     sdkInfo = await getJavaHomeFromEnvironment();
@@ -69,16 +80,10 @@ export async function getJavaSDKInfo(
 
   // update vscode java.home workspace value for fast access next time
   if (sdkInfo.javaVersion >= REQUIRED_JDK_VERSION) {
-    updateJavaHomeWorkspaceConfig(context, sdkInfo.javaHome);
+    await updateJavaHomeWorkspaceConfig(context, sdkInfo.javaHome);
   }
 
   return sdkInfo;
-}
-
-function getJavaHomeFromConfig() {
-  const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
-  const javaHome = inspect?.globalValue || '';
-  return javaHome;
 }
 
 async function getJavaHomeFromEnvironment(): Promise<JDKInfo> {
@@ -353,7 +358,7 @@ async function findLinkedFile(file: string): Promise<string> {
   return findLinkedFile(await fse.readlink(file));
 }
 
-async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome: string) {
+export async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome: string) {
   if (!javaHome) {
     return;
   }
@@ -367,7 +372,7 @@ async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome
 
   if (allowWorkspaceEdit === undefined) {
     await window
-      .showErrorMessage(
+      .showWarningMessage(
         `Do you allow Stripe extention to set the ${STRIPE_JAVA_HOME} variable? \n ${STRIPE_JAVA_HOME}: ${javaHome}`,
         disallow,
         allow,
@@ -384,8 +389,8 @@ async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome
         }
       });
   } else if (allowWorkspaceEdit) {
-    const inspect = workspace.getConfiguration().inspect<string>(STRIPE_JAVA_HOME);
-    if (inspect?.globalValue !== javaHome) {
+    const javaHomeValue = workspace.getConfiguration().get<string>(STRIPE_JAVA_HOME) || '';
+    if (javaHomeValue !== javaHome) {
       await workspace
         .getConfiguration()
         .update(STRIPE_JAVA_HOME, javaHome, ConfigurationTarget.Global);
@@ -393,7 +398,7 @@ async function updateJavaHomeWorkspaceConfig(context: ExtensionContext, javaHome
   }
 }
 
-async function getJavaVersion(javaHome: string): Promise<number | undefined> {
+export async function getJavaVersion(javaHome: string): Promise<number> {
   let javaVersion = await checkVersionInReleaseFile(javaHome);
   if (!javaVersion) {
     javaVersion = await checkVersionByCLI(javaHome);
@@ -418,7 +423,7 @@ async function checkVersionInReleaseFile(javaHome: string): Promise<number> {
     const majorVersion = parseMajorVersion(match[1]);
     return majorVersion;
   } catch (error) {
-    // ignore
+    return 0;
   }
   return 0;
 }
