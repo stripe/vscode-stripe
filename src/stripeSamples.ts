@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as vscode from 'vscode';
+import {ProgressLocation, QuickPickItem, Uri, commands, window, workspace} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
@@ -10,7 +10,7 @@ import {StripeCLIClient as StripeDaemonClient} from './rpc/commands_grpc_pb';
 /**
  * SampleQuickPickItem contains the data for each Sample quick pick item.
  */
-type SampleQuickPickItem = vscode.QuickPickItem & {
+type SampleQuickPickItem = QuickPickItem & {
   sampleData: {
     name: string;
     url: string;
@@ -52,6 +52,8 @@ export class StripeSamples {
         return;
       }
 
+      const sampleName = selectedSample.sampleData.name;
+
       const selectedIntegration = await this.promptIntegration(selectedSample);
       if (!selectedIntegration) {
         return;
@@ -72,21 +74,34 @@ export class StripeSamples {
         return;
       }
 
-      const sampleCreateResponse = await this.createSample(
-        selectedSample.sampleData.name,
-        selectedIntegration.getIntegrationName(),
-        selectedServer,
-        selectedClient,
-        clonePath,
+      await window.withProgress(
+        {
+          location: ProgressLocation.Window,
+          cancellable: false,
+          title: `Cloning sample '${sampleName}'`,
+        },
+        async (progress) => {
+          progress.report({increment: 0});
+
+          const sampleCreateResponse = await this.createSample(
+            sampleName,
+            selectedIntegration.getIntegrationName(),
+            selectedServer,
+            selectedClient,
+            clonePath,
+          );
+
+          progress.report({increment: 100});
+
+          const postInstallMessage = !!sampleCreateResponse
+            ? sampleCreateResponse.getPostInstall()
+            : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
+
+          await this.promptOpenFolder(postInstallMessage, clonePath);
+        },
       );
-
-      const postInstallMessage = sampleCreateResponse
-        ? sampleCreateResponse.getPostInstall()
-        : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
-
-      await this.promptOpenFolder(postInstallMessage, clonePath);
     } catch (e: any) {
-      vscode.window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
+      window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
   };
 
@@ -151,7 +166,7 @@ export class StripeSamples {
    * Ask for which sample to clone.
    */
   private promptSample = async (): Promise<SampleQuickPickItem | undefined> => {
-    const selectedSample = await vscode.window.showQuickPick(this.getQuickPickItems(), {
+    const selectedSample = await window.showQuickPick(this.getQuickPickItems(), {
       matchOnDetail: true,
       placeHolder: 'Select a sample to clone',
     });
@@ -172,7 +187,7 @@ export class StripeSamples {
       return ((await integrationsPromise) || []).map((i) => i.getIntegrationName());
     };
 
-    const selectedIntegrationName = await vscode.window.showQuickPick(getIntegrationNames(), {
+    const selectedIntegrationName = await window.showQuickPick(getIntegrationNames(), {
       placeHolder: 'Select an integration',
     });
     if (!selectedIntegrationName) {
@@ -196,7 +211,7 @@ export class StripeSamples {
   private promptClient = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
-    return vscode.window.showQuickPick(integration.getClientsList(), {
+    return window.showQuickPick(integration.getClientsList(), {
       placeHolder: 'Select a client language',
     });
   };
@@ -207,7 +222,7 @@ export class StripeSamples {
   private promptServer = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
-    return vscode.window.showQuickPick(integration.getServersList(), {
+    return window.showQuickPick(integration.getServersList(), {
       placeHolder: 'Select a server language',
     });
   };
@@ -216,13 +231,11 @@ export class StripeSamples {
    * Ask for where to clone the sample
    */
   private promptPath = async (sample: SampleQuickPickItem): Promise<string | undefined> => {
-    const cloneDirectoryUri = await vscode.window.showOpenDialog({
+    const cloneDirectoryUri = await window.showOpenDialog({
       canSelectFiles: false,
       canSelectFolders: true,
       canSelectMany: false,
-      defaultUri: vscode.workspace.workspaceFolders
-        ? vscode.workspace.workspaceFolders[0].uri
-        : undefined,
+      defaultUri: workspace.workspaceFolders ? workspace.workspaceFolders[0].uri : undefined,
       openLabel: 'Clone sample',
     });
 
@@ -279,7 +292,7 @@ export class StripeSamples {
       newWindow: 'Open in new window',
     };
 
-    const selectedOption = await vscode.window.showInformationMessage(
+    const selectedOption = await window.showInformationMessage(
       postInstallMessage || 'Successfully created sample.',
       {modal: true},
       ...Object.values(openFolderOptions),
@@ -287,12 +300,12 @@ export class StripeSamples {
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:
-        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), {
+        await commands.executeCommand('vscode.openFolder', Uri.file(path), {
           forceNewWindow: false,
         });
         break;
       case openFolderOptions.newWindow:
-        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), {
+        await commands.executeCommand('vscode.openFolder', Uri.file(path), {
           forceNewWindow: true,
         });
         break;
