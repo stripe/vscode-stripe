@@ -95,7 +95,7 @@ export class StripeSamples {
 
           const postInstallMessage = !!sampleCreateResponse
             ? sampleCreateResponse.getPostInstall()
-            : 'The sample was successfully created, but we could not set the API keys in the .env file. Please set them manually.';
+            : 'Your sample is all ready to go, but we could not set the API keys in the .env file. Please set them manually.';
 
           await this.promptOpenFolder(postInstallMessage, clonePath);
         },
@@ -293,7 +293,7 @@ export class StripeSamples {
     };
 
     const selectedOption = await window.showInformationMessage(
-      postInstallMessage || 'Successfully created sample.',
+      postInstallMessage || 'Your sample is all ready to go.',
       {modal: true},
       ...Object.values(openFolderOptions),
     );
