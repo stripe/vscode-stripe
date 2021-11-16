@@ -6,8 +6,6 @@ import {
   ExtensionContext,
   TextDocument,
   Uri,
-  WorkspaceConfiguration,
-
   workspace,
 } from 'vscode';
 import {
@@ -18,10 +16,13 @@ import {
 } from 'vscode-languageclient';
 import javaPatterns from '../../config/api_ref/patterns_java.json';
 
-export const ACTIVE_BUILD_TOOL_STATE = 'java.activeBuildTool';
 export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';
+export const IMPORT_MAVEN = 'stripe.java.import.maven';
+export const IMPORT_GRADLE = 'stripe.java.import.gradle';
+export const LAUNCH_SERVER_MODE = 'stripe.java.server.mode';
+export const JAVA_IMPORT_EXCLUSIONS = 'stripe.java.import.exclusions';
 
 export interface StatusReport {
   message: string;
@@ -61,29 +62,21 @@ export namespace FindLinks {
   export const type = new RequestType<FindLinksParams, LinkLocation[], void>('java/findLinks');
 }
 
-export function getJavaConfiguration(): WorkspaceConfiguration {
-  return workspace.getConfiguration('java');
-}
-
 export function getJavaServerLaunchMode(): ServerMode {
-  return workspace.getConfiguration().get('java.server.launchMode') || ServerMode.HYBRID;
+  return workspace.getConfiguration().get(LAUNCH_SERVER_MODE) || ServerMode.HYBRID;
 }
 
-export async function hasNoBuildToolConflicts(
+export async function hasNoBuildToolConflict(
   context: ExtensionContext,
 ): Promise<boolean> {
-  const isMavenEnabled: boolean =
-    getJavaConfiguration().get<boolean>('import.maven.enabled') || false;
-  const isGradleEnabled: boolean =
-    getJavaConfiguration().get<boolean>('import.gradle.enabled') || false;
+  const isMavenEnabled: boolean = workspace.getConfiguration().get<boolean>(IMPORT_MAVEN) || false;
+  const isGradleEnabled: boolean = workspace.getConfiguration().get<boolean>(IMPORT_GRADLE) || false;
   if (isMavenEnabled && isGradleEnabled) {
-    const activeBuildTool: string | undefined = context.workspaceState.get(ACTIVE_BUILD_TOOL_STATE);
-    if (!activeBuildTool) {
-      if (!(await hasBuildToolConflicts())) {
-        return true;
-      }
-      return false;
+    // user has both build tools enabled. check project build files
+    if (!(await hasBuildToolConflicts())) {
+      return true;
     }
+    return false;
   }
 
   return true;
@@ -156,9 +149,8 @@ function getDirectoriesByBuildFile(
 }
 
 export function getBuildFilePatterns(): string[] {
-  const config = getJavaConfiguration();
-  const isMavenImporterEnabled: boolean = config.get<boolean>('import.maven.enabled') || false;
-  const isGradleImporterEnabled: boolean = config.get<boolean>('import.gradle.enabled') || false;
+  const isMavenImporterEnabled: boolean = workspace.getConfiguration().get<boolean>(IMPORT_MAVEN) || false;
+  const isGradleImporterEnabled: boolean = workspace.getConfiguration().get<boolean>(IMPORT_GRADLE) || false;
   const patterns: string[] = [];
   if (isMavenImporterEnabled) {
     patterns.push('**/pom.xml');
@@ -172,8 +164,7 @@ export function getBuildFilePatterns(): string[] {
 }
 
 export function getInclusionPatternsFromNegatedExclusion(): string[] {
-  const config = getJavaConfiguration();
-  const exclusions: string[] = config.get<string[]>('import.exclusions', []);
+  const exclusions: string[] = workspace.getConfiguration().get<string[]>(JAVA_IMPORT_EXCLUSIONS) || [];
   const patterns: string[] = [];
   for (const exclusion of exclusions) {
     if (exclusion.startsWith('!')) {
@@ -202,8 +193,7 @@ export function convertToGlob(filePatterns: string[], basePatterns?: string[]): 
 }
 
 export function getExclusionBlob(): string {
-  const config = getJavaConfiguration();
-  const exclusions: string[] = config.get<string[]>('import.exclusions', []);
+  const exclusions: string[] = workspace.getConfiguration().get<string[]>(JAVA_IMPORT_EXCLUSIONS) || [];
   const patterns: string[] = [];
   for (const exclusion of exclusions) {
     if (exclusion.startsWith('!')) {

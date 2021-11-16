@@ -94,6 +94,45 @@
           "type": "string",
           "description": "Java home path of the JDK for Java language support",
           "scope": "machine"
+        },
+        "stripe.java.import.maven": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable the Maven importer.",
+          "scope": "window"
+        },
+        "stripe.java.import.gradle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable the Gradle importer.",
+          "scope": "window"
+        },
+        "stripe.java.server.mode": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "LightWeight",
+            "Hybrid"
+          ],
+          "enumDescriptions": [
+            "Provides full features such as intellisense, refactoring, building, Maven/Gradle support etc.",
+            "Starts a syntax server with lower start-up cost. Only provides syntax features such as outline, navigation, javadoc, syntax errors.",
+            "Provides full features with better responsiveness. It starts a standard language server and a secondary syntax server. The syntax server provides syntax features until the standard server is ready."
+          ],
+          "description": "The launch mode for the Java Language Support",
+          "default": "Hybrid",
+          "scope": "window"
+        },
+        "stripe.java.import.exclusions": {
+          "type": "array",
+          "description": "Configure glob patterns for excluding folders. Use `!` to negate patterns to allow subfolders imports. You have to include a parent directory. The order is important.",
+          "default": [
+            "**/node_modules/**",
+            "**/.metadata/**",
+            "**/archetype-resources/**",
+            "**/META-INF/maven/**"
+          ],
+          "scope": "window"
         }
       }
     },
@@ -498,7 +537,6 @@
     "zlib": "*"
   },
   "extensionDependencies": [
-    "ms-dotnettools.vscode-dotnet-runtime",
-    "vscjava.vscode-java-pack"
+    "ms-dotnettools.vscode-dotnet-runtime"
   ]
 }
