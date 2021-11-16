@@ -353,13 +353,13 @@ export class StripeLanguageClient {
 
   static async getJavaProjectFiles() {
     const openedJavaFiles = [];
-    if (!window.activeTextEditor) {
-      return [];
-    }
+    let activeJavaFile: string | undefined;
 
-    const activeJavaFile = getJavaFilePathOfTextDocument(window.activeTextEditor.document);
-    if (activeJavaFile) {
-      openedJavaFiles.push(Uri.file(activeJavaFile).toString());
+    if (window.activeTextEditor) {
+      activeJavaFile = getJavaFilePathOfTextDocument(window.activeTextEditor.document);
+      if (activeJavaFile) {
+        openedJavaFiles.push(Uri.file(activeJavaFile).toString());
+      }
     }
 
     if (!workspace.workspaceFolders) {
