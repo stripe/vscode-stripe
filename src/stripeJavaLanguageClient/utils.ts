@@ -16,7 +16,6 @@ import {
 } from 'vscode-languageclient';
 import javaPatterns from '../../config/api_ref/patterns_java.json';
 
-export const ACTIVE_BUILD_TOOL_STATE = 'java.activeBuildTool';
 export const DEBUG_VSCODE_JAVA = 'DEBUG_VSCODE_JAVA';
 export const EXTENSION_NAME_STANDARD = 'stripeJavaLanguageServer (Standard)';
 export const EXTENSION_NAME_SYNTAX = 'stripeJavaLanguageServer (Syntax)';

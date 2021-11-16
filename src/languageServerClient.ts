@@ -2,8 +2,9 @@
 import * as os from 'os';
 import * as path from 'path';
 import {
-  ACTIVE_BUILD_TOOL_STATE,
   ClientStatus,
+  IMPORT_GRADLE,
+  IMPORT_MAVEN,
   ServerMode,
   getJavaFilePathOfTextDocument,
   getJavaServerLaunchMode,
@@ -447,7 +448,7 @@ export class StripeLanguageClient {
 
     const checkConflicts: boolean = await hasNoBuildToolConflict(context);
     if (!checkConflicts) {
-      outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
+      outputChannel.appendLine(`Build tool conflict detected in workspace. Please enable either maven (${IMPORT_MAVEN}) or gradle (${IMPORT_GRADLE}) in user settings.`);
       telemetry.sendEvent('standardJavaServerHasBuildToolConflict');
       return;
     }
