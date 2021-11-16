@@ -7,7 +7,7 @@ import {
   ServerMode,
   getJavaFilePathOfTextDocument,
   getJavaServerLaunchMode,
-  hasNoBuildToolConflicts,
+  hasNoBuildToolConflict,
   isPrefix,
   makeRandomHexString,
 } from './stripeJavaLanguageClient/utils';
@@ -445,7 +445,7 @@ export class StripeLanguageClient {
       return;
     }
 
-    const checkConflicts: boolean = await hasNoBuildToolConflicts(context);
+    const checkConflicts: boolean = await hasNoBuildToolConflict(context);
     if (!checkConflicts) {
       outputChannel.appendLine(`Build tool conflict detected in workspace. Please set '${ACTIVE_BUILD_TOOL_STATE}' to either maven or gradle.`);
       telemetry.sendEvent('standardJavaServerHasBuildToolConflict');

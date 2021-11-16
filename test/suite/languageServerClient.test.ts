@@ -258,7 +258,7 @@ suite('languageServerClient', function () {
 
     test('hybrid mode starts correct servers with correct workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.HYBRID);
-      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
+      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflict').returns(Promise.resolve(true));
       const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
 
       await module.StripeLanguageClient.activateJavaServer(
@@ -298,7 +298,7 @@ suite('languageServerClient', function () {
 
     test('standard mode starts standard servers with standard workspace paths', async () => {
       sandbox.stub(javaClientUtils, 'getJavaServerLaunchMode').returns(javaClientUtils.ServerMode.STANDARD);
-      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflicts').returns(Promise.resolve(true));
+      sandbox.stub(javaClientUtils, 'hasNoBuildToolConflict').returns(Promise.resolve(true));
       const connectToServerSpy = sandbox.stub(javaServerStarter, 'prepareExecutable');
 
       await module.StripeLanguageClient.activateJavaServer(
