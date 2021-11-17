@@ -82,6 +82,9 @@ suite('StripeSamples', function () {
       test('prompts for sample config, clones, and opens sample', async () => {
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
         const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+        const showInputBoxStub = sandbox
+          .stub(vscode.window, 'showInputBox')
+          .resolves('sample-name-by-user');
         const showOpenDialogStub = sandbox
           .stub(vscode.window, 'showOpenDialog')
           .resolves([vscode.Uri.parse('/my/path')]);
@@ -95,6 +98,7 @@ suite('StripeSamples', function () {
         await simulateSelectAll();
 
         assert.strictEqual(showQuickPickSpy.callCount, 4);
+        assert.strictEqual(showInputBoxStub.callCount, 1);
         assert.strictEqual(showOpenDialogStub.callCount, 1);
         assert.strictEqual(showInformationMessageStub.callCount, 1);
       });
@@ -118,6 +122,7 @@ suite('StripeSamples', function () {
           );
 
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
         const showInformationMessageStub = sandbox
           .stub(vscode.window, 'showInformationMessage')
@@ -130,7 +135,7 @@ suite('StripeSamples', function () {
 
         assert.deepStrictEqual(
           showInformationMessageStub.args[0][0],
-          'Your sample is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+          'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
         );
       });
     });

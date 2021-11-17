@@ -69,7 +69,9 @@ export class StripeSamples {
         return;
       }
 
-      const clonePath = await this.promptPath(selectedSample);
+      const cloneSampleAsName = await this.promptSampleName(sampleName);
+
+      const clonePath = await this.promptPath(selectedSample, cloneSampleAsName);
       if (!clonePath) {
         return;
       }
@@ -93,9 +95,13 @@ export class StripeSamples {
 
           progress.report({increment: 100});
 
+          const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
+          // eslint-disable-next-line no-nested-ternary
           const postInstallMessage = !!sampleCreateResponse
-            ? sampleCreateResponse.getPostInstall()
-            : 'Your sample is all ready to go, but we could not set the API keys in the .env file. Please set them manually.';
+            ? !!sampleCreateResponse.getPostInstall()
+              ? sampleCreateResponse.getPostInstall()
+              : `${sampleIsReady}.`
+            : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
 
           await this.promptOpenFolder(postInstallMessage, clonePath);
         },
@@ -230,7 +236,7 @@ export class StripeSamples {
   /**
    * Ask for where to clone the sample
    */
-  private promptPath = async (sample: SampleQuickPickItem): Promise<string | undefined> => {
+  private promptPath = async (sample: SampleQuickPickItem, cloneSampleAsName: string): Promise<string | undefined> => {
     const cloneDirectoryUri = await window.showOpenDialog({
       canSelectFiles: false,
       canSelectFolders: true,
@@ -243,9 +249,21 @@ export class StripeSamples {
       return;
     }
 
-    const clonePath = path.resolve(cloneDirectoryUri[0].fsPath, sample.sampleData.name);
+    const clonePath = path.resolve(cloneDirectoryUri[0].fsPath, cloneSampleAsName);
 
     return clonePath;
+  };
+
+  /**
+   * Ask for sample name
+   */
+  private promptSampleName = async (sampleName: string): Promise<string> => {
+    const inputName = await window.showInputBox({
+      value: sampleName,
+      prompt: 'Enter a sample name',
+    });
+
+    return !!inputName ? inputName : sampleName;
   };
 
   /**
@@ -293,7 +311,7 @@ export class StripeSamples {
     };
 
     const selectedOption = await window.showInformationMessage(
-      postInstallMessage || 'Your sample is all ready to go.',
+      postInstallMessage,
       {modal: true},
       ...Object.values(openFolderOptions),
     );
