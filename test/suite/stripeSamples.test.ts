@@ -141,9 +141,9 @@ suite('StripeSamples', function () {
         assert.deepStrictEqual(
           showInformationMessageStub.calledWith(
             'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-            {modal: true},
-            'Open in same window',
-            'Open in new window',
+            sinon.match.any,
+            sinon.match.any,
+            sinon.match.any,
           ),
           true,
         );
