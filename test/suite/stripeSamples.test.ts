@@ -127,27 +127,37 @@ suite('StripeSamples', function () {
         sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
         sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageStub = sandbox
+        sandbox
           .stub(vscode.window, 'showInformationMessage' as any)
           .resolves();
         sandbox.spy(vscode.env, 'openExternal');
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+        const openFolderSpy = sandbox.spy(stripeSamples, 'promptOpenFolder');
 
         stripeSamples.selectAndCloneSample();
 
         await simulateSelectAll();
 
-        assert.strictEqual(showInformationMessageStub.callCount, 1);
         assert.deepStrictEqual(
-          showInformationMessageStub.calledWith(
+          openFolderSpy.calledWith(
             'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-            sinon.match.any,
             sinon.match.any,
             sinon.match.any,
           ),
           true,
         );
+
+        // assert.strictEqual(showInformationMessageStub.callCount, 1);
+        // assert.deepStrictEqual(
+        //   showInformationMessageStub.calledWith(
+        //     'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+        //     sinon.match.any,
+        //     sinon.match.any,
+        //     sinon.match.any,
+        //   ),
+        //   true,
+        // );
       });
     });
 

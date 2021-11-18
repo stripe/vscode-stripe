@@ -304,7 +304,7 @@ export class StripeSamples {
   /**
    * Ask if the user wants to open the sample in the same or new window
    */
-  private promptOpenFolder = async (postInstallMessage: string, clonePath: string, sampleName: string): Promise<void> => {
+  public promptOpenFolder = async (postInstallMessage: string, clonePath: string, sampleName: string): Promise<void> => {
     const openFolderOptions = {
       sameWindow: 'Open in same window',
       newWindow: 'Open in new window',
