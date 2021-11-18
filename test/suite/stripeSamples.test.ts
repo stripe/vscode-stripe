@@ -91,6 +91,8 @@ suite('StripeSamples', function () {
         const showInformationMessageStub = sandbox
           .stub(vscode.window, 'showInformationMessage')
           .resolves();
+        const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
+
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
@@ -101,6 +103,7 @@ suite('StripeSamples', function () {
         assert.strictEqual(showInputBoxStub.callCount, 1);
         assert.strictEqual(showOpenDialogStub.callCount, 1);
         assert.strictEqual(showInformationMessageStub.callCount, 1);
+        assert.strictEqual(openSampleReadmeSpy.callCount, 1);
       });
 
       test('shows special post install message if API keys could not be set', async () => {
@@ -127,6 +130,8 @@ suite('StripeSamples', function () {
         const showInformationMessageStub = sandbox
           .stub(vscode.window, 'showInformationMessage')
           .resolves();
+        sandbox.spy(vscode.env, 'openExternal');
+
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
