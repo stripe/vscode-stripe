@@ -236,7 +236,10 @@ export class StripeSamples {
   /**
    * Ask for where to clone the sample
    */
-  private promptPath = async (sample: SampleQuickPickItem, cloneSampleAsName: string): Promise<string | undefined> => {
+  private promptPath = async (
+    sample: SampleQuickPickItem,
+    cloneSampleAsName: string,
+  ): Promise<string | undefined> => {
     const cloneDirectoryUri = await window.showOpenDialog({
       canSelectFiles: false,
       canSelectFolders: true,
@@ -304,12 +307,17 @@ export class StripeSamples {
   /**
    * Ask if the user wants to open the sample in the same or new window
    */
-  private promptOpenFolder = async (postInstallMessage: string, clonePath: string, sampleName: string): Promise<void> => {
+  private promptOpenFolder = async (
+    postInstallMessage: string,
+    clonePath: string,
+    sampleName: string,
+  ): Promise<void> => {
     const openFolderOptions = {
       sameWindow: 'Open in same window',
       newWindow: 'Open in new window',
     };
 
+    console.log('POST INSTALL MESSAGE: ' + postInstallMessage);
     // open the readme file in a new browser window
     // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
     // preview markdown also does not work because opening new workspace will terminate the stripe extension process
@@ -323,16 +331,22 @@ export class StripeSamples {
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:
+        console.log('SELECTED OPTION ' + selectedOption);
+
         await commands.executeCommand('vscode.openFolder', Uri.file(clonePath), {
           forceNewWindow: false,
         });
         break;
       case openFolderOptions.newWindow:
+        console.log('SELECTED OPTION ' + selectedOption);
+
         await commands.executeCommand('vscode.openFolder', Uri.file(clonePath), {
           forceNewWindow: true,
         });
         break;
       default:
+        console.log('SELECTED OPTION ' + selectedOption);
+
         break;
     }
   };
