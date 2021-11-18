@@ -138,6 +138,7 @@ suite('StripeSamples', function () {
 
         await simulateSelectAll();
 
+        assert.strictEqual(showInformationMessageStub.callCount, 1);
         assert.deepStrictEqual(
           showInformationMessageStub.calledWith(
             'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
