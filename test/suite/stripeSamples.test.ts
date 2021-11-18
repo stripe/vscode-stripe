@@ -41,7 +41,7 @@ suite('StripeSamples', function () {
         const response = new SamplesListResponse();
         response.setSamplesList([sampleData]);
 
-        callback(null, response);
+        callback(listError as any, response);
       },
       sampleConfigs: (
         req: SampleConfigsRequest,
@@ -55,7 +55,7 @@ suite('StripeSamples', function () {
         const response = new SampleConfigsResponse();
         response.setIntegrationsList([integration]);
 
-        callback(listError as any, response);
+        callback(null, response);
       },
       sampleCreate: (
         req: SampleCreateRequest,
@@ -85,7 +85,7 @@ suite('StripeSamples', function () {
   suite('selectAndCloneSample', () => {
     suite('success', () => {
       test('prompts for sample config, clones, and opens sample', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
         const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
         const showInputBoxStub = sandbox
           .stub(vscode.window, 'showInputBox')
