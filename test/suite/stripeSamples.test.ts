@@ -107,7 +107,7 @@ suite('StripeSamples', function () {
       });
 
       test('shows special post install message if API keys could not be set', async () => {
-        console.log('I RAN THE FAILIN TEST');
+        console.log('I RAN THE FAILING TEST');
         // Simulate the special error response from the gRPC server
         const err: Partial<grpc.ServiceError> = {
           code: grpc.status.UNKNOWN,

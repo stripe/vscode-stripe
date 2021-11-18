@@ -93,6 +93,7 @@ export class StripeSamples {
             clonePath,
           );
 
+          console.log(`Got sample response for  ${sampleName}`);
           progress.report({increment: 100});
 
           const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
@@ -102,6 +103,8 @@ export class StripeSamples {
               ? sampleCreateResponse.getPostInstall()
               : `${sampleIsReady}.`
             : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
+
+          console.log(`post install message:  ${postInstallMessage}. calling prompt open folder`);
 
           await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
         },
