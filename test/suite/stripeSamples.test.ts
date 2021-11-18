@@ -124,7 +124,7 @@ suite('StripeSamples', function () {
           .resolves();
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        stripeSamples.selectAndCloneSample();
+        await stripeSamples.selectAndCloneSample();
 
         await simulateSelectAll();
 
