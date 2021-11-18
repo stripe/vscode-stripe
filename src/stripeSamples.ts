@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {ProgressLocation, QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
+import {ProgressLocation, QuickPickItem, Uri, commands, window, workspace} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
@@ -103,7 +103,7 @@ export class StripeSamples {
               : `${sampleIsReady}.`
             : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
 
-          await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
+          await this.promptOpenFolder(postInstallMessage, clonePath);
         },
       );
     } catch (e: any) {
@@ -304,7 +304,7 @@ export class StripeSamples {
   /**
    * Ask if the user wants to open the sample in the same or new window
    */
-  private promptOpenFolder = async (postInstallMessage: string, clonePath: string, sampleName: string): Promise<void> => {
+  private promptOpenFolder = async (postInstallMessage: string, clonePath: string): Promise<void> => {
     const openFolderOptions = {
       sameWindow: 'Open in same window',
       newWindow: 'Open in new window',
@@ -319,7 +319,7 @@ export class StripeSamples {
     // open the readme file in a new browser window
     // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
     // preview markdown also does not work because opening new workspace will terminate the stripe extension process
-    env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
+    // env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:
