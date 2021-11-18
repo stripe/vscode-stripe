@@ -130,6 +130,8 @@ suite('StripeSamples', function () {
         const showInformationMessageStub = sandbox
           .stub(vscode.window, 'showInformationMessage')
           .resolves();
+        sandbox.spy(vscode.env, 'openExternal');
+
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
         stripeSamples.selectAndCloneSample();
