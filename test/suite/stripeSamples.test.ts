@@ -24,45 +24,50 @@ suite('StripeSamples', function () {
   };
 
   // Mock gRPC server responses
-  const daemonClient = <Partial<StripeCLIClient>>{
-    samplesList: (
-      req: SamplesListRequest,
-      callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-    ) => {
-      const sampleData = new SamplesListResponse.SampleData();
-      sampleData.setName('accept-a-payment');
-      sampleData.setDescription('Learn how to accept a payment');
-      sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
+  const daemonClient = (sampleCreateError?: Partial<grpc.ServiceError>, samplesListError?: Partial<grpc.ServiceError>) => {
+    const createError = !!sampleCreateError ? sampleCreateError : null;
+    const listError = !!samplesListError ? samplesListError : null;
 
-      const response = new SamplesListResponse();
-      response.setSamplesList([sampleData]);
+    return <Partial<StripeCLIClient>>{
+      samplesList: (
+        req: SamplesListRequest,
+        callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
+      ) => {
+        const sampleData = new SamplesListResponse.SampleData();
+        sampleData.setName('accept-a-payment');
+        sampleData.setDescription('Learn how to accept a payment');
+        sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
 
-      callback(null, response);
-    },
-    sampleConfigs: (
-      req: SampleConfigsRequest,
-      callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
-    ) => {
-      const integration = new SampleConfigsResponse.Integration();
-      integration.setIntegrationName('using-webhooks');
-      integration.setClientsList(['html', 'react']);
-      integration.setServersList(['node', 'ruby']);
+        const response = new SamplesListResponse();
+        response.setSamplesList([sampleData]);
 
-      const response = new SampleConfigsResponse();
-      response.setIntegrationsList([integration]);
+        callback(null, response);
+      },
+      sampleConfigs: (
+        req: SampleConfigsRequest,
+        callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
+      ) => {
+        const integration = new SampleConfigsResponse.Integration();
+        integration.setIntegrationName('using-webhooks');
+        integration.setClientsList(['html', 'react']);
+        integration.setServersList(['node', 'ruby']);
 
-      callback(null, response);
-    },
-    sampleCreate: (
-      req: SampleCreateRequest,
-      callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-    ) => {
-      const response = new SampleCreateResponse();
-      response.setPath('/foo/bar');
-      response.setPostInstall('a post install message');
+        const response = new SampleConfigsResponse();
+        response.setIntegrationsList([integration]);
 
-      callback(null, response);
-    },
+        callback(listError as any, response);
+      },
+      sampleCreate: (
+        req: SampleCreateRequest,
+        callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
+      ) => {
+        const response = new SampleCreateResponse();
+        response.setPath('/foo/bar');
+        response.setPostInstall('a post install message');
+
+        callback(createError as any, response);
+      },
+    };
   };
 
   const stripeDaemon = <Partial<StripeDaemon>>{
@@ -113,18 +118,18 @@ suite('StripeSamples', function () {
           details: 'we could not set',
         };
 
-        sandbox
-          .stub(daemonClient, 'sampleCreate')
-          .value(
-            (
-              req: SampleCreateRequest,
-              callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-            ) => {
-              callback(<any>err, new SampleCreateResponse());
-            },
-          );
+        // sandbox
+        //   .stub(daemonClient, 'sampleCreate')
+        //   .value(
+        //     (
+        //       req: SampleCreateRequest,
+        //       callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
+        //     ) => {
+        //       callback(<any>err, new SampleCreateResponse());
+        //     },
+        //   );
 
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
         sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
         const showInformationMessageStub = sandbox
@@ -164,18 +169,18 @@ suite('StripeSamples', function () {
           details: 'An unknown error occurred',
         };
 
-        sandbox
-          .stub(daemonClient, 'samplesList')
-          .value(
-            (
-              req: SamplesListRequest,
-              callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-            ) => {
-              callback(<any>err, new SamplesListResponse());
-            },
-          );
+        // sandbox
+        //   .stub(daemonClient, 'samplesList')
+        //   .value(
+        //     (
+        //       req: SamplesListRequest,
+        //       callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
+        //     ) => {
+        //       callback(<any>err, new SamplesListResponse());
+        //     },
+        //   );
 
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(undefined, err));
         const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
