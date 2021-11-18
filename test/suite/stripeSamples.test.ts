@@ -128,7 +128,7 @@ suite('StripeSamples', function () {
         sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
         sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
         const showInformationMessageStub = sandbox
-          .stub(vscode.window, 'showInformationMessage')
+          .stub(vscode.window, 'showInformationMessage' as any)
           .resolves();
         sandbox.spy(vscode.env, 'openExternal');
 
@@ -139,8 +139,13 @@ suite('StripeSamples', function () {
         await simulateSelectAll();
 
         assert.deepStrictEqual(
-          showInformationMessageStub.args[0][0],
-          'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+          showInformationMessageStub.calledWith(
+            'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+            {modal: true},
+            'Open in same window',
+            'Open in new window',
+          ),
+          true,
         );
       });
     });
