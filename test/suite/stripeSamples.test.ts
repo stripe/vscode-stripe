@@ -73,7 +73,7 @@ const stripeDaemon = <Partial<StripeDaemon>>{
 };
 
 suite('StripeSamples', function () {
-  this.timeout(20000);
+  // this.timeout(20000);
 
   let sandbox: sinon.SinonSandbox;
 
@@ -113,6 +113,33 @@ suite('StripeSamples', function () {
       assert.strictEqual(openSampleReadmeSpy.callCount, 1);
     });
 
+    test('shows special post install message if API keys could not be set', async () => {
+      // Simulate the special error response from the gRPC server
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'we could not set',
+      };
+
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
+      sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
+      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
+      const showInformationMessageStub = sandbox
+        .stub(vscode.window, 'showInformationMessage')
+        .resolves();
+      sandbox.spy(vscode.env, 'openExternal');
+
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+
+      stripeSamples.selectAndCloneSample();
+
+      await simulateSelectAll();
+
+      assert.deepStrictEqual(
+        showInformationMessageStub.args[0][0],
+        'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+      );
+    });
+
     test('prompts upgrade when no daemon command', async () => {
       sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
 
@@ -139,33 +166,6 @@ suite('StripeSamples', function () {
       await stripeSamples.selectAndCloneSample();
 
       assert.strictEqual(showErrorMessageSpy.calledOnce, true);
-    });
-
-    test('shows special post install message if API keys could not be set', async () => {
-      // Simulate the special error response from the gRPC server
-      const err: Partial<grpc.ServiceError> = {
-        code: grpc.status.UNKNOWN,
-        details: 'we could not set',
-      };
-
-      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
-      sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
-      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-      const showInformationMessageStub = sandbox
-        .stub(vscode.window, 'showInformationMessage')
-        .resolves();
-      sandbox.spy(vscode.env, 'openExternal');
-
-      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
-
-      stripeSamples.selectAndCloneSample();
-
-      await simulateSelectAll();
-
-      assert.deepStrictEqual(
-        showInformationMessageStub.args[0][0],
-        'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-      );
     });
   });
 });
