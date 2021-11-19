@@ -15,8 +15,6 @@ import {sleep} from './helpers';
 suite('StripeSamples', function () {
   this.timeout(20000);
 
-  let sandbox: sinon.SinonSandbox;
-
   const stripeClient = <Partial<StripeClient>>{
     getCLIPath: () => Promise.resolve('/path/to/cli'),
     promptUpdateForDaemon: () => {},
@@ -74,15 +72,17 @@ suite('StripeSamples', function () {
     setupClient: () => {},
   };
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
-  });
-
-  teardown(() => {
-    sandbox.restore();
-  });
-
   suite('selectAndCloneSample', () => {
+    let sandbox: sinon.SinonSandbox;
+
+    setup(() => {
+      sandbox = sinon.createSandbox();
+    });
+
+    teardown(() => {
+      sandbox.restore();
+    });
+
     test('prompts for sample config, clones, and opens sample', async () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
       const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
