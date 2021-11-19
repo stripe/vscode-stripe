@@ -36,7 +36,6 @@ export class StripeSamples {
    * prompt to open the sample.
    */
   selectAndCloneSample = async () => {
-    console.log('1');
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -47,16 +46,11 @@ export class StripeSamples {
       return;
     }
 
-    console.log('2');
-
     try {
       const selectedSample = await this.promptSample();
       if (!selectedSample) {
-        console.log('no sample selected');
         return;
       }
-
-      console.log('3');
 
       const sampleName = selectedSample.sampleData.name;
 
@@ -65,21 +59,15 @@ export class StripeSamples {
         return;
       }
 
-      console.log('4');
-
       const selectedClient = await this.promptClient(selectedIntegration);
       if (!selectedClient) {
         return;
       }
 
-      console.log('5');
-
       const selectedServer = await this.promptServer(selectedIntegration);
       if (!selectedServer) {
         return;
       }
-
-      console.log('6');
 
       const cloneSampleAsName = await this.promptSampleName(sampleName);
 
@@ -88,13 +76,11 @@ export class StripeSamples {
         return;
       }
 
-      console.log('ONE');
       await window.showInformationMessage(
         `Sample "${sampleName}" cloning in progress...`,
         'OK',
       );
 
-      console.log('TWO');
       const sampleCreateResponse = await this.createSample(
         sampleName,
         selectedIntegration.getIntegrationName(),
@@ -103,7 +89,6 @@ export class StripeSamples {
         clonePath,
       );
 
-      console.log('THREE');
       const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
       // eslint-disable-next-line no-nested-ternary
       const postInstallMessage = !!sampleCreateResponse
@@ -112,9 +97,7 @@ export class StripeSamples {
           : `${sampleIsReady}.`
         : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
 
-      console.log('FOUR');
       await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
-      console.log('FIVE');
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
