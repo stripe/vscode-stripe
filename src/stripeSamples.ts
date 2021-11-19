@@ -25,6 +25,7 @@ export class StripeSamples {
   private daemonClient?: StripeDaemonClient;
   private stripeClient: StripeClient;
   private stripeDaemon: StripeDaemon;
+  private postInstallMessage: string;
 
   constructor(stripeClient: StripeClient, stripeDaemon: StripeDaemon) {
     this.stripeClient = stripeClient;
@@ -97,15 +98,15 @@ export class StripeSamples {
 
           const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
           // eslint-disable-next-line no-nested-ternary
-          const postInstallMessage = !!sampleCreateResponse
+          this.postInstallMessage = !!sampleCreateResponse
             ? !!sampleCreateResponse.getPostInstall()
               ? sampleCreateResponse.getPostInstall()
               : `${sampleIsReady}.`
             : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
-
-          await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
         },
       );
+
+      await this.promptOpenFolder(this.postInstallMessage, clonePath, sampleName);
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
