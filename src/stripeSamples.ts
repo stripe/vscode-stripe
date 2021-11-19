@@ -86,7 +86,7 @@ export class StripeSamples {
         },
         async (progress) => {
           console.log('INSIDE PROGRESS');
-          
+
           progress.report({increment: 0});
 
           const sampleCreateResponse = await this.createSample(
