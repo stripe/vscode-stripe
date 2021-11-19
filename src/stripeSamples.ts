@@ -76,11 +76,13 @@ export class StripeSamples {
         return;
       }
 
+      console.log('ONE');
       await window.showInformationMessage(
-        `Sample '${sampleName}' cloning in progress...`,
+        `Sample "${sampleName}" cloning in progress...`,
         'OK',
       );
 
+      console.log('TWO');
       const sampleCreateResponse = await this.createSample(
         sampleName,
         selectedIntegration.getIntegrationName(),
@@ -89,6 +91,7 @@ export class StripeSamples {
         clonePath,
       );
 
+      console.log('THREE');
       const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
       // eslint-disable-next-line no-nested-ternary
       const postInstallMessage = !!sampleCreateResponse
@@ -97,7 +100,9 @@ export class StripeSamples {
           : `${sampleIsReady}.`
         : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
 
+      console.log('FOUR');
       await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
+      console.log('FIVE');
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
