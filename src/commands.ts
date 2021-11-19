@@ -449,6 +449,7 @@ export class Commands {
     await vscode.window
       .showInformationMessage(
         'Run previously saved fixture or one time use fixture on the active editor tab?',
+        {modal: true},
         ...['Open and execute saved fixture', 'Execute one time fixture'],
       )
       .then(async (option) => {

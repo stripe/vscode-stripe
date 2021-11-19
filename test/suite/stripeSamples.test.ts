@@ -99,7 +99,6 @@ suite('StripeSamples', function () {
         .stub(vscode.window, 'showInformationMessage')
         .resolves();
       const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
-      sandbox.spy(vscode.window, 'withProgress');
 
       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
@@ -110,7 +109,7 @@ suite('StripeSamples', function () {
       assert.strictEqual(showQuickPickSpy.callCount, 4);
       assert.strictEqual(showInputBoxStub.callCount, 1);
       assert.strictEqual(showOpenDialogStub.callCount, 1);
-      assert.strictEqual(showInformationMessageStub.callCount, 1);
+      assert.strictEqual(showInformationMessageStub.callCount, 2);
       assert.strictEqual(openSampleReadmeSpy.callCount, 1);
     });
 
@@ -135,9 +134,20 @@ suite('StripeSamples', function () {
 
       await simulateSelectAll();
 
+      // show cloning in progress message
       assert.deepStrictEqual(
-        showInformationMessageStub.args[0][0],
+        showInformationMessageStub.calledWith("Sample 'accept-a-payment' cloning in progress...", sinon.match.any),
+        true
+      );
+
+      // show sample cloned successfully message
+      assert.deepStrictEqual(
+        showInformationMessageStub.calledWith(
         'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+        {modal: true},
+        sinon.match.any,
+        sinon.match.any),
+        true
       );
     });
 

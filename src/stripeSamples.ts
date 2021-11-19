@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {ProgressLocation, QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
+import {QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
@@ -25,12 +25,10 @@ export class StripeSamples {
   private daemonClient?: StripeDaemonClient;
   private stripeClient: StripeClient;
   private stripeDaemon: StripeDaemon;
-  private postInstallMessage: string;
 
   constructor(stripeClient: StripeClient, stripeDaemon: StripeDaemon) {
     this.stripeClient = stripeClient;
     this.stripeDaemon = stripeDaemon;
-    this.postInstallMessage = '';
   }
 
   /**
@@ -78,36 +76,28 @@ export class StripeSamples {
         return;
       }
 
-      await window.withProgress(
-        {
-          location: ProgressLocation.Window,
-          cancellable: false,
-          title: `Cloning sample '${sampleName}'`,
-        },
-        async (progress) => {
-          progress.report({increment: 0});
-
-          const sampleCreateResponse = await this.createSample(
-            sampleName,
-            selectedIntegration.getIntegrationName(),
-            selectedServer,
-            selectedClient,
-            clonePath,
-          );
-
-          progress.report({increment: 100});
-
-          const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
-          // eslint-disable-next-line no-nested-ternary
-          this.postInstallMessage = !!sampleCreateResponse
-            ? !!sampleCreateResponse.getPostInstall()
-              ? sampleCreateResponse.getPostInstall()
-              : `${sampleIsReady}.`
-            : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
-        },
+      await window.showInformationMessage(
+        `Sample '${sampleName}' cloning in progress...`,
+        'OK',
       );
 
-      await this.promptOpenFolder(this.postInstallMessage, clonePath, sampleName);
+      const sampleCreateResponse = await this.createSample(
+        sampleName,
+        selectedIntegration.getIntegrationName(),
+        selectedServer,
+        selectedClient,
+        clonePath,
+      );
+
+      const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
+      // eslint-disable-next-line no-nested-ternary
+      const postInstallMessage = !!sampleCreateResponse
+        ? !!sampleCreateResponse.getPostInstall()
+          ? sampleCreateResponse.getPostInstall()
+          : `${sampleIsReady}.`
+        : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
+
+      await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
