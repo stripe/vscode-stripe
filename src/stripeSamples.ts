@@ -310,16 +310,16 @@ export class StripeSamples {
       newWindow: 'Open in new window',
     };
 
-    // open the readme file in a new browser window
-    // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
-    // preview markdown also does not work because opening new workspace will terminate the stripe extension process
-    env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
-
     const selectedOption = await window.showInformationMessage(
       postInstallMessage,
       {modal: true},
       ...Object.values(openFolderOptions),
     );
+
+    // open the readme file in a new browser window
+    // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
+    // preview markdown also does not work because opening new workspace will terminate the stripe extension process
+    env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:

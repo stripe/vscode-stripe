@@ -65,6 +65,8 @@ suite('StripeSamples', function () {
         response.setPath('/foo/bar');
         response.setPostInstall('a post install message');
 
+        console.log('createError is ' + createError);
+
         callback(createError as any, response);
       },
     };
