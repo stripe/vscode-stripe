@@ -59,22 +59,30 @@ export class StripeSamples {
         return;
       }
 
+      console.log(`selected integration:  ${selectedIntegration}`);
+
       const selectedClient = await this.promptClient(selectedIntegration);
       if (!selectedClient) {
         return;
       }
 
+      console.log(`selectedClient:  ${selectedClient}`);
+
       const selectedServer = await this.promptServer(selectedIntegration);
       if (!selectedServer) {
         return;
       }
+      console.log(`selectedServer:  ${selectedServer}`);
 
       const cloneSampleAsName = await this.promptSampleName(sampleName);
+      console.log(`cloneSampleAsName:  ${cloneSampleAsName}`);
 
       const clonePath = await this.promptPath(selectedSample, cloneSampleAsName);
       if (!clonePath) {
         return;
       }
+
+      console.log(`clonePath:  ${clonePath}`);
 
       await window.withProgress(
         {

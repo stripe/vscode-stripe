@@ -193,22 +193,34 @@ suite('StripeSamples', function () {
  */
 async function simulateSelectAll() {
   // Simulate select sample
+  console.log('Simulate select sample');
+
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select integration
+  console.log('Simulate select integration');
+
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select client
+  console.log('Simulate select client');
+
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select server
+  console.log('Simulate select server');
+
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select path
+  console.log('Simulate select path');
+
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  console.log('Done with quick picking');
 }
