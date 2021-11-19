@@ -52,6 +52,7 @@ export class StripeSamples {
     try {
       const selectedSample = await this.promptSample();
       if (!selectedSample) {
+        console.log('no sample selected');
         return;
       }
 

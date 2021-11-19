@@ -202,6 +202,6 @@ async function simulateSelectAll() {
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select path
-  await sleep(500);
+  await sleep(1000);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 }
