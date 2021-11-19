@@ -76,6 +76,8 @@ export class StripeSamples {
         return;
       }
 
+      console.log('BEFORE PROGRESS');
+
       await window.withProgress(
         {
           location: ProgressLocation.Window,
@@ -83,6 +85,8 @@ export class StripeSamples {
           title: `Cloning sample '${sampleName}'`,
         },
         async (progress) => {
+          console.log('INSIDE PROGRESS');
+          
           progress.report({increment: 0});
 
           const sampleCreateResponse = await this.createSample(
