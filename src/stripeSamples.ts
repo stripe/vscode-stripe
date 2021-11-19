@@ -276,12 +276,15 @@ export class StripeSamples {
     client: string,
     path: string,
   ): Promise<SampleCreateResponse | null> => {
+    console.log('START createSample');
     const sampleCreateRequest = new SampleCreateRequest();
     sampleCreateRequest.setSampleName(sampleName);
     sampleCreateRequest.setIntegrationName(integrationName);
     sampleCreateRequest.setServer(server);
     sampleCreateRequest.setClient(client);
     sampleCreateRequest.setPath(path);
+
+    console.log('set all request params');
 
     return new Promise<SampleCreateResponse | null>((resolve, reject) => {
       this.daemonClient?.sampleCreate(sampleCreateRequest, (error, response) => {
