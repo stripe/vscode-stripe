@@ -73,7 +73,7 @@ const stripeDaemon = <Partial<StripeDaemon>>{
 };
 
 suite('StripeSamples', function () {
-  this.timeout(10000);
+  this.timeout(20000);
 
   let sandbox: sinon.SinonSandbox;
 
@@ -86,7 +86,7 @@ suite('StripeSamples', function () {
   });
 
   suite('selectAndCloneSample', () => {
-    test('prompts for sample config, clones, and opens sample', async (done) => {
+    test('prompts for sample config, clones, and opens sample', async () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
       const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
       const showInputBoxStub = sandbox
@@ -111,8 +111,6 @@ suite('StripeSamples', function () {
       assert.strictEqual(showOpenDialogStub.callCount, 1);
       assert.strictEqual(showInformationMessageStub.callCount, 1);
       assert.strictEqual(openSampleReadmeSpy.callCount, 1);
-
-      done();
     });
 
     test('shows special post install message if API keys could not be set', async () => {
