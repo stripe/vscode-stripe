@@ -99,6 +99,7 @@ suite('StripeSamples', function () {
           .stub(vscode.window, 'showInformationMessage')
           .resolves();
         const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
+        sandbox.stub(vscode.window, 'withProgress').resolves();
 
         const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 

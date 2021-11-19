@@ -36,6 +36,7 @@ export class StripeSamples {
    * prompt to open the sample.
    */
   selectAndCloneSample = async () => {
+    console.log('START selectAndCloneSample');
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -45,6 +46,8 @@ export class StripeSamples {
       console.error(e);
       return;
     }
+
+    console.log('START promptSample');
 
     try {
       const selectedSample = await this.promptSample();
