@@ -79,33 +79,6 @@ suite('StripeSamples', function () {
 
   suite('selectAndCloneSample', () => {
     suite('success', () => {
-      test('prompts for sample config, clones, and opens sample', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
-        const showInputBoxStub = sandbox
-          .stub(vscode.window, 'showInputBox')
-          .resolves('sample-name-by-user');
-        const showOpenDialogStub = sandbox
-          .stub(vscode.window, 'showOpenDialog')
-          .resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageStub = sandbox
-          .stub(vscode.window, 'showInformationMessage')
-          .resolves();
-        const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
-
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
-
-        stripeSamples.selectAndCloneSample();
-
-        await simulateSelectAll();
-
-        assert.strictEqual(showQuickPickSpy.callCount, 4);
-        assert.strictEqual(showInputBoxStub.callCount, 1);
-        assert.strictEqual(showOpenDialogStub.callCount, 1);
-        assert.strictEqual(showInformationMessageStub.callCount, 1);
-        assert.strictEqual(openSampleReadmeSpy.callCount, 1);
-      });
-
       test('shows special post install message if API keys could not be set', async () => {
         console.log('I RAN THE FAILING TEST');
         // Simulate the special error response from the gRPC server
@@ -143,6 +116,32 @@ suite('StripeSamples', function () {
           showInformationMessageStub.args[0][0],
           'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
         );
+      });
+      test('prompts for sample config, clones, and opens sample', async () => {
+        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
+        const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+        const showInputBoxStub = sandbox
+          .stub(vscode.window, 'showInputBox')
+          .resolves('sample-name-by-user');
+        const showOpenDialogStub = sandbox
+          .stub(vscode.window, 'showOpenDialog')
+          .resolves([vscode.Uri.parse('/my/path')]);
+        const showInformationMessageStub = sandbox
+          .stub(vscode.window, 'showInformationMessage')
+          .resolves();
+        const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
+
+        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+
+        stripeSamples.selectAndCloneSample();
+
+        await simulateSelectAll();
+
+        assert.strictEqual(showQuickPickSpy.callCount, 4);
+        assert.strictEqual(showInputBoxStub.callCount, 1);
+        assert.strictEqual(showOpenDialogStub.callCount, 1);
+        assert.strictEqual(showInformationMessageStub.callCount, 1);
+        assert.strictEqual(openSampleReadmeSpy.callCount, 1);
       });
     });
 
