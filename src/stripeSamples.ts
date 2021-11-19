@@ -30,6 +30,7 @@ export class StripeSamples {
   constructor(stripeClient: StripeClient, stripeDaemon: StripeDaemon) {
     this.stripeClient = stripeClient;
     this.stripeDaemon = stripeDaemon;
+    this.postInstallMessage = '';
   }
 
   /**
