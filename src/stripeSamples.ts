@@ -36,6 +36,7 @@ export class StripeSamples {
    * prompt to open the sample.
    */
   selectAndCloneSample = async () => {
+    console.log('1');
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -46,11 +47,15 @@ export class StripeSamples {
       return;
     }
 
+    console.log('2');
+
     try {
       const selectedSample = await this.promptSample();
       if (!selectedSample) {
         return;
       }
+
+      console.log('3');
 
       const sampleName = selectedSample.sampleData.name;
 
@@ -59,15 +64,21 @@ export class StripeSamples {
         return;
       }
 
+      console.log('4');
+
       const selectedClient = await this.promptClient(selectedIntegration);
       if (!selectedClient) {
         return;
       }
 
+      console.log('5');
+
       const selectedServer = await this.promptServer(selectedIntegration);
       if (!selectedServer) {
         return;
       }
+
+      console.log('6');
 
       const cloneSampleAsName = await this.promptSampleName(sampleName);
 
