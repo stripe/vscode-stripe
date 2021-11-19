@@ -36,7 +36,6 @@ export class StripeSamples {
    * prompt to open the sample.
    */
   selectAndCloneSample = async () => {
-    console.log('START selectAndCloneSample');
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -46,8 +45,6 @@ export class StripeSamples {
       console.error(e);
       return;
     }
-
-    console.log('START promptSample');
 
     try {
       const selectedSample = await this.promptSample();
@@ -79,8 +76,6 @@ export class StripeSamples {
         return;
       }
 
-      console.log('BEFORE PROGRESS');
-
       await window.withProgress(
         {
           location: ProgressLocation.Window,
@@ -88,8 +83,6 @@ export class StripeSamples {
           title: `Cloning sample '${sampleName}'`,
         },
         async (progress) => {
-          console.log('INSIDE PROGRESS');
-
           progress.report({increment: 0});
 
           const sampleCreateResponse = await this.createSample(
@@ -283,15 +276,12 @@ export class StripeSamples {
     client: string,
     path: string,
   ): Promise<SampleCreateResponse | null> => {
-    console.log('START createSample');
     const sampleCreateRequest = new SampleCreateRequest();
     sampleCreateRequest.setSampleName(sampleName);
     sampleCreateRequest.setIntegrationName(integrationName);
     sampleCreateRequest.setServer(server);
     sampleCreateRequest.setClient(client);
     sampleCreateRequest.setPath(path);
-
-    console.log('set all request params');
 
     return new Promise<SampleCreateResponse | null>((resolve, reject) => {
       this.daemonClient?.sampleCreate(sampleCreateRequest, (error, response) => {
