@@ -12,19 +12,21 @@ import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeSamples} from '../../src/stripeSamples';
 import {sleep} from './helpers';
 
-suite('StripeSamples', function () {
-  this.timeout(20000);
+const stripeClient = <Partial<StripeClient>>{
+  getCLIPath: () => Promise.resolve('/path/to/cli'),
+  promptUpdateForDaemon: () => {},
+  promptLogin: () => {},
+};
 
-  let sandbox: sinon.SinonSandbox;
+// Mock gRPC server responses
+const daemonClient = (
+  sampleCreateError?: Partial<grpc.ServiceError>,
+  samplesListError?: Partial<grpc.ServiceError>,
+) => {
+  const createError = !!sampleCreateError ? sampleCreateError : null;
+  const listError = !!samplesListError ? samplesListError : null;
 
-  const stripeClient = <Partial<StripeClient>>{
-    getCLIPath: () => Promise.resolve('/path/to/cli'),
-    promptUpdateForDaemon: () => {},
-    promptLogin: () => {},
-  };
-
-  // Mock gRPC server responses
-  const daemonClient = <Partial<StripeCLIClient>>{
+  return <Partial<StripeCLIClient>>{
     samplesList: (
       req: SamplesListRequest,
       callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
@@ -37,7 +39,7 @@ suite('StripeSamples', function () {
       const response = new SamplesListResponse();
       response.setSamplesList([sampleData]);
 
-      callback(null, response);
+      callback(listError as any, response);
     },
     sampleConfigs: (
       req: SampleConfigsRequest,
@@ -61,13 +63,19 @@ suite('StripeSamples', function () {
       response.setPath('/foo/bar');
       response.setPostInstall('a post install message');
 
-      callback(null, response);
+      callback(createError as any, response);
     },
   };
+};
 
-  const stripeDaemon = <Partial<StripeDaemon>>{
-    setupClient: () => {},
-  };
+const stripeDaemon = <Partial<StripeDaemon>>{
+  setupClient: () => {},
+};
+
+suite('StripeSamples', function () {
+  this.timeout(20000);
+
+  let sandbox: sinon.SinonSandbox;
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -78,112 +86,97 @@ suite('StripeSamples', function () {
   });
 
   suite('selectAndCloneSample', () => {
-    suite('success', () => {
-      test('prompts for sample config, clones, and opens sample', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
-        const showInputBoxStub = sandbox
-          .stub(vscode.window, 'showInputBox')
-          .resolves('sample-name-by-user');
-        const showOpenDialogStub = sandbox
-          .stub(vscode.window, 'showOpenDialog')
-          .resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageStub = sandbox
-          .stub(vscode.window, 'showInformationMessage')
-          .resolves();
-        const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
+    test('prompts for sample config, clones, and opens sample', async () => {
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
+      const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+      const showInputBoxStub = sandbox
+        .stub(vscode.window, 'showInputBox')
+        .resolves('sample-name-by-user');
+      const showOpenDialogStub = sandbox
+        .stub(vscode.window, 'showOpenDialog')
+        .resolves([vscode.Uri.parse('/my/path')]);
+      const showInformationMessageStub = sandbox
+        .stub(vscode.window, 'showInformationMessage')
+        .resolves();
+      const openSampleReadmeSpy = sandbox.spy(vscode.env, 'openExternal');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        stripeSamples.selectAndCloneSample();
+      stripeSamples.selectAndCloneSample();
 
-        await simulateSelectAll();
+      await simulateSelectAll();
 
-        assert.strictEqual(showQuickPickSpy.callCount, 4);
-        assert.strictEqual(showInputBoxStub.callCount, 1);
-        assert.strictEqual(showOpenDialogStub.callCount, 1);
-        assert.strictEqual(showInformationMessageStub.callCount, 1);
-        assert.strictEqual(openSampleReadmeSpy.callCount, 1);
-      });
-
-      test('shows special post install message if API keys could not be set', async () => {
-        // Simulate the special error response from the gRPC server
-        const err: Partial<grpc.ServiceError> = {
-          code: grpc.status.UNKNOWN,
-          details: 'we could not set',
-        };
-
-        sandbox
-          .stub(daemonClient, 'sampleCreate')
-          .value(
-            (
-              req: SampleCreateRequest,
-              callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-            ) => {
-              callback(<any>err, new SampleCreateResponse());
-            },
-          );
-
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
-        sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
-        const showInformationMessageStub = sandbox
-          .stub(vscode.window, 'showInformationMessage')
-          .resolves();
-        sandbox.spy(vscode.env, 'openExternal');
-
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
-
-        stripeSamples.selectAndCloneSample();
-
-        await simulateSelectAll();
-
-        assert.deepStrictEqual(
-          showInformationMessageStub.args[0][0],
-          'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-        );
-      });
+      assert.strictEqual(showQuickPickSpy.callCount, 4);
+      assert.strictEqual(showInputBoxStub.callCount, 1);
+      assert.strictEqual(showOpenDialogStub.callCount, 1);
+      assert.strictEqual(showInformationMessageStub.callCount, 2);
+      assert.strictEqual(openSampleReadmeSpy.callCount, 1);
     });
 
-    suite('error', () => {
-      test('prompts upgrade when no daemon command', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
+    test('shows special post install message if API keys could not be set', async () => {
+      // Simulate the special error response from the gRPC server
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'we could not set',
+      };
 
-        const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
+      sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
+      sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
+      const showInformationMessageStub = sandbox
+        .stub(vscode.window, 'showInformationMessage')
+        .resolves();
+      sandbox.spy(vscode.env, 'openExternal');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        await stripeSamples.selectAndCloneSample();
+      stripeSamples.selectAndCloneSample();
 
-        assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
-      });
+      await simulateSelectAll();
 
-      test('shows error message when any other error occurs', async () => {
-        const err: Partial<grpc.ServiceError> = {
-          code: grpc.status.UNKNOWN,
-          details: 'An unknown error occurred',
-        };
+      // show cloning in progress message
+      // assert.deepStrictEqual(
+      //   showInformationMessageStub.calledWith('Sample "accept-a-payment" cloning in progress...', sinon.match.any),
+      //   true
+      // );
 
-        sandbox
-          .stub(daemonClient, 'samplesList')
-          .value(
-            (
-              req: SamplesListRequest,
-              callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-            ) => {
-              callback(<any>err, new SamplesListResponse());
-            },
-          );
+      // show sample cloned successfully message
+      assert.deepStrictEqual(
+        showInformationMessageStub.calledWith(
+        'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+        {modal: true},
+        sinon.match.any,
+        sinon.match.any),
+        true
+      );
+    });
 
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient);
-        const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+    test('prompts upgrade when no daemon command', async () => {
+      sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
 
-        await stripeSamples.selectAndCloneSample();
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        assert.strictEqual(showErrorMessageSpy.calledOnce, true);
-      });
+      await stripeSamples.selectAndCloneSample();
+
+      assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
+    });
+
+    test('shows error message when any other error occurs', async () => {
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'An unknown error occurred',
+      };
+
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(undefined, err));
+      const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+
+      await stripeSamples.selectAndCloneSample();
+
+      assert.strictEqual(showErrorMessageSpy.calledOnce, true);
     });
   });
 });
@@ -208,7 +201,9 @@ async function simulateSelectAll() {
   await sleep(500);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
+  // Pause for sample save-as name input box
+
   // Simulate select path
-  await sleep(500);
+  await sleep(1000);
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 }

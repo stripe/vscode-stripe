@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {ProgressLocation, QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
+import {QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
@@ -76,36 +76,28 @@ export class StripeSamples {
         return;
       }
 
-      await window.withProgress(
-        {
-          location: ProgressLocation.Window,
-          cancellable: false,
-          title: `Cloning sample '${sampleName}'`,
-        },
-        async (progress) => {
-          progress.report({increment: 0});
-
-          const sampleCreateResponse = await this.createSample(
-            sampleName,
-            selectedIntegration.getIntegrationName(),
-            selectedServer,
-            selectedClient,
-            clonePath,
-          );
-
-          progress.report({increment: 100});
-
-          const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
-          // eslint-disable-next-line no-nested-ternary
-          const postInstallMessage = !!sampleCreateResponse
-            ? !!sampleCreateResponse.getPostInstall()
-              ? sampleCreateResponse.getPostInstall()
-              : `${sampleIsReady}.`
-            : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
-
-          await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
-        },
+      await window.showInformationMessage(
+        `Sample "${sampleName}" cloning in progress...`,
+        'OK',
       );
+
+      const sampleCreateResponse = await this.createSample(
+        sampleName,
+        selectedIntegration.getIntegrationName(),
+        selectedServer,
+        selectedClient,
+        clonePath,
+      );
+
+      const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
+      // eslint-disable-next-line no-nested-ternary
+      const postInstallMessage = !!sampleCreateResponse
+        ? !!sampleCreateResponse.getPostInstall()
+          ? sampleCreateResponse.getPostInstall()
+          : `${sampleIsReady}.`
+        : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
+
+      await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
@@ -310,16 +302,16 @@ export class StripeSamples {
       newWindow: 'Open in new window',
     };
 
-    // open the readme file in a new browser window
-    // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
-    // preview markdown also does not work because opening new workspace will terminate the stripe extension process
-    env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
-
     const selectedOption = await window.showInformationMessage(
       postInstallMessage,
       {modal: true},
       ...Object.values(openFolderOptions),
     );
+
+    // open the readme file in a new browser window
+    // cant open in the editor because cannot update user setting 'workbench.startupEditor​' from stripe extension
+    // preview markdown also does not work because opening new workspace will terminate the stripe extension process
+    env.openExternal(Uri.parse(`https://github.com/stripe-samples/${sampleName}#readme`));
 
     switch (selectedOption) {
       case openFolderOptions.sameWindow:
