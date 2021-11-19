@@ -12,68 +12,67 @@ import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeSamples} from '../../src/stripeSamples';
 import {sleep} from './helpers';
 
+const stripeClient = <Partial<StripeClient>>{
+  getCLIPath: () => Promise.resolve('/path/to/cli'),
+  promptUpdateForDaemon: () => {},
+  promptLogin: () => {},
+};
+
+// Mock gRPC server responses
+const daemonClient = (sampleCreateError?: Partial<grpc.ServiceError>, samplesListError?: Partial<grpc.ServiceError>) => {
+  const createError = !!sampleCreateError ? sampleCreateError : null;
+  const listError = !!samplesListError ? samplesListError : null;
+
+  return <Partial<StripeCLIClient>>{
+    samplesList: (
+      req: SamplesListRequest,
+      callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
+    ) => {
+      const sampleData = new SamplesListResponse.SampleData();
+      sampleData.setName('accept-a-payment');
+      sampleData.setDescription('Learn how to accept a payment');
+      sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
+
+      const response = new SamplesListResponse();
+      response.setSamplesList([sampleData]);
+
+      callback(listError as any, response);
+    },
+    sampleConfigs: (
+      req: SampleConfigsRequest,
+      callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
+    ) => {
+      const integration = new SampleConfigsResponse.Integration();
+      integration.setIntegrationName('using-webhooks');
+      integration.setClientsList(['html', 'react']);
+      integration.setServersList(['node', 'ruby']);
+
+      const response = new SampleConfigsResponse();
+      response.setIntegrationsList([integration]);
+
+      callback(null, response);
+    },
+    sampleCreate: (
+      req: SampleCreateRequest,
+      callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
+    ) => {
+      const response = new SampleCreateResponse();
+      response.setPath('/foo/bar');
+      response.setPostInstall('a post install message');
+
+      callback(createError as any, response);
+    },
+  };
+};
+
+const stripeDaemon = <Partial<StripeDaemon>>{
+  setupClient: () => {},
+};
+
 suite('StripeSamples', function () {
   this.timeout(20000);
 
-  const stripeClient = <Partial<StripeClient>>{
-    getCLIPath: () => Promise.resolve('/path/to/cli'),
-    promptUpdateForDaemon: () => {},
-    promptLogin: () => {},
-  };
-
-  // Mock gRPC server responses
-  const daemonClient = (sampleCreateError?: Partial<grpc.ServiceError>, samplesListError?: Partial<grpc.ServiceError>) => {
-    const createError = !!sampleCreateError ? sampleCreateError : null;
-    const listError = !!samplesListError ? samplesListError : null;
-
-    return <Partial<StripeCLIClient>>{
-      samplesList: (
-        req: SamplesListRequest,
-        callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-      ) => {
-        const sampleData = new SamplesListResponse.SampleData();
-        sampleData.setName('accept-a-payment');
-        sampleData.setDescription('Learn how to accept a payment');
-        sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
-
-        const response = new SamplesListResponse();
-        response.setSamplesList([sampleData]);
-
-        callback(listError as any, response);
-      },
-      sampleConfigs: (
-        req: SampleConfigsRequest,
-        callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
-      ) => {
-        const integration = new SampleConfigsResponse.Integration();
-        integration.setIntegrationName('using-webhooks');
-        integration.setClientsList(['html', 'react']);
-        integration.setServersList(['node', 'ruby']);
-
-        const response = new SampleConfigsResponse();
-        response.setIntegrationsList([integration]);
-
-        callback(null, response);
-      },
-      sampleCreate: (
-        req: SampleCreateRequest,
-        callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-      ) => {
-        const response = new SampleCreateResponse();
-        response.setPath('/foo/bar');
-        response.setPostInstall('a post install message');
-
-        callback(createError as any, response);
-      },
-    };
-  };
-
-  const stripeDaemon = <Partial<StripeDaemon>>{
-    setupClient: () => {},
-  };
-
-  suite('selectAndCloneSample', () => {
-    let sandbox: sinon.SinonSandbox;
+  let sandbox: sinon.SinonSandbox;
 
     setup(() => {
       sandbox = sinon.createSandbox();
@@ -83,6 +82,7 @@ suite('StripeSamples', function () {
       sandbox.restore();
     });
 
+  suite('selectAndCloneSample', () => {
     test('prompts for sample config, clones, and opens sample', async () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
       const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
