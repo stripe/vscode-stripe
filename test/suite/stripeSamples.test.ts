@@ -120,17 +120,6 @@ suite('StripeSamples', function () {
         details: 'we could not set',
       };
 
-      // sandbox
-      //   .stub(daemonClient, 'sampleCreate')
-      //   .value(
-      //     (
-      //       req: SampleCreateRequest,
-      //       callback: (error: grpc.ServiceError | null, res: SampleCreateResponse) => void,
-      //     ) => {
-      //       callback(<any>err, new SampleCreateResponse());
-      //     },
-      //   );
-
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
       sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
       sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
@@ -151,45 +140,32 @@ suite('StripeSamples', function () {
       );
     });
 
-    suite('error', () => {
-      test('prompts upgrade when no daemon command', async () => {
-        sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
+    test('prompts upgrade when no daemon command', async () => {
+      sandbox.stub(stripeDaemon, 'setupClient').throws(new NoDaemonCommandError());
 
-        const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
+      const promptUpdateForDaemonSpy = sandbox.spy(stripeClient, 'promptUpdateForDaemon');
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        await stripeSamples.selectAndCloneSample();
+      await stripeSamples.selectAndCloneSample();
 
-        assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
-      });
+      assert.strictEqual(promptUpdateForDaemonSpy.calledOnce, true);
+    });
 
-      test('shows error message when any other error occurs', async () => {
-        const err: Partial<grpc.ServiceError> = {
-          code: grpc.status.UNKNOWN,
-          details: 'An unknown error occurred',
-        };
+    test('shows error message when any other error occurs', async () => {
+      const err: Partial<grpc.ServiceError> = {
+        code: grpc.status.UNKNOWN,
+        details: 'An unknown error occurred',
+      };
 
-        // sandbox
-        //   .stub(daemonClient, 'samplesList')
-        //   .value(
-        //     (
-        //       req: SamplesListRequest,
-        //       callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
-        //     ) => {
-        //       callback(<any>err, new SamplesListResponse());
-        //     },
-        //   );
+      sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(undefined, err));
+      const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
-        sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(undefined, err));
-        const showErrorMessageSpy = sandbox.spy(vscode.window, 'showErrorMessage');
+      const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-        const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
+      await stripeSamples.selectAndCloneSample();
 
-        await stripeSamples.selectAndCloneSample();
-
-        assert.strictEqual(showErrorMessageSpy.calledOnce, true);
-      });
+      assert.strictEqual(showErrorMessageSpy.calledOnce, true);
     });
   });
 });
