@@ -142,7 +142,8 @@ suite('StripeSamples', function () {
 
       // show sample cloned successfully message
       console.log('call count: ' + showInformationMessageStub.callCount);
-      console.log(`call args: ${showInformationMessageStub.args.join.call(', ')}`);
+      console.log(`call args: ${showInformationMessageStub.args[0].join(',')}`);
+      console.log(`call args: ${showInformationMessageStub.args[1].join(',')}`);
 
       assert.deepStrictEqual(
         showInformationMessageStub.calledWith(
