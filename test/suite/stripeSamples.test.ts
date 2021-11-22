@@ -141,13 +141,17 @@ suite('StripeSamples', function () {
       // );
 
       // show sample cloned successfully message
+      console.log('call count: ' + showInformationMessageStub.callCount);
+      console.log(`call args: ${showInformationMessageStub.args.join.call(', ')}`);
+
       assert.deepStrictEqual(
         showInformationMessageStub.calledWith(
-        'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-        {modal: true},
-        sinon.match.any,
-        sinon.match.any),
-        true
+          'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+          {modal: true},
+          sinon.match.any,
+          sinon.match.any,
+        ),
+        true,
       );
     });
 
