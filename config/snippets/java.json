@@ -227,7 +227,12 @@
   "Create Checkout Session": {
     "prefix": "StripeCheckoutSessionCreate",
     "description": "Create Checkout Session",
-    "body": "List<Object> paymentMethodTypes =\n  new ArrayList<>();\npaymentMethodTypes.add(\"card\");\nList<Object> lineItems = new ArrayList<>();\nMap<String, Object> lineItem1 = new HashMap<>();\nlineItem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nlineItem1.put(\"quantity\", ${5:2});\nlineItems.add(line_item1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"success_url\",\n  \"https://example.com/success\"\n);\nparams.put(\n  \"cancel_url\",\n  \"https://example.com/cancel\"\n);\nparams.put(\n  \"payment_method_types\",\n  paymentMethodTypes\n);\nparams.put(\"line_items\", lineItems);\nparams.put(\"mode\", \"${6:payment}\");\n\nSession session = Session.create(params);"
+    "body": "List<Object> lineItems = new ArrayList<>();\nMap<String, Object> lineItem1 = new HashMap<>();\nlineItem1.put(\"price\", \"${3:price_xxxxxxxxxxxxx}\");\nlineItem1.put(\"quantity\", ${4:2});\nlineItems.add(line_item1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\n  \"success_url\",\n  \"https://example.com/success\"\n);\nparams.put(\n  \"cancel_url\",\n  \"https://example.com/cancel\"\n);\nparams.put(\"line_items\", lineItems);\nparams.put(\"mode\", \"${5:payment}\");\n\nSession session = Session.create(params);"
+  },
+  "Expire Checkout Session": {
+    "prefix": "StripeCheckoutSessionExpire",
+    "description": "Expire Checkout Session",
+    "body": "Session session =\n  Session.retrieve(\"${1:cs_test_xxxxxxxxxxxxx}\");\n\nSession updatedSession = session.expire();"
   },
   "Retrieve Checkout Session Line Items": {
     "prefix": "StripeCheckoutSessionLineItemsRetrieve",
@@ -257,12 +262,12 @@
   "Create Coupon": {
     "prefix": "StripeCouponCreate",
     "description": "Create Coupon",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"percent_off\", ${1:25});\nparams.put(\"duration\", \"${2:repeating}\");\nparams.put(\"duration_in_months\", ${3:3});\n\nCoupon coupon = Coupon.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"percent_off\", ${1:25.5});\nparams.put(\"duration\", \"${2:repeating}\");\nparams.put(\"duration_in_months\", ${3:3});\n\nCoupon coupon = Coupon.create(params);"
   },
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "Coupon coupon =\n  Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nCoupon deletedCoupon = coupon.delete();"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nCoupon deletedCoupon = coupon.delete();"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -272,12 +277,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "Coupon coupon = Coupon.retrieve(\"${1:25_5OFF}\");"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "Coupon coupon =\n  Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCoupon updatedCoupon = coupon.update(params);"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCoupon updatedCoupon = coupon.update(params);"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -403,6 +408,11 @@
     "prefix": "StripeCustomerList",
     "description": "List Customer",
     "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nCustomerCollection customers =\n  Customer.list(params);"
+  },
+  "List Customer Payment Method": {
+    "prefix": "StripeCustomerPaymentMethodList",
+    "description": "List Customer Payment Method",
+    "body": "Customer customer =\n  Customer.retrieve(\"${1:cus_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${2:card}\");\n\nPaymentMethodCollection paymentMethods =\n  customer.getPaymentMethods().list(params);"
   },
   "Retrieve Customer": {
     "prefix": "StripeCustomerRetrieve",
@@ -792,17 +802,17 @@
   "Cancel Payment Intent": {
     "prefix": "StripePaymentIntentCancel",
     "description": "Cancel Payment Intent",
-    "body": "// To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.cancel();"
+    "body": "// To create a PaymentIntent, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.cancel();"
   },
   "Capture Payment Intent": {
     "prefix": "StripePaymentIntentCapture",
     "description": "Capture Payment Intent",
-    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.capture();"
+    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://stripe.com/docs/payments/capture-later\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.capture();"
   },
   "Confirm Payment Intent": {
     "prefix": "StripePaymentIntentConfirm",
     "description": "Confirm Payment Intent",
-    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"payment_method\", \"${2:pm_card_visa}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.confirm(params);"
+    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nPaymentIntent paymentIntent =\n  PaymentIntent.retrieve(\"${1:pi_xxxxxxxxxxxxx}\");\n\nMap<String, Object> params = new HashMap<>();\nparams.put(\"payment_method\", \"${2:pm_card_visa}\");\n\nPaymentIntent updatedPaymentIntent =\n  paymentIntent.confirm(params);"
   },
   "Create Payment Intent": {
     "prefix": "StripePaymentIntentCreate",
@@ -832,7 +842,7 @@
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
     "description": "Create Payment Method",
-    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:9});\ncard.put(\"exp_year\", ${4:2022});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);"
+    "body": "Map<String, Object> card = new HashMap<>();\ncard.put(\"number\", \"${2:4242424242424242}\");\ncard.put(\"exp_month\", ${3:11});\ncard.put(\"exp_year\", ${4:2022});\ncard.put(\"cvc\", \"${5:314}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"type\", \"${1:card}\");\nparams.put(\"card\", card);\n\nPaymentMethod paymentMethod =\n  PaymentMethod.create(params);"
   },
   "Detach Payment Method": {
     "prefix": "StripePaymentMethodDetach",
@@ -887,7 +897,7 @@
   "Create Plan": {
     "prefix": "StripePlanCreate",
     "description": "Create Plan",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"interval\", \"${3:month}\");\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPlan plan = Plan.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"amount\", ${1:3000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"interval\", \"${3:month}\");\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPlan plan = Plan.create(params);"
   },
   "Delete Plan": {
     "prefix": "StripePlanDelete",
@@ -912,7 +922,7 @@
   "Create Price": {
     "prefix": "StripePriceCreate",
     "description": "Create Price",
-    "body": "Map<String, Object> recurring = new HashMap<>();\nrecurring.put(\"interval\", \"${3:month}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"unit_amount\", ${1:2000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"recurring\", recurring);\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPrice price = Price.create(params);"
+    "body": "Map<String, Object> recurring = new HashMap<>();\nrecurring.put(\"interval\", \"${3:month}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"unit_amount\", ${1:3000});\nparams.put(\"currency\", \"${2:usd}\");\nparams.put(\"recurring\", recurring);\nparams.put(\"product\", \"${4:prod_xxxxxxxxxxxxx}\");\n\nPrice price = Price.create(params);"
   },
   "List Price": {
     "prefix": "StripePriceList",
@@ -957,7 +967,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:25_5OFF}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:co_xxxxxxxxxxxxx}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
@@ -974,15 +984,15 @@
     "description": "Update Promotion Code",
     "body": "PromotionCode promotionCode =\n  PromotionCode.retrieve(\"${1:promo_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nPromotionCode updatedPromotionCode =\n  promotionCode.update(params);"
   },
-  "Accept Quote Quote": {
-    "prefix": "StripeQuoteAcceptQuote",
-    "description": "Accept Quote Quote",
-    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.acceptQuote();"
+  "Accept Quote": {
+    "prefix": "StripeQuoteAccept",
+    "description": "Accept Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.accept();"
   },
-  "Cancel Quote Quote": {
-    "prefix": "StripeQuoteCancelQuote",
-    "description": "Cancel Quote Quote",
-    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.cancelQuote();"
+  "Cancel Quote": {
+    "prefix": "StripeQuoteCancel",
+    "description": "Cancel Quote",
+    "body": "Quote quote = Quote.retrieve(\"${1:qt_xxxxxxxxxxxxx}\");\n\nQuote updatedQuote = quote.cancel();"
   },
   "Create Quote": {
     "prefix": "StripeQuoteCreate",
@@ -1159,6 +1169,26 @@
     "description": "Update Setup Intent",
     "body": "SetupIntent setupIntent =\n  SetupIntent.retrieve(\"${1:seti_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"user_id\", \"${2:3435453}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nSetupIntent updatedSetupIntent =\n  setupIntent.update(params);"
   },
+  "Create Shipping Rate": {
+    "prefix": "StripeShippingRateCreate",
+    "description": "Create Shipping Rate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"display_name\", \"${1:Ground shipping}\");\nparams.put(\"amount\", ${2:500});\nparams.put(\"currency\", \"${3:usd}\");\n\nShippingRate shippingRate =\n  ShippingRate.create(params);"
+  },
+  "List Shipping Rate": {
+    "prefix": "StripeShippingRateList",
+    "description": "List Shipping Rate",
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"limit\", ${1:3});\n\nShippingRateCollection shippingRates =\n  ShippingRate.list(params);"
+  },
+  "Retrieve Shipping Rate": {
+    "prefix": "StripeShippingRateRetrieve",
+    "description": "Retrieve Shipping Rate",
+    "body": "ShippingRate shippingRate =\n  ShippingRate.retrieve(\"${1:shr_xxxxxxxxxxxxx}\");"
+  },
+  "Update Shipping Rate": {
+    "prefix": "StripeShippingRateUpdate",
+    "description": "Update Shipping Rate",
+    "body": "ShippingRate shippingRate =\n  ShippingRate.retrieve(\"${1:shr_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nShippingRate updatedShippingRate =\n  shippingRate.update(params);"
+  },
   "List Sigma Scheduled Query Run": {
     "prefix": "StripeSigmaScheduledQueryRunList",
     "description": "List Sigma Scheduled Query Run",
@@ -1282,7 +1312,7 @@
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
     "description": "Create Subscription Schedule",
-    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:price_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1633379417});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);"
+    "body": "List<Object> phases = new ArrayList<>();\nList<Object> items = new ArrayList<>();\nMap<String, Object> item1 = new HashMap<>();\nitem1.put(\"price\", \"${4:plan_xxxxxxxxxxxxx}\");\nitem1.put(\"quantity\", ${5:1});\nitems.add(item1);\nMap<String, Object> phase1 = new HashMap<>();\nphase1.put(\"items\", items);\nphase1.put(\"iterations\", ${6:12});\nphases.add(phase1);\nMap<String, Object> params = new HashMap<>();\nparams.put(\"customer\", \"${1:cus_xxxxxxxxxxxxx}\");\nparams.put(\"start_date\", ${2:1638217970});\nparams.put(\"end_behavior\", \"${3:release}\");\nparams.put(\"phases\", phases);\n\nSubscriptionSchedule subscriptionSchedule =\n  SubscriptionSchedule.create(params);"
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
