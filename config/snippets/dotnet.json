@@ -27,17 +27,17 @@
   "Delete Account Account Card": {
     "prefix": "StripeAccountAccountCardDelete",
     "description": "Delete Account Account Card",
-    "body": "var service = new ExternalAccountService();\nservice.Delete(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new ExternalAccountService();\nservice.Delete(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\");"
   },
   "Retrieve Account Account Card": {
     "prefix": "StripeAccountAccountCardRetrieve",
     "description": "Retrieve Account Account Card",
-    "body": "var service = new ExternalAccountService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new ExternalAccountService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\");"
   },
   "Update Account Account Card": {
     "prefix": "StripeAccountAccountCardUpdate",
     "description": "Update Account Account Card",
-    "body": "var options = new ExternalAccountUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new ExternalAccountService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new ExternalAccountUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new ExternalAccountService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  options);"
   },
   "List Account Bank Accounts": {
     "prefix": "StripeAccountBankAccountsList",
@@ -47,17 +47,17 @@
   "List Account Capability": {
     "prefix": "StripeAccountCapabilityList",
     "description": "List Account Capability",
-    "body": "var service = new CapabilityService();\nStripeList<Capability> capabilities = service.List(\n  \"${1:acct_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new CapabilityService();\nStripeList<Capability> capabilities = service.List(\n  \"${1:acct_xxxxxxxxxxxxx}\");"
   },
   "Retrieve Account Capability": {
     "prefix": "StripeAccountCapabilityRetrieve",
     "description": "Retrieve Account Capability",
-    "body": "var service = new CapabilityService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\"\n);"
+    "body": "var service = new CapabilityService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\");"
   },
   "Update Account Capability": {
     "prefix": "StripeAccountCapabilityUpdate",
     "description": "Update Account Capability",
-    "body": "var options = new CapabilityUpdateOptions\n{\n  Requested = ${3:true},\n};\nvar service = new CapabilityService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n  options\n);"
+    "body": "var options = new CapabilityUpdateOptions\n{\n  Requested = ${3:true},\n};\nvar service = new CapabilityService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:card_payments}\",\n  options);"
   },
   "List Account Cards": {
     "prefix": "StripeAccountCardsList",
@@ -82,7 +82,7 @@
   "List Account": {
     "prefix": "StripeAccountList",
     "description": "List Account",
-    "body": "var options = new AccountListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new AccountService();\nStripeList<Account> accounts = service.List(\n  options\n);"
+    "body": "var options = new AccountListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new AccountService();\nStripeList<Account> accounts = service.List(\n  options);"
   },
   "Create Account Login Link": {
     "prefix": "StripeAccountLoginLinkCreate",
@@ -97,22 +97,22 @@
   "Delete Account Person": {
     "prefix": "StripeAccountPersonDelete",
     "description": "Delete Account Person",
-    "body": "var service = new PersonService();\nservice.Delete(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new PersonService();\nservice.Delete(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\");"
   },
   "List Account Person": {
     "prefix": "StripeAccountPersonList",
     "description": "List Account Person",
-    "body": "var options = new PersonListOptions { Limit = ${2:3} };\nvar service = new PersonService();\nStripeList<Person> persons = service.List(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new PersonListOptions { Limit = ${2:3} };\nvar service = new PersonService();\nStripeList<Person> persons = service.List(\n  \"${1:acct_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Account Person": {
     "prefix": "StripeAccountPersonRetrieve",
     "description": "Retrieve Account Person",
-    "body": "var service = new PersonService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new PersonService();\nservice.Get(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\");"
   },
   "Update Account Person": {
     "prefix": "StripeAccountPersonUpdate",
     "description": "Update Account Person",
-    "body": "var options = new PersonUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new PersonService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new PersonUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new PersonService();\nservice.Update(\n  \"${2:acct_xxxxxxxxxxxxx}\",\n  \"${1:person_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Reject Account": {
     "prefix": "StripeAccountReject",
@@ -137,22 +137,22 @@
   "List Application Fee Fee Refund": {
     "prefix": "StripeApplicationFeeFeeRefundList",
     "description": "List Application Fee Fee Refund",
-    "body": "var options = new ApplicationFeeRefundListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new ApplicationFeeRefundService();\nStripeList<ApplicationFeeRefund> applicationFeeRefunds = service.List(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new ApplicationFeeRefundListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new ApplicationFeeRefundService();\nStripeList<ApplicationFeeRefund> applicationFeeRefunds = service.List(\n  \"${1:fee_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Application Fee Fee Refund": {
     "prefix": "StripeApplicationFeeFeeRefundRetrieve",
     "description": "Retrieve Application Fee Fee Refund",
-    "body": "var service = new ApplicationFeeRefundService();\nservice.Get(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new ApplicationFeeRefundService();\nservice.Get(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\");"
   },
   "Update Application Fee Fee Refund": {
     "prefix": "StripeApplicationFeeFeeRefundUpdate",
     "description": "Update Application Fee Fee Refund",
-    "body": "var options = new ApplicationFeeRefundUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new ApplicationFeeRefundService();\nservice.Update(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new ApplicationFeeRefundUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new ApplicationFeeRefundService();\nservice.Update(\n  \"${2:fee_xxxxxxxxxxxxx}\",\n  \"${1:fr_xxxxxxxxxxxxx}\",\n  options);"
   },
   "List Application Fee": {
     "prefix": "StripeApplicationFeeList",
     "description": "List Application Fee",
-    "body": "var options = new ApplicationFeeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ApplicationFeeService();\nStripeList<ApplicationFee> applicationFees = service.List(\n  options\n);"
+    "body": "var options = new ApplicationFeeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ApplicationFeeService();\nStripeList<ApplicationFee> applicationFees = service.List(\n  options);"
   },
   "Retrieve Application Fee": {
     "prefix": "StripeApplicationFeeRetrieve",
@@ -167,7 +167,7 @@
   "List Balance Transaction": {
     "prefix": "StripeBalanceTransactionList",
     "description": "List Balance Transaction",
-    "body": "var options = new BalanceTransactionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new BalanceTransactionService();\nStripeList<BalanceTransaction> balanceTransactions = service.List(\n  options\n);"
+    "body": "var options = new BalanceTransactionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new BalanceTransactionService();\nStripeList<BalanceTransaction> balanceTransactions = service.List(\n  options);"
   },
   "Retrieve Balance Transaction": {
     "prefix": "StripeBalanceTransactionRetrieve",
@@ -182,7 +182,7 @@
   "List Billing Portal Configuration": {
     "prefix": "StripeBillingPortalConfigurationList",
     "description": "List Billing Portal Configuration",
-    "body": "var options = new ConfigurationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ConfigurationService();\nStripeList<Configuration> configurations = service.List(\n  options\n);"
+    "body": "var options = new ConfigurationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ConfigurationService();\nStripeList<Configuration> configurations = service.List(\n  options);"
   },
   "Retrieve Billing Portal Configuration": {
     "prefix": "StripeBillingPortalConfigurationRetrieve",
@@ -217,7 +217,7 @@
   "List Charge": {
     "prefix": "StripeChargeList",
     "description": "List Charge",
-    "body": "var options = new ChargeListOptions { Limit = ${1:3} };\nvar service = new ChargeService();\nStripeList<Charge> charges = service.List(\n  options\n);"
+    "body": "var options = new ChargeListOptions { Limit = ${1:3} };\nvar service = new ChargeService();\nStripeList<Charge> charges = service.List(\n  options);"
   },
   "Retrieve Charge": {
     "prefix": "StripeChargeRetrieve",
@@ -232,7 +232,12 @@
   "Create Checkout Session": {
     "prefix": "StripeCheckoutSessionCreate",
     "description": "Create Checkout Session",
-    "body": "var options = new SessionCreateOptions\n{\n  SuccessUrl = \"${1:https://example.com/success}\",\n  CancelUrl = \"${2:https://example.com/cancel}\",\n  PaymentMethodTypes = new List<string>\n  {\n    \"card\",\n  },\n  LineItems = new List<SessionLineItemOptions>\n  {\n    new SessionLineItemOptions\n    {\n      Price = \"price_xxxxxxxxxxxxx\",\n      Quantity = 2,\n    },\n  },\n  Mode = \"${6:payment}\",\n};\nvar service = new SessionService();\nservice.Create(options);"
+    "body": "var options = new SessionCreateOptions\n{\n  SuccessUrl = \"${1:https://example.com/success}\",\n  CancelUrl = \"${2:https://example.com/cancel}\",\n  LineItems = new List<SessionLineItemOptions>\n  {\n    new SessionLineItemOptions\n    {\n      Price = \"price_xxxxxxxxxxxxx\",\n      Quantity = 2,\n    },\n  },\n  Mode = \"${5:payment}\",\n};\nvar service = new SessionService();\nservice.Create(options);"
+  },
+  "Expire Checkout Session": {
+    "prefix": "StripeCheckoutSessionExpire",
+    "description": "Expire Checkout Session",
+    "body": "var service = new SessionService();\nservice.Expire(\"${1:cs_test_xxxxxxxxxxxxx}\");"
   },
   "Retrieve Checkout Session Line Items": {
     "prefix": "StripeCheckoutSessionLineItems",
@@ -242,7 +247,7 @@
   "List Checkout Session": {
     "prefix": "StripeCheckoutSessionList",
     "description": "List Checkout Session",
-    "body": "var options = new SessionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SessionService();\nStripeList<Session> sessions = service.List(\n  options\n);"
+    "body": "var options = new SessionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SessionService();\nStripeList<Session> sessions = service.List(\n  options);"
   },
   "Retrieve Checkout Session": {
     "prefix": "StripeCheckoutSessionRetrieve",
@@ -252,7 +257,7 @@
   "List Country Spec": {
     "prefix": "StripeCountrySpecList",
     "description": "List Country Spec",
-    "body": "var options = new CountrySpecListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CountrySpecService();\nStripeList<CountrySpec> countrySpecs = service.List(\n  options\n);"
+    "body": "var options = new CountrySpecListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CountrySpecService();\nStripeList<CountrySpec> countrySpecs = service.List(\n  options);"
   },
   "Retrieve Country Spec": {
     "prefix": "StripeCountrySpecRetrieve",
@@ -262,27 +267,27 @@
   "Create Coupon": {
     "prefix": "StripeCouponCreate",
     "description": "Create Coupon",
-    "body": "var options = new CouponCreateOptions\n{\n  PercentOff = ${1:25},\n  Duration = \"${2:repeating}\",\n  DurationInMonths = ${3:3},\n};\nvar service = new CouponService();\nservice.Create(options);"
+    "body": "var options = new CouponCreateOptions\n{\n  PercentOff = ${1:25.5},\n  Duration = \"${2:repeating}\",\n  DurationInMonths = ${3:3},\n};\nvar service = new CouponService();\nservice.Create(options);"
   },
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "var service = new CouponService();\nservice.Delete(\"${1:co_xxxxxxxxxxxxx}\");"
+    "body": "var service = new CouponService();\nservice.Delete(\"${1:Z4OV52SU}\");"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
     "description": "List Coupon",
-    "body": "var options = new CouponListOptions { Limit = ${1:3} };\nvar service = new CouponService();\nStripeList<Coupon> coupons = service.List(\n  options\n);"
+    "body": "var options = new CouponListOptions { Limit = ${1:3} };\nvar service = new CouponService();\nStripeList<Coupon> coupons = service.List(\n  options);"
   },
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "var service = new CouponService();\nservice.Get(\"${1:25_5OFF}\");"
+    "body": "var service = new CouponService();\nservice.Get(\"${1:Z4OV52SU}\");"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "var options = new CouponUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new CouponService();\nservice.Update(\"${1:co_xxxxxxxxxxxxx}\", options);"
+    "body": "var options = new CouponUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new CouponService();\nservice.Update(\"${1:Z4OV52SU}\", options);"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -292,7 +297,7 @@
   "List Credit Note Line Item": {
     "prefix": "StripeCreditNoteLineItemList",
     "description": "List Credit Note Line Item",
-    "body": "var options = new LineItemListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new LineItemService();\nStripeList<LineItem> lineItems = service.List(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new LineItemListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new LineItemService();\nStripeList<LineItem> lineItems = service.List(\n  \"${1:cn_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Preview Credit Note Lines": {
     "prefix": "StripeCreditNoteLinesPreview",
@@ -302,7 +307,7 @@
   "List Credit Note": {
     "prefix": "StripeCreditNoteList",
     "description": "List Credit Note",
-    "body": "var options = new CreditNoteListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CreditNoteService();\nStripeList<CreditNote> creditNotes = service.List(\n  options\n);"
+    "body": "var options = new CreditNoteListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CreditNoteService();\nStripeList<CreditNote> creditNotes = service.List(\n  options);"
   },
   "Preview Credit Note": {
     "prefix": "StripeCreditNotePreview",
@@ -332,17 +337,17 @@
   "List Customer Balance Transaction": {
     "prefix": "StripeCustomerBalanceTransactionList",
     "description": "List Customer Balance Transaction",
-    "body": "var options = new CustomerBalanceTransactionListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new CustomerBalanceTransactionService();\nStripeList<BalanceTransaction> balanceTransactions = service.List(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new CustomerBalanceTransactionListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new CustomerBalanceTransactionService();\nStripeList<BalanceTransaction> balanceTransactions = service.List(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Customer Balance Transaction": {
     "prefix": "StripeCustomerBalanceTransactionRetrieve",
     "description": "Retrieve Customer Balance Transaction",
-    "body": "var service = new CustomerBalanceTransactionService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new CustomerBalanceTransactionService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\");"
   },
   "Update Customer Balance Transaction": {
     "prefix": "StripeCustomerBalanceTransactionUpdate",
     "description": "Update Customer Balance Transaction",
-    "body": "var options = new CustomerBalanceTransactionUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new CustomerBalanceTransactionService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new CustomerBalanceTransactionUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new CustomerBalanceTransactionService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:cbtxn_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Create Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountCreate",
@@ -352,12 +357,12 @@
   "Delete Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountDelete",
     "description": "Delete Customer Bank Account",
-    "body": "var service = new BankAccountService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new BankAccountService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\");"
   },
   "Retrieve Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountRetrieve",
     "description": "Retrieve Customer Bank Account",
-    "body": "var service = new BankAccountService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new BankAccountService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\");"
   },
   "List Customer Bank Accounts": {
     "prefix": "StripeCustomerBankAccountsList",
@@ -367,12 +372,12 @@
   "Update Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountUpdate",
     "description": "Update Customer Bank Account",
-    "body": "var options = new BankAccountUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new BankAccountService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new BankAccountUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new BankAccountService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Verify Customer Bank Account": {
     "prefix": "StripeCustomerBankAccountVerify",
     "description": "Verify Customer Bank Account",
-    "body": "var options = new BankAccountVerifyOptions\n{\n  Amounts = new List<long> { ${3:32}, ${4:45} },\n};\nvar service = new BankAccountService();\nservice.Verify(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new BankAccountVerifyOptions\n{\n  Amounts = new List<long> { ${3:32}, ${4:45} },\n};\nvar service = new BankAccountService();\nservice.Verify(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:ba_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Create Customer Card": {
     "prefix": "StripeCustomerCardCreate",
@@ -382,17 +387,17 @@
   "Delete Customer Card": {
     "prefix": "StripeCustomerCardDelete",
     "description": "Delete Customer Card",
-    "body": "var service = new CardService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new CardService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\");"
   },
   "Retrieve Customer Card": {
     "prefix": "StripeCustomerCardRetrieve",
     "description": "Retrieve Customer Card",
-    "body": "var service = new CardService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new CardService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\");"
   },
   "Update Customer Card": {
     "prefix": "StripeCustomerCardUpdate",
     "description": "Update Customer Card",
-    "body": "var options = new CardUpdateOptions\n{\n  Name = \"${3:Jenny Rosen}\",\n};\nvar service = new CardService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new CardUpdateOptions\n{\n  Name = \"${3:Jenny Rosen}\",\n};\nvar service = new CardService();\nservice.Update(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:card_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Create Customer": {
     "prefix": "StripeCustomerCreate",
@@ -407,7 +412,12 @@
   "List Customer": {
     "prefix": "StripeCustomerList",
     "description": "List Customer",
-    "body": "var options = new CustomerListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CustomerService();\nStripeList<Customer> customers = service.List(\n  options\n);"
+    "body": "var options = new CustomerListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CustomerService();\nStripeList<Customer> customers = service.List(\n  options);"
+  },
+  "List Customer Payment Method": {
+    "prefix": "StripeCustomerPaymentMethodList",
+    "description": "List Customer Payment Method",
+    "body": "var options = new PaymentMethodListOptions\n{\n  Type = \"${2:card}\",\n};\nvar service = new PaymentMethodService();\nStripeList<PaymentMethod> paymentMethods = service.List(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Customer": {
     "prefix": "StripeCustomerRetrieve",
@@ -422,17 +432,17 @@
   "Delete Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdDelete",
     "description": "Delete Customer Tax Id",
-    "body": "var service = new TaxIdService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new TaxIdService();\nservice.Delete(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\");"
   },
   "List Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdList",
     "description": "List Customer Tax Id",
-    "body": "var options = new TaxIdListOptions { Limit = ${2:3} };\nvar service = new TaxIdService();\nStripeList<TaxId> taxIds = service.List(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new TaxIdListOptions { Limit = ${2:3} };\nvar service = new TaxIdService();\nStripeList<TaxId> taxIds = service.List(\n  \"${1:cus_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Customer Tax Id": {
     "prefix": "StripeCustomerTaxIdRetrieve",
     "description": "Retrieve Customer Tax Id",
-    "body": "var service = new TaxIdService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new TaxIdService();\nservice.Get(\n  \"${2:cus_xxxxxxxxxxxxx}\",\n  \"${1:txi_xxxxxxxxxxxxx}\");"
   },
   "Update Customer": {
     "prefix": "StripeCustomerUpdate",
@@ -452,7 +462,7 @@
   "List Dispute": {
     "prefix": "StripeDisputeList",
     "description": "List Dispute",
-    "body": "var options = new DisputeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new DisputeService();\nStripeList<Dispute> disputes = service.List(\n  options\n);"
+    "body": "var options = new DisputeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new DisputeService();\nStripeList<Dispute> disputes = service.List(\n  options);"
   },
   "Retrieve Dispute": {
     "prefix": "StripeDisputeRetrieve",
@@ -487,7 +497,7 @@
   "List File Link": {
     "prefix": "StripeFileLinkList",
     "description": "List File Link",
-    "body": "var options = new FileLinkListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new FileLinkService();\nStripeList<FileLink> fileLinks = service.List(\n  options\n);"
+    "body": "var options = new FileLinkListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new FileLinkService();\nStripeList<FileLink> fileLinks = service.List(\n  options);"
   },
   "Retrieve File Link": {
     "prefix": "StripeFileLinkRetrieve",
@@ -512,7 +522,7 @@
   "List Identity Verification Report": {
     "prefix": "StripeIdentityVerificationReportList",
     "description": "List Identity Verification Report",
-    "body": "var options = new VerificationReportListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationReportService();\nStripeList<VerificationReport> verificationReports = service.List(\n  options\n);"
+    "body": "var options = new VerificationReportListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationReportService();\nStripeList<VerificationReport> verificationReports = service.List(\n  options);"
   },
   "Retrieve Identity Verification Report": {
     "prefix": "StripeIdentityVerificationReportRetrieve",
@@ -532,7 +542,7 @@
   "List Identity Verification Session": {
     "prefix": "StripeIdentityVerificationSessionList",
     "description": "List Identity Verification Session",
-    "body": "var options = new VerificationSessionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationSessionService();\nStripeList<VerificationSession> verificationSessions = service.List(\n  options\n);"
+    "body": "var options = new VerificationSessionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new VerificationSessionService();\nStripeList<VerificationSession> verificationSessions = service.List(\n  options);"
   },
   "Redact Identity Verification Session": {
     "prefix": "StripeIdentityVerificationSessionRedact",
@@ -577,7 +587,7 @@
   "List Invoice Item": {
     "prefix": "StripeInvoiceItemList",
     "description": "List Invoice Item",
-    "body": "var options = new InvoiceItemListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new InvoiceItemService();\nStripeList<InvoiceItem> invoiceItems = service.List(\n  options\n);"
+    "body": "var options = new InvoiceItemListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new InvoiceItemService();\nStripeList<InvoiceItem> invoiceItems = service.List(\n  options);"
   },
   "Retrieve Invoice Item": {
     "prefix": "StripeInvoiceItemRetrieve",
@@ -602,7 +612,7 @@
   "List Invoice": {
     "prefix": "StripeInvoiceList",
     "description": "List Invoice",
-    "body": "var options = new InvoiceListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new InvoiceService();\nStripeList<Invoice> invoices = service.List(\n  options\n);"
+    "body": "var options = new InvoiceListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new InvoiceService();\nStripeList<Invoice> invoices = service.List(\n  options);"
   },
   "Mark Uncollectible Invoice": {
     "prefix": "StripeInvoiceMarkUncollectible",
@@ -652,7 +662,7 @@
   "List Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationList",
     "description": "List Issuing Authorization",
-    "body": "var options = new AuthorizationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new AuthorizationService();\nStripeList<Authorization> authorizations = service.List(\n  options\n);"
+    "body": "var options = new AuthorizationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new AuthorizationService();\nStripeList<Authorization> authorizations = service.List(\n  options);"
   },
   "Retrieve Issuing Authorization": {
     "prefix": "StripeIssuingAuthorizationRetrieve",
@@ -677,7 +687,7 @@
   "List Issuing Cardholder": {
     "prefix": "StripeIssuingCardholderList",
     "description": "List Issuing Cardholder",
-    "body": "var options = new CardholderListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CardholderService();\nStripeList<Cardholder> cardholders = service.List(\n  options\n);"
+    "body": "var options = new CardholderListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new CardholderService();\nStripeList<Cardholder> cardholders = service.List(\n  options);"
   },
   "Retrieve Issuing Cardholder": {
     "prefix": "StripeIssuingCardholderRetrieve",
@@ -712,7 +722,7 @@
   "List Issuing Dispute": {
     "prefix": "StripeIssuingDisputeList",
     "description": "List Issuing Dispute",
-    "body": "var options = new DisputeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new DisputeService();\nStripeList<Dispute> disputes = service.List(\n  options\n);"
+    "body": "var options = new DisputeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new DisputeService();\nStripeList<Dispute> disputes = service.List(\n  options);"
   },
   "Retrieve Issuing Dispute": {
     "prefix": "StripeIssuingDisputeRetrieve",
@@ -732,7 +742,7 @@
   "List Issuing Transaction": {
     "prefix": "StripeIssuingTransactionList",
     "description": "List Issuing Transaction",
-    "body": "var options = new TransactionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TransactionService();\nStripeList<Transaction> transactions = service.List(\n  options\n);"
+    "body": "var options = new TransactionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TransactionService();\nStripeList<Transaction> transactions = service.List(\n  options);"
   },
   "Retrieve Issuing Transaction": {
     "prefix": "StripeIssuingTransactionRetrieve",
@@ -772,7 +782,7 @@
   "List Order Return": {
     "prefix": "StripeOrderReturnList",
     "description": "List Order Return",
-    "body": "var options = new OrderReturnListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new OrderReturnService();\nStripeList<OrderReturn> orderReturns = service.List(\n  options\n);"
+    "body": "var options = new OrderReturnListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new OrderReturnService();\nStripeList<OrderReturn> orderReturns = service.List(\n  options);"
   },
   "Retrieve Order Return": {
     "prefix": "StripeOrderReturnRetrieve",
@@ -787,17 +797,17 @@
   "Cancel Payment Intent": {
     "prefix": "StripePaymentIntentCancel",
     "description": "Cancel Payment Intent",
-    "body": "// To create a PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nvar service = new PaymentIntentService();\nservice.Cancel(\"${1:pi_xxxxxxxxxxxxx}\");"
+    "body": "// To create a PaymentIntent, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nvar service = new PaymentIntentService();\nservice.Cancel(\"${1:pi_xxxxxxxxxxxxx}\");"
   },
   "Capture Payment Intent": {
     "prefix": "StripePaymentIntentCapture",
     "description": "Capture Payment Intent",
-    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://mock.stripe.com/docs/payments/capture-later\nvar service = new PaymentIntentService();\nservice.Capture(\"${1:pi_xxxxxxxxxxxxx}\");"
+    "body": "// To create a requires_capture PaymentIntent, see our guide at: https://stripe.com/docs/payments/capture-later\nvar service = new PaymentIntentService();\nservice.Capture(\"${1:pi_xxxxxxxxxxxxx}\");"
   },
   "Confirm Payment Intent": {
     "prefix": "StripePaymentIntentConfirm",
     "description": "Confirm Payment Intent",
-    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://mock.stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nvar options = new PaymentIntentConfirmOptions\n{\n  PaymentMethod = \"${2:pm_card_visa}\",\n};\nvar service = new PaymentIntentService();\nservice.Confirm(\"${1:pi_xxxxxxxxxxxxx}\", options);"
+    "body": "// To create a PaymentIntent for confirmation, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic\nvar options = new PaymentIntentConfirmOptions\n{\n  PaymentMethod = \"${2:pm_card_visa}\",\n};\nvar service = new PaymentIntentService();\nservice.Confirm(\"${1:pi_xxxxxxxxxxxxx}\", options);"
   },
   "Create Payment Intent": {
     "prefix": "StripePaymentIntentCreate",
@@ -807,7 +817,7 @@
   "List Payment Intent": {
     "prefix": "StripePaymentIntentList",
     "description": "List Payment Intent",
-    "body": "var options = new PaymentIntentListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new PaymentIntentService();\nStripeList<PaymentIntent> paymentIntents = service.List(\n  options\n);"
+    "body": "var options = new PaymentIntentListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new PaymentIntentService();\nStripeList<PaymentIntent> paymentIntents = service.List(\n  options);"
   },
   "Retrieve Payment Intent": {
     "prefix": "StripePaymentIntentRetrieve",
@@ -827,7 +837,7 @@
   "Create Payment Method": {
     "prefix": "StripePaymentMethodCreate",
     "description": "Create Payment Method",
-    "body": "var options = new PaymentMethodCreateOptions\n{\n  Type = \"${1:card}\",\n  Card = new PaymentMethodCardOptions\n  {\n    Number = \"${2:4242424242424242}\",\n    ExpMonth = ${3:9},\n    ExpYear = ${4:2022},\n    Cvc = \"${5:314}\",\n  },\n};\nvar service = new PaymentMethodService();\nservice.Create(options);"
+    "body": "var options = new PaymentMethodCreateOptions\n{\n  Type = \"${1:card}\",\n  Card = new PaymentMethodCardOptions\n  {\n    Number = \"${2:4242424242424242}\",\n    ExpMonth = ${3:11},\n    ExpYear = ${4:2022},\n    Cvc = \"${5:314}\",\n  },\n};\nvar service = new PaymentMethodService();\nservice.Create(options);"
   },
   "Detach Payment Method": {
     "prefix": "StripePaymentMethodDetach",
@@ -837,7 +847,7 @@
   "List Payment Method": {
     "prefix": "StripePaymentMethodList",
     "description": "List Payment Method",
-    "body": "var options = new PaymentMethodListOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  Type = \"${2:card}\",\n};\nvar service = new PaymentMethodService();\nStripeList<PaymentMethod> paymentMethods = service.List(\n  options\n);"
+    "body": "var options = new PaymentMethodListOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  Type = \"${2:card}\",\n};\nvar service = new PaymentMethodService();\nStripeList<PaymentMethod> paymentMethods = service.List(\n  options);"
   },
   "Retrieve Payment Method": {
     "prefix": "StripePaymentMethodRetrieve",
@@ -862,7 +872,7 @@
   "List Payout": {
     "prefix": "StripePayoutList",
     "description": "List Payout",
-    "body": "var options = new PayoutListOptions { Limit = ${1:3} };\nvar service = new PayoutService();\nStripeList<Payout> payouts = service.List(\n  options\n);"
+    "body": "var options = new PayoutListOptions { Limit = ${1:3} };\nvar service = new PayoutService();\nStripeList<Payout> payouts = service.List(\n  options);"
   },
   "Retrieve Payout": {
     "prefix": "StripePayoutRetrieve",
@@ -882,7 +892,7 @@
   "Create Plan": {
     "prefix": "StripePlanCreate",
     "description": "Create Plan",
-    "body": "var options = new PlanCreateOptions\n{\n  Amount = ${1:2000},\n  Currency = \"${2:usd}\",\n  Interval = \"${3:month}\",\n  Product = \"${4:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new PlanService();\nservice.Create(options);"
+    "body": "var options = new PlanCreateOptions\n{\n  Amount = ${1:3000},\n  Currency = \"${2:usd}\",\n  Interval = \"${3:month}\",\n  Product = \"${4:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new PlanService();\nservice.Create(options);"
   },
   "Delete Plan": {
     "prefix": "StripePlanDelete",
@@ -907,7 +917,7 @@
   "Create Price": {
     "prefix": "StripePriceCreate",
     "description": "Create Price",
-    "body": "var options = new PriceCreateOptions\n{\n  UnitAmount = ${1:2000},\n  Currency = \"${2:usd}\",\n  Recurring = new PriceRecurringOptions\n  {\n    Interval = \"${3:month}\",\n  },\n  Product = \"${4:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new PriceService();\nservice.Create(options);"
+    "body": "var options = new PriceCreateOptions\n{\n  UnitAmount = ${1:3000},\n  Currency = \"${2:usd}\",\n  Recurring = new PriceRecurringOptions\n  {\n    Interval = \"${3:month}\",\n  },\n  Product = \"${4:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new PriceService();\nservice.Create(options);"
   },
   "List Price": {
     "prefix": "StripePriceList",
@@ -937,7 +947,7 @@
   "List Product": {
     "prefix": "StripeProductList",
     "description": "List Product",
-    "body": "var options = new ProductListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ProductService();\nStripeList<Product> products = service.List(\n  options\n);"
+    "body": "var options = new ProductListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ProductService();\nStripeList<Product> products = service.List(\n  options);"
   },
   "Retrieve Product": {
     "prefix": "StripeProductRetrieve",
@@ -952,12 +962,12 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "var options = new PromotionCodeCreateOptions\n{\n  Coupon = \"${1:25_5OFF}\",\n};\nvar service = new PromotionCodeService();\nservice.Create(options);"
+    "body": "var options = new PromotionCodeCreateOptions\n{\n  Coupon = \"${1:Z4OV52SU}\",\n};\nvar service = new PromotionCodeService();\nservice.Create(options);"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
     "description": "List Promotion Code",
-    "body": "var options = new PromotionCodeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new PromotionCodeService();\nStripeList<PromotionCode> promotionCodes = service.List(\n  options\n);"
+    "body": "var options = new PromotionCodeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new PromotionCodeService();\nStripeList<PromotionCode> promotionCodes = service.List(\n  options);"
   },
   "Retrieve Promotion Code": {
     "prefix": "StripePromotionCodeRetrieve",
@@ -969,15 +979,15 @@
     "description": "Update Promotion Code",
     "body": "var options = new PromotionCodeUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new PromotionCodeService();\nservice.Update(\"${1:promo_xxxxxxxxxxxxx}\", options);"
   },
-  "Accept Quote Quote": {
-    "prefix": "StripeQuoteAcceptQuote",
-    "description": "Accept Quote Quote",
-    "body": "var service = new QuoteService();\nservice.AcceptQuote(\"${1:qt_xxxxxxxxxxxxx}\");"
+  "Accept Quote": {
+    "prefix": "StripeQuoteAccept",
+    "description": "Accept Quote",
+    "body": "var service = new QuoteService();\nservice.Accept(\"${1:qt_xxxxxxxxxxxxx}\");"
   },
-  "Cancel Quote Quote": {
-    "prefix": "StripeQuoteCancelQuote",
-    "description": "Cancel Quote Quote",
-    "body": "var service = new QuoteService();\nservice.CancelQuote(\"${1:qt_xxxxxxxxxxxxx}\");"
+  "Cancel Quote": {
+    "prefix": "StripeQuoteCancel",
+    "description": "Cancel Quote",
+    "body": "var service = new QuoteService();\nservice.Cancel(\"${1:qt_xxxxxxxxxxxxx}\");"
   },
   "Create Quote": {
     "prefix": "StripeQuoteCreate",
@@ -1007,7 +1017,7 @@
   "List Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningList",
     "description": "List Radar Early Fraud Warning",
-    "body": "var options = new EarlyFraudWarningListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new EarlyFraudWarningService();\nStripeList<EarlyFraudWarning> earlyFraudWarnings = service.List(\n  options\n);"
+    "body": "var options = new EarlyFraudWarningListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new EarlyFraudWarningService();\nStripeList<EarlyFraudWarning> earlyFraudWarnings = service.List(\n  options);"
   },
   "Retrieve Radar Early Fraud Warning": {
     "prefix": "StripeRadarEarlyFraudWarningRetrieve",
@@ -1037,7 +1047,7 @@
   "List Radar Value List Item": {
     "prefix": "StripeRadarValueListItemList",
     "description": "List Radar Value List Item",
-    "body": "var options = new ValueListItemListOptions\n{\n  Limit = ${1:3},\n  ValueList = \"${2:rsl_xxxxxxxxxxxxx}\",\n};\nvar service = new ValueListItemService();\nStripeList<ValueListItem> valueListItems = service.List(\n  options\n);"
+    "body": "var options = new ValueListItemListOptions\n{\n  Limit = ${1:3},\n  ValueList = \"${2:rsl_xxxxxxxxxxxxx}\",\n};\nvar service = new ValueListItemService();\nStripeList<ValueListItem> valueListItems = service.List(\n  options);"
   },
   "Retrieve Radar Value List Item": {
     "prefix": "StripeRadarValueListItemRetrieve",
@@ -1047,7 +1057,7 @@
   "List Radar Value List": {
     "prefix": "StripeRadarValueListList",
     "description": "List Radar Value List",
-    "body": "var options = new ValueListListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ValueListService();\nStripeList<ValueList> valueLists = service.List(\n  options\n);"
+    "body": "var options = new ValueListListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ValueListService();\nStripeList<ValueList> valueLists = service.List(\n  options);"
   },
   "Retrieve Radar Value List": {
     "prefix": "StripeRadarValueListRetrieve",
@@ -1067,7 +1077,7 @@
   "List Refund": {
     "prefix": "StripeRefundList",
     "description": "List Refund",
-    "body": "var options = new RefundListOptions { Limit = ${1:3} };\nvar service = new RefundService();\nStripeList<Refund> refunds = service.List(\n  options\n);"
+    "body": "var options = new RefundListOptions { Limit = ${1:3} };\nvar service = new RefundService();\nStripeList<Refund> refunds = service.List(\n  options);"
   },
   "Retrieve Refund": {
     "prefix": "StripeRefundRetrieve",
@@ -1087,7 +1097,7 @@
   "List Reporting Report Run": {
     "prefix": "StripeReportingReportRunList",
     "description": "List Reporting Report Run",
-    "body": "var options = new ReportRunListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ReportRunService();\nStripeList<ReportRun> reportRuns = service.List(\n  options\n);"
+    "body": "var options = new ReportRunListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ReportRunService();\nStripeList<ReportRun> reportRuns = service.List(\n  options);"
   },
   "Retrieve Reporting Report Run": {
     "prefix": "StripeReportingReportRunRetrieve",
@@ -1112,7 +1122,7 @@
   "List Review": {
     "prefix": "StripeReviewList",
     "description": "List Review",
-    "body": "var options = new ReviewListOptions { Limit = ${1:3} };\nvar service = new ReviewService();\nStripeList<Review> reviews = service.List(\n  options\n);"
+    "body": "var options = new ReviewListOptions { Limit = ${1:3} };\nvar service = new ReviewService();\nStripeList<Review> reviews = service.List(\n  options);"
   },
   "Retrieve Review": {
     "prefix": "StripeReviewRetrieve",
@@ -1122,7 +1132,7 @@
   "List Setup Attempt": {
     "prefix": "StripeSetupAttemptList",
     "description": "List Setup Attempt",
-    "body": "var options = new SetupAttemptListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SetupAttemptService();\nStripeList<SetupAttempt> setupAttempts = service.List(\n  options\n);"
+    "body": "var options = new SetupAttemptListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SetupAttemptService();\nStripeList<SetupAttempt> setupAttempts = service.List(\n  options);"
   },
   "Cancel Setup Intent": {
     "prefix": "StripeSetupIntentCancel",
@@ -1142,7 +1152,7 @@
   "List Setup Intent": {
     "prefix": "StripeSetupIntentList",
     "description": "List Setup Intent",
-    "body": "var options = new SetupIntentListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SetupIntentService();\nStripeList<SetupIntent> setupIntents = service.List(\n  options\n);"
+    "body": "var options = new SetupIntentListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SetupIntentService();\nStripeList<SetupIntent> setupIntents = service.List(\n  options);"
   },
   "Retrieve Setup Intent": {
     "prefix": "StripeSetupIntentRetrieve",
@@ -1154,10 +1164,30 @@
     "description": "Update Setup Intent",
     "body": "var options = new SetupIntentUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"user_id\", \"${2:3435453}\" },\n  },\n};\nvar service = new SetupIntentService();\nservice.Update(\"${1:seti_xxxxxxxxxxxxx}\", options);"
   },
+  "Create Shipping Rate": {
+    "prefix": "StripeShippingRateCreate",
+    "description": "Create Shipping Rate",
+    "body": "var options = new ShippingRateCreateOptions\n{\n  DisplayName = \"${1:Ground shipping}\",\n  Amount = ${2:500},\n  Currency = \"${3:usd}\",\n};\nvar service = new ShippingRateService();\nservice.Create(options);"
+  },
+  "List Shipping Rate": {
+    "prefix": "StripeShippingRateList",
+    "description": "List Shipping Rate",
+    "body": "var options = new ShippingRateListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ShippingRateService();\nStripeList<ShippingRate> shippingRates = service.List(\n  options);"
+  },
+  "Retrieve Shipping Rate": {
+    "prefix": "StripeShippingRateRetrieve",
+    "description": "Retrieve Shipping Rate",
+    "body": "var service = new ShippingRateService();\nservice.Get(\"${1:shr_xxxxxxxxxxxxx}\");"
+  },
+  "Update Shipping Rate": {
+    "prefix": "StripeShippingRateUpdate",
+    "description": "Update Shipping Rate",
+    "body": "var options = new ShippingRateUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new ShippingRateService();\nservice.Update(\"${1:shr_xxxxxxxxxxxxx}\", options);"
+  },
   "List Sigma Scheduled Query Run": {
     "prefix": "StripeSigmaScheduledQueryRunList",
     "description": "List Sigma Scheduled Query Run",
-    "body": "var options = new ScheduledQueryRunListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ScheduledQueryRunService();\nStripeList<ScheduledQueryRun> scheduledQueryRuns = service.List(\n  options\n);"
+    "body": "var options = new ScheduledQueryRunListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new ScheduledQueryRunService();\nStripeList<ScheduledQueryRun> scheduledQueryRuns = service.List(\n  options);"
   },
   "Retrieve Sigma Scheduled Query Run": {
     "prefix": "StripeSigmaScheduledQueryRunRetrieve",
@@ -1167,7 +1197,7 @@
   "Create Sku": {
     "prefix": "StripeSkuCreate",
     "description": "Create Sku",
-    "body": "var options = new SkuCreateOptions\n{\n  Attributes = new SkuAttributesOptions\n  {\n    Size = \"${1:Medium}\",\n    Gender = \"${2:Unisex}\",\n  },\n  Price = ${3:1500},\n  Currency = \"${4:usd}\",\n  Inventory = new SkuInventoryOptions\n  {\n    Type = \"${5:finite}\",\n    Quantity = ${6:500},\n  },\n  Product = \"${7:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new SkuService();\nservice.Create(options);"
+    "body": "var options = new SkuCreateOptions\n{\n  Attributes = new SkuAttributesOptions\n  {\n    Size = \"${1:Medium}\",\n    Gender = \"${2:Unisex}\",\n  },\n  Price = ${3:1500},\n  Currency = \"${4:usd}\",\n  Inventory = new SkuInventoryOptions\n  {\n    Type = \"${5:finite}\",\n    Quantity = ${6:500},\n  },\n  Product = \"${7:northerly}\",\n};\nvar service = new SkuService();\nservice.Create(options);"
   },
   "Delete Sku": {
     "prefix": "StripeSkuDelete",
@@ -1242,7 +1272,7 @@
   "List Subscription Item": {
     "prefix": "StripeSubscriptionItemList",
     "description": "List Subscription Item",
-    "body": "var options = new SubscriptionItemListOptions\n{\n  Subscription = \"${1:sub_xxxxxxxxxxxxx}\",\n};\nvar service = new SubscriptionItemService();\nStripeList<SubscriptionItem> subscriptionItems = service.List(\n  options\n);"
+    "body": "var options = new SubscriptionItemListOptions\n{\n  Subscription = \"${1:sub_xxxxxxxxxxxxx}\",\n};\nvar service = new SubscriptionItemService();\nStripeList<SubscriptionItem> subscriptionItems = service.List(\n  options);"
   },
   "Retrieve Subscription Item": {
     "prefix": "StripeSubscriptionItemRetrieve",
@@ -1257,12 +1287,12 @@
   "List Subscription Item Usage Record Summary": {
     "prefix": "StripeSubscriptionItemUsageRecordSummaryList",
     "description": "List Subscription Item Usage Record Summary",
-    "body": "var options = new UsageRecordSummaryListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new UsageRecordSummaryService();\nStripeList<UsageRecordSummary> usageRecordSummaries = service.List(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new UsageRecordSummaryListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new UsageRecordSummaryService();\nStripeList<UsageRecordSummary> usageRecordSummaries = service.List(\n  \"${1:si_xxxxxxxxxxxxx}\",\n  options);"
   },
   "List Subscription": {
     "prefix": "StripeSubscriptionList",
     "description": "List Subscription",
-    "body": "var options = new SubscriptionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SubscriptionService();\nStripeList<Subscription> subscriptions = service.List(\n  options\n);"
+    "body": "var options = new SubscriptionListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SubscriptionService();\nStripeList<Subscription> subscriptions = service.List(\n  options);"
   },
   "Retrieve Subscription": {
     "prefix": "StripeSubscriptionRetrieve",
@@ -1277,12 +1307,12 @@
   "Create Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleCreate",
     "description": "Create Subscription Schedule",
-    "body": "var options = new SubscriptionScheduleCreateOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  StartDate = ${2:1633379417},\n  EndBehavior = \"${3:release}\",\n  Phases = new List<SubscriptionSchedulePhaseOptions>\n  {\n    new SubscriptionSchedulePhaseOptions\n    {\n      Items = new List<SubscriptionSchedulePhaseItemOptions>\n      {\n        new SubscriptionSchedulePhaseItemOptions\n        {\n          Price = \"price_xxxxxxxxxxxxx\",\n          Quantity = 1,\n        },\n      },\n      Iterations = 12,\n    },\n  },\n};\nvar service = new SubscriptionScheduleService();\nservice.Create(options);"
+    "body": "var options = new SubscriptionScheduleCreateOptions\n{\n  Customer = \"${1:cus_xxxxxxxxxxxxx}\",\n  StartDate = ${2:1638217970},\n  EndBehavior = \"${3:release}\",\n  Phases = new List<SubscriptionSchedulePhaseOptions>\n  {\n    new SubscriptionSchedulePhaseOptions\n    {\n      Items = new List<SubscriptionSchedulePhaseItemOptions>\n      {\n        new SubscriptionSchedulePhaseItemOptions\n        {\n          Price = \"plan_xxxxxxxxxxxxx\",\n          Quantity = 1,\n        },\n      },\n      Iterations = 12,\n    },\n  },\n};\nvar service = new SubscriptionScheduleService();\nservice.Create(options);"
   },
   "List Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleList",
     "description": "List Subscription Schedule",
-    "body": "var options = new SubscriptionScheduleListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SubscriptionScheduleService();\nStripeList<SubscriptionSchedule> subscriptionSchedules = service.List(\n  options\n);"
+    "body": "var options = new SubscriptionScheduleListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new SubscriptionScheduleService();\nStripeList<SubscriptionSchedule> subscriptionSchedules = service.List(\n  options);"
   },
   "Release Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleRelease",
@@ -1297,7 +1327,7 @@
   "Update Subscription Schedule": {
     "prefix": "StripeSubscriptionScheduleUpdate",
     "description": "Update Subscription Schedule",
-    "body": "var options = new SubscriptionScheduleUpdateOptions\n{\n  EndBehavior = \"${2:release}\",\n};\nvar service = new SubscriptionScheduleService();\nservice.Update(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new SubscriptionScheduleUpdateOptions\n{\n  EndBehavior = \"${2:release}\",\n};\nvar service = new SubscriptionScheduleService();\nservice.Update(\n  \"${1:sub_sched_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Update Subscription": {
     "prefix": "StripeSubscriptionUpdate",
@@ -1307,7 +1337,7 @@
   "List Tax Code": {
     "prefix": "StripeTaxCodeList",
     "description": "List Tax Code",
-    "body": "var options = new TaxCodeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TaxCodeService();\nStripeList<TaxCode> taxCodes = service.List(\n  options\n);"
+    "body": "var options = new TaxCodeListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TaxCodeService();\nStripeList<TaxCode> taxCodes = service.List(\n  options);"
   },
   "Retrieve Tax Code": {
     "prefix": "StripeTaxCodeRetrieve",
@@ -1322,7 +1352,7 @@
   "List Tax Rate": {
     "prefix": "StripeTaxRateList",
     "description": "List Tax Rate",
-    "body": "var options = new TaxRateListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TaxRateService();\nStripeList<TaxRate> taxRates = service.List(\n  options\n);"
+    "body": "var options = new TaxRateListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TaxRateService();\nStripeList<TaxRate> taxRates = service.List(\n  options);"
   },
   "Retrieve Tax Rate": {
     "prefix": "StripeTaxRateRetrieve",
@@ -1352,7 +1382,7 @@
   "List Terminal Location": {
     "prefix": "StripeTerminalLocationList",
     "description": "List Terminal Location",
-    "body": "var options = new LocationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new LocationService();\nStripeList<Location> locations = service.List(\n  options\n);"
+    "body": "var options = new LocationListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new LocationService();\nStripeList<Location> locations = service.List(\n  options);"
   },
   "Retrieve Terminal Location": {
     "prefix": "StripeTerminalLocationRetrieve",
@@ -1377,7 +1407,7 @@
   "List Terminal Reader": {
     "prefix": "StripeTerminalReaderList",
     "description": "List Terminal Reader",
-    "body": "var options = new ReaderListOptions { Limit = ${1:3} };\nvar service = new ReaderService();\nStripeList<Reader> readers = service.List(\n  options\n);"
+    "body": "var options = new ReaderListOptions { Limit = ${1:3} };\nvar service = new ReaderService();\nStripeList<Reader> readers = service.List(\n  options);"
   },
   "Retrieve Terminal Reader": {
     "prefix": "StripeTerminalReaderRetrieve",
@@ -1432,7 +1462,7 @@
   "List Transfer": {
     "prefix": "StripeTransferList",
     "description": "List Transfer",
-    "body": "var options = new TransferListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TransferService();\nStripeList<Transfer> transfers = service.List(\n  options\n);"
+    "body": "var options = new TransferListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new TransferService();\nStripeList<Transfer> transfers = service.List(\n  options);"
   },
   "Retrieve Transfer": {
     "prefix": "StripeTransferRetrieve",
@@ -1447,17 +1477,17 @@
   "List Transfer Reversal": {
     "prefix": "StripeTransferReversalList",
     "description": "List Transfer Reversal",
-    "body": "var options = new TransferReversalListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new TransferReversalService();\nStripeList<TransferReversal> transferReversals = service.List(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new TransferReversalListOptions\n{\n  Limit = ${2:3},\n};\nvar service = new TransferReversalService();\nStripeList<TransferReversal> transferReversals = service.List(\n  \"${1:tr_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Retrieve Transfer Reversal": {
     "prefix": "StripeTransferReversalRetrieve",
     "description": "Retrieve Transfer Reversal",
-    "body": "var service = new TransferReversalService();\nservice.Get(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\"\n);"
+    "body": "var service = new TransferReversalService();\nservice.Get(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\");"
   },
   "Update Transfer Reversal": {
     "prefix": "StripeTransferReversalUpdate",
     "description": "Update Transfer Reversal",
-    "body": "var options = new TransferReversalUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new TransferReversalService();\nservice.Update(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n  options\n);"
+    "body": "var options = new TransferReversalUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${3:6735}\" },\n  },\n};\nvar service = new TransferReversalService();\nservice.Update(\n  \"${2:tr_xxxxxxxxxxxxx}\",\n  \"${1:trr_xxxxxxxxxxxxx}\",\n  options);"
   },
   "Update Transfer": {
     "prefix": "StripeTransferUpdate",
@@ -1477,7 +1507,7 @@
   "List Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointList",
     "description": "List Webhook Endpoint",
-    "body": "var options = new WebhookEndpointListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new WebhookEndpointService();\nStripeList<WebhookEndpoint> webhookEndpoints = service.List(\n  options\n);"
+    "body": "var options = new WebhookEndpointListOptions\n{\n  Limit = ${1:3},\n};\nvar service = new WebhookEndpointService();\nStripeList<WebhookEndpoint> webhookEndpoints = service.List(\n  options);"
   },
   "Retrieve Webhook Endpoint": {
     "prefix": "StripeWebhookEndpointRetrieve",
