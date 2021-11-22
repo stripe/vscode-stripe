@@ -272,7 +272,7 @@
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "var service = new CouponService();\nservice.Delete(\"${1:Z4OV52SU}\");"
+    "body": "var service = new CouponService();\nservice.Delete(\"${1:co_xxxxxxxxxxxxx}\");"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -282,12 +282,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "var service = new CouponService();\nservice.Get(\"${1:Z4OV52SU}\");"
+    "body": "var service = new CouponService();\nservice.Get(\"${1:co_xxxxxxxxxxxxx}\");"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "var options = new CouponUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new CouponService();\nservice.Update(\"${1:Z4OV52SU}\", options);"
+    "body": "var options = new CouponUpdateOptions\n{\n  Metadata = new Dictionary<string, string>\n  {\n    { \"order_id\", \"${2:6735}\" },\n  },\n};\nvar service = new CouponService();\nservice.Update(\"${1:co_xxxxxxxxxxxxx}\", options);"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -1197,7 +1197,7 @@
   "Create Sku": {
     "prefix": "StripeSkuCreate",
     "description": "Create Sku",
-    "body": "var options = new SkuCreateOptions\n{\n  Attributes = new SkuAttributesOptions\n  {\n    Size = \"${1:Medium}\",\n    Gender = \"${2:Unisex}\",\n  },\n  Price = ${3:1500},\n  Currency = \"${4:usd}\",\n  Inventory = new SkuInventoryOptions\n  {\n    Type = \"${5:finite}\",\n    Quantity = ${6:500},\n  },\n  Product = \"${7:northerly}\",\n};\nvar service = new SkuService();\nservice.Create(options);"
+    "body": "var options = new SkuCreateOptions\n{\n  Attributes = new SkuAttributesOptions\n  {\n    Size = \"${1:Medium}\",\n    Gender = \"${2:Unisex}\",\n  },\n  Price = ${3:1500},\n  Currency = \"${4:usd}\",\n  Inventory = new SkuInventoryOptions\n  {\n    Type = \"${5:finite}\",\n    Quantity = ${6:500},\n  },\n  Product = \"${7:prod_xxxxxxxxxxxxx}\",\n};\nvar service = new SkuService();\nservice.Create(options);"
   },
   "Delete Sku": {
     "prefix": "StripeSkuDelete",

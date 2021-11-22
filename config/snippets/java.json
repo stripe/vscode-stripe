@@ -267,7 +267,7 @@
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "Coupon coupon = Coupon.retrieve(\"${1:Z4OV52SU}\");\n\nCoupon deletedCoupon = coupon.delete();"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nCoupon deletedCoupon = coupon.delete();"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -277,12 +277,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "Coupon coupon = Coupon.retrieve(\"${1:Z4OV52SU}\");"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "Coupon coupon = Coupon.retrieve(\"${1:Z4OV52SU}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCoupon updatedCoupon = coupon.update(params);"
+    "body": "Coupon coupon = Coupon.retrieve(\"${1:co_xxxxxxxxxxxxx}\");\n\nMap<String, Object> metadata = new HashMap<>();\nmetadata.put(\"order_id\", \"${2:6735}\");\nMap<String, Object> params = new HashMap<>();\nparams.put(\"metadata\", metadata);\n\nCoupon updatedCoupon = coupon.update(params);"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -967,7 +967,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:Z4OV52SU}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
+    "body": "Map<String, Object> params = new HashMap<>();\nparams.put(\"coupon\", \"${1:co_xxxxxxxxxxxxx}\");\n\nPromotionCode promotionCode =\n  PromotionCode.create(params);"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
@@ -1202,7 +1202,7 @@
   "Create Sku": {
     "prefix": "StripeSkuCreate",
     "description": "Create Sku",
-    "body": "Map<String, Object> attributes = new HashMap<>();\nattributes.put(\"size\", \"${1:Medium}\");\nattributes.put(\"gender\", \"${2:Unisex}\");\nMap<String, Object> inventory = new HashMap<>();\ninventory.put(\"type\", \"${5:finite}\");\ninventory.put(\"quantity\", ${6:500});\nMap<String, Object> params = new HashMap<>();\nparams.put(\"attributes\", attributes);\nparams.put(\"price\", ${3:1500});\nparams.put(\"currency\", \"${4:usd}\");\nparams.put(\"inventory\", inventory);\nparams.put(\"product\", \"${7:northerly}\");\n\nSku sku = Sku.create(params);"
+    "body": "Map<String, Object> attributes = new HashMap<>();\nattributes.put(\"size\", \"${1:Medium}\");\nattributes.put(\"gender\", \"${2:Unisex}\");\nMap<String, Object> inventory = new HashMap<>();\ninventory.put(\"type\", \"${5:finite}\");\ninventory.put(\"quantity\", ${6:500});\nMap<String, Object> params = new HashMap<>();\nparams.put(\"attributes\", attributes);\nparams.put(\"price\", ${3:1500});\nparams.put(\"currency\", \"${4:usd}\");\nparams.put(\"inventory\", inventory);\nparams.put(\"product\", \"${7:prod_xxxxxxxxxxxxx}\");\n\nSku sku = Sku.create(params);"
   },
   "Delete Sku": {
     "prefix": "StripeSkuDelete",

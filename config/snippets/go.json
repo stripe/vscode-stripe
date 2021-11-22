@@ -287,7 +287,7 @@
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "c, _ := coupon.Del(\"${1:Z4OV52SU}\", nil)"
+    "body": "c, _ := coupon.Del(\"${1:co_xxxxxxxxxxxxx}\", nil)"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -297,12 +297,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "c, _ := coupon.Get(\"${1:Z4OV52SU}\", nil)"
+    "body": "c, _ := coupon.Get(\"${1:co_xxxxxxxxxxxxx}\", nil)"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "params := &stripe.CouponParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\nc, _ := coupon.Update(\"${1:Z4OV52SU}\", params)"
+    "body": "params := &stripe.CouponParams{}\nparams.AddMetadata(\"order_id\", \"${2:6735}\")\nc, _ := coupon.Update(\"${1:co_xxxxxxxxxxxxx}\", params)"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",

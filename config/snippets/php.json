@@ -267,7 +267,7 @@
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "\\$stripe->coupons->delete('${1:Z4OV52SU}', [])"
+    "body": "\\$stripe->coupons->delete('${1:co_xxxxxxxxxxxxx}', [])"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -277,12 +277,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "\\$stripe->coupons->retrieve('${1:Z4OV52SU}', [])"
+    "body": "\\$stripe->coupons->retrieve('${1:co_xxxxxxxxxxxxx}', [])"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "\\$stripe->coupons->update(\n  '${1:Z4OV52SU}',\n  ['metadata' => ['order_id' => '${2:6735}']]\n)"
+    "body": "\\$stripe->coupons->update(\n  '${1:co_xxxxxxxxxxxxx}',\n  ['metadata' => ['order_id' => '${2:6735}']]\n)"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -967,7 +967,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "\\$stripe->promotionCodes->create([\n  'coupon' => '${1:Z4OV52SU}',\n])"
+    "body": "\\$stripe->promotionCodes->create([\n  'coupon' => '${1:co_xxxxxxxxxxxxx}',\n])"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
@@ -1202,7 +1202,7 @@
   "Create Sku": {
     "prefix": "StripeSkuCreate",
     "description": "Create Sku",
-    "body": "\\$stripe->skus->create([\n  'attributes' => [\n    'size' => '${1:Medium}',\n    'gender' => '${2:Unisex}',\n  ],\n  'price' => ${3:1500},\n  'currency' => '${4:usd}',\n  'inventory' => [\n    'type' => '${5:finite}',\n    'quantity' => ${6:500},\n  ],\n  'product' => '${7:northerly}',\n])"
+    "body": "\\$stripe->skus->create([\n  'attributes' => [\n    'size' => '${1:Medium}',\n    'gender' => '${2:Unisex}',\n  ],\n  'price' => ${3:1500},\n  'currency' => '${4:usd}',\n  'inventory' => [\n    'type' => '${5:finite}',\n    'quantity' => ${6:500},\n  ],\n  'product' => '${7:prod_xxxxxxxxxxxxx}',\n])"
   },
   "Delete Sku": {
     "prefix": "StripeSkuDelete",

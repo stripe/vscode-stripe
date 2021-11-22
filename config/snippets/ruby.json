@@ -267,7 +267,7 @@
   "Delete Coupon": {
     "prefix": "StripeCouponDelete",
     "description": "Delete Coupon",
-    "body": "Stripe::Coupon.delete('${1:Z4OV52SU}')"
+    "body": "Stripe::Coupon.delete('${1:co_xxxxxxxxxxxxx}')"
   },
   "List Coupon": {
     "prefix": "StripeCouponList",
@@ -277,12 +277,12 @@
   "Retrieve Coupon": {
     "prefix": "StripeCouponRetrieve",
     "description": "Retrieve Coupon",
-    "body": "Stripe::Coupon.retrieve('${1:Z4OV52SU}')"
+    "body": "Stripe::Coupon.retrieve('${1:co_xxxxxxxxxxxxx}')"
   },
   "Update Coupon": {
     "prefix": "StripeCouponUpdate",
     "description": "Update Coupon",
-    "body": "Stripe::Coupon.update(\n  '${1:Z4OV52SU}',\n  {metadata: {order_id: '${2:6735}'}},\n)"
+    "body": "Stripe::Coupon.update(\n  '${1:co_xxxxxxxxxxxxx}',\n  {metadata: {order_id: '${2:6735}'}},\n)"
   },
   "Create Credit Note": {
     "prefix": "StripeCreditNoteCreate",
@@ -967,7 +967,7 @@
   "Create Promotion Code": {
     "prefix": "StripePromotionCodeCreate",
     "description": "Create Promotion Code",
-    "body": "Stripe::PromotionCode.create({coupon: '${1:Z4OV52SU}'})"
+    "body": "Stripe::PromotionCode.create({coupon: '${1:co_xxxxxxxxxxxxx}'})"
   },
   "List Promotion Code": {
     "prefix": "StripePromotionCodeList",
@@ -1202,7 +1202,7 @@
   "Create Sku": {
     "prefix": "StripeSkuCreate",
     "description": "Create Sku",
-    "body": "Stripe::SKU.create({\n  attributes: {size: '${1:Medium}', gender: '${2:Unisex}'},\n  price: ${3:1500},\n  currency: '${4:usd}',\n  inventory: {type: '${5:finite}', quantity: ${6:500}},\n  product: '${7:northerly}',\n})"
+    "body": "Stripe::SKU.create({\n  attributes: {size: '${1:Medium}', gender: '${2:Unisex}'},\n  price: ${3:1500},\n  currency: '${4:usd}',\n  inventory: {type: '${5:finite}', quantity: ${6:500}},\n  product: '${7:prod_xxxxxxxxxxxxx}',\n})"
   },
   "Delete Sku": {
     "prefix": "StripeSkuDelete",
