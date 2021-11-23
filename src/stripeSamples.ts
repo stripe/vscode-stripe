@@ -36,6 +36,8 @@ export class StripeSamples {
    * prompt to open the sample.
    */
   selectAndCloneSample = async () => {
+    const a = Date.now();
+
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -46,11 +48,17 @@ export class StripeSamples {
       return;
     }
 
+    const b = Date.now();
+    console.log(`Time taken to get daemon client: ${b - a}`);
+
     try {
       const selectedSample = await this.promptSample();
       if (!selectedSample) {
         return;
       }
+
+      const c = Date.now();
+      console.log(`Time taken to select sample: ${c - b}`);
 
       const sampleName = selectedSample.sampleData.name;
 
@@ -58,29 +66,36 @@ export class StripeSamples {
       if (!selectedIntegration) {
         return;
       }
+      const d = Date.now();
+      console.log(`Time taken to select integration: ${d - c}`);
 
       const selectedClient = await this.promptClient(selectedIntegration);
       if (!selectedClient) {
         return;
       }
+      const e = Date.now();
+      console.log(`Time taken to select client: ${e - d}`);
 
       const selectedServer = await this.promptServer(selectedIntegration);
       if (!selectedServer) {
         return;
       }
+      const f = Date.now();
+      console.log(`Time taken to select server: ${f - e}`);
 
       const cloneSampleAsName = await this.promptSampleName(sampleName);
+      const g = Date.now();
+      console.log(`Time taken to select sample name: ${g - f}`);
 
       const clonePath = await this.promptPath(selectedSample, cloneSampleAsName);
       if (!clonePath) {
         return;
       }
+      const h = Date.now();
+      console.log(`Time taken to select clone path: ${h - g}`);
 
-      await window.showInformationMessage(
-        `Sample "${sampleName}" cloning in progress...`,
-        'OK',
-      );
-
+      await window.showInformationMessage(`Sample "${sampleName}" cloning in progress...`, 'OK');
+      console.log('Displayed cloning in progress message');
       const sampleCreateResponse = await this.createSample(
         sampleName,
         selectedIntegration.getIntegrationName(),
@@ -88,6 +103,8 @@ export class StripeSamples {
         selectedClient,
         clonePath,
       );
+      const i = Date.now();
+      console.log(`Time taken to create sample: ${i - h}`);
 
       const sampleIsReady = `Your sample "${cloneSampleAsName}" is all ready to go`;
       // eslint-disable-next-line no-nested-ternary
@@ -97,7 +114,12 @@ export class StripeSamples {
           : `${sampleIsReady}.`
         : `${sampleIsReady}, but we could not set the API keys in the .env file. Please set them manually.`;
 
+      console.log('Displayed sample ready to go message');
+
       await this.promptOpenFolder(postInstallMessage, clonePath, sampleName);
+
+      const j = Date.now();
+      console.log(`Time taken to prompt open folder: ${j - i}`);
     } catch (e: any) {
       window.showErrorMessage(`Cannot create Stripe sample: ${e.message}`);
     }
@@ -228,7 +250,10 @@ export class StripeSamples {
   /**
    * Ask for where to clone the sample
    */
-  private promptPath = async (sample: SampleQuickPickItem, cloneSampleAsName: string): Promise<string | undefined> => {
+  private promptPath = async (
+    sample: SampleQuickPickItem,
+    cloneSampleAsName: string,
+  ): Promise<string | undefined> => {
     const cloneDirectoryUri = await window.showOpenDialog({
       canSelectFiles: false,
       canSelectFolders: true,
@@ -296,7 +321,11 @@ export class StripeSamples {
   /**
    * Ask if the user wants to open the sample in the same or new window
    */
-  private promptOpenFolder = async (postInstallMessage: string, clonePath: string, sampleName: string): Promise<void> => {
+  private promptOpenFolder = async (
+    postInstallMessage: string,
+    clonePath: string,
+    sampleName: string,
+  ): Promise<void> => {
     const openFolderOptions = {
       sameWindow: 'Open in same window',
       newWindow: 'Open in new window',
