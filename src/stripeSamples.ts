@@ -52,7 +52,11 @@ export class StripeSamples {
     console.log(`Time taken to get daemon client: ${b - a}`);
 
     try {
+      console.log('Getting sample');
+
       const selectedSample = await this.promptSample();
+      console.log(`seleted Sample ${selectedSample}`);
+
       if (!selectedSample) {
         return;
       }
