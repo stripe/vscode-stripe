@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {QuickPickItem, Uri, commands, env, window, workspace, DebugConsoleMode} from 'vscode';
+import {QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
