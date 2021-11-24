@@ -55,7 +55,7 @@ export class StripeSamples {
       console.log('Getting sample');
 
       const selectedSample = await this.promptSample();
-      console.log(`seleted Sample ${selectedSample}`);
+      console.log(`seleted Sample ${selectedSample?.label}`);
 
       if (!selectedSample) {
         return;
@@ -66,32 +66,47 @@ export class StripeSamples {
 
       const sampleName = selectedSample.sampleData.name;
 
+      console.log('Getting integration');
       const selectedIntegration = await this.promptIntegration(selectedSample);
+      console.log(
+        `seleted Integration ${selectedIntegration?.getClientsList}, ${selectedIntegration?.getServersList}`,
+      );
+
       if (!selectedIntegration) {
         return;
       }
       const d = Date.now();
       console.log(`Time taken to select integration: ${d - c}`);
-
+      console.log('Getting client');
       const selectedClient = await this.promptClient(selectedIntegration);
+      console.log(`seleted client ${selectedClient}`);
+
       if (!selectedClient) {
         return;
       }
       const e = Date.now();
       console.log(`Time taken to select client: ${e - d}`);
 
+      console.log('Getting server');
       const selectedServer = await this.promptServer(selectedIntegration);
+      console.log(`seleted server ${selectedServer}`);
+
       if (!selectedServer) {
         return;
       }
       const f = Date.now();
       console.log(`Time taken to select server: ${f - e}`);
 
+      console.log('Getting sample name');
       const cloneSampleAsName = await this.promptSampleName(sampleName);
+      console.log(`seleted name ${cloneSampleAsName}`);
       const g = Date.now();
       console.log(`Time taken to select sample name: ${g - f}`);
 
+      console.log('Getting sample path');
       const clonePath = await this.promptPath(selectedSample, cloneSampleAsName);
+      console.log(`seleted path ${clonePath}`);
+
       if (!clonePath) {
         return;
       }
