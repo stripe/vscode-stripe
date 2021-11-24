@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {QuickPickItem, Uri, commands, env, window, workspace} from 'vscode';
+import {QuickPickItem, Uri, commands, env, window, workspace, DebugConsoleMode} from 'vscode';
 import {SampleConfigsRequest, SampleConfigsResponse} from './rpc/sample_configs_pb';
 import {SampleCreateRequest, SampleCreateResponse} from './rpc/sample_create_pb';
 import {SamplesListRequest, SamplesListResponse} from './rpc/samples_list_pb';
@@ -69,7 +69,7 @@ export class StripeSamples {
       console.log('Getting integration');
       const selectedIntegration = await this.promptIntegration(selectedSample);
       console.log(
-        `seleted Integration ${selectedIntegration?.getClientsList}, ${selectedIntegration?.getServersList}`,
+        `seleted Integration ${selectedIntegration?.getClientsList()}, ${selectedIntegration?.getServersList()}`,
       );
 
       if (!selectedIntegration) {
@@ -205,6 +205,9 @@ export class StripeSamples {
    * Ask for which sample to clone.
    */
   private promptSample = async (): Promise<SampleQuickPickItem | undefined> => {
+    const labels = (await this.getQuickPickItems()).map((a) => a.label);
+
+    console.log(`sample quick pick items: ${labels.join(',')}`);
     const selectedSample = await window.showQuickPick(this.getQuickPickItems(), {
       matchOnDetail: true,
       placeHolder: 'Select a sample to clone',
@@ -225,6 +228,8 @@ export class StripeSamples {
     const getIntegrationNames = async (): Promise<string[]> => {
       return ((await integrationsPromise) || []).map((i) => i.getIntegrationName());
     };
+
+    console.log(`sample quick pick items: ${getIntegrationNames}`);
 
     const selectedIntegrationName = await window.showQuickPick(getIntegrationNames(), {
       placeHolder: 'Select an integration',
@@ -250,6 +255,8 @@ export class StripeSamples {
   private promptClient = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
+    console.log(`sample quick pick items: ${integration.getClientsList()}`);
+
     return window.showQuickPick(integration.getClientsList(), {
       placeHolder: 'Select a client language',
     });
@@ -261,6 +268,8 @@ export class StripeSamples {
   private promptServer = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
+    console.log(`sample quick pick items: ${integration.getServersList()}`);
+
     return window.showQuickPick(integration.getServersList(), {
       placeHolder: 'Select a server language',
     });
