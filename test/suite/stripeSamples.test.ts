@@ -213,7 +213,7 @@ async function simulateSelectAll() {
   // Pause for sample save-as name input box
 
   // Simulate select path
-  // await sleep(1000);
+  await sleep(1000);
   // console.log('selecting path');
   // await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 }
