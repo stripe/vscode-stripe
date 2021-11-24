@@ -87,6 +87,8 @@ suite('StripeSamples', function () {
 
   suite('selectAndCloneSample', () => {
     test('prompts for sample config, clones, and opens sample', async () => {
+      const a = Date.now();
+
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
       const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
       const showInputBoxStub = sandbox
@@ -102,6 +104,8 @@ suite('StripeSamples', function () {
 
       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
+      const b = Date.now();
+      console.log(`Time taken to set up tests: ${b - a}`);
       stripeSamples.selectAndCloneSample();
 
       await simulateSelectAll();
@@ -114,6 +118,8 @@ suite('StripeSamples', function () {
     });
 
     test('shows special post install message if API keys could not be set', async () => {
+      const a = Date.now();
+
       // Simulate the special error response from the gRPC server
       const err: Partial<grpc.ServiceError> = {
         code: grpc.status.UNKNOWN,
@@ -130,6 +136,8 @@ suite('StripeSamples', function () {
 
       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
+      const b = Date.now();
+      console.log(`Time taken to set up tests: ${b - a}`);
       stripeSamples.selectAndCloneSample();
 
       await simulateSelectAll();
