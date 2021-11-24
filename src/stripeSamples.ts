@@ -229,7 +229,7 @@ export class StripeSamples {
       return ((await integrationsPromise) || []).map((i) => i.getIntegrationName());
     };
 
-    console.log(`sample quick pick items: ${getIntegrationNames}`);
+    console.log(`integration quick pick items: ${getIntegrationNames()}`);
 
     const selectedIntegrationName = await window.showQuickPick(getIntegrationNames(), {
       placeHolder: 'Select an integration',
@@ -255,7 +255,7 @@ export class StripeSamples {
   private promptClient = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
-    console.log(`sample quick pick items: ${integration.getClientsList()}`);
+    console.log(`client quick pick items: ${integration.getClientsList()}`);
 
     return window.showQuickPick(integration.getClientsList(), {
       placeHolder: 'Select a client language',
@@ -268,7 +268,7 @@ export class StripeSamples {
   private promptServer = (
     integration: SampleConfigsResponse.Integration,
   ): Thenable<string | undefined> => {
-    console.log(`sample quick pick items: ${integration.getServersList()}`);
+    console.log(`server quick pick items: ${integration.getServersList()}`);
 
     return window.showQuickPick(integration.getServersList(), {
       placeHolder: 'Select a server language',
