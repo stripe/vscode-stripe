@@ -142,12 +142,6 @@ suite('StripeSamples', function () {
 
       await simulateSelectAll();
 
-      // show cloning in progress message
-      // assert.deepStrictEqual(
-      //   showInformationMessageStub.calledWith('Sample "accept-a-payment" cloning in progress...', sinon.match.any),
-      //   true
-      // );
-
       // show sample cloned successfully message
       console.log('call count: ' + showInformationMessageStub.callCount);
       console.log(`call args: ${showInformationMessageStub.args[0].join(',')}`);
@@ -221,7 +215,7 @@ async function simulateSelectAll() {
   // Pause for sample save-as name input box
 
   // Simulate select path
-  await sleep(1000);
+  // await sleep(1000);
   console.log('selecting path');
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+  // await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 }
