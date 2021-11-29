@@ -193,29 +193,35 @@ suite('StripeSamples', function () {
  */
 async function simulateSelectAll() {
   // Simulate select sample
+  console.log('waiting to select sample');
   await sleep(200);
   console.log('selecting sample');
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select integration
+  console.log('waiting to select integration');
   await sleep(300);
   console.log('selecting integration');
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select client
+  console.log('waiting to select client');
   await sleep(400);
   console.log('selecting client');
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   // Simulate select server
+  console.log('waiting to select server');
   await sleep(500);
   console.log('selecting server');
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
+
+  console.log('done with all quick pick selects');
 
   // Pause for sample save-as name input box
 
   // Simulate select path
   // await sleep(1000);
-  console.log('selecting path');
+  // console.log('selecting path');
   // await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 }
