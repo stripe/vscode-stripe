@@ -106,9 +106,8 @@ suite('StripeSamples', function () {
 
       const b = Date.now();
       console.log(`Time taken to set up tests: ${b - a}`);
-      stripeSamples.selectAndCloneSample();
-
-      await simulateSelectAll();
+      simulateSelectAll();
+      await stripeSamples.selectAndCloneSample();
 
       assert.strictEqual(showQuickPickSpy.callCount, 4);
       assert.strictEqual(showInputBoxStub.callCount, 1);
@@ -217,7 +216,7 @@ async function simulateSelectAll() {
   await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
 
   console.log('done with all quick pick selects, waiting for the rest of the test to finish');
-  await sleep(500);
+  // await sleep(500);
 
   // Pause for sample save-as name input box
 
