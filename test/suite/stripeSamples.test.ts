@@ -10,13 +10,22 @@ import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../../src/stripeClient';
 import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeSamples} from '../../src/stripeSamples';
-import {sleep} from './helpers';
 
 const stripeClient = <Partial<StripeClient>>{
   getCLIPath: () => Promise.resolve('/path/to/cli'),
   promptUpdateForDaemon: () => {},
   promptLogin: () => {},
 };
+
+const sampleData = new SamplesListResponse.SampleData();
+sampleData.setName('accept-a-payment');
+sampleData.setDescription('Learn how to accept a payment');
+sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
+
+const sampleIntegration = new SampleConfigsResponse.Integration();
+sampleIntegration.setIntegrationName('using-webhooks');
+sampleIntegration.setClientsList(['html', 'react']);
+sampleIntegration.setServersList(['node', 'ruby']);
 
 // Mock gRPC server responses
 const daemonClient = (
@@ -31,11 +40,6 @@ const daemonClient = (
       req: SamplesListRequest,
       callback: (error: grpc.ServiceError | null, res: SamplesListResponse) => void,
     ) => {
-      const sampleData = new SamplesListResponse.SampleData();
-      sampleData.setName('accept-a-payment');
-      sampleData.setDescription('Learn how to accept a payment');
-      sampleData.setUrl('https://github.com/stripe-samples/accept-a-payment');
-
       const response = new SamplesListResponse();
       response.setSamplesList([sampleData]);
 
@@ -45,13 +49,8 @@ const daemonClient = (
       req: SampleConfigsRequest,
       callback: (error: grpc.ServiceError | null, res: SampleConfigsResponse) => void,
     ) => {
-      const integration = new SampleConfigsResponse.Integration();
-      integration.setIntegrationName('using-webhooks');
-      integration.setClientsList(['html', 'react']);
-      integration.setServersList(['node', 'ruby']);
-
       const response = new SampleConfigsResponse();
-      response.setIntegrationsList([integration]);
+      response.setIntegrationsList([sampleIntegration]);
 
       callback(null, response);
     },
@@ -85,10 +84,37 @@ suite('StripeSamples', function () {
     sandbox.restore();
   });
 
+  /**
+   * This is a helper function to simulate all of the quick pick events we need to go through for the whole sample selection process.
+   * @param showQuickPickStub
+   */
+  function stubSampleQuickPicks(showQuickPickStub: sinon.SinonStub) {
+    // select sample
+    showQuickPickStub.onCall(0).resolves({
+      label: `$(repo) ${sampleData.getName()}`,
+      detail: sampleData.getDescription(),
+      sampleData: {
+        name: sampleData.getName(),
+        url: sampleData.getUrl(),
+      },
+    });
+
+    // select integration
+    showQuickPickStub.onCall(1).resolves(sampleIntegration.getIntegrationName());
+
+    // select client
+    showQuickPickStub.onCall(2).resolves('html');
+
+    // select server
+    showQuickPickStub.onCall(3).resolves('node');
+  }
+
   suite('selectAndCloneSample', () => {
     test('prompts for sample config, clones, and opens sample', async () => {
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient());
-      const showQuickPickSpy = sandbox.spy(vscode.window, 'showQuickPick');
+      const showQuickPickStub = sandbox.stub(vscode.window, 'showQuickPick');
+      stubSampleQuickPicks(showQuickPickStub);
+
       const showInputBoxStub = sandbox
         .stub(vscode.window, 'showInputBox')
         .resolves('sample-name-by-user');
@@ -102,11 +128,9 @@ suite('StripeSamples', function () {
 
       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-      stripeSamples.selectAndCloneSample();
+      await stripeSamples.selectAndCloneSample();
 
-      await simulateSelectAll();
-
-      assert.strictEqual(showQuickPickSpy.callCount, 4);
+      assert.strictEqual(showQuickPickStub.callCount, 4);
       assert.strictEqual(showInputBoxStub.callCount, 1);
       assert.strictEqual(showOpenDialogStub.callCount, 1);
       assert.strictEqual(showInformationMessageStub.callCount, 2);
@@ -119,7 +143,8 @@ suite('StripeSamples', function () {
         code: grpc.status.UNKNOWN,
         details: 'we could not set',
       };
-
+      const showQuickPickStub = sandbox.stub(vscode.window, 'showQuickPick');
+      stubSampleQuickPicks(showQuickPickStub);
       sandbox.stub(stripeDaemon, 'setupClient').resolves(daemonClient(err, undefined));
       sandbox.stub(vscode.window, 'showInputBox').resolves('sample-name-by-user');
       sandbox.stub(vscode.window, 'showOpenDialog').resolves([vscode.Uri.parse('/my/path')]);
@@ -130,9 +155,7 @@ suite('StripeSamples', function () {
 
       const stripeSamples = new StripeSamples(<any>stripeClient, <any>stripeDaemon);
 
-      stripeSamples.selectAndCloneSample();
-
-      await simulateSelectAll();
+      await stripeSamples.selectAndCloneSample();
 
       // show cloning in progress message
       // assert.deepStrictEqual(
@@ -143,11 +166,12 @@ suite('StripeSamples', function () {
       // show sample cloned successfully message
       assert.deepStrictEqual(
         showInformationMessageStub.calledWith(
-        'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
-        {modal: true},
-        sinon.match.any,
-        sinon.match.any),
-        true
+          'Your sample "sample-name-by-user" is all ready to go, but we could not set the API keys in the .env file. Please set them manually.',
+          {modal: true},
+          sinon.match.any,
+          sinon.match.any,
+        ),
+        true,
       );
     });
 
@@ -180,30 +204,3 @@ suite('StripeSamples', function () {
     });
   });
 });
-
-/**
- * Simulate a user interaction with each of the menus.
- */
-async function simulateSelectAll() {
-  // Simulate select sample
-  await sleep(500);
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-  // Simulate select integration
-  await sleep(500);
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-  // Simulate select client
-  await sleep(500);
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-  // Simulate select server
-  await sleep(500);
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-
-  // Pause for sample save-as name input box
-
-  // Simulate select path
-  await sleep(1000);
-  await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
-}
