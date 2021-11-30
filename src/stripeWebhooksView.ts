@@ -30,7 +30,6 @@ export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
     if (this.endpointItems.length > 0) {
       const endpointsRootItem = new StripeTreeItem('All webhook endpoints');
       endpointsRootItem.children = this.endpointItems;
-      endpointsRootItem.expand();
       endpointsRootItem.makeCollapsible();
       items.push(endpointsRootItem);
     }
@@ -54,25 +53,22 @@ export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
       } else if (response) {
         const endpoints = response.getEndpointsList();
         if (endpoints.length > 0) {
-          const endpointItems = endpoints.map((e) => {
-            const enabledEventsRootItem = new StripeTreeItem('Enabled events');
-            const enabledEvents = e.getEnabledeventsList();
-            enabledEventsRootItem.children = enabledEvents.map(
-              (event) => new StripeTreeItem(event),
-            );
-            enabledEventsRootItem.expand();
-            enabledEventsRootItem.makeCollapsible();
+          const endpointItems = endpoints
+            .filter((e) => e.getStatus() === 'enabled')
+            .map((e) => {
+              const enabledEventsRootItem = new StripeTreeItem('Enabled events');
+              const enabledEvents = e.getEnabledeventsList();
+              enabledEventsRootItem.children = enabledEvents.map(
+                (event) => new StripeTreeItem(event),
+              );
+              enabledEventsRootItem.makeCollapsible();
 
-            const endpointItem = new StripeTreeItem(e.getUrl());
-            endpointItem.children = [
-              new StripeTreeItem(`Status: ${e.getStatus()}`),
-              enabledEventsRootItem,
-            ];
-            endpointItem.expand();
-            endpointItem.makeCollapsible();
+              const endpointItem = new StripeTreeItem(e.getUrl());
+              endpointItem.children = [enabledEventsRootItem];
+              endpointItem.makeCollapsible();
 
-            return endpointItem;
-          });
+              return endpointItem;
+            });
           this.endpointItems = endpointItems;
           this.refresh();
         }

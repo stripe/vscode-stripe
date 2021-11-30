@@ -45,11 +45,16 @@ suite('stripeWebhooksView', () => {
 
       const endpointData1 = new WebhookEndpointsListResponse.WebhookEndpointData();
       endpointData1.setUrl('http://endpoints1.com');
+      endpointData1.setStatus('disabled');
       const endpointData2 = new WebhookEndpointsListResponse.WebhookEndpointData();
       endpointData2.setUrl('http://endpoints2.com');
+      endpointData2.setStatus('enabled');
+      const endpointData3 = new WebhookEndpointsListResponse.WebhookEndpointData();
+      endpointData3.setUrl('http://endpoints3.com');
+      endpointData3.setStatus('enabled');
 
       const mockEndpointsResponse = new WebhookEndpointsListResponse();
-      mockEndpointsResponse.setEndpointsList([endpointData1, endpointData2]);
+      mockEndpointsResponse.setEndpointsList([endpointData1, endpointData2, endpointData3]);
 
       sandbox
         .stub(daemonClient, 'webhookEndpointsList')
