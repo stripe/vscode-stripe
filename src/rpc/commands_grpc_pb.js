@@ -14,6 +14,7 @@ var samples_list_pb = require('./samples_list_pb.js');
 var trigger_pb = require('./trigger_pb.js');
 var triggers_list_pb = require('./triggers_list_pb.js');
 var version_pb = require('./version_pb.js');
+var webhook_endpoints_list_pb = require('./webhook_endpoints_list_pb.js');
 
 function serialize_rpc_EventsResendRequest(arg) {
   if (!(arg instanceof events_resend_pb.EventsResendRequest)) {
@@ -279,6 +280,28 @@ function deserialize_rpc_VersionResponse(buffer_arg) {
   return version_pb.VersionResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_rpc_WebhookEndpointsListRequest(arg) {
+  if (!(arg instanceof webhook_endpoints_list_pb.WebhookEndpointsListRequest)) {
+    throw new Error('Expected argument of type rpc.WebhookEndpointsListRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_WebhookEndpointsListRequest(buffer_arg) {
+  return webhook_endpoints_list_pb.WebhookEndpointsListRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_WebhookEndpointsListResponse(arg) {
+  if (!(arg instanceof webhook_endpoints_list_pb.WebhookEndpointsListResponse)) {
+    throw new Error('Expected argument of type rpc.WebhookEndpointsListResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_WebhookEndpointsListResponse(buffer_arg) {
+  return webhook_endpoints_list_pb.WebhookEndpointsListResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var StripeCLIService = exports.StripeCLIService = {
   // Resend an event given an event ID. Like `stripe events resend`.
@@ -426,6 +449,18 @@ version: {
     requestDeserialize: deserialize_rpc_VersionRequest,
     responseSerialize: serialize_rpc_VersionResponse,
     responseDeserialize: deserialize_rpc_VersionResponse,
+  },
+  // Get the list of webhook endpoints.
+webhookEndpointsList: {
+    path: '/rpc.StripeCLI/WebhookEndpointsList',
+    requestStream: false,
+    responseStream: false,
+    requestType: webhook_endpoints_list_pb.WebhookEndpointsListRequest,
+    responseType: webhook_endpoints_list_pb.WebhookEndpointsListResponse,
+    requestSerialize: serialize_rpc_WebhookEndpointsListRequest,
+    requestDeserialize: deserialize_rpc_WebhookEndpointsListRequest,
+    responseSerialize: serialize_rpc_WebhookEndpointsListResponse,
+    responseDeserialize: deserialize_rpc_WebhookEndpointsListResponse,
   },
 };
 

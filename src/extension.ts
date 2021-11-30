@@ -32,6 +32,7 @@ import {StripeResourceDocumentContentProvider} from './stripeResourceDocumentCon
 import {StripeSamples} from './stripeSamples';
 import {StripeSamplesViewProvider} from './stripeSamplesView';
 import {StripeTerminal} from './stripeTerminal';
+import {StripeWebhooksViewProvider} from './stripeWebhooksView';
 import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import path from 'path';
@@ -67,6 +68,13 @@ export function activate(this: any, context: ExtensionContext) {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
   });
+
+  const stripeWebhooksViewProvider = new StripeWebhooksViewProvider(stripeDaemon);
+  window.createTreeView('stripeWebhooksView', {
+    treeDataProvider: stripeWebhooksViewProvider,
+    showCollapseAll: true,
+  });
+  stripeWebhooksViewProvider.refreshEndpoints();
 
   window.createTreeView('stripeSamplesView', {
     treeDataProvider: new StripeSamplesViewProvider(),
