@@ -283,6 +283,11 @@
           "when": "stripe.isNotCLIInstalled == false"
         },
         {
+          "id": "stripeWebhooksView",
+          "name": "Webhooks",
+          "when": "stripe.isNotCLIInstalled == false"
+        },
+        {
           "id": "stripeSamplesView",
           "name": "Samples",
           "when": "stripe.isNotCLIInstalled == false"

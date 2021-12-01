@@ -39,3 +39,5 @@ var triggers_list_pb = require('./triggers_list_pb.js');
 goog.object.extend(proto, triggers_list_pb);
 var version_pb = require('./version_pb.js');
 goog.object.extend(proto, version_pb);
+var webhook_endpoints_list_pb = require('./webhook_endpoints_list_pb.js');
+goog.object.extend(proto, webhook_endpoints_list_pb);

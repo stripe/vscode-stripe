@@ -425,8 +425,8 @@ suite('commands', function () {
     test('surfaces error from server', async () => {
       const windowSpy = sandbox.spy(vscode.window, 'showErrorMessage');
 
-      const erroMessage = 'Something went wrong';
-      const error = <grpc.ServiceError>{details: erroMessage};
+      const errorMessage = 'Something went wrong';
+      const error = <grpc.ServiceError>{details: errorMessage};
 
       sandbox
         .stub(daemonClient, 'eventsResend')
@@ -445,7 +445,7 @@ suite('commands', function () {
       const commands = new Commands(telemetry, terminal, extensionContext);
       await commands.resendEvent(treeItem, <any>stripeDaemon, <any>stripeOutputChannel);
 
-      assert.deepStrictEqual(windowSpy.args[0], [`Failed to resend event: 1234. ${erroMessage}`]);
+      assert.deepStrictEqual(windowSpy.args[0], [`Failed to resend event: 1234. ${errorMessage}`]);
     });
   });
 

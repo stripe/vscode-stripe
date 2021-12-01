@@ -1,9 +1,6 @@
 // package: rpc
 // file: commands.proto
 
-/* tslint:disable */
-/* eslint-disable */
-
 import * as jspb from "google-protobuf";
 import * as events_resend_pb from "./events_resend_pb";
 import * as fixtures_pb from "./fixtures_pb";
@@ -17,3 +14,5 @@ import * as samples_list_pb from "./samples_list_pb";
 import * as trigger_pb from "./trigger_pb";
 import * as triggers_list_pb from "./triggers_list_pb";
 import * as version_pb from "./version_pb";
+import * as webhook_endpoints_list_pb from "./webhook_endpoints_list_pb";
+
