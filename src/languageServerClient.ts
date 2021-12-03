@@ -32,7 +32,7 @@ import {
   JDKInfo,
   REQUIRED_JDK_VERSION,
   STRIPE_JAVA_HOME,
-  getJavaSDKInfo
+  getJavaSDKInfo,
 } from './stripeJavaLanguageClient/javaRuntimesUtils';
 import {LanguageClient, ServerOptions} from 'vscode-languageclient/node';
 import {OSType, getOSType} from './utils';
@@ -190,12 +190,12 @@ export class StripeLanguageClient {
     };
 
     // Create the language client and start the client.
-    const dotnetClient = new LanguageClient(
-      'stripeCsharpLanguageServer',
-      'Stripe C# Server',
-      serverOptions,
-      clientOptions,
-    );
+    // We are overriding the show notification for the dotnet client.
+    const dotnetClient = new (class extends LanguageClient {
+      error(message: string, data: any, showNotification: boolean) {
+        super.error(message, data, false);
+      }
+    })('stripeCsharpLanguageServer', 'Stripe C# Server', serverOptions, clientOptions);
 
     dotnetClient.trace = Trace.Verbose;
     outputChannel.appendLine('Starting C# language service for ' + projectFile);
@@ -264,7 +264,14 @@ export class StripeLanguageClient {
       try {
         await this.startSyntaxServer(
           clientOptions,
-          prepareExecutable(jdkInfo, syntaxServerWorkspacePath, context, true, outputChannel, telemetry),
+          prepareExecutable(
+            jdkInfo,
+            syntaxServerWorkspacePath,
+            context,
+            true,
+            outputChannel,
+            telemetry,
+          ),
           outputChannel,
           telemetry,
         );
@@ -281,7 +288,7 @@ export class StripeLanguageClient {
       clientOptions,
       workspacePath,
       outputChannel,
-      telemetry
+      telemetry,
     );
 
     onDidServerModeChangeEmitter.event((event: ServerMode) => {
@@ -448,7 +455,9 @@ export class StripeLanguageClient {
 
     const checkConflicts: boolean = await hasNoBuildToolConflict(context);
     if (!checkConflicts) {
-      outputChannel.appendLine(`Build tool conflict detected in workspace. Please enable either maven (${IMPORT_MAVEN}) or gradle (${IMPORT_GRADLE}) in user settings.`);
+      outputChannel.appendLine(
+        `Build tool conflict detected in workspace. Please enable either maven (${IMPORT_MAVEN}) or gradle (${IMPORT_GRADLE}) in user settings.`,
+      );
       telemetry.sendEvent('standardJavaServerHasBuildToolConflict');
       return;
     }
@@ -511,11 +520,12 @@ export class StripeLanguageClient {
         if (force) {
           choice = 'Yes';
         } else {
-          choice = await window.showInformationMessage(
-            'Are you sure you want to switch the Java language server to Standard mode?',
-            'Yes',
-            'No',
-          ) || 'No';
+          choice =
+            (await window.showInformationMessage(
+              'Are you sure you want to switch the Java language server to Standard mode?',
+              'Yes',
+              'No',
+            )) || 'No';
         }
 
         if (choice === 'Yes') {
