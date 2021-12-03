@@ -30,7 +30,20 @@ namespace stripe.LanguageServer
             Log.Debug("Creating project for " + projectFile);
 
             // Without this MSBuild can't find the SDK folder.
-            MSBuildLocator.RegisterDefaults();
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            } catch (Exception e)
+            {
+                // The locator cannot find the MSBuild tool in the user's sdk path
+                // or, it cannot find an sdk folder
+                Console.Error.Write("Unable to find MSBuild tools or the expected SDK version to compile your project. \n"
+                    + "Please ensure you have the dotnet Core SDK installed to get API reference features of the extension: "
+                    + "https://stripe.com/docs/stripe-vscode#api-reference\n");
+                return;
+            }
+
+
             var workspace = MSBuildWorkspace.Create();
 
             // We need to register to the failed event to be notified if there were any failures.
