@@ -9,9 +9,7 @@ const osName = require('os-name');
 
 export const areAllTelemetryConfigsEnabled = () => {
   // respect both the overall and Stripe-specific telemetry configs
-  const enableTelemetry = vscode.workspace
-    .getConfiguration('telemetry')
-    .get('enableTelemetry', false);
+  const enableTelemetry = vscode.env.isTelemetryEnabled;
 
   const stripeEnableTelemetry = vscode.workspace
     .getConfiguration('stripe.telemetry')
@@ -109,6 +107,10 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
   }
 
   private configurationChanged(e: vscode.ConfigurationChangeEvent) {
+    this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
+  }
+
+  private telemetryPreferenceChanged(e: boolean) {
     this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
   }
 }
