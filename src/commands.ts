@@ -1,4 +1,3 @@
-import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {
   camelToSnakeCase,
@@ -17,7 +16,6 @@ import {
   setWebhookEndpoint,
 } from './stripeWorkspaceState';
 
-import osName = require('os-name');
 import {EventsResendRequest} from './rpc/events_resend_pb';
 import {FixtureRequest} from './rpc/fixtures_pb';
 import {LoginRequest} from './rpc/login_pb';
@@ -565,16 +563,7 @@ export class Commands {
 
   openSurvey = (surveyPrompt: SurveyPrompt) => {
     this.telemetry.sendEvent('openSurvey');
-    const extensionInfo = getExtensionInfo();
-
-    const query = querystring.stringify({
-      platform: encodeURIComponent(osName()),
-      vscodeVersion: encodeURIComponent(vscode.version),
-      extensionVersion: encodeURIComponent(extensionInfo.version),
-      machineId: encodeURIComponent(vscode.env.machineId),
-    });
-
-    const url = `https://stri.pe/vscode-feedback?${query}`;
+    const url = 'https://stripe.com/docs/dev-tools-csat';
     vscode.env.openExternal(vscode.Uri.parse(url));
     surveyPrompt.updateSurveySettings();
   };
