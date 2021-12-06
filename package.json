@@ -502,7 +502,7 @@
     "@types/winreg": "^1.2.30",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
-    "eslint": "^7.32.0",
+    "eslint": "^8.4.0",
     "eslint-config-prettier": "^8.3.0",
     "glob": "^7.1.7",
     "grpc_tools_node_protoc_ts": "^5.3.2",
