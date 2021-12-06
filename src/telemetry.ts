@@ -109,8 +109,4 @@ export class StripeAnalyticsServiceTelemetry implements Telemetry {
   private configurationChanged(e: vscode.ConfigurationChangeEvent) {
     this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
   }
-
-  private telemetryPreferenceChanged(e: boolean) {
-    this._isTelemetryEnabled = areAllTelemetryConfigsEnabled();
-  }
 }
