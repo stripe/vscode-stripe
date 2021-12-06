@@ -6,6 +6,10 @@ import {mocks} from '../mocks/vscode';
 import sinon from 'ts-sinon';
 
 const https = require('https');
+const proxyquire = require('proxyquire');
+const modulePath = '../../src/telemetry';
+
+const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('Telemetry', function () {
   this.timeout(20000);
@@ -22,28 +26,30 @@ suite('Telemetry', function () {
   suite('StripeAnalyticsServiceTelemetry', () => {
     const extensionContext = {...mocks.extensionContextMock};
 
-    test('Respects overall and Stripe-specific telemetry configs', () => {
+    test('Respects overall and Stripe-specific telemetry configs', async () => {
       const getConfigurationStub = sandbox.stub(vscode.workspace, 'getConfiguration');
+      await Promise.all(
+        [
+          [false, false, false],
+          [false, true, false],
+          [true, false, false],
+          [true, true, true],
+        ].map(([telemetryEnabled, stripeTelemetryEnabled, expected]) => {
+          const vscodeStub = {
+            env: <any>{
+              isTelemetryEnabled: telemetryEnabled,
+            },
+          };
+          const module = setupProxies({vscode: vscodeStub});
+          getConfigurationStub.withArgs('stripe.telemetry').returns(<any>{
+            get: sandbox.stub().withArgs('enabled').returns(stripeTelemetryEnabled),
+          });
 
-      [
-        [false, false, false],
-        [false, true, false],
-        [true, false, false],
-        [true, true, true],
-      ].forEach(async ([telemetryEnabled, stripeTelemetryEnabled, expected]) => {
-        getConfigurationStub.withArgs('telemetry').returns(<any>{
-          get: sandbox.stub().withArgs('telemetryEnabled').returns(telemetryEnabled),
-        });
-        getConfigurationStub
-          .withArgs('stripe.telemetry')
-          .returns(<any>{get: sandbox.stub().withArgs('enabled').returns(stripeTelemetryEnabled)});
+          const telemetry = new module.StripeAnalyticsServiceTelemetry(extensionContext);
 
-        // Simulate a config change
-        await vscode.workspace.getConfiguration('telemetry').update('stripe', undefined);
-        const telemetry = new StripeAnalyticsServiceTelemetry(extensionContext);
-
-        assert.strictEqual(telemetry.isTelemetryEnabled(), expected);
-      });
+          assert.strictEqual(telemetry.isTelemetryEnabled(), expected);
+        }),
+      );
     });
 
     test('sendEvent respects user telemetry settings', () => {
