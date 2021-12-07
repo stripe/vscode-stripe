@@ -568,13 +568,14 @@ export class Commands {
     const extensionInfo = getExtensionInfo();
 
     const query = querystring.stringify({
-      platform: encodeURIComponent(osName()),
-      vscodeVersion: encodeURIComponent(vscode.version),
-      extensionVersion: encodeURIComponent(extensionInfo.version),
+      devTool: 'vscode', // matches the query string parsing for the dev tool selection on the CSAT form
+      os: encodeURIComponent(osName()),
+      vscodeVer: encodeURIComponent(vscode.version),
+      extensionVer: encodeURIComponent(extensionInfo.version),
       machineId: encodeURIComponent(vscode.env.machineId),
     });
 
-    const url = `https://stri.pe/vscode-feedback?${query}`;
+    const url = `https://stripe.com/docs/dev-tools-csat?${query}`;
     vscode.env.openExternal(vscode.Uri.parse(url));
     surveyPrompt.updateSurveySettings();
   };
