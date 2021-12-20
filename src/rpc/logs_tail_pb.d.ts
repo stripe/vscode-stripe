@@ -162,6 +162,9 @@ export namespace LogsTailResponse {
     getError(): LogsTailResponse.Log.Error | undefined;
     setError(value?: LogsTailResponse.Log.Error): void;
 
+    getInsight(): string;
+    setInsight(value: string): void;
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Log.AsObject;
     static toObject(includeInstance: boolean, msg: Log): Log.AsObject;
@@ -181,6 +184,7 @@ export namespace LogsTailResponse {
       requestId: string,
       createdAt: number,
       error?: LogsTailResponse.Log.Error.AsObject,
+      insight: string,
     }
 
     export class Error extends jspb.Message {

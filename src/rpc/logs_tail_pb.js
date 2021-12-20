@@ -868,7 +868,8 @@ proto.rpc.LogsTailResponse.Log.toObject = function(includeInstance, msg) {
     status: jspb.Message.getFieldWithDefault(msg, 4, 0),
     requestId: jspb.Message.getFieldWithDefault(msg, 5, ""),
     createdAt: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    error: (f = msg.getError()) && proto.rpc.LogsTailResponse.Log.Error.toObject(includeInstance, f)
+    error: (f = msg.getError()) && proto.rpc.LogsTailResponse.Log.Error.toObject(includeInstance, f),
+    insight: jspb.Message.getFieldWithDefault(msg, 8, "")
   };
 
   if (includeInstance) {
@@ -933,6 +934,10 @@ proto.rpc.LogsTailResponse.Log.deserializeBinaryFromReader = function(msg, reade
       var value = new proto.rpc.LogsTailResponse.Log.Error;
       reader.readMessage(value,proto.rpc.LogsTailResponse.Log.Error.deserializeBinaryFromReader);
       msg.setError(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInsight(value);
       break;
     default:
       reader.skipField();
@@ -1011,6 +1016,13 @@ proto.rpc.LogsTailResponse.Log.serializeBinaryToWriter = function(message, write
       7,
       f,
       proto.rpc.LogsTailResponse.Log.Error.serializeBinaryToWriter
+    );
+  }
+  f = message.getInsight();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
     );
   }
 };
@@ -1438,6 +1450,24 @@ proto.rpc.LogsTailResponse.Log.prototype.clearError = function() {
  */
 proto.rpc.LogsTailResponse.Log.prototype.hasError = function() {
   return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional string insight = 8;
+ * @return {string}
+ */
+proto.rpc.LogsTailResponse.Log.prototype.getInsight = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rpc.LogsTailResponse.Log} returns this
+ */
+proto.rpc.LogsTailResponse.Log.prototype.setInsight = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
