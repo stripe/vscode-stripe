@@ -26,6 +26,7 @@ import {
   setWebhookEndpoint,
   webhookEndpointKey,
 } from '../../src/stripeWorkspaceState';
+import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 
 suite('stripeWorkspaceState', () => {
   let sandbox: sinon.SinonSandbox;
@@ -127,16 +128,18 @@ suite('stripeWorkspaceState', () => {
   });
 
   suite('LogDetails', () => {
-    test('add and retrieve log details', () => {
+    test('add and retrieve log details', async () => {
       const workspaceState = new TestMemento();
       const extensionContext = {...mocks.extensionContextMock, workspaceState: workspaceState};
+      const daemonClient = <Partial<StripeCLIClient>>{};
 
       const logId = 'log_id';
-      const logObject = {logId: logId, value: 'hello'};
+      const logObject = {logId: logId, value: 'hello', insight: ''};
 
       addLogDetails(extensionContext, logId, logObject);
+      const actual = await retrieveLogDetails(extensionContext, logId, <any>daemonClient);
 
-      assert.deepStrictEqual(retrieveLogDetails(extensionContext, logId), logObject);
+      assert.deepStrictEqual(actual, logObject);
     });
 
     test('clearLogDetails empties LogDetails key', () => {
