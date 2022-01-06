@@ -351,9 +351,10 @@ export class Commands {
 
   openLogDetails = (data: any) => {
     this.telemetry.sendEvent('openLogDetails');
-    const {id} = data;
+    const {id, provider} = data;
     const filename = id;
     const uri = vscode.Uri.parse(`stripeLog:${filename}`);
+    provider.refresh(uri);
     vscode.workspace
       .openTextDocument(uri)
       .then((doc) => vscode.languages.setTextDocumentLanguage(doc, 'json'))

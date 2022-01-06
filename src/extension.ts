@@ -52,6 +52,23 @@ export async function activate(this: any, context: ExtensionContext) {
   const stripeClient = new StripeClient(telemetry, context);
   const stripeDaemon = new StripeDaemon(stripeClient);
   const stripeSamples = new StripeSamples(stripeClient, stripeDaemon);
+  const daemonClient = await stripeDaemon.setupClient();
+
+  workspace.registerTextDocumentContentProvider(
+    'stripeEvent',
+    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails, undefined, undefined, false),
+  );
+
+  const logContentProvider = new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, undefined, retrieveLogDetails, daemonClient, true);
+  workspace.registerTextDocumentContentProvider(
+    'stripeLog',
+    logContentProvider,
+  );
+
+  languages.registerDocumentLinkProvider(
+    {scheme: 'stripeLog'},
+    new StripeLogsDashboardLinkProvider(),
+  );
 
   const stripeEventsViewProvider = new StripeEventsViewProvider(
     stripeClient,
@@ -63,7 +80,7 @@ export async function activate(this: any, context: ExtensionContext) {
     showCollapseAll: true,
   });
 
-  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon, context);
+  const stripeLogsViewProvider = new StripeLogsViewProvider(stripeClient, stripeDaemon, context, logContentProvider);
   window.createTreeView('stripeLogsView', {
     treeDataProvider: stripeLogsViewProvider,
     showCollapseAll: true,
@@ -93,23 +110,6 @@ export async function activate(this: any, context: ExtensionContext) {
   stripeHelpView.message = 'This extension runs with your Stripe account in test mode.';
 
   debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry));
-
-  const daemonClient = await stripeDaemon.setupClient();
-
-  workspace.registerTextDocumentContentProvider(
-    'stripeEvent',
-    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails, undefined, undefined, false),
-  );
-
-  workspace.registerTextDocumentContentProvider(
-    'stripeLog',
-    new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, undefined, retrieveLogDetails, daemonClient, true),
-  );
-
-  languages.registerDocumentLinkProvider(
-    {scheme: 'stripeLog'},
-    new StripeLogsDashboardLinkProvider(),
-  );
 
   const git = new Git();
   new StripeLinter(telemetry, git).activate();

@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import {IntegrationInsightRequest} from './rpc/integration_insights_pb';
 import {StripeCLIClient} from './rpc/commands_grpc_pb';
-import {openNewTextEditorWithContents} from './utils';
 
 // Set a limit on the number of eventNames we store in context.
 const recentEventsLimit = 100;
@@ -94,15 +93,15 @@ export function addLogDetails(
 
 export async function retrieveLogDetails(extensionContext: vscode.ExtensionContext, logId: string, daemonClient: StripeCLIClient) {
   const logDetailsMap = getLogDetailsMap(extensionContext);
-
   const logDetails = logDetailsMap.get(logId);
 
   // if insight has not been retrieved or previously failed to be retrieved, then retrieve it
-  if (!('insight' in logDetails) || logDetails.insight.includes('Failed to retrieve insight')) {
+  if (!('insight' in logDetails) || logDetails.insight.includes('Failed to retrieve insight') || logDetails.insight.includes('Please check back later')) {
     const insight = await getIntegrationInsight(logId, daemonClient);
     logDetails.insight = insight;
     addLogDetails(extensionContext, logId, logDetails);
   }
+
   return logDetails;
 }
 
@@ -117,7 +116,7 @@ async function getIntegrationInsight(logId: string, daemonClient: StripeCLIClien
       } else if (response) {
         const insight = response.getMessage();
         if (insight === 'log not found') {
-          resolve(`(Failed to retrieve insight: ${insight})`);
+          resolve('(Insight generation in progress. Please check back later.)');
         } else {
           resolve(insight);
         }

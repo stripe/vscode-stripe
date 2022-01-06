@@ -10,6 +10,9 @@ export class StripeResourceDocumentContentProvider implements vscode.TextDocumen
   private daemonClient: StripeCLIClient | undefined;
   private isAsync: boolean;
 
+  private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
+  readonly onDidChange = this._onDidChange.event;
+
   constructor(
     extensionContext: vscode.ExtensionContext,
     resourceIdRegexp: RegExp,
@@ -49,6 +52,10 @@ export class StripeResourceDocumentContentProvider implements vscode.TextDocumen
 
     const resourceJsonString = JSON.stringify(resource, undefined, space);
     return resourceJsonString;
+  }
+
+  public refresh(uri: vscode.Uri) {
+    this._onDidChange.fire(uri);
   }
 
   private getResourceIdFromUri(uri: vscode.Uri): string | null {
