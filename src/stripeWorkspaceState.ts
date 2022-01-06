@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import * as vscode from 'vscode';
 import {IntegrationInsightRequest} from './rpc/integration_insights_pb';
 import {StripeCLIClient} from './rpc/commands_grpc_pb';
@@ -112,12 +113,10 @@ async function getIntegrationInsight(logId: string, daemonClient: StripeCLIClien
   const integrationInsight = await new Promise<string>((resolve, reject) => {
     daemonClient.integrationInsight(request, (error: any, response: any) => {
       if (error) {
-        if (error.code === 12) {
-          // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-          // 12: UNIMPLEMENTED
-          vscode.window.showErrorMessage(
-            'Please upgrade your Stripe CLI to the latest version to retrieve integration insight.',
-          );
+        if (error.code === grpc.status.UNIMPLEMENTED) {
+          const errMessage = 'Please upgrade your Stripe CLI to the latest version to retrieve integration insight.';
+          vscode.window.showErrorMessage(errMessage);
+          resolve(`(Failed to retrieve insight. ${errMessage})`);
         } else {
           resolve(`(Failed to retrieve insight: ${error})`);
         }
