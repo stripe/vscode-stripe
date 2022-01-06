@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {
@@ -351,9 +352,10 @@ export class Commands {
 
   openLogDetails = (data: any) => {
     this.telemetry.sendEvent('openLogDetails');
-    const {id} = data;
+    const {id, provider} = data;
     const filename = id;
     const uri = vscode.Uri.parse(`stripeLog:${filename}`);
+    provider.refresh(uri);
     vscode.workspace
       .openTextDocument(uri)
       .then((doc) => vscode.languages.setTextDocumentLanguage(doc, 'json'))
@@ -416,9 +418,7 @@ export class Commands {
       fixtureRequest.setEvent(eventName);
       daemonClient.fixture(fixtureRequest, (error, response) => {
         if (error) {
-          if (error.code === 12) {
-            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-            // 12: UNIMPLEMENTED
+          if (error.code === grpc.status.UNIMPLEMENTED) {
             vscode.window.showErrorMessage(
               'Please upgrade your Stripe CLI to the latest version to use this feature.',
             );
@@ -494,9 +494,7 @@ export class Commands {
 
         daemonClient.trigger(triggerRequest, (error, response) => {
           if (error) {
-            if (error.code === 12) {
-              // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-              // 12: UNIMPLEMENTED
+            if (error.code === grpc.status.UNIMPLEMENTED) {
               vscode.window.showErrorMessage(
                 'Please upgrade your Stripe CLI to the latest version to use this feature.',
               );
