@@ -6,6 +6,7 @@
 import * as commands_pb from "./commands_pb";
 import * as events_resend_pb from "./events_resend_pb";
 import * as fixtures_pb from "./fixtures_pb";
+import * as integration_insights_pb from "./integration_insights_pb";
 import * as listen_pb from "./listen_pb";
 import * as login_pb from "./login_pb";
 import * as login_status_pb from "./login_status_pb";
@@ -22,6 +23,7 @@ import * as grpc from "@grpc/grpc-js";
 interface IStripeCLIService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
   eventsResend: grpc.MethodDefinition<events_resend_pb.EventsResendRequest, events_resend_pb.EventsResendResponse>;
   fixture: grpc.MethodDefinition<fixtures_pb.FixtureRequest, fixtures_pb.FixtureResponse>;
+  integrationInsight: grpc.MethodDefinition<integration_insights_pb.IntegrationInsightRequest, integration_insights_pb.IntegrationInsightResponse>;
   listen: grpc.MethodDefinition<listen_pb.ListenRequest, listen_pb.ListenResponse>;
   login: grpc.MethodDefinition<login_pb.LoginRequest, login_pb.LoginResponse>;
   loginStatus: grpc.MethodDefinition<login_status_pb.LoginStatusRequest, login_status_pb.LoginStatusResponse>;
@@ -40,6 +42,7 @@ export const StripeCLIService: IStripeCLIService;
 export interface IStripeCLIServer extends grpc.UntypedServiceImplementation {
   eventsResend: grpc.handleUnaryCall<events_resend_pb.EventsResendRequest, events_resend_pb.EventsResendResponse>;
   fixture: grpc.handleUnaryCall<fixtures_pb.FixtureRequest, fixtures_pb.FixtureResponse>;
+  integrationInsight: grpc.handleUnaryCall<integration_insights_pb.IntegrationInsightRequest, integration_insights_pb.IntegrationInsightResponse>;
   listen: grpc.handleServerStreamingCall<listen_pb.ListenRequest, listen_pb.ListenResponse>;
   login: grpc.handleUnaryCall<login_pb.LoginRequest, login_pb.LoginResponse>;
   loginStatus: grpc.handleUnaryCall<login_status_pb.LoginStatusRequest, login_status_pb.LoginStatusResponse>;
@@ -61,6 +64,9 @@ export class StripeCLIClient extends grpc.Client {
   fixture(argument: fixtures_pb.FixtureRequest, callback: grpc.requestCallback<fixtures_pb.FixtureResponse>): grpc.ClientUnaryCall;
   fixture(argument: fixtures_pb.FixtureRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<fixtures_pb.FixtureResponse>): grpc.ClientUnaryCall;
   fixture(argument: fixtures_pb.FixtureRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<fixtures_pb.FixtureResponse>): grpc.ClientUnaryCall;
+  integrationInsight(argument: integration_insights_pb.IntegrationInsightRequest, callback: grpc.requestCallback<integration_insights_pb.IntegrationInsightResponse>): grpc.ClientUnaryCall;
+  integrationInsight(argument: integration_insights_pb.IntegrationInsightRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<integration_insights_pb.IntegrationInsightResponse>): grpc.ClientUnaryCall;
+  integrationInsight(argument: integration_insights_pb.IntegrationInsightRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<integration_insights_pb.IntegrationInsightResponse>): grpc.ClientUnaryCall;
   listen(argument: listen_pb.ListenRequest, metadataOrOptions?: grpc.Metadata | grpc.CallOptions | null): grpc.ClientReadableStream<listen_pb.ListenResponse>;
   listen(argument: listen_pb.ListenRequest, metadata?: grpc.Metadata | null, options?: grpc.CallOptions | null): grpc.ClientReadableStream<listen_pb.ListenResponse>;
   login(argument: login_pb.LoginRequest, callback: grpc.requestCallback<login_pb.LoginResponse>): grpc.ClientUnaryCall;

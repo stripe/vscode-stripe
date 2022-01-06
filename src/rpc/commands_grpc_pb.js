@@ -4,6 +4,7 @@
 var grpc = require('@grpc/grpc-js');
 var events_resend_pb = require('./events_resend_pb.js');
 var fixtures_pb = require('./fixtures_pb.js');
+var integration_insights_pb = require('./integration_insights_pb.js');
 var listen_pb = require('./listen_pb.js');
 var login_pb = require('./login_pb.js');
 var login_status_pb = require('./login_status_pb.js');
@@ -58,6 +59,28 @@ function serialize_rpc_FixtureResponse(arg) {
 
 function deserialize_rpc_FixtureResponse(buffer_arg) {
   return fixtures_pb.FixtureResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_IntegrationInsightRequest(arg) {
+  if (!(arg instanceof integration_insights_pb.IntegrationInsightRequest)) {
+    throw new Error('Expected argument of type rpc.IntegrationInsightRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_IntegrationInsightRequest(buffer_arg) {
+  return integration_insights_pb.IntegrationInsightRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_IntegrationInsightResponse(arg) {
+  if (!(arg instanceof integration_insights_pb.IntegrationInsightResponse)) {
+    throw new Error('Expected argument of type rpc.IntegrationInsightResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_IntegrationInsightResponse(buffer_arg) {
+  return integration_insights_pb.IntegrationInsightResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_rpc_ListenRequest(arg) {
@@ -327,6 +350,18 @@ fixture: {
     requestDeserialize: deserialize_rpc_FixtureRequest,
     responseSerialize: serialize_rpc_FixtureResponse,
     responseDeserialize: deserialize_rpc_FixtureResponse,
+  },
+  // Retrieve the integration insight of given log.
+integrationInsight: {
+    path: '/rpc.StripeCLI/IntegrationInsight',
+    requestStream: false,
+    responseStream: false,
+    requestType: integration_insights_pb.IntegrationInsightRequest,
+    responseType: integration_insights_pb.IntegrationInsightResponse,
+    requestSerialize: serialize_rpc_IntegrationInsightRequest,
+    requestDeserialize: deserialize_rpc_IntegrationInsightRequest,
+    responseSerialize: serialize_rpc_IntegrationInsightResponse,
+    responseDeserialize: deserialize_rpc_IntegrationInsightResponse,
   },
   // Receive webhook events from the Stripe API to your local machine. Like `stripe listen`.
 listen: {

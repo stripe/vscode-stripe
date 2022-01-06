@@ -37,7 +37,7 @@ import {SurveyPrompt} from './surveyPrompt';
 import {TelemetryPrompt} from './telemetryPrompt';
 import path from 'path';
 
-export function activate(this: any, context: ExtensionContext) {
+export async function activate(this: any, context: ExtensionContext) {
   initializeStripeWorkspaceState(context);
 
   new TelemetryPrompt(context).activate();
@@ -94,14 +94,16 @@ export function activate(this: any, context: ExtensionContext) {
 
   debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry));
 
+  const daemonClient = await stripeDaemon.setupClient();
+
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
-    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails),
+    new StripeResourceDocumentContentProvider(context, EVENT_ID_REGEXP, retrieveEventDetails, undefined, undefined, false),
   );
 
   workspace.registerTextDocumentContentProvider(
     'stripeLog',
-    new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, retrieveLogDetails),
+    new StripeResourceDocumentContentProvider(context, LOG_ID_REGEXP, undefined, retrieveLogDetails, daemonClient, true),
   );
 
   languages.registerDocumentLinkProvider(
