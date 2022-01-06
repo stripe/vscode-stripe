@@ -112,7 +112,15 @@ async function getIntegrationInsight(logId: string, daemonClient: StripeCLIClien
   const integrationInsight = await new Promise<string>((resolve, reject) => {
     daemonClient.integrationInsight(request, (error: any, response: any) => {
       if (error) {
-        resolve(`(Failed to retrieve insight: ${error})`);
+        if (error.code === 12) {
+          // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+          // 12: UNIMPLEMENTED
+          vscode.window.showErrorMessage(
+            'Please upgrade your Stripe CLI to the latest version to retrieve integration insight.',
+          );
+        } else {
+          resolve(`(Failed to retrieve insight: ${error})`);
+        }
       } else if (response) {
         const insight = response.getMessage();
         if (insight === 'log not found') {
