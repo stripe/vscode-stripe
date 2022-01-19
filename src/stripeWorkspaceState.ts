@@ -1,7 +1,4 @@
-import * as grpc from '@grpc/grpc-js';
 import * as vscode from 'vscode';
-import {IntegrationInsightRequest} from './rpc/integration_insights_pb';
-import {StripeCLIClient} from './rpc/commands_grpc_pb';
 
 // Set a limit on the number of eventNames we store in context.
 const recentEventsLimit = 100;
@@ -92,46 +89,9 @@ export function addLogDetails(
   extensionContext.workspaceState.update(logDetailsKey, logDetailsMap);
 }
 
-export async function retrieveLogDetails(extensionContext: vscode.ExtensionContext, logId: string, daemonClient: StripeCLIClient) {
+export function retrieveLogDetails(extensionContext: vscode.ExtensionContext, logId: string) {
   const logDetailsMap = getLogDetailsMap(extensionContext);
-  const logDetails = logDetailsMap.get(logId);
-
-  // if insight has not been retrieved or previously failed to be retrieved, then retrieve it
-  if (!('insight' in logDetails) || logDetails.insight.includes('Failed to retrieve insight') || logDetails.insight.includes('Please check back later')) {
-    const insight = await getIntegrationInsight(logId, daemonClient);
-    logDetails.insight = insight;
-    addLogDetails(extensionContext, logId, logDetails);
-  }
-
-  return logDetails;
-}
-
-async function getIntegrationInsight(logId: string, daemonClient: StripeCLIClient): Promise<string> {
-  const request = new IntegrationInsightRequest();
-  request.setLog(logId);
-
-  const integrationInsight = await new Promise<string>((resolve, reject) => {
-    daemonClient.integrationInsight(request, (error: any, response: any) => {
-      if (error) {
-        if (error.code === grpc.status.UNIMPLEMENTED) {
-          const errMessage = 'Please upgrade your Stripe CLI to the latest version to retrieve integration insight.';
-          vscode.window.showErrorMessage(errMessage);
-          resolve(`(Failed to retrieve insight. ${errMessage})`);
-        } else {
-          resolve(`(Failed to retrieve insight: ${error})`);
-        }
-      } else if (response) {
-        const insight = response.getMessage();
-        if (insight === 'log not found') {
-          resolve('(Insight generation in progress. Please check back later.)');
-        } else {
-          resolve(insight);
-        }
-      }
-    });
-  });
-
-  return integrationInsight;
+  return logDetailsMap.get(logId);
 }
 
 export function clearLogDetails(extensionContext: vscode.ExtensionContext) {
