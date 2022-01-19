@@ -10,8 +10,6 @@ import {StripeCLIClient} from '../../src/rpc/commands_grpc_pb';
 import {StripeClient} from '../../src/stripeClient';
 import {StripeDaemon} from '../../src/daemon/stripeDaemon';
 import {StripeLogsViewProvider} from '../../src/stripeLogsView';
-import {StripeResourceDocumentContentProvider} from '../../src/stripeResourceDocumentContentProvider';
-
 
 suite('stripeLogsView', () => {
   let sandbox: sinon.SinonSandbox;
@@ -28,8 +26,6 @@ suite('stripeLogsView', () => {
   const stripeDaemon = <Partial<StripeDaemon>>{
     setupClient: () => {},
   };
-
-  const contentProvider = <Partial<StripeResourceDocumentContentProvider>>{};
 
   let logsTailStream: grpc.ClientReadableStream<LogsTailResponse>;
   let daemonClient: Partial<StripeCLIClient>;
@@ -61,7 +57,6 @@ suite('stripeLogsView', () => {
           <any>stripeClient,
           <any>stripeDaemon,
           extensionContext,
-          <any>contentProvider,
         );
         await stripeLogsView.startStreaming();
 
@@ -91,7 +86,6 @@ suite('stripeLogsView', () => {
           <any>stripeClient,
           <any>stripeDaemon,
           extensionContext,
-          <any>contentProvider,
         );
         await stripeLogsView.startStreaming();
 
@@ -121,7 +115,6 @@ suite('stripeLogsView', () => {
           <any>stripeClient,
           <any>stripeDaemon,
           extensionContext,
-          <any>contentProvider,
         );
         await stripeLogsView.startStreaming();
 
@@ -151,7 +144,6 @@ suite('stripeLogsView', () => {
           <any>stripeClient,
           <any>stripeDaemon,
           extensionContext,
-          <any>contentProvider,
         );
         await stripeLogsView.startStreaming();
 
@@ -181,7 +173,6 @@ suite('stripeLogsView', () => {
           <any>stripeClient,
           <any>stripeDaemon,
           extensionContext,
-          <any>contentProvider,
         );
         await stripeLogsView.startStreaming();
 
@@ -212,7 +203,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
       await stripeLogsView.startStreaming();
 
@@ -259,7 +249,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
       await stripeLogsView.startStreaming();
 
@@ -292,7 +281,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
 
       await stripeLogsView.startStreaming();
@@ -309,7 +297,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
 
       await stripeLogsView.startStreaming();
@@ -333,7 +320,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
 
       await stripeLogsView.startStreaming();
@@ -352,7 +338,6 @@ suite('stripeLogsView', () => {
         <any>stripeClient,
         <any>stripeDaemon,
         extensionContext,
-        <any>contentProvider,
       );
 
       await stripeLogsView.startStreaming();

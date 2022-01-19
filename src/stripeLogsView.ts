@@ -6,22 +6,18 @@ import {camelToSnakeCase, recursivelyRenameKeys, unixToLocaleStringTZ} from './u
 import {ClientReadableStream} from '@grpc/grpc-js';
 import {StripeClient} from './stripeClient';
 import {StripeDaemon} from './daemon/stripeDaemon';
-import {StripeResourceDocumentContentProvider} from './stripeResourceDocumentContentProvider';
 import {StripeTreeItem} from './stripeTreeItem';
 
 export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailResponse> {
   private extensionContext: vscode.ExtensionContext;
-  private logContentProvider: StripeResourceDocumentContentProvider;
 
   constructor(
     stripeClient: StripeClient,
     stripeDaemon: StripeDaemon,
     extensionContext: vscode.ExtensionContext,
-    logContentProvider: StripeResourceDocumentContentProvider
   ) {
     super(stripeClient, stripeDaemon);
     this.extensionContext = extensionContext;
-    this.logContentProvider = logContentProvider;
   }
 
   buildTree(): Promise<StripeTreeItem[]> {
@@ -58,7 +54,7 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
     if (state) {
       this.handleState(state);
     } else if (log) {
-      this.handleLog(log, this.logContentProvider);
+      this.handleLog(log);
     }
   };
 
@@ -89,7 +85,7 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
     }
   }
 
-  private handleLog(log: LogsTailResponse.Log, logContentProvider: StripeResourceDocumentContentProvider): void {
+  private handleLog(log: LogsTailResponse.Log): void {
     const label = `[${log.getStatus()}] ${log.getMethod()} ${log.getUrl()} [${log.getRequestId()}]`;
     const logTreeItem = new StripeTreeItem(label, {
       commandString: 'openLogDetails',
@@ -98,7 +94,6 @@ export class StripeLogsViewProvider extends StreamingViewDataProvider<LogsTailRe
     });
     logTreeItem.metadata = {
       id: log.getRequestId(),
-      provider: logContentProvider,
     };
 
     // Unfortunately these steps are necessary for correct rendering
