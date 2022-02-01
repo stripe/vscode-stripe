@@ -1053,7 +1053,8 @@ proto.rpc.LogsTailResponse.Log.Error.toObject = function(includeInstance, msg) {
     code: jspb.Message.getFieldWithDefault(msg, 3, ""),
     declineCode: jspb.Message.getFieldWithDefault(msg, 4, ""),
     message: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    param: jspb.Message.getFieldWithDefault(msg, 6, "")
+    param: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    errorInsight: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -1113,6 +1114,10 @@ proto.rpc.LogsTailResponse.Log.Error.deserializeBinaryFromReader = function(msg,
     case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setParam(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorInsight(value);
       break;
     default:
       reader.skipField();
@@ -1182,6 +1187,13 @@ proto.rpc.LogsTailResponse.Log.Error.serializeBinaryToWriter = function(message,
   if (f.length > 0) {
     writer.writeString(
       6,
+      f
+    );
+  }
+  f = message.getErrorInsight();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -1293,6 +1305,24 @@ proto.rpc.LogsTailResponse.Log.Error.prototype.getParam = function() {
  */
 proto.rpc.LogsTailResponse.Log.Error.prototype.setParam = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string error_insight = 7;
+ * @return {string}
+ */
+proto.rpc.LogsTailResponse.Log.Error.prototype.getErrorInsight = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rpc.LogsTailResponse.Log.Error} returns this
+ */
+proto.rpc.LogsTailResponse.Log.Error.prototype.setErrorInsight = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

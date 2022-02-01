@@ -202,6 +202,9 @@ export namespace LogsTailResponse {
       getParam(): string;
       setParam(value: string): void;
 
+      getErrorInsight(): string;
+      setErrorInsight(value: string): void;
+
       serializeBinary(): Uint8Array;
       toObject(includeInstance?: boolean): Error.AsObject;
       static toObject(includeInstance: boolean, msg: Error): Error.AsObject;
@@ -220,6 +223,7 @@ export namespace LogsTailResponse {
         declineCode: string,
         message: string,
         param: string,
+        errorInsight: string,
       }
     }
   }
