@@ -15,7 +15,7 @@
     "url": "https://github.com/stripe/vscode-stripe/issues"
   },
   "engines": {
-    "vscode": "^1.62.0"
+    "vscode": "^1.63.1"
   },
   "icon": "resources/logo.png",
   "categories": [
