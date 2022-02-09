@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {
@@ -418,9 +419,7 @@ export class Commands {
       fixtureRequest.setEvent(eventName);
       daemonClient.fixture(fixtureRequest, (error, response) => {
         if (error) {
-          if (error.code === 12) {
-            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-            // 12: UNIMPLEMENTED
+          if (error.code === grpc.status.UNIMPLEMENTED) {
             vscode.window.showErrorMessage(
               'Please upgrade your Stripe CLI to the latest version to use this feature.',
             );
@@ -496,9 +495,7 @@ export class Commands {
 
         daemonClient.trigger(triggerRequest, (error, response) => {
           if (error) {
-            if (error.code === 12) {
-              // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-              // 12: UNIMPLEMENTED
+            if (error.code === grpc.status.UNIMPLEMENTED) {
               vscode.window.showErrorMessage(
                 'Please upgrade your Stripe CLI to the latest version to use this feature.',
               );
@@ -643,10 +640,10 @@ export class Commands {
     const description = await vscode.window.showInputBox({
       prompt: 'Optional description of what the webhook is used for.',
     });
-    const connect = await vscode.window.showInputBox({
-      prompt: 'Should this endpoint receive events from connected accounts (`y`), or from your account (`n`).',
+    const connect = await vscode.window.showQuickPick(['Connected accounts', 'Your account only'], {
+      placeHolder: 'Should this endpoint receive events from connected accounts or from your account.',
     });
-    const isConnect = connect === 'y';
+    const isConnect = connect === 'Connected accounts';
 
     const createRequest = new WebhookEndpointCreateRequest();
     createRequest.setUrl(url || '');
@@ -656,9 +653,7 @@ export class Commands {
     const daemonClient = await stripeDaemon.setupClient();
     daemonClient.webhookEndpointCreate(createRequest, (error, response) => {
       if (error) {
-        if (error.code === 12) {
-          // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-          // 12: UNIMPLEMENTED
+        if (error.code === grpc.status.UNIMPLEMENTED) {
           vscode.window.showErrorMessage(
             'Please upgrade your Stripe CLI to the latest version to use this feature.',
           );

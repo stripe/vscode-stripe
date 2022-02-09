@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import * as vscode from 'vscode';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeTreeItem} from './stripeTreeItem';
@@ -40,9 +41,7 @@ export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
     const daemonClient = await this.stripeDaemon.setupClient();
     daemonClient.webhookEndpointsList(new WebhookEndpointsListRequest(), (error, response) => {
       if (error) {
-        if (error.code === 12) {
-          // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-          // 12: UNIMPLEMENTED
+        if (error.code === grpc.status.UNIMPLEMENTED) {
           vscode.window.showErrorMessage(
             'Please upgrade your Stripe CLI to the latest version to use this feature.',
           );
