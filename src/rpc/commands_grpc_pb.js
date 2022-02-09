@@ -14,6 +14,7 @@ var samples_list_pb = require('./samples_list_pb.js');
 var trigger_pb = require('./trigger_pb.js');
 var triggers_list_pb = require('./triggers_list_pb.js');
 var version_pb = require('./version_pb.js');
+var webhook_endpoint_create_pb = require('./webhook_endpoint_create_pb.js');
 var webhook_endpoints_list_pb = require('./webhook_endpoints_list_pb.js');
 
 function serialize_rpc_EventsResendRequest(arg) {
@@ -280,6 +281,28 @@ function deserialize_rpc_VersionResponse(buffer_arg) {
   return version_pb.VersionResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_rpc_WebhookEndpointCreateRequest(arg) {
+  if (!(arg instanceof webhook_endpoint_create_pb.WebhookEndpointCreateRequest)) {
+    throw new Error('Expected argument of type rpc.WebhookEndpointCreateRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_WebhookEndpointCreateRequest(buffer_arg) {
+  return webhook_endpoint_create_pb.WebhookEndpointCreateRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_rpc_WebhookEndpointCreateResponse(arg) {
+  if (!(arg instanceof webhook_endpoint_create_pb.WebhookEndpointCreateResponse)) {
+    throw new Error('Expected argument of type rpc.WebhookEndpointCreateResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_rpc_WebhookEndpointCreateResponse(buffer_arg) {
+  return webhook_endpoint_create_pb.WebhookEndpointCreateResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_rpc_WebhookEndpointsListRequest(arg) {
   if (!(arg instanceof webhook_endpoints_list_pb.WebhookEndpointsListRequest)) {
     throw new Error('Expected argument of type rpc.WebhookEndpointsListRequest');
@@ -449,6 +472,18 @@ version: {
     requestDeserialize: deserialize_rpc_VersionRequest,
     responseSerialize: serialize_rpc_VersionResponse,
     responseDeserialize: deserialize_rpc_VersionResponse,
+  },
+  // Create a new webhook endpoint
+webhookEndpointCreate: {
+    path: '/rpc.StripeCLI/WebhookEndpointCreate',
+    requestStream: false,
+    responseStream: false,
+    requestType: webhook_endpoint_create_pb.WebhookEndpointCreateRequest,
+    responseType: webhook_endpoint_create_pb.WebhookEndpointCreateResponse,
+    requestSerialize: serialize_rpc_WebhookEndpointCreateRequest,
+    requestDeserialize: deserialize_rpc_WebhookEndpointCreateRequest,
+    responseSerialize: serialize_rpc_WebhookEndpointCreateResponse,
+    responseDeserialize: deserialize_rpc_WebhookEndpointCreateResponse,
   },
   // Get the list of webhook endpoints.
 webhookEndpointsList: {

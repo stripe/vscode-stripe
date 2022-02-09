@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeTreeItem} from './stripeTreeItem';
 import {StripeTreeViewDataProvider} from './stripeTreeViewDataProvider';
-// import {ThemeIcon} from 'vscode';
+import {ThemeIcon} from 'vscode';
 import {WebhookEndpointsListRequest} from './rpc/webhook_endpoints_list_pb';
 
 export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
@@ -18,14 +18,13 @@ export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
   buildTree(): Promise<StripeTreeItem[]> {
     const items = [];
 
-    // DX-7014
-    // const createEndpoint = new StripeTreeItem('Create a new webhook endpoint', {
-    //   commandString: 'createWebhookEndpoint',
-    //   iconPath: new ThemeIcon('add'),
-    //   tooltip: 'Create a new webhook endpoint',
-    //   contextValue: 'createWebhookEndpoint',
-    // });
-    // items.push(createEndpoint);
+    const createEndpoint = new StripeTreeItem('Create a new webhook endpoint', {
+      commandString: 'createWebhookEndpoint',
+      iconPath: new ThemeIcon('add'),
+      tooltip: 'Create a new webhook endpoint',
+      contextValue: 'createWebhookEndpoint',
+    });
+    items.push(createEndpoint);
 
     if (this.endpointItems.length > 0) {
       const endpointsRootItem = new StripeTreeItem('All webhook endpoints');
@@ -59,7 +58,12 @@ export class StripeWebhooksViewProvider extends StripeTreeViewDataProvider {
               const enabledEventsRootItem = new StripeTreeItem('Enabled events');
               const enabledEvents = e.getEnabledeventsList();
               enabledEventsRootItem.children = enabledEvents.map(
-                (event) => new StripeTreeItem(event),
+                (event) => {
+                  if (event === '*') {
+                    return new StripeTreeItem('* (All events except those that require explicit selection)');
+                  }
+                  return new StripeTreeItem(event);
+                }
               );
               enabledEventsRootItem.makeCollapsible();
 

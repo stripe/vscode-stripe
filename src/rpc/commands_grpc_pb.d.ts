@@ -16,6 +16,7 @@ import * as samples_list_pb from "./samples_list_pb";
 import * as trigger_pb from "./trigger_pb";
 import * as triggers_list_pb from "./triggers_list_pb";
 import * as version_pb from "./version_pb";
+import * as webhook_endpoint_create_pb from "./webhook_endpoint_create_pb";
 import * as webhook_endpoints_list_pb from "./webhook_endpoints_list_pb";
 import * as grpc from "@grpc/grpc-js";
 
@@ -32,6 +33,7 @@ interface IStripeCLIService extends grpc.ServiceDefinition<grpc.UntypedServiceIm
   trigger: grpc.MethodDefinition<trigger_pb.TriggerRequest, trigger_pb.TriggerResponse>;
   triggersList: grpc.MethodDefinition<triggers_list_pb.TriggersListRequest, triggers_list_pb.TriggersListResponse>;
   version: grpc.MethodDefinition<version_pb.VersionRequest, version_pb.VersionResponse>;
+  webhookEndpointCreate: grpc.MethodDefinition<webhook_endpoint_create_pb.WebhookEndpointCreateRequest, webhook_endpoint_create_pb.WebhookEndpointCreateResponse>;
   webhookEndpointsList: grpc.MethodDefinition<webhook_endpoints_list_pb.WebhookEndpointsListRequest, webhook_endpoints_list_pb.WebhookEndpointsListResponse>;
 }
 
@@ -50,6 +52,7 @@ export interface IStripeCLIServer extends grpc.UntypedServiceImplementation {
   trigger: grpc.handleUnaryCall<trigger_pb.TriggerRequest, trigger_pb.TriggerResponse>;
   triggersList: grpc.handleUnaryCall<triggers_list_pb.TriggersListRequest, triggers_list_pb.TriggersListResponse>;
   version: grpc.handleUnaryCall<version_pb.VersionRequest, version_pb.VersionResponse>;
+  webhookEndpointCreate: grpc.handleUnaryCall<webhook_endpoint_create_pb.WebhookEndpointCreateRequest, webhook_endpoint_create_pb.WebhookEndpointCreateResponse>;
   webhookEndpointsList: grpc.handleUnaryCall<webhook_endpoints_list_pb.WebhookEndpointsListRequest, webhook_endpoints_list_pb.WebhookEndpointsListResponse>;
 }
 
@@ -89,6 +92,9 @@ export class StripeCLIClient extends grpc.Client {
   version(argument: version_pb.VersionRequest, callback: grpc.requestCallback<version_pb.VersionResponse>): grpc.ClientUnaryCall;
   version(argument: version_pb.VersionRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<version_pb.VersionResponse>): grpc.ClientUnaryCall;
   version(argument: version_pb.VersionRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<version_pb.VersionResponse>): grpc.ClientUnaryCall;
+  webhookEndpointCreate(argument: webhook_endpoint_create_pb.WebhookEndpointCreateRequest, callback: grpc.requestCallback<webhook_endpoint_create_pb.WebhookEndpointCreateResponse>): grpc.ClientUnaryCall;
+  webhookEndpointCreate(argument: webhook_endpoint_create_pb.WebhookEndpointCreateRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<webhook_endpoint_create_pb.WebhookEndpointCreateResponse>): grpc.ClientUnaryCall;
+  webhookEndpointCreate(argument: webhook_endpoint_create_pb.WebhookEndpointCreateRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<webhook_endpoint_create_pb.WebhookEndpointCreateResponse>): grpc.ClientUnaryCall;
   webhookEndpointsList(argument: webhook_endpoints_list_pb.WebhookEndpointsListRequest, callback: grpc.requestCallback<webhook_endpoints_list_pb.WebhookEndpointsListResponse>): grpc.ClientUnaryCall;
   webhookEndpointsList(argument: webhook_endpoints_list_pb.WebhookEndpointsListRequest, metadataOrOptions: grpc.Metadata | grpc.CallOptions | null, callback: grpc.requestCallback<webhook_endpoints_list_pb.WebhookEndpointsListResponse>): grpc.ClientUnaryCall;
   webhookEndpointsList(argument: webhook_endpoints_list_pb.WebhookEndpointsListRequest, metadata: grpc.Metadata | null, options: grpc.CallOptions | null, callback: grpc.requestCallback<webhook_endpoints_list_pb.WebhookEndpointsListResponse>): grpc.ClientUnaryCall;
