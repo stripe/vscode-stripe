@@ -39,6 +39,7 @@
     "onView:stripeQuickLinksView",
     "onView:stripeHelpView",
     "onCommand:stripe.createStripeSample",
+    "onCommand:stripe.createWebhookEndpoint",
     "onCommand:stripe.login",
     "onCommand:stripe.openCLI",
     "onCommand:stripe.openWebhooksListen",
@@ -151,6 +152,11 @@
         "category": "Stripe",
         "command": "stripe.openWebhooksDebugConfigure",
         "title": "Configure webhooks debugging"
+      },
+      {
+        "category": "Stripe",
+        "command": "stripe.createWebhookEndpoint",
+        "title": "Create a new webhook endpoint"
       },
       {
         "category": "Stripe",

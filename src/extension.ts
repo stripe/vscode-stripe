@@ -167,6 +167,10 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openWebhooksDebugConfigure', stripeCommands.openWebhooksDebugConfigure],
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
     [
+      'stripe.createWebhookEndpoint',
+      () => stripeCommands.createWebhookEndpoint(stripeDaemon, stripeOutputChannel, stripeWebhooksViewProvider),
+    ],
+    [
       'stripe.resendEvent',
       (treeItem) => stripeCommands.resendEvent(treeItem, stripeDaemon, stripeOutputChannel),
     ],

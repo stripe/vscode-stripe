@@ -14,5 +14,6 @@ import * as samples_list_pb from "./samples_list_pb";
 import * as trigger_pb from "./trigger_pb";
 import * as triggers_list_pb from "./triggers_list_pb";
 import * as version_pb from "./version_pb";
+import * as webhook_endpoint_create_pb from "./webhook_endpoint_create_pb";
 import * as webhook_endpoints_list_pb from "./webhook_endpoints_list_pb";
 

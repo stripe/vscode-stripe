@@ -1,3 +1,4 @@
+import * as grpc from '@grpc/grpc-js';
 import * as querystring from 'querystring';
 import * as vscode from 'vscode';
 import {
@@ -29,10 +30,12 @@ import {StripeLogsViewProvider} from './stripeLogsView';
 import {StripeSamples} from './stripeSamples';
 import {StripeTerminal} from './stripeTerminal';
 import {StripeTreeItem} from './stripeTreeItem';
+import {StripeWebhooksViewProvider} from './stripeWebhooksView';
 import {SurveyPrompt} from './surveyPrompt';
 import {Telemetry} from './telemetry';
 import {TriggerRequest} from './rpc/trigger_pb';
 import {TriggersListRequest} from './rpc/triggers_list_pb';
+import {WebhookEndpointCreateRequest} from './rpc/webhook_endpoint_create_pb';
 
 export class Commands {
   telemetry: Telemetry;
@@ -416,9 +419,7 @@ export class Commands {
       fixtureRequest.setEvent(eventName);
       daemonClient.fixture(fixtureRequest, (error, response) => {
         if (error) {
-          if (error.code === 12) {
-            // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-            // 12: UNIMPLEMENTED
+          if (error.code === grpc.status.UNIMPLEMENTED) {
             vscode.window.showErrorMessage(
               'Please upgrade your Stripe CLI to the latest version to use this feature.',
             );
@@ -494,9 +495,7 @@ export class Commands {
 
         daemonClient.trigger(triggerRequest, (error, response) => {
           if (error) {
-            if (error.code === 12) {
-              // https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-              // 12: UNIMPLEMENTED
+            if (error.code === grpc.status.UNIMPLEMENTED) {
               vscode.window.showErrorMessage(
                 'Please upgrade your Stripe CLI to the latest version to use this feature.',
               );
@@ -627,5 +626,49 @@ export class Commands {
   createStripeSample = async (stripeSamples: StripeSamples) => {
     this.telemetry.sendEvent('createStripeSample');
     await stripeSamples.selectAndCloneSample();
+  };
+
+  createWebhookEndpoint = async (
+    stripeDaemon: StripeDaemon,
+    stripeOutputChannel: vscode.OutputChannel,
+    stripeWebhooksViewProvider: StripeWebhooksViewProvider,
+  ) => {
+    const url = await vscode.window.showInputBox({
+      prompt: 'URL of the webhook endpoint.',
+      value: 'https://',
+    });
+    const description = await vscode.window.showInputBox({
+      prompt: 'Optional description of what the webhook is used for.',
+    });
+    const connect = await vscode.window.showQuickPick(['Connected accounts', 'Your account only'], {
+      placeHolder: 'Should this endpoint receive events from connected accounts or from your account.',
+    });
+    const isConnect = connect === 'Connected accounts';
+
+    const createRequest = new WebhookEndpointCreateRequest();
+    createRequest.setUrl(url || '');
+    createRequest.setDescription(description || '');
+    createRequest.setConnect(isConnect);
+
+    const daemonClient = await stripeDaemon.setupClient();
+    daemonClient.webhookEndpointCreate(createRequest, (error, response) => {
+      if (error) {
+        if (error.code === grpc.status.UNIMPLEMENTED) {
+          vscode.window.showErrorMessage(
+            'Please upgrade your Stripe CLI to the latest version to use this feature.',
+          );
+        } else {
+          vscode.window.showErrorMessage(
+            `Failed to create webhook endpoint ${url}. ${error.details}`,
+          );
+        }
+      } else if (response) {
+        stripeOutputChannel.appendLine(`Webhook endpoint ${url} created. Please go to the developer dashboard to update the details of the endpoint.`);
+        this.telemetry.sendEvent('createWebhookEndpoint');
+
+        // refresh webhook endpoints tree
+        stripeWebhooksViewProvider.refreshEndpoints();
+      }
+    });
   };
 }
