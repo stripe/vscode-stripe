@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.Build" Version="16.10.0" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
     <!-- https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis?view=roslyn-dotnet-3.9.0 -->
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.0.1" />
     <PackageReference Include="OmniSharp.Extensions.JsonRpc" Version="0.19.5"  />
     <PackageReference Include="OmniSharp.Extensions.LanguageProtocol" Version="0.19.5" />
