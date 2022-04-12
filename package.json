@@ -527,7 +527,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.5.2",
+    "@grpc/grpc-js": "^1.6.3",
     "byline": "^5.0.0",
     "compare-versions": "^4.1.2",
     "execa": "^5.1.1",
