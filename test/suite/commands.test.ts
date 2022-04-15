@@ -17,6 +17,7 @@ import {StripeEvent} from '../../src/rpc/common_pb';
 import {StripeTreeItem} from '../../src/stripeTreeItem';
 import {SurveyPrompt} from '../../src/surveyPrompt';
 import {mocks} from '../mocks/vscode';
+import {sleep} from './helpers';
 
 const proxyquire = require('proxyquire');
 const modulePath = '../../src/commands';
@@ -252,6 +253,7 @@ suite('commands', function () {
 
       const commands = new Commands(telemetry, terminal, extensionContext);
       commands.openTriggerEvent(extensionContext, <any>stripeDaemon, <any>stripeOutputChannel);
+      await sleep(1000);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
@@ -280,6 +282,7 @@ suite('commands', function () {
 
       const commands = new Commands(telemetry, terminal, extensionContext);
       commands.openTriggerEvent(extensionContext, <any>stripeDaemon, <any>stripeOutputChannel);
+      await sleep(1000);
 
       // Pick the first item on the list.
       await vscode.commands.executeCommand('workbench.action.acceptSelectedQuickOpenItem');
