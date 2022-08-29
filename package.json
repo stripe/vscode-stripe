@@ -472,6 +472,10 @@
       {
         "fileMatch": "/stripe.fixture.json",
         "url": "./schemas/stripe.fixture.schema.json"
+      },
+      {
+        "fileMatch": "stripe-app.json",
+        "url": "https://raw.githubusercontent.com/stripe/stripe-apps/main/schema/stripe-app.schema.json"
       }
     ]
   },
