@@ -18,7 +18,7 @@ import {Telemetry} from './telemetry';
  * at least three unredacted characters of the body of the API key.
  */
 const stripeKeysRegex = new RegExp(
-  '(sk_test|sk_live|pk_test|pk_live|rk_test|rk_live)_[a-zA-Z0-9]{2}[a-zA-Z0-9]+',
+  '(sk_test|sk_live|rk_test|rk_live)_[a-zA-Z0-9]{2}[a-zA-Z0-9]+',
   'g',
 );
 const diagnosticMessageNoGit =
@@ -77,7 +77,7 @@ export class StripeLinter {
     diagnosticCollection.set(document.uri, fileDiagnostics);
   };
 
-  // prepareAPIKeyDiagnostics regex matches all instances of a Stripe API Key in a supplied line of text
+  // prepareAPIKeyDiagnostics regex matches all instances of a non-public Stripe API Key in a supplied line of text
   // will return a list of Diagnostics pointing at instances of the Stripe API Keys it found
   prepareLineDiagnostics =
     (message: string) =>
