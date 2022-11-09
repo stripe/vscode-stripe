@@ -158,7 +158,7 @@ suite('Utils', () => {
         utils.recursivelyRenameKeys({foo: 'foo', bar: 'bar'}, (str: string) => `${str}_renamed`),
         {
           foo_renamed: 'foo',
-          bar_renamed: 'bar',
+          bar_renamed: 'test failure',
         },
       );
 
@@ -203,7 +203,7 @@ suite('Utils', () => {
 
   suite('vaiidateFixtureEvent', () => {
     test('valid fixture event returns no error', () => {
-        const content = `
+      const content = `
           {
             "fixtures": [
               {
@@ -218,7 +218,7 @@ suite('Utils', () => {
             ]
           }
         `;
-        assert.strictEqual(utils.validateFixtureEvent(content), '');
+      assert.strictEqual(utils.validateFixtureEvent(content), '');
     });
 
     test('valid fixture event with extra properties returns no error', () => {
@@ -304,7 +304,7 @@ suite('Utils', () => {
       `;
       assert.strictEqual(
         utils.validateFixtureEvent(content),
-        'Property "name" missing at fixture position 1.'
+        'Property "name" missing at fixture position 1.',
       );
     });
 
@@ -336,7 +336,7 @@ suite('Utils', () => {
       `;
       assert.strictEqual(
         utils.validateFixtureEvent(content),
-        'Property "path" missing at fixture position 1.'
+        'Property "path" missing at fixture position 1.',
       );
     });
 
@@ -368,7 +368,7 @@ suite('Utils', () => {
       `;
       assert.strictEqual(
         utils.validateFixtureEvent(content),
-        'Property "method" missing at fixture position 1.'
+        'Property "method" missing at fixture position 1.',
       );
     });
 
@@ -384,8 +384,8 @@ suite('Utils', () => {
       `;
       assert.strictEqual(
         utils.validateFixtureEvent(content).indexOf('Failed to parse the JSON file.'),
-        0
+        0,
       );
-  });
+    });
   });
 });
