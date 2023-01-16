@@ -4,7 +4,6 @@ import * as utils from '../../src/utils';
 import * as vscode from 'vscode';
 const proxyquire = require('proxyquire');
 const modulePath = '../../src/utils';
-
 const setupProxies = (proxies: any) => proxyquire(modulePath, proxies);
 
 suite('Utils', () => {
