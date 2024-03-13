@@ -16,12 +16,12 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4 
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 18.x
 
       - name: Install dependencies
         run: npm install
@@ -31,7 +31,10 @@ jobs:
 
       - name: Run tests (ubuntu)
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: xvfb-run -a -s '-terminate' npm run test
+        run: |
+          export DISPLAY=:99
+          xvfb-run -n 99 -s '-screen 0 1024x768x24' npm run test
+          pkill Xvfb
 
       - name: Run tests (macos, windows)
         if: ${{ !(matrix.os == 'ubuntu-latest') }}

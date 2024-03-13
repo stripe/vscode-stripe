@@ -2,7 +2,7 @@
 // It runs the same tests as the debugger step 'Run Extension Tests' from launch.json
 import * as path from 'path';
 
-import {runTests} from 'vscode-test';
+import {runTests} from '@vscode/test-electron';
 
 async function main() {
   try {
@@ -33,9 +33,11 @@ async function main() {
       extensionTestsPath,
       launchArgs,
       extensionTestsEnv,
+      platform: process.platform === 'win32' ? 'win32-x64-archive' : undefined
     });
   } catch (err) {
     console.log(err);
+    console.trace(err);
     console.error('Failed to run tests (src/test/runTest.ts)');
     // eslint-disable-next-line no-process-exit
     process.exit(1);
