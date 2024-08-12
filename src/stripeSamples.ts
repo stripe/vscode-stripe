@@ -51,6 +51,9 @@ export class StripeSamples {
       let selectedSample: SampleQuickPickItem | undefined;
       if (sample) {
         selectedSample = samplesList.find((s) => s.sampleData.name === sample);
+        if (!selectedSample) {
+          selectedSample = await this.promptSample();
+        }
       } else {
         selectedSample = await this.promptSample();
       }
@@ -61,9 +64,12 @@ export class StripeSamples {
       const sampleName = selectedSample.sampleData.name;
 
       const integrationsList = await this.getConfigsForSample(sampleName);
-      let selectedIntegration: SampleConfigsResponse.Integration | undefined
+      let selectedIntegration: SampleConfigsResponse.Integration | undefined;
       if (integration) {
         selectedIntegration = integrationsList.find((i) => i.getIntegrationName() === integration);
+        if (!selectedIntegration) {
+          selectedIntegration = await this.promptIntegration(selectedSample);
+        }
       } else {
         selectedIntegration = await this.promptIntegration(selectedSample);
       }
