@@ -42,7 +42,7 @@
     "onLanguage:python",
     "onLanguage:ruby",
     "onLanguage:java",
-    "onLanguage:php", 
+    "onLanguage:php",
     "onUri"
   ],
   "main": "./dist/extension.js",
@@ -489,6 +489,7 @@
     "@types/sinon": "^10.0.11",
     "@types/uuid": "^8.3.4",
     "@types/vscode": "^1.63.1",
+    "@types/webpack": "^5.28.5",
     "@types/winreg": "^1.2.30",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
