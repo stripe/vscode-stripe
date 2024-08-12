@@ -490,44 +490,4 @@ suite('commands', function () {
       assert.deepStrictEqual(telemetrySpy.args[0], ['openTriggerCustomizedEvent']);
     });
   });
-
-  // suite('createStripeSample', () => {
-  //   let stripeSamples: any;
-  //   let stripeCommands: Commands;
-
-  //   setup(() => {
-  //     stripeSamples = {
-  //       selectAndCloneSample: sinon.stub().resolves()
-  //     };
-  //     stripeCommands = new Commands(telemetry, terminal, extensionContext);
-  //   });
-
-  //   test('calls selectAndCloneSample with no arguments when no sample is provided', async () => {
-  //     await stripeCommands.createStripeSample(stripeSamples);
-  //     assert.strictEqual(stripeSamples.selectAndCloneSample.calledOnce, true);
-  //     assert.deepStrictEqual(stripeSamples.selectAndCloneSample.firstCall.args, []);
-  //   });
-
-  //   test('calls selectAndCloneSample with sample name when provided', async () => {
-  //     const sampleName = 'accept-a-payment';
-  //     await stripeCommands.createStripeSample(stripeSamples, sampleName);
-  //     assert.strictEqual(stripeSamples.selectAndCloneSample.calledOnce, true);
-  //     assert.deepStrictEqual(stripeSamples.selectAndCloneSample.firstCall.args, [sampleName]);
-  //   });
-
-  //   test('calls selectAndCloneSample with sample and integration when both are provided', async () => {
-  //     const sampleName = 'accept-a-payment';
-  //     const integration = 'payment-element';
-  //     await stripeCommands.createStripeSample(stripeSamples, sampleName, integration);
-  //     assert.strictEqual(stripeSamples.selectAndCloneSample.calledOnce, true);
-  //     assert.deepStrictEqual(stripeSamples.selectAndCloneSample.firstCall.args, [sampleName, integration]);
-  //   });
-
-  //   test('sends telemetry event when called', async () => {
-  //     const telemetrySpy = sandbox.spy(telemetry, 'sendEvent');
-  //     await stripeCommands.createStripeSample(stripeSamples);
-  //     assert.strictEqual(telemetrySpy.calledOnce, true);
-  //     assert.deepStrictEqual(telemetrySpy.firstCall.args, ['createStripeSample']);
-  //   });
-  // });
 });
