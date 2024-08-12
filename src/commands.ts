@@ -623,9 +623,15 @@ export class Commands {
     });
   };
 
-  createStripeSample = async (stripeSamples: StripeSamples) => {
+  createStripeSample = async (stripeSamples: StripeSamples, sample?: string, integration?: string) => {
     this.telemetry.sendEvent('createStripeSample');
-    await stripeSamples.selectAndCloneSample();
+    if (typeof sample !== 'string') {
+      sample = '';
+    }
+    if (typeof integration !== 'string') {
+      integration = '';
+    }
+    await stripeSamples.selectAndCloneSample(sample, integration);
   };
 
   createWebhookEndpoint = async (

@@ -42,7 +42,8 @@
     "onLanguage:python",
     "onLanguage:ruby",
     "onLanguage:java",
-    "onLanguage:php"
+    "onLanguage:php", 
+    "onUri"
   ],
   "main": "./dist/extension.js",
   "contributes": {
