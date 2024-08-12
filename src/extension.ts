@@ -138,7 +138,7 @@ export function activate(this: any, context: ExtensionContext) {
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
     ['stripe.createStripeSample',
-      (sampleName?: string) => stripeCommands.createStripeSample(stripeSamples, sampleName ?? ''),
+      (sampleName?: string, integration?: string) => stripeCommands.createStripeSample(stripeSamples, sampleName ?? '', integration ?? ''),
     ],
     ['stripe.login', () => stripeCommands.startLogin(stripeDaemon)],
     ['stripe.openCLI', stripeCommands.openCLI],
@@ -204,8 +204,10 @@ export function activate(this: any, context: ExtensionContext) {
         if (uri.path === '/createStripeSample') {
           const params = new URLSearchParams(uri.query);
           const sampleName = params.get('sample');
+          const integration = params.get('integration');
           console.log('Sample name:', sampleName);
-          vscode.commands.executeCommand('stripe.createStripeSample', sampleName);
+          console.log('Integration from URI:', integration);
+          vscode.commands.executeCommand('stripe.createStripeSample', sampleName, integration);
         }
       }
     })
