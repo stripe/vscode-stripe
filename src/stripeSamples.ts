@@ -35,7 +35,7 @@ export class StripeSamples {
    * Show a menu with a list of Stripe samples, prompt for sample options, clone the sample, and
    * prompt to open the sample.
    */
-  selectAndCloneSample = async () => {
+  selectAndCloneSample = async (sample?: string) => {
     try {
       this.daemonClient = await this.stripeDaemon.setupClient();
     } catch (e: any) {
@@ -47,7 +47,13 @@ export class StripeSamples {
     }
 
     try {
-      const selectedSample = await this.promptSample();
+      const samplesList = await this.getQuickPickItems();
+      let selectedSample: SampleQuickPickItem | undefined;
+      if (sample) {
+        selectedSample = samplesList.find((s) => s.sampleData.name === sample);
+      } else {
+        selectedSample = await this.promptSample();
+      }
       if (!selectedSample) {
         return;
       }

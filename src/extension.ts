@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import {
   Disposable,
   ExtensionContext,
@@ -136,7 +137,9 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeCommands = new Commands(telemetry, stripeTerminal, context);
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
-    ['stripe.createStripeSample', () => stripeCommands.createStripeSample(stripeSamples)],
+    ['stripe.createStripeSample',
+      (sampleName?: string) => stripeCommands.createStripeSample(stripeSamples, sampleName ?? ''),
+    ],
     ['stripe.login', () => stripeCommands.startLogin(stripeDaemon)],
     ['stripe.openCLI', stripeCommands.openCLI],
     ['stripe.openDashboardApikeys', stripeCommands.openDashboardApikeys],
@@ -193,6 +196,20 @@ export function activate(this: any, context: ExtensionContext) {
   );
 
   context.subscriptions.push(...registeredCommands);
+
+  context.subscriptions.push(
+    vscode.window.registerUriHandler({
+      handleUri(uri: vscode.Uri): vscode.ProviderResult<void> {
+        console.log('Handling URI:', uri.toString());
+        if (uri.path === '/createStripeSample') {
+          const params = new URLSearchParams(uri.query);
+          const sampleName = params.get('sample');
+          console.log('Sample name:', sampleName);
+          vscode.commands.executeCommand('stripe.createStripeSample', sampleName);
+        }
+      }
+    })
+  );
 }
 
 export function deactivate() {}
