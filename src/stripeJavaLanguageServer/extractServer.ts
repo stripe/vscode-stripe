@@ -79,11 +79,27 @@ function downloadAndUntarLatestServerFile() {
 function untarServerFile() {
   console.log('Untar started...');
 
-  fs.createReadStream(tarFile).pipe(zlib.createGunzip()).pipe(tar.extract(extractTo));
-  // remove the downloaded tar file to minimize extension size
-  fs.unlinkSync(tarFile);
-
-  console.log('Untar finished.');
+  return new Promise<void>((resolve, reject) => {
+    fs.createReadStream(tarFile)
+      .pipe(zlib.createGunzip())
+      .pipe(tar.extract(extractTo))
+      .on('finish', () => {
+        console.log('Extraction finished.');
+        fs.unlink(tarFile, (error: any) => {
+          if (error) {
+            console.error('Error deleting tar file:', error);
+            reject(error);
+          } else {
+            console.log('Tar file deleted successfully');
+            resolve();
+          }
+        });
+      })
+      .on('error', (error: any) => {
+        console.error('Error during extraction:', error);
+        reject(error);
+      });
+  });
 }
 
 function getDownloadedDateStamp(file: string) {
