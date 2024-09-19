@@ -46,6 +46,12 @@
     "onUri"
   ],
   "main": "./dist/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "To ensure untrusted workspaces do not execute malicious commands, ensure the stripe.cliInstallPath setting is set to a path you recognize."
+    }
+  },
   "contributes": {
     "configuration": {
       "title": "Stripe",
