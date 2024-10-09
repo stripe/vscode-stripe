@@ -34,8 +34,6 @@ export class StripeTerminal {
 
     const commandString = shellEscape([cliPath, command, ...args, ...globalCLIFlags]);
 
-
-
     try {
       const terminal = await this.createTerminal();
       terminal.sendText(commandString);
