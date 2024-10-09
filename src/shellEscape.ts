@@ -5,7 +5,10 @@ export function shellEscape(args: Array<string>): string {
 
   if (getOSType() === OSType.windows) {
     args.forEach(function(arg) {
-      if (/[^A-Za-z0-9_\/:=-]/.test(arg)) {
+      // Check if the argument is a file path
+      const isFilePath = /^([a-zA-Z]:)?(\\[^<>:"/\\|?*]+)+\.exe$/.test(arg);
+
+      if (!isFilePath && /[^A-Za-z0-9_\/:=-]/.test(arg)) {
         arg = '"' + arg.replace(/"/g, '\\"') + '"';
         arg = arg.replace(/^(?:"")+/g, '') // unduplicate double-quote at the beginning
           .replace(/\\"""/g, '\\"'); // remove non-escaped double-quote if there are enclosed between 2 escaped
