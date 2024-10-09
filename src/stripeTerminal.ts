@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import {StripeClient} from './stripeClient';
+import {shellEscape} from './shellEscape';
 
 type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger';
 
@@ -29,9 +30,9 @@ export class StripeTerminal {
       }
     }
 
-    const globalCLIFLags = this.getGlobalCLIFlags();
+    const globalCLIFlags = this.getGlobalCLIFlags();
 
-    const commandString = [cliPath, command, ...args, ...globalCLIFLags].join(' ');
+    const commandString = shellEscape([cliPath, command, ...args, ...globalCLIFlags]);
 
     try {
       const terminal = await this.createTerminal();
