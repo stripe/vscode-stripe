@@ -25,6 +25,6 @@ suite('shellEscape', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape.shellEscape(['--project-name', 'test | whoami']);
       assert.strictEqual(output, '--project-name \"test | whoami\"');
-    })
+    });
   });
 });
