@@ -36,32 +36,32 @@ suite('shellEscape', () => {
       const output = shellEscape(['--project-name', `'test's "name"'`]); // 'test's "name"'
       assert.strictEqual(output, `--project-name \\''test'\\''s "name"'\\'`); // --project-name \''test'\''s "name"'\'
     });
-    test.only('non windows case: flag with backspace character', () => {
+    test('non windows case: flag with backspace character', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.macOSarm);
       const output = shellEscape(['--project-name', `\\bte\\bst | whoami`]);
       assert.strictEqual(output, `--project-name '\\\\bte\\\\bst | whoami'`);
     });
-    test.only('windows case: flag with space', () => {
+    test('windows case: flag with space', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape(['--project-name', 'test | whoami']); // test | whoami
       assert.strictEqual(output, `--project-name "test | whoami"`); // --project-name "test | whoami"
     });
-    test.only('windows case: flag with single quote around entire arg', () => {
+    test('windows case: flag with single quote around entire arg', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape(['--project-name', `'test name'`]); // 'test name'
       assert.strictEqual(output, `--project-name "'test name'"`); // --project-name "'test name'"
     });
-    test.only('windows case: flag with double quote', () => {
+    test('windows case: flag with double quote', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape(['--project-name', `test "name"`]); // test "name"
       assert.strictEqual(output, `--project-name "test \\"name\\""`); // --project-name "test \"name\""
     });
-    test.only('windows case: flag with lots of quotes', () => {
+    test('windows case: flag with lots of quotes', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape(['--project-name', `'test's "name"'`]); // 'test's "name"'
       assert.strictEqual(output, `--project-name "'test's \\"name\\"'"`); // --project-name "'test's \"name\"'"
     });
-    test.only('windows case: flag with backspace character', () => {
+    test('windows case: flag with backspace character', () => {
       sandbox.stub(utils, 'getOSType').returns(utils.OSType.windows);
       const output = shellEscape(['--project-name', `\\bte\\bst | whoami`]);
       assert.strictEqual(output, `--project-name "\\\\bte\\\\bst | whoami"`);
