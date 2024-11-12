@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import {StripeClient} from './stripeClient';
-import {shellEscape} from './shellEscape';
 
 type SupportedStripeCommand = 'events' | 'listen' | 'logs' | 'login' | 'trigger';
 
@@ -32,15 +31,23 @@ export class StripeTerminal {
 
     const globalCLIFlags = this.getGlobalCLIFlags();
 
-    const commandString = shellEscape([cliPath, command, ...args, ...globalCLIFlags]);
-
-    try {
-      const terminal = await this.createTerminal();
-      terminal.sendText(commandString);
-      terminal.show();
-    } catch (e: any) {
-      vscode.window.showErrorMessage(e.message);
-    }
+    vscode.tasks.executeTask(new vscode.Task(
+      {type: 'stripe', command},
+      vscode.TaskScope.Workspace,
+      command,
+      'stripe',
+      new vscode.ShellExecution(cliPath, [
+        command,
+        ...args.map((arg) => ({
+          quoting: vscode.ShellQuoting.Strong,
+          value: arg,
+        })),
+        ...globalCLIFlags.map((arg) => ({
+          quoting: vscode.ShellQuoting.Strong,
+          value: arg,
+        })),
+      ])
+    ));
   }
 
   private async createNewSplitTerminal(): Promise<vscode.Terminal | undefined> {

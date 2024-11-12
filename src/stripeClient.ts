@@ -6,10 +6,10 @@ import * as vscode from 'vscode';
 import {OSType, getOSType} from './utils';
 import {setCliVersion, setStripeAccountId} from './stripeWorkspaceState';
 import {Telemetry} from './telemetry';
+import compareVersions from 'compare-versions';
 
 const execa = require('execa');
 const fs = require('fs');
-const compareVersions = require('compare-versions');
 
 // The recommended minimum version of the CLI needed to get the full features of this extension.
 const MIN_CLI_VERSION = 'v1.5.13';
