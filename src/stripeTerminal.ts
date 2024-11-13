@@ -50,37 +50,6 @@ export class StripeTerminal {
     ));
   }
 
-  private async createNewSplitTerminal(): Promise<vscode.Terminal | undefined> {
-    const lastTerminal = this.terminals[this.terminals.length - 1];
-    lastTerminal.show();
-
-    // Note that this splits off of the user's currently visible terminal. That's why `.show()` is
-    // called above.
-    await vscode.commands.executeCommand<vscode.Terminal>('workbench.action.terminal.split');
-
-    // After `workbench.action.terminal.split`, the activeTerminal becomes the newly split terminal.
-    // Note that there is no API guarantee for this behavior; a prior implementation relied on
-    // different behavior entirely. Because historically this behavior has been in flux, we should
-    // move to an official API for creating split terminals once that lands in vscode.
-    return vscode.window.activeTerminal;
-  }
-
-  private async createTerminal(): Promise<vscode.Terminal> {
-    if (this.terminals.length > 0) {
-      const terminal = await this.createNewSplitTerminal();
-      if (!terminal) {
-        throw new Error('Failed to create a terminal for this Stripe command. Please try again.');
-      }
-
-      this.terminals.push(terminal);
-      return terminal;
-    }
-
-    const terminal = vscode.window.createTerminal('Stripe');
-    this.terminals.push(terminal);
-    return terminal;
-  }
-
   // The Stripe CLI supports a number of flags for every command. See https://stripe.com/docs/cli/flags
   private getGlobalCLIFlags(): Array<string> {
     const stripeConfig = vscode.workspace.getConfiguration('stripe');
