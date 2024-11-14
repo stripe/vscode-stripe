@@ -141,7 +141,7 @@ export class StripeClient {
     const projectName =
       vscode.workspace.getConfiguration('stripe').get('projectName', null) || 'default';
     try {
-      const {stdout} = await execa(await this.cliPath, ['config', '--list']);
+      const {stdout} = await execa(await this.cliPath, ['config', '--list', '--project-name', 'default']);
       const data = toml.parse(stdout);
 
       const hasConfigForProject = projectName in data;
