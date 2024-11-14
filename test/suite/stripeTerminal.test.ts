@@ -30,21 +30,39 @@ suite('stripeTerminal', function () {
   ['/usr/local/bin/stripe', '/custom/path/to/stripe'].forEach((path) => {
     suite(`when the Stripe CLI is installed at ${path}`, () => {
       test(`runs command with ${path}`, async () => {
-        const sendTextStub = sandbox.stub(terminalStub, 'sendText');
-        const createTerminalStub = sandbox
+        const executeTaskSpy = sandbox.spy(vscode.tasks, 'executeTask');
+        sandbox.stub(terminalStub, 'sendText');
+        sandbox
           .stub(vscode.window, 'createTerminal')
           .returns(terminalStub);
         const stripeClientStub = <any>{getCLIPath: () => {}, isAuthenticated: () => true};
-        const getCLIPathStub = sandbox
+        sandbox
           .stub(stripeClientStub, 'getCLIPath')
           .returns(Promise.resolve(path));
 
         const stripeTerminal = new StripeTerminal(stripeClientStub);
         await stripeTerminal.execute('listen', ['--forward-to', 'localhost']);
 
-        assert.strictEqual(getCLIPathStub.callCount, 1);
-        assert.strictEqual(createTerminalStub.callCount, 1);
-        assert.deepStrictEqual(sendTextStub.args[0], [`${path} listen --forward-to localhost`]);
+        assert.strictEqual(executeTaskSpy.callCount, 1);
+        assert.deepStrictEqual(executeTaskSpy.args[0], [
+          new vscode.Task(
+            {type: 'stripe', command: 'listen'},
+            vscode.TaskScope.Workspace,
+            'listen',
+            'stripe',
+            new vscode.ShellExecution(path, [
+              'listen',
+              {
+                quoting: vscode.ShellQuoting.Strong,
+                value: '--forward-to'
+              },
+              {
+                quoting: vscode.ShellQuoting.Strong,
+                value: 'localhost'
+              }
+            ])
+          ),
+        ]);
       });
     });
   });
