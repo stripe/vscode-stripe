@@ -61,7 +61,6 @@ export class StripeTerminal {
     if (projectName !== null) {
       projectName = projectName.replace(/[\\"'`]/g, '');
     }
-    console.log({projectName});
 
     const projectNameFlag = projectName ? ['--project-name', projectName] : [];
 
