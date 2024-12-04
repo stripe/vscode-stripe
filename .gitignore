@@ -5,3 +5,4 @@ node_modules
 .DS_Store
 test/workspace/.vscode
 dist
+jdt-language-server-latest.tar.gz
