@@ -52,15 +52,17 @@ suite('stripeTerminal', function () {
             'stripe',
             new vscode.ShellExecution(path, [
               'listen',
-              {
-                quoting: vscode.ShellQuoting.Strong,
-                value: '--forward-to'
+              '--forward-to',
+              'localhost',
+            ],
+            {
+              shellQuoting: {
+                escape: {
+                  escapeChar: '\\',
+                  charsToEscape: '&`|"\'',
+                },
               },
-              {
-                quoting: vscode.ShellQuoting.Strong,
-                value: 'localhost'
-              }
-            ])
+            }),
           ),
         ]);
       });

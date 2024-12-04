@@ -38,15 +38,18 @@ export class StripeTerminal {
       'stripe',
       new vscode.ShellExecution(cliPath, [
         command,
-        ...args.map((arg) => ({
-          quoting: vscode.ShellQuoting.Strong,
-          value: arg,
-        })),
-        ...globalCLIFlags.map((arg) => ({
-          quoting: vscode.ShellQuoting.Strong,
-          value: arg,
-        })),
-      ])
+        ...args,
+        ...globalCLIFlags
+      ],
+      {
+        shellQuoting: {
+          escape: {
+            escapeChar: '\\',
+            charsToEscape: '&`|"\'',
+          }
+        }
+      }
+    )
     ));
   }
 
@@ -54,7 +57,10 @@ export class StripeTerminal {
   private getGlobalCLIFlags(): Array<string> {
     const stripeConfig = vscode.workspace.getConfiguration('stripe');
 
-    const projectName = stripeConfig.get('projectName', null);
+    let projectName = stripeConfig.get<string | null>('projectName', null);
+    if (projectName !== null) {
+      projectName = projectName.replace(/[\\"'`]/g, '');
+    }
 
     const projectNameFlag = projectName ? ['--project-name', projectName] : [];
 

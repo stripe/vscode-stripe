@@ -64,7 +64,8 @@
         },
         "stripe.projectName": {
           "type": "string",
-          "description": "the project name to read from for config (default \"default\")"
+          "description": "the project name to read from for config (default \"default\")",
+          "pattern": "^[a-zA-Z0-9_-\\s]+$"
         },
         "stripe.telemetry.enabled": {
           "type": "boolean",
