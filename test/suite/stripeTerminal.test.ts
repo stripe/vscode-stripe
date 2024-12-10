@@ -8,16 +8,16 @@ suite('stripeTerminal', function () {
 
   let sandbox: sinon.SinonSandbox;
 
-  const terminalStub = <vscode.Terminal>(<unknown>{
+  const terminalStub = <vscode.Terminal><unknown>{
     name: 'Stubbed Terminal',
     processId: Promise.resolve(undefined),
     creationOptions: {},
     exitStatus: undefined,
-    sendText: (text: string, addNewLine?: boolean) => {},
-    show: (preserveFocus?: boolean) => {},
-    hide: () => {},
-    dispose: () => {},
-  });
+    sendText: (text: string, addNewLine?: boolean) => { },
+    show: (preserveFocus?: boolean) => { },
+    hide: () => { },
+    dispose: () => { },
+  };
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -36,47 +36,27 @@ suite('stripeTerminal', function () {
 
         // Mock the configuration with a valid project name
         const stripeClientStub = <any>{
-          getCLIPath: () => {},
+          getCLIPath: () => { },
           isAuthenticated: () => true,
         };
 
-        // Mock the getConfiguration function to return an invalid project name
+        // Mock the getConfiguration function to return a valid project name
         sandbox.stub(vscode.workspace, 'getConfiguration').returns({
           get: (key: string) => {
             if (key === 'projectName') {
-              return 'Valid_Project-Name'; // Invalid project name
+              return 'Valid_Project-Name'; // Valid project name
             }
             return null;
           },
           has: function (section: string): boolean {
             throw new Error('Function not implemented.');
           },
-          inspect: function <T>(
-            section: string,
-          ):
-            | {
-                key: string;
-                defaultValue?: T;
-                globalValue?: T;
-                workspaceValue?: T;
-                workspaceFolderValue?: T;
-                defaultLanguageValue?: T;
-                globalLanguageValue?: T;
-                workspaceLanguageValue?: T;
-                workspaceFolderLanguageValue?: T;
-                languageIds?: string[];
-              }
-            | undefined {
+          inspect: function <T>(section: string): { key: string; defaultValue?: T; globalValue?: T; workspaceValue?: T; workspaceFolderValue?: T; defaultLanguageValue?: T; globalLanguageValue?: T; workspaceLanguageValue?: T; workspaceFolderLanguageValue?: T; languageIds?: string[]; } | undefined {
             throw new Error('Function not implemented.');
           },
-          update: function (
-            section: string,
-            value: any,
-            configurationTarget?: vscode.ConfigurationTarget | boolean | null,
-            overrideInLanguage?: boolean,
-          ): Thenable<void> {
+          update: function (section: string, value: any, configurationTarget?: vscode.ConfigurationTarget | boolean | null, overrideInLanguage?: boolean): Thenable<void> {
             throw new Error('Function not implemented.');
-          },
+          }
         });
 
         sandbox.stub(stripeClientStub, 'getCLIPath').returns(Promise.resolve(path));
@@ -91,18 +71,21 @@ suite('stripeTerminal', function () {
             vscode.TaskScope.Workspace,
             'listen',
             'stripe',
-            new vscode.ShellExecution(
-              path,
-              ['listen', '--forward-to', 'localhost', '--project-name', 'Valid_Project-Name'],
-              {
-                shellQuoting: {
-                  escape: {
-                    escapeChar: '\\',
-                    charsToEscape: '&`|"\'',
-                  },
+            new vscode.ShellExecution(path, [
+              'listen',
+              '--forward-to',
+              'localhost',
+              '--project-name',
+              'Valid_Project-Name'
+            ],
+            {
+              shellQuoting: {
+                escape: {
+                  escapeChar: '\\',
+                  charsToEscape: '&`|"\'',
                 },
               },
-            ),
+            }),
           ),
         ]);
       });
@@ -110,7 +93,7 @@ suite('stripeTerminal', function () {
       test('throws error for invalid project name', async () => {
         // Mock the configuration with an invalid project name
         const stripeClientStub = <any>{
-          getCLIPath: () => {},
+          getCLIPath: () => { },
           isAuthenticated: () => true,
         };
 
@@ -125,32 +108,12 @@ suite('stripeTerminal', function () {
           has: function (section: string): boolean {
             throw new Error('Function not implemented.');
           },
-          inspect: function <T>(
-            section: string,
-          ):
-            | {
-                key: string;
-                defaultValue?: T;
-                globalValue?: T;
-                workspaceValue?: T;
-                workspaceFolderValue?: T;
-                defaultLanguageValue?: T;
-                globalLanguageValue?: T;
-                workspaceLanguageValue?: T;
-                workspaceFolderLanguageValue?: T;
-                languageIds?: string[];
-              }
-            | undefined {
+          inspect: function <T>(section: string): { key: string; defaultValue?: T; globalValue?: T; workspaceValue?: T; workspaceFolderValue?: T; defaultLanguageValue?: T; globalLanguageValue?: T; workspaceLanguageValue?: T; workspaceFolderLanguageValue?: T; languageIds?: string[]; } | undefined {
             throw new Error('Function not implemented.');
           },
-          update: function (
-            section: string,
-            value: any,
-            configurationTarget?: vscode.ConfigurationTarget | boolean | null,
-            overrideInLanguage?: boolean,
-          ): Thenable<void> {
+          update: function (section: string, value: any, configurationTarget?: vscode.ConfigurationTarget | boolean | null, overrideInLanguage?: boolean): Thenable<void> {
             throw new Error('Function not implemented.');
-          },
+          }
         });
 
         sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
@@ -165,9 +128,8 @@ suite('stripeTerminal', function () {
           },
           {
             name: 'Error',
-            message:
-              "Invalid project name: 'Invalid Project Name!'. Project names can only contain letters, numbers, spaces, underscores, and hyphens.",
-          },
+            message: "Invalid project name: 'Invalid Project Name!'. Project names can only contain letters, numbers, spaces, underscores, and hyphens.",
+          }
         );
       });
     });
@@ -176,10 +138,8 @@ suite('stripeTerminal', function () {
   suite('with no Stripe CLI installed', () => {
     test('does not run command', async () => {
       const sendTextStub = sandbox.stub(terminalStub, 'sendText');
-      const createTerminalStub = sandbox
-        .stub(vscode.window, 'createTerminal')
-        .returns(terminalStub);
-      const stripeClientStub = <any>{getCLIPath: () => {}, isAuthenticated: () => true};
+      const createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns(terminalStub);
+      const stripeClientStub = <any>{getCLIPath: () => { }, isAuthenticated: () => true};
       sandbox.stub(stripeClientStub, 'getCLIPath').returns(null);
 
       const stripeTerminal = new StripeTerminal(stripeClientStub);
