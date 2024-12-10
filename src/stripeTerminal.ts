@@ -57,9 +57,16 @@ export class StripeTerminal {
   private getGlobalCLIFlags(): Array<string> {
     const stripeConfig = vscode.workspace.getConfiguration('stripe');
 
-    let projectName = stripeConfig.get<string | null>('projectName', null);
-    if (projectName !== null) {
-      projectName = projectName.replace(/[\\"'`]/g, '');
+    const projectName = stripeConfig.get<string | null>('projectName', null);
+
+    if (projectName !== null && projectName !== '') {
+        // Regex to validate project name
+        const projectNameRegex = /^[a-zA-Z0-9_-\s]+$/;
+
+        // Validate project name against the regex
+        if (!projectNameRegex.test(projectName)) {
+            throw new Error(`Invalid project name: '${projectName}'. Project names can only contain letters, numbers, spaces, underscores, and hyphens.`);
+        }
     }
 
     const projectNameFlag = projectName ? ['--project-name', projectName] : [];
