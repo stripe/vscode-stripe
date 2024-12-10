@@ -59,7 +59,7 @@ export class StripeTerminal {
 
     const projectName = stripeConfig.get<string | null>('projectName', null);
 
-    if (projectName !== null) {
+    if (projectName !== null && projectName !== '') {
         // Regex to validate project name
         const projectNameRegex = /^[a-zA-Z0-9_-\s]+$/;
 
