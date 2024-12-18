@@ -61,7 +61,7 @@ suite('StripeDaemon', () => {
       Object.setPrototypeOf(StripeCLIClient, constructorStub);
 
       await stripeDaemon.setupClient();
-      console.log(constructorStub.args[0][2].channelOverride.options['grpc.primary_user_agent']);
+      console.log(constructorStub.args[0][2].channelOverride.internalChannel.options['grpc.primary_user_agent']);
       assert.strictEqual(constructorStub.args[0][0], '[::1]:12345');
     });
 
@@ -84,7 +84,7 @@ suite('StripeDaemon', () => {
       await stripeDaemon.setupClient();
 
       const userAgent =
-        constructorStub.args[0][2].channelOverride.options['grpc.primary_user_agent'];
+        constructorStub.args[0][2].channelOverride.internalChannel.options['grpc.primary_user_agent'];
 
       // Note I could not mock out the module that's used within the utils class so we are just asserting for a startsWith
       assert.strictEqual(userAgent.startsWith('my-extension/1 vscode/'), true);

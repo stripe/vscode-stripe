@@ -42,7 +42,7 @@
     "onLanguage:python",
     "onLanguage:ruby",
     "onLanguage:java",
-    "onLanguage:php", 
+    "onLanguage:php",
     "onUri"
   ],
   "main": "./dist/extension.js",
@@ -517,7 +517,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.6.7",
+    "@grpc/grpc-js": "~1.12.3",
     "byline": "^5.0.0",
     "compare-versions": "^4.1.2",
     "execa": "^5.1.1",
