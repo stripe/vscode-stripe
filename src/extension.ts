@@ -19,6 +19,7 @@ import {
 } from './stripeWorkspaceState';
 import {Commands} from './commands';
 import {Git} from './git';
+import {SecurityPrompt} from './securityPrompt';
 import {StripeClient} from './stripeClient';
 import {StripeDaemon} from './daemon/stripeDaemon';
 import {StripeDebugProvider} from './stripeDebugProvider';
@@ -42,6 +43,7 @@ export function activate(this: any, context: ExtensionContext) {
   initializeStripeWorkspaceState(context);
 
   new TelemetryPrompt(context).activate();
+  new SecurityPrompt(context).activate();
   const surveyPrompt: SurveyPrompt = new SurveyPrompt(context);
   surveyPrompt.activate();
 
@@ -93,7 +95,7 @@ export function activate(this: any, context: ExtensionContext) {
   });
   stripeHelpView.message = 'This extension runs with your Stripe account in test mode.';
 
-  debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry));
+  debug.registerDebugConfigurationProvider('stripe', new StripeDebugProvider(telemetry, context));
 
   workspace.registerTextDocumentContentProvider(
     'stripeEvent',
@@ -137,8 +139,10 @@ export function activate(this: any, context: ExtensionContext) {
   const stripeCommands = new Commands(telemetry, stripeTerminal, context);
 
   const commandCallbackPairs: [string, (...args: any[]) => any][] = [
-    ['stripe.createStripeSample',
-      (sampleName?: string, integration?: string) => stripeCommands.createStripeSample(stripeSamples, sampleName ?? '', integration ?? ''),
+    [
+      'stripe.createStripeSample',
+      (sampleName?: string, integration?: string) =>
+        stripeCommands.createStripeSample(stripeSamples, sampleName ?? '', integration ?? ''),
     ],
     ['stripe.login', () => stripeCommands.startLogin(stripeDaemon)],
     ['stripe.openCLI', stripeCommands.openCLI],
@@ -171,7 +175,12 @@ export function activate(this: any, context: ExtensionContext) {
     ['stripe.openWebhooksListen', stripeCommands.openWebhooksListen],
     [
       'stripe.createWebhookEndpoint',
-      () => stripeCommands.createWebhookEndpoint(stripeDaemon, stripeOutputChannel, stripeWebhooksViewProvider),
+      () =>
+        stripeCommands.createWebhookEndpoint(
+          stripeDaemon,
+          stripeOutputChannel,
+          stripeWebhooksViewProvider,
+        ),
     ],
     [
       'stripe.resendEvent',
@@ -209,8 +218,8 @@ export function activate(this: any, context: ExtensionContext) {
           console.log('Integration from URI:', integration);
           vscode.commands.executeCommand('stripe.createStripeSample', sampleName, integration);
         }
-      }
-    })
+      },
+    }),
   );
 }
 
