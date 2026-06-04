@@ -17,16 +17,6 @@ A new Stripe panel in the activity bar provides easy access to code snippets for
 
 Read more about this extension in the official Stripe documentation at [https://stripe.com/docs/stripe-vscode](https://stripe.com/docs/stripe-vscode)
 
-## Chat with the Stripe chat participant
-
-Chat with the Stripe chat participant using GitHub Copilot or our custom Chat UI. Click "Ask a question" under the AI Assistant section in the Stripe extension view.
-
-If you have GitHub Copilot, it will work with the Stripe `@stripe` chat participant. Ask it any questions while integrating. Learn more [here](https://code.visualstudio.com/docs/copilot/copilot-chat#_chat-participants).
-
-If you do not have GitHub, it will work with our custom Chat UI.
-
-![Stripe Chat](https://github.com/user-attachments/assets/41ef3bc2-3c6c-45d3-9416-101eb84284fe)
-
 ## Providing Feedback
 
 This repository is for providing feedback on the Stripe VS Code extension. You can use this repository to:
